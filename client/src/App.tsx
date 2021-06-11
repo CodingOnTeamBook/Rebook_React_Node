@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import GlobalStyle from './style/globalStyles';
 import styled from 'styled-components';
 import { StylesProvider } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ const MinHeightContainer = styled(Container)`
   min-height: 80vh;
 `;
 
-function App() {
+const App: FunctionComponent = () => {
   return (
     <ThemeProvider theme={theme}>
       <StylesProvider injectFirst>
@@ -47,6 +47,6 @@ function App() {
       </StylesProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

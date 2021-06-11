@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import { Link } from 'react-router-dom';
@@ -54,7 +54,10 @@ interface ProfileModalProps {
   nickname: string;
 }
 
-const ProfileModal = ({ imgUrl, nickname }: ProfileModalProps) => {
+const ProfileModal: FunctionComponent<ProfileModalProps> = ({
+  imgUrl,
+  nickname,
+}: ProfileModalProps) => {
   return (
     <ProfileContainer>
       <ProfileImg src={imgUrl} alt="profileImg" />

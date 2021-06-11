@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function WriteReviewPage() {
-  return <div>WriteReviewPage</div>;
-}
+const WriteReviewPage: FunctionComponent = () => {
+  return <div>SignupPage</div>;
+};
 
 export default WriteReviewPage;

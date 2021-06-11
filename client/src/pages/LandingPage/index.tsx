@@ -1,8 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { FunctionComponent } from 'react';
 
-function LandingPage() {
+const LandingPage: FunctionComponent = () => {
   return <div>LandingPage</div>;
-}
+};
 
 export default LandingPage;

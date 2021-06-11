@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import Logo from '../../style/img/logo.png';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
@@ -67,9 +67,9 @@ const MenuContainer = styled.ul`
   }
 `;
 
-function Header() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+const Header: FunctionComponent = () => {
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
 
   const ProfileModalToggle = () => {
     setIsProfileModalOpen(!isProfileModalOpen);
@@ -106,6 +106,6 @@ function Header() {
       )}
     </Container>
   );
-}
+};
 
 export default Header;

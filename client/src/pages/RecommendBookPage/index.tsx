@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function RecommendBookPage() {
+const RecommendBookPage: FunctionComponent = () => {
   return <div>RecommendBookPage</div>;
-}
+};
 
 export default RecommendBookPage;

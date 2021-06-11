@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function ReviewPage() {
+const ReviewPage: FunctionComponent = () => {
   return <div>ReviewPage</div>;
-}
+};
 
 export default ReviewPage;

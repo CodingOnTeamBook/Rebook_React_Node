@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function BookDetailPage() {
+const BookDetailPage: FunctionComponent = () => {
   return <div>BookDetailPage</div>;
-}
+};
 
 export default BookDetailPage;
