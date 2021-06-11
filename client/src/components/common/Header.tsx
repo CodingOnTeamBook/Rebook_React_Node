@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from '../../style/img/logo.png';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
+import ProfileModal from './ProfileModal';
 
 const LogoContainer = styled.img`
   width: 150px;
@@ -24,6 +26,20 @@ const HeaderContainer = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.3rem;
   display: relative;
+`;
+
+const LoginBtn = styled(LineGreenBtn)`
+  position: absolute;
+  right: 2rem;
+`;
+
+const ProfileIcon = styled(AccountCircleIcon)`
+  color: ${(props) => props.theme.palette.green};
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  right: 2.5rem;
 `;
 
 const MenuContainer = styled.ul`
@@ -52,13 +68,24 @@ const MenuContainer = styled.ul`
 `;
 
 function Header() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  const ProfileModalToggle = () => {
+    setIsProfileModalOpen(!isProfileModalOpen);
+  };
+
   return (
     <Container>
       <HeaderContainer>
         <Link to="/">
           <LogoContainer src={Logo} />
         </Link>
-        <LineGreenBtn>로그인</LineGreenBtn>
+        {isLogin ? (
+          <ProfileIcon onClick={ProfileModalToggle} />
+        ) : (
+          <LoginBtn>로그인</LoginBtn>
+        )}
       </HeaderContainer>
       <MenuContainer>
         <li>
@@ -71,6 +98,12 @@ function Header() {
           <Link to="/people">리뷰어</Link>
         </li>
       </MenuContainer>
+      {isProfileModalOpen && (
+        <ProfileModal
+          imgUrl="https://cdn.pixabay.com/photo/2021/05/17/01/39/iris-6259565_960_720.jpg"
+          nickname="리북이"
+        />
+      )}
     </Container>
   );
 }
