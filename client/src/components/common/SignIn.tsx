@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Logo from '../../style/img/logo.png';
 import LoginImg from '../../style/img/loginImg.jpg';
 import Modal from '@material-ui/core/Modal';
+import { LineGreenBtn } from '../../style/componentStyled';
 
 const LogoContainer = styled.img`
   padding-top: 10px;
@@ -63,22 +64,17 @@ const KaKaoBtn = styled.button`
   }
 `;
 
-const Btn = styled.button`
+const Btn = styled(LineGreenBtn)`
+  position: static;
   padding: 0;
   width: 250px;
   height: 45px;
   line-height: 44px;
-  color: ${(props) => props.theme.palette.black};
-  background-color: ${(props) => props.theme.palette.green};
-  border: 1px solid transparent;
   border-radius: 3px;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
-  &:hover {
-    box-shadow: 0 0px 15px 0 rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const Margin = styled.div`
