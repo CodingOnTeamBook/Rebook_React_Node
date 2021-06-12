@@ -4,14 +4,24 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2"
     "express-session": "^1.17.2",
+=======
+    "express-session": "^1.17.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2",
+>>>>>>> #6
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
