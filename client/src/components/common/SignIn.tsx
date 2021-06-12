@@ -1,10 +1,7 @@
-import React, { FC, useRef, useEffect, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
 import Logo from '../../style/img/logo.png';
-import LoginImg from '../../style/img/loginImg.jpg';
 import Modal from '@material-ui/core/Modal';
-import { LineGreenBtn } from '../../style/componentStyled';
 
 const LogoContainer = styled.img`
   padding-top: 10px;
