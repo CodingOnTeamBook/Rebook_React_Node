@@ -11,6 +11,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2"
+    "express-session": "^1.17.2",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "concurrently": "^6.2.0",

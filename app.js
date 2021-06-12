@@ -48,3 +48,13 @@ app.get('/api', (req, res) => {
 app.listen(app.get('port'), () => {
     console.log(`server on port ${app.get('port')}`);
 });
+app.get('/api', (req, res) => {
+  res.json({
+    success: true,
+    message: 'from node server',
+  });
+});
+
+app.listen(app.get('port'), () => {
+  console.log(`server on port ${app.get('port')}`);
+});

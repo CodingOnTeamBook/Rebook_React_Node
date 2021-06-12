@@ -1,12 +1,11 @@
 const Sequelize = require('sequelize');
-
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 const db = {};
-
 const Review = require('./review');
 const Tag = require('./tag');
-
+const Like = require('./like');
+const Comment = require('./comment');
 const sequelize = new Sequelize(
   config.database,
   config.username,
@@ -15,14 +14,16 @@ const sequelize = new Sequelize(
 );
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
 db.Review = Review;
 db.Tag = Tag;
-
+db.Like = Like;
+db.Comment = Comment;
 Review.init(sequelize);
 Tag.init(sequelize);
-
+Like.init(sequelize);
+Comment.init(sequelize);
 Review.associate(db);
 Tag.associate(db);
-
+Like.associate(db);
+Comment.associate(db);
 module.exports = db;
