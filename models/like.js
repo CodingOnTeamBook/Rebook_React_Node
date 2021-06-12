@@ -21,4 +21,8 @@ module.exports = class Like extends Sequelize.Model {
       }
     );
   }
+
+  static associate(db) {
+    db.Like.belongsTo(db.User, { foreignKey: 'liker', targetKey: 'id' });
+  }
 };

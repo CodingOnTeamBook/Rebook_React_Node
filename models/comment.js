@@ -21,4 +21,15 @@ module.exports = class Comment extends Sequelize.Model {
       }
     );
   }
+
+  static associate(db) {
+    db.Comment.belongsTo(db.User, {
+      foreignKey: 'commenter',
+      targetKey: 'id',
+    });
+    db.Comment.belongsTo(db.Review, {
+      foreignKey: 'what_review',
+      targetKey: 'id',
+    });
+  }
 };

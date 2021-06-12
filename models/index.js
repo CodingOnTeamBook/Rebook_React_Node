@@ -23,4 +23,7 @@ db.Comment = Comment;
 Like.init(sequelize);
 Comment.init(sequelize);
 
+Like.associate(db);
+Comment.associate(db);
+
 module.exports = db;
