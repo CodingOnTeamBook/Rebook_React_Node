@@ -21,21 +21,13 @@ const LoginContainer = styled.div`
 `;
 
 const ModalWrapper = styled.div`
-  width: 800px;
-  height: 500px;
+  width: 400px;
+  height: 250px;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fff;
   display: grid;
-  grid-template-columns: 1fr 1fr;
   z-index: 10;
   border-radius: 10px;
-`;
-
-const ModalImg = styled.img`
-  width: 100%;
-  height: 500px;
-  border-radius: 10px 0 0 10px;
-  background: #000;
 `;
 
 const ModalContent = styled.div`
@@ -48,7 +40,7 @@ const ModalContent = styled.div`
 
 const KaKaoBtn = styled.button`
   padding: 0;
-  width: 250px;
+  width: 80%;
   height: 45px;
   line-height: 44px;
   color: #000;
@@ -64,23 +56,6 @@ const KaKaoBtn = styled.button`
   }
 `;
 
-const Btn = styled(LineGreenBtn)`
-  position: static;
-  padding: 0;
-  width: 250px;
-  height: 45px;
-  line-height: 44px;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-`;
-
-const Margin = styled.div`
-  margin-top: 5px;
-`;
-
 interface Props {
   show: boolean;
 }
@@ -94,16 +69,9 @@ function Login({ show }: Props) {
     <Modal open={show}>
       <LoginContainer>
         <ModalWrapper>
-          <ModalImg src={LoginImg} alt="book" />
           <ModalContent>
             <LogoContainer src={Logo}></LogoContainer>
-            <h2> 환영합니다! </h2>
-            <h3> 가입하지 않으셨나요? </h3>
-            <Link to="/SignupPage">
-              <Btn>회원가입</Btn>
-            </Link>
-            <Margin></Margin>
-            <h3>가입 하셨나요?</h3>
+            <h3>로그인</h3>
             <KaKaoBtn>Login with Kakao</KaKaoBtn>
           </ModalContent>
         </ModalWrapper>
