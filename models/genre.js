@@ -26,6 +26,6 @@ module.exports = class Genre extends Sequelize.Model {
         );
     }
     static associate(db){
-        db.Genre.belongsToMany(db.User, {throuugh: 'UserGenre'});
+        db.Genre.belongsToMany(db.User, {through: 'UserGenre'});
     }
 };

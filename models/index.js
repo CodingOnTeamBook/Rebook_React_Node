@@ -22,4 +22,7 @@ db.Genre = Genre;
 User.init(sequelize);
 Genre.init(sequelize);
 
+User.associate(db);
+Genre.associate(db);
+
 module.exports = db;
