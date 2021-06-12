@@ -11,7 +11,7 @@ module.exports = class Tag extends Sequelize.Model {
             {
                 sequelize,
                 timestamp: true,
-                underscored: false,
+                underscored: true,
                 modelName: 'Tag', //모델네임. 노드프로젝트에서 사용
                 tableName: 'tags',
                 paranoid: true,
@@ -19,5 +19,8 @@ module.exports = class Tag extends Sequelize.Model {
                 collate: 'utf8_general_ci',
             }
         );
+    }
+    static associate(db) {
+        db.Tag.belongsToMany(db.Review, { through: 'ReviewTag' });
     }
 }
