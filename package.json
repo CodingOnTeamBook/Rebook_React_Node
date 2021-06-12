@@ -6,7 +6,11 @@
   "dependencies": {
     "cors": "^2.8.5",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {
     "concurrently": "^6.2.0",
