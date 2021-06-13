@@ -43,9 +43,9 @@ const ModalButton = styled(LineGreenBtn)`
   width: 150px;
   height: 40px;
   margin: 0.4rem;
+  color: ${(props) => props.theme.palette.white};
   &:first-child {
     background: ${(props) => props.theme.palette.green};
-    color: ${(props) => props.theme.palette.darkgreen};
   }
 `;
 

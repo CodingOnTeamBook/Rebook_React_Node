@@ -77,7 +77,7 @@ const LoginModalContainer = styled.div`
 `;
 
 const Header: FunctionComponent = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
 

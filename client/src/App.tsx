@@ -6,6 +6,9 @@ import Container from '@material-ui/core/Container';
 import { ThemeProvider } from 'styled-components';
 import theme from './style/theme';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Auth from './hocAuth';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import Header from './components/common/Header';
 import LandingPage from './pages/LandingPage';
 import MyPage from './pages/MyPage';
@@ -24,28 +27,58 @@ const MinHeightContainer = styled(Container)`
 
 const App: FunctionComponent = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <StylesProvider injectFirst>
-        <GlobalStyle />
-        <BrowserRouter>
-          <Header />
-          <MinHeightContainer>
-            <Switch>
-              <Route path="/" exact component={LandingPage} />
-              <Route path="/my" exact component={MyPage} />
-              <Route path="/people" exact component={PeoplePage} />
-              <Route path="/review" exact component={ReviewPage} />
-              <Route path="/search" exact component={SearchPage} />
-              <Route path="/recommend" exact component={RecommendBookPage} />
-              <Route path="/book/:id" exact component={BookDetailPage} />
-              <Route path="/signup" exact component={SignupPage} />
-              <Route path="/write" exact component={WriteReviewPage} />
-            </Switch>
-          </MinHeightContainer>
-          <Footer />
-        </BrowserRouter>
-      </StylesProvider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <StylesProvider injectFirst>
+          <GlobalStyle />
+          <BrowserRouter>
+            <Header />
+            <MinHeightContainer>
+              <Switch>
+                <Route path="/" exact component={Auth(LandingPage, null)} />
+                <Route path="/my" exact component={Auth(MyPage, true)} />
+                <Route
+                  path="/people"
+                  exact
+                  component={Auth(PeoplePage, null)}
+                />
+                <Route
+                  path="/review"
+                  exact
+                  component={Auth(ReviewPage, null)}
+                />
+                <Route
+                  path="/search"
+                  exact
+                  component={Auth(SearchPage, null)}
+                />
+                <Route
+                  path="/recommend"
+                  exact
+                  component={Auth(RecommendBookPage, null)}
+                />
+                <Route
+                  path="/book/:id"
+                  exact
+                  component={Auth(BookDetailPage, null)}
+                />
+                <Route
+                  path="/signup"
+                  exact
+                  component={Auth(SignupPage, false)}
+                />
+                <Route
+                  path="/write"
+                  exact
+                  component={Auth(WriteReviewPage, true)}
+                />
+              </Switch>
+            </MinHeightContainer>
+            <Footer />
+          </BrowserRouter>
+        </StylesProvider>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
