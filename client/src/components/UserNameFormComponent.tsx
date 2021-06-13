@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { LineGreenBtn } from '../style/componentStyled';
-import { types } from 'util';
 
 const CheckBtn = styled(LineGreenBtn)`
   position: static;
