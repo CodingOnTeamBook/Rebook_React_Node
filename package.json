@@ -4,12 +4,19 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
-    "@types/redux-logger": "^3.0.8",
     "concurrently": "^6.2.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
