@@ -1,7 +1,7 @@
 ---
 name: "\U0001F4DD New Feature"
 about: 새로 작성할 기능을 명세
-title: ""
+title: ''
 labels: ''
 assignees: ''
 
