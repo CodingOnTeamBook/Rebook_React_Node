@@ -9,6 +9,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "@types/redux-logger": "^3.0.8",
     "concurrently": "^6.2.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
