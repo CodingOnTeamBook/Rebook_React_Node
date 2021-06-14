@@ -6,6 +6,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import SimpleModal from './SimpleModal';
+import KakaoLoginBtn from './KaKaoLoginBtn';
 
 const LogoContainer = styled.img`
   width: 150px;
@@ -77,7 +78,7 @@ const LoginModalContainer = styled.div`
 `;
 
 const Header: FunctionComponent = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
 
@@ -92,7 +93,7 @@ const Header: FunctionComponent = () => {
   const LoginModalContent = (
     <LoginModalContainer>
       <h2>로그인</h2>
-      <button>카카오 로그인 하기</button>
+      <KakaoLoginBtn />
     </LoginModalContainer>
   );
 
