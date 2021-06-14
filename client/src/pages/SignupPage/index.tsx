@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function SignupPage() {
+const SignupPage: FunctionComponent = () => {
   return <div>SignupPage</div>;
-}
+};
 
 export default SignupPage;

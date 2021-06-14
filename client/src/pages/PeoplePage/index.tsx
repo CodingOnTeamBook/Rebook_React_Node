@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function PeoplePage() {
+const PeoplePage: FunctionComponent = () => {
   return <div>PeoplePage</div>;
-}
+};
 
 export default PeoplePage;

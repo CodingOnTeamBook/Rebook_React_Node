@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function SearchPage() {
+const SearchPage: FunctionComponent = () => {
   return <div>SearchPage</div>;
-}
+};
 
 export default SearchPage;

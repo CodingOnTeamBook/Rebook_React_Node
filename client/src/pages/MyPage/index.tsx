@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-function MyPage() {
+const MyPage: FunctionComponent = () => {
   return <div>MyPage</div>;
-}
+};
 
 export default MyPage;
