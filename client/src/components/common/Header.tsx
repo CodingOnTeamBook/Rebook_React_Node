@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../style/img/logo.png';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
-import SignIn from './SignIn';
+import SigninDialog from '../common/SigninDialog';
 
 const LogoContainer = styled.img`
   width: 200px;
@@ -21,37 +21,23 @@ const HeaderContainer = styled.nav`
 `;
 
 function Header() {
-  const [show, setShow] = useState(false);
+  const [isSigninDialogOpen, setSigninDialogOpen] = useState(false);
 
-  const popRef = useRef<HTMLDivElement>(null);
+  const dialogOpen = () => {
+    setSigninDialogOpen(!isSigninDialogOpen);
+  };
 
-  const onClickOutside = useCallback(
-    ({ target }) => {
-      if (popRef.current && !popRef.current.contains(target)) {
-        setShow(false);
-      }
-    },
-    [setShow]
-  );
-
-  useEffect(() => {
-    document.addEventListener('click', onClickOutside);
-    return () => {
-      document.removeEventListener('click', onClickOutside);
-    };
-  }, []);
-
-  const onClickToggleModal = useCallback(() => {
-    setShow((prev) => !prev);
-  }, [setShow]);
+  const dialogClose = () => {
+    setSigninDialogOpen(!isSigninDialogOpen);
+  };
 
   return (
-    <HeaderContainer ref={popRef}>
+    <HeaderContainer>
       <Link to="/">
         <LogoContainer src={Logo} />
       </Link>
-      <LineGreenBtn onClick={onClickToggleModal}>로그인</LineGreenBtn>
-      <SignIn show={show} />
+      <LineGreenBtn onClick={dialogOpen}>로그인</LineGreenBtn>
+      <SigninDialog isOpen={isSigninDialogOpen} handleClose={dialogClose} />
     </HeaderContainer>
   );
 }
