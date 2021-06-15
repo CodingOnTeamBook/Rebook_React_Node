@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import Logo from '../../style/img/logo.png';
 import { Dialog } from '@material-ui/core';
@@ -37,12 +37,15 @@ const KaKaoBtn = styled.button`
   }
 `;
 
-interface Props {
+interface SigninDialogProps {
   isOpen: boolean;
   handleClose: () => void;
 }
 
-function SigninDialog({ isOpen, handleClose }: Props) {
+const SigninDialog: FunctionComponent<SigninDialogProps> = ({
+  isOpen,
+  handleClose,
+}: SigninDialogProps) => {
   return (
     <Dialog open={isOpen} onClose={handleClose}>
       <DialogContent>
@@ -52,6 +55,6 @@ function SigninDialog({ isOpen, handleClose }: Props) {
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default SigninDialog;
