@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -9,16 +9,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
-const FlexRowContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+const TagsContainer = styled(FormGroup)`
+  display: block;
 `;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: 'grid',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
     },
     formControl: {
       margin: theme.spacing(7),
@@ -29,115 +31,50 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
-  tags: any;
+  tags: { [key: string]: boolean };
 }
 
-function CheckboxesGroup(props: Props): React.ReactElement {
-  const classes = useStyles();
-  const { 소설, 인문학, 사회과학, 역사, 과학, 예술, 종교 } = props.tags;
+const CheckboxesGroup: FunctionComponent<Props> = ({
+  handleChange,
+  error,
+  tags,
+}: Props) => {
+  const { root, formControl } = useStyles();
+
+  function renderFormControlLabel(tag: [string, boolean]): JSX.Element {
+    const [tagName, tagValue] = tag;
+    return (
+      <FormControlLabel
+        key={tagName}
+        control={
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            checked={tagValue}
+            onChange={handleChange}
+            name={tagName}
+          />
+        }
+        label={tagName}
+      />
+    );
+  }
 
   return (
-    <div className={classes.root}>
+    <div className={root}>
       <FormControl
         required
-        error={props.error}
+        error={error}
         component="fieldset"
-        className={classes.formControl}
+        className={formControl}
       >
         <FormLabel component="legend">최대 3개 까지 선택해주세요</FormLabel>
-        <FormGroup>
-          <FlexRowContainer>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={소설}
-                  onChange={props.handleChange}
-                  name="소설"
-                />
-              }
-              label="소설"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={인문학}
-                  onChange={props.handleChange}
-                  name="인문학"
-                />
-              }
-              label="인문학"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={사회과학}
-                  onChange={props.handleChange}
-                  name="사회과학"
-                />
-              }
-              label="사회과학"
-            />
-          </FlexRowContainer>
-          <FlexRowContainer>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={역사}
-                  onChange={props.handleChange}
-                  name="역사"
-                />
-              }
-              label="역사"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={과학}
-                  onChange={props.handleChange}
-                  name="과학"
-                />
-              }
-              label="과학"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={예술}
-                  onChange={props.handleChange}
-                  name="예술"
-                />
-              }
-              label="예술"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  checked={종교}
-                  onChange={props.handleChange}
-                  name="종교"
-                />
-              }
-              label="종교"
-            />
-          </FlexRowContainer>
-        </FormGroup>
+        <TagsContainer>
+          {Object.entries(tags).map(renderFormControlLabel)}
+        </TagsContainer>
       </FormControl>
     </div>
   );
-}
+};
 
 export default CheckboxesGroup;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { LineGreenBtn } from '../style/componentStyled';
@@ -13,18 +13,20 @@ interface Props {
   handleChange: (inputValue: string) => void;
 }
 
-function UserNameForm(props: Props) {
+const UserNameForm: FunctionComponent<Props> = ({ handleChange }: Props) => {
   const [inputValue, setInputValue] = useState('');
 
-  const handleChange = (event: any) => {
+  // input창의 고유 value(inputValue) 상태 관리 함수
+  const handleInputValueChange = (event: any) => {
     return setInputValue(event.target.value);
   };
 
+  // 부모 component의 userName state 변경을 위한 함수
   const handleSubmit = (event: any) => {
     event.preventDefault();
     // To Do
     // 닉네임 중복 검사
-    props.handleChange(inputValue);
+    handleChange(inputValue);
   };
 
   return (
@@ -37,7 +39,7 @@ function UserNameForm(props: Props) {
           label="user name"
           type="text"
           variant="outlined"
-          onChange={handleChange}
+          onChange={handleInputValueChange}
           name="customer"
           defaultValue={''}
         />
@@ -47,6 +49,6 @@ function UserNameForm(props: Props) {
       </CheckBtn>
     </form>
   );
-}
+};
 
 export default UserNameForm;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../style/componentStyled';
 import CheckboxesGroup from './CheckBoxGroupComponent';
@@ -23,7 +23,8 @@ const SignUpBtn = styled(LineGreenBtn)`
   margin-top: 4rem;
 `;
 
-function SignUpContainer() {
+const SignUpContainer: FunctionComponent = () => {
+  // Tags관련
   const [checkedTags, setCheckedTags] = useState({
     소설: false,
     인문학: false,
@@ -34,7 +35,6 @@ function SignUpContainer() {
     종교: false,
   });
 
-  // Tags관련
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedTags({
       ...checkedTags,
@@ -81,6 +81,6 @@ function SignUpContainer() {
       </SignUpBtn>
     </>
   );
-}
+};
 
 export default SignUpContainer;

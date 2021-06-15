@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
@@ -10,8 +10,8 @@ const FooterContainer = styled.footer`
   background-color: ${(props) => props.theme.palette.white};
 `;
 
-function Footer() {
+const Footer: FunctionComponent = () => {
   return <FooterContainer>Footer</FooterContainer>;
-}
+};
 
 export default Footer;
