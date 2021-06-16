@@ -65,7 +65,7 @@ const RatingStars = {
   // }
 };
 
-const BookDetailBookCard: FunctionComponent = () => {
+const BookDetailInfoComponent: FunctionComponent = () => {
   const classes = useStyles();
 
   return (
@@ -93,4 +93,4 @@ const BookDetailBookCard: FunctionComponent = () => {
   );
 };
 
-export default BookDetailBookCard;
+export default BookDetailInfoComponent;
