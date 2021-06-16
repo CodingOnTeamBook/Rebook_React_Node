@@ -5,6 +5,7 @@ import { LineGreenBtn } from '../../style/componentStyled';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
+import SimpleModal from './SimpleModal';
 
 const LogoContainer = styled.img`
   width: 150px;
@@ -67,13 +68,33 @@ const MenuContainer = styled.ul`
   }
 `;
 
+const LoginModalContainer = styled.div`
+  position: absolute;
+  width: 400;
+  padding: 2rem;
+  background-color: white;
+  border: 2px solid #000;
+`;
+
 const Header: FunctionComponent = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
+  const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
 
   const ProfileModalToggle = () => {
     setIsProfileModalOpen(!isProfileModalOpen);
   };
+
+  const SigninModalOpen = () => {
+    setIsSigninModalOpen(!isSigninModalOpen);
+  };
+
+  const LoginModalContent = (
+    <LoginModalContainer>
+      <h2>로그인</h2>
+      <button>카카오 로그인 하기</button>
+    </LoginModalContainer>
+  );
 
   return (
     <Container>
@@ -84,7 +105,7 @@ const Header: FunctionComponent = () => {
         {isLogin ? (
           <ProfileIcon onClick={ProfileModalToggle} />
         ) : (
-          <LoginBtn>로그인</LoginBtn>
+          <LoginBtn onClick={SigninModalOpen}>로그인</LoginBtn>
         )}
       </HeaderContainer>
       <MenuContainer>
@@ -104,6 +125,9 @@ const Header: FunctionComponent = () => {
           nickname="리북이"
         />
       )}
+      <SimpleModal open={isSigninModalOpen} setOpen={SigninModalOpen}>
+        {LoginModalContent}
+      </SimpleModal>
     </Container>
   );
 };
