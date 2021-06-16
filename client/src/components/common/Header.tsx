@@ -1,4 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAuthThunk } from '../../redux/index';
+import { RootState } from '../../redux/rootReducer';
 import Logo from '../../style/img/logo.png';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
@@ -6,9 +9,10 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import SimpleModal from './SimpleModal';
+import LoginModalContents from './LoginModalContents';
 
 const LogoContainer = styled.img`
-  width: 150px;
+  width: 200px;
   cursor: pointer;
 `;
 
@@ -68,18 +72,19 @@ const MenuContainer = styled.ul`
   }
 `;
 
-const LoginModalContainer = styled.div`
-  position: absolute;
-  width: 400;
-  padding: 2rem;
-  background-color: white;
-  border: 2px solid #000;
-`;
-
 const Header: FunctionComponent = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
+  const { loading, data, error } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!loading && !data && !error) {
+      dispatch(getAuthThunk());
+    }
+  }, [data, error]);
 
   const ProfileModalToggle = () => {
     setIsProfileModalOpen(!isProfileModalOpen);
@@ -88,21 +93,13 @@ const Header: FunctionComponent = () => {
   const SigninModalOpen = () => {
     setIsSigninModalOpen(!isSigninModalOpen);
   };
-
-  const LoginModalContent = (
-    <LoginModalContainer>
-      <h2>로그인</h2>
-      <button>카카오 로그인 하기</button>
-    </LoginModalContainer>
-  );
-
   return (
     <Container>
       <HeaderContainer>
         <Link to="/">
           <LogoContainer src={Logo} />
         </Link>
-        {isLogin ? (
+        {data?.isAuth ? (
           <ProfileIcon onClick={ProfileModalToggle} />
         ) : (
           <LoginBtn onClick={SigninModalOpen}>로그인</LoginBtn>
@@ -126,7 +123,7 @@ const Header: FunctionComponent = () => {
         />
       )}
       <SimpleModal open={isSigninModalOpen} setOpen={SigninModalOpen}>
-        {LoginModalContent}
+        <LoginModalContents />
       </SimpleModal>
     </Container>
   );

@@ -1,7 +1,8 @@
-import axios, { AxiosError } from 'axios';
-import { USER_SERVER } from '../../config';
+import { AxiosError } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootReducer';
+import { FetchUserAuth } from '../../hooks/USER_API';
+import { IAuthResponse, AuthState } from './type';
 
 const GET_AUTH = 'GET_AUTH' as const;
 const GET_AUTH_SUCCESS = 'GET_AUTH_SUCCESS' as const;
@@ -11,7 +12,7 @@ export const getAuth = () => ({
   type: GET_AUTH,
 });
 
-export const getAuthSuccess = (data: IResponse) => ({
+export const getAuthSuccess = (data: IAuthResponse) => ({
   type: GET_AUTH_SUCCESS,
   payload: data,
 });
@@ -25,23 +26,6 @@ type AuthAction =
   | ReturnType<typeof getAuth>
   | ReturnType<typeof getAuthSuccess>
   | ReturnType<typeof getAuthError>;
-
-export type AuthState = {
-  loading: boolean;
-  data: IResponse | null;
-  error: Error | null;
-};
-
-interface IResponse {
-  success: boolean;
-  isAuth: boolean;
-  error: string;
-}
-
-async function FetchUserAuth(): Promise<IResponse> {
-  const response = await axios.get<IResponse>(`${USER_SERVER}/auth`);
-  return response.data;
-}
 
 export function getAuthThunk(): ThunkAction<
   Promise<void>,
@@ -60,14 +44,14 @@ export function getAuthThunk(): ThunkAction<
   };
 }
 
-const initialState: AuthState = {
+export const AuthinitialState: AuthState = {
   loading: false,
   data: null,
   error: null,
 };
 
 export default function AuthReducer(
-  state: AuthState = initialState,
+  state: AuthState = AuthinitialState,
   action: AuthAction
 ): AuthState {
   switch (action.type) {

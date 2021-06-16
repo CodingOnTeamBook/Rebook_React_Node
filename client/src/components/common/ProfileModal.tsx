@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import { Link } from 'react-router-dom';
+import { FetchUserLogout } from '../../hooks/USER_API';
 
 const ProfileContainer = styled.div`
   width: 205px;
@@ -55,6 +56,16 @@ const ProfileModal: FunctionComponent<ProfileModalProps> = ({
   imgUrl,
   nickname,
 }: ProfileModalProps) => {
+  const Logout = () => {
+    FetchUserLogout(1784652).then((data) => {
+      if (!data.success) {
+        alert('로그아웃을 다시 시도해주세요.');
+      }
+      localStorage.clear();
+      alert('로그아웃이 완료되었습니다.');
+      location.href = '/';
+    });
+  };
   return (
     <ProfileContainer>
       <ProfileImg src={imgUrl} alt="profileImg" />
@@ -62,7 +73,7 @@ const ProfileModal: FunctionComponent<ProfileModalProps> = ({
       <Link to="/my">
         <ModalButton>마이페이지</ModalButton>
       </Link>
-      <ModalButton>로그아웃</ModalButton>
+      <ModalButton onClick={Logout}>로그아웃</ModalButton>
     </ProfileContainer>
   );
 };
