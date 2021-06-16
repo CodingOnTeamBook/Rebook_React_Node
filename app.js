@@ -65,7 +65,7 @@ app.delete('/api/users/logout', (req, res) => {
     error: '',
   });
 });
-app.get('check', (req, res) => {
+app.get('/check', (req, res) => {
   res.json({
     success: true,
     userId: req.body.userId,

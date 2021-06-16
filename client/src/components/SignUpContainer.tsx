@@ -55,7 +55,6 @@ const SignUpContainer: FunctionComponent = () => {
   ].filter((elem) => elem === true).length;
 
   const ERROR = COUNT_OF_CHECKED < 1 || COUNT_OF_CHECKED > 3;
-  console.log(checkedTags, COUNT_OF_CHECKED);
 
   // userNameForm 관련
   const [userName, setUserName] = useState('');
