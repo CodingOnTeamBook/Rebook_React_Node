@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import KakaoLoginBtn from './KakaoLoginBtn';
+import KakaoLoginBtn from './KaKaoLoginBtn';
 import styled from 'styled-components';
 import Logo from '../../style/img/logo.png';
 
