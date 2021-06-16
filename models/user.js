@@ -38,7 +38,7 @@ module.exports = class User extends Sequelize.Model {
         snsId: {
           type: Sequelize.STRING(10),
           allowNull: true,
-        }
+        },
       },
       {
         sequelize,
@@ -55,9 +55,9 @@ module.exports = class User extends Sequelize.Model {
   static associate(db) {
     db.User.belongsToMany(db.Genre, { through: 'UserGenre' });
     db.User.belongsToMany(db.Like, { through: 'UserLike' });
-    db.User.hasMany(db.Review, { foreignKey: 'reviewer', sourceKey: 'id'});
-    db.User.hasMany(db.Like, { foreignKey: 'liker', sourceKey: 'id'});
-    db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey:'id' });
+    db.User.hasMany(db.Review, { foreignKey: 'reviewer', sourceKey: 'id' });
+    db.User.hasMany(db.Like, { foreignKey: 'liker', sourceKey: 'id' });
+    db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id' });
     db.User.belongsToMany(db.User, {
       foreignKey: 'followingId',
       as: 'Followers',
