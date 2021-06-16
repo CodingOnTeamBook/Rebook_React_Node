@@ -9,10 +9,10 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import SimpleModal from './SimpleModal';
-import KakaoLoginBtn from './KakaoLoginBtn';
+import LoginModalContents from './LoginModalContents';
 
 const LogoContainer = styled.img`
-  width: 150px;
+  width: 200px;
   cursor: pointer;
 `;
 
@@ -72,14 +72,6 @@ const MenuContainer = styled.ul`
   }
 `;
 
-const LoginModalContainer = styled.div`
-  position: absolute;
-  width: 400;
-  padding: 2rem;
-  background-color: white;
-  border: 2px solid #000;
-`;
-
 const Header: FunctionComponent = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
   const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
@@ -101,14 +93,6 @@ const Header: FunctionComponent = () => {
   const SigninModalOpen = () => {
     setIsSigninModalOpen(!isSigninModalOpen);
   };
-
-  const LoginModalContent = (
-    <LoginModalContainer>
-      <h2>로그인</h2>
-      <KakaoLoginBtn />
-    </LoginModalContainer>
-  );
-
   return (
     <Container>
       <HeaderContainer>
@@ -139,7 +123,7 @@ const Header: FunctionComponent = () => {
         />
       )}
       <SimpleModal open={isSigninModalOpen} setOpen={SigninModalOpen}>
-        {LoginModalContent}
+        <LoginModalContents />
       </SimpleModal>
     </Container>
   );

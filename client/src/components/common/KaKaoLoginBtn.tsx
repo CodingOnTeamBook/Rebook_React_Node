@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_API_KEY } from '../../config';
 import { FetchUserLogin } from '../../hooks/USER_API';
@@ -44,7 +44,9 @@ const KakaoLoginBtn: FunctionComponent = () => {
       token={`${KAKAO_API_KEY}`}
       onSuccess={(result) => LoginSuccess(result)}
       onFail={(result) => LoginFailure(result)}
-    />
+    >
+      <div style={{ cursor: 'pointer' }}>Login With Kakao</div>
+    </KakaoLogin>
   );
 };
 
