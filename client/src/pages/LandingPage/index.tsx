@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-const LandingPage = () => {
-  return (
-    <>
-      <h1>렌딩페이지</h1>
-    </>
-  );
+const LandingPage: FunctionComponent = () => {
+  return <div>LandingPage</div>;
 };
 
 export default LandingPage;
