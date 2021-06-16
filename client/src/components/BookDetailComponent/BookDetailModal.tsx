@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import BookDetailBookCard from './BookDetailBookCard';
+import BookCard from './BookCard';
 
 const BookDetailModalContainer = styled.div`
   position: absolute;
@@ -37,7 +37,7 @@ const BookDetailModal: FunctionComponent<BookDetailDialogProps> = ({
         </IconButton>
       </CloseButtonArea>
       <BookDetailModalContents>
-        <BookDetailBookCard />
+        <BookCard />
       </BookDetailModalContents>
     </BookDetailModalContainer>
   );
