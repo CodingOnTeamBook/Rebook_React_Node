@@ -4,11 +4,12 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import BookDetailInfoComponent from './BookDetailInfoComponent';
 import ReviewComponent from './ReviewComponent';
-import CommentComponent from './CommentComponent';
+import BookDetailCommentComponent from './BookDtailCommentComponent';
 
 const BookDetailModalContainer = styled.div`
   position: absolute;
   width: 500px;
+  /* padding: 20px; */
   background-color: ${(props) => props.theme.palette.white};
 `;
 
@@ -20,7 +21,7 @@ const BookDetailModalContents = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   color: #141414;
 `;
 
@@ -41,7 +42,7 @@ const BookDetailModal: FunctionComponent<BookDetailDialogProps> = ({
       <BookDetailModalContents>
         <BookDetailInfoComponent />
         <ReviewComponent />
-        <CommentComponent />
+        <BookDetailCommentComponent />
       </BookDetailModalContents>
     </BookDetailModalContainer>
   );

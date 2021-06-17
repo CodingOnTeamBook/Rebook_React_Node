@@ -1,11 +1,23 @@
 import React, { useState, FunctionComponent } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    cardImg: {
+      width: 250,
+      height: 200,
+    },
+    cover: {
+      width: '100%',
+      height: '100%',
+    },
+  })
+);
 
 const CardContainer = styled(Card)`
   display: flex;
@@ -15,6 +27,16 @@ const CardContainer = styled(Card)`
   align-items: center;
 `;
 
+const CardContents = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
 const CardTitle = styled.h2`
   margin-top: 0;
   margin-bottom: 10px;
@@ -22,7 +44,6 @@ const CardTitle = styled.h2`
 
 const BookInfo = styled.div`
   margin-bottom: 13px;
-  width: 100%;
   height: 50px;
   /* 확인용 컬러 입니다! */
   background: ${(props) => props.theme.palette.yellow};
@@ -40,19 +61,6 @@ const BookRating = styled.div`
 const BookRatingScore = styled.div`
   margin-left: 15px;
 `;
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    cardImg: {
-      width: 155,
-      height: 200,
-    },
-    cover: {
-      width: '100%',
-      height: '100%',
-    },
-  })
-);
 
 const RatingStars = {
   size: 30,
@@ -78,9 +86,9 @@ const BookDetailInfoComponent: FunctionComponent = () => {
           title="Live from space album cover"
         />
       </div>
-      <CardContent>
+      <CardContents>
         <CardTitle> 책제목 </CardTitle>
-        <BookInfo> 작가/ 발행년도/ 장르/ 출판사 </BookInfo>
+        <BookInfo> 작가 / 발행년도 / 장르 / 출판사 </BookInfo>
         <BookTag>
           <Chip label="#태그" /> <Chip label="#태그" /> <Chip label="#태그" />
         </BookTag>
@@ -88,7 +96,7 @@ const BookDetailInfoComponent: FunctionComponent = () => {
           <ReactStars {...RatingStars} />
           <BookRatingScore>4.8</BookRatingScore>
         </BookRating>
-      </CardContent>
+      </CardContents>
     </CardContainer>
   );
 };
