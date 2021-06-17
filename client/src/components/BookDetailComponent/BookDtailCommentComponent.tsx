@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import createStyles from '@material-ui/core/styles/createStyles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import InputBase from '@material-ui/core/InputBase';
-import AddCircle from '@material-ui/icons/AddCircle';
+import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import { Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,37 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
     iconButton: {
       padding: 10,
     },
-    divider: {
-      height: 28,
-      margin: 4,
-    },
   })
 );
-
-const CommentContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: white;
-  height: 100px;
-  justify-content: center;
-`;
-
-const UserInfo = styled.div`
-  /* width: 100%; */
-  margin-left: 10px;
-  margin-right: 10px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const AddCommentBtn = styled(LineGreenBtn)`
-  margin-left: 10px;
-  margin-right: 10px;
-  font-size: 13px;
-  height: 80%;
-`;
 
 const CommnetComponent: FunctionComponent = () => {
   const classes = useStyles();
@@ -70,12 +41,12 @@ const CommnetComponent: FunctionComponent = () => {
       />
       <InputBase
         className={classes.input}
-        placeholder="감상평을 입력해주세요..."
+        placeholder="댓글을 입력해주세요..."
         multiline
         rows="5"
       />
       <IconButton type="submit" className={classes.iconButton}>
-        <AddCircle />
+        <ArrowForwardOutlined />
       </IconButton>
     </Paper>
   );
