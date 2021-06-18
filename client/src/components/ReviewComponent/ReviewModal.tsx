@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       maxWidth: 500,
       flexGrow: 1,
-      overflow: 'hidden',
+      overflow: 'visible',
       padding: theme.spacing(0, 3),
       backgroundColor: 'white',
       paddingBottom: 15,
