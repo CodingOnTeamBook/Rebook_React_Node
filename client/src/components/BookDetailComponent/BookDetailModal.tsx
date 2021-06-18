@@ -2,15 +2,16 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import BookDetailInfoComponent from './BookDetailInfoComponent';
-import ReviewComponent from './ReviewComponent';
-import BookDetailCommentComponent from './BookDtailCommentComponent';
+import BookDetailInfo from './BookDetailInfo';
+import ReviewComponent from './BookDetailReview';
+import BookDetailComment from './BookDtailComment';
 
 const BookDetailModalContainer = styled.div`
   position: absolute;
   width: 500px;
+  border-radius: 5px;
   /* padding: 20px; */
-  background-color: ${(props) => props.theme.palette.white};
+  background-color: white;
 `;
 
 const CloseButtonArea = styled.div`
@@ -40,9 +41,9 @@ const BookDetailModal: FunctionComponent<BookDetailDialogProps> = ({
         </IconButton>
       </CloseButtonArea>
       <BookDetailModalContents>
-        <BookDetailInfoComponent />
+        <BookDetailInfo />
         <ReviewComponent />
-        <BookDetailCommentComponent />
+        <BookDetailComment />
       </BookDetailModalContents>
     </BookDetailModalContainer>
   );

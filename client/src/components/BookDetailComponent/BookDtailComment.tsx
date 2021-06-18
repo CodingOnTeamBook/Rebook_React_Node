@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100px',
     },
     input: {
+      marginTop: '10px',
       marginLeft: theme.spacing(1),
       flex: 1,
     },
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const CommnetComponent: FunctionComponent = () => {
   const classes = useStyles();
   return (
-    <Paper component="form" className={classes.root}>
+    <Paper elevation={0} component="form" className={classes.root}>
       <Avatar
         alt="Mark Zuckerberg"
         src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"

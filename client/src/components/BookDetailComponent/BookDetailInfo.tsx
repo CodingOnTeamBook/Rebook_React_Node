@@ -77,7 +77,7 @@ const BookDetailInfoComponent: FunctionComponent = () => {
   const classes = useStyles();
 
   return (
-    <CardContainer>
+    <CardContainer elevation={0}>
       <div className={classes.cardImg}>
         <CardMedia
           className={classes.cover}
