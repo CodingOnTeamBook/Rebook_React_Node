@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Favorite from '@material-ui/icons/Favorite';
 
 const PaperContainer = styled(Paper)`
-  padding: 40px 20px;
+  padding: 20px 20px 10px 20px;
   width: 100%;
 `;
 
@@ -18,6 +18,7 @@ const UserName = styled.h4`
 const ReviewArea = styled.p`
   text-align: left;
   width: 100%;
+  overflow-y: visible;
 `;
 
 const LikeArea = styled.div`
@@ -34,7 +35,7 @@ const Like = styled.p`
   margin-left: 10px;
 `;
 
-const ReviewComponent: FunctionComponent = () => {
+const UserReview: FunctionComponent = () => {
   return (
     <PaperContainer elevation={0}>
       <Grid container wrap="nowrap" spacing={2}>
@@ -48,7 +49,11 @@ const ReviewComponent: FunctionComponent = () => {
           <UserName>Mark Zuckerberg</UserName>
           <ReviewArea>
             리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
-            리뷰리뷰리뷰리뷰리뷰리뷰
+            리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+            리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+            리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰
+            리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰
+            리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰
           </ReviewArea>
           <LikeArea>
             <Favorite color="error" />
@@ -60,4 +65,4 @@ const ReviewComponent: FunctionComponent = () => {
   );
 };
 
-export default ReviewComponent;
+export default UserReview;

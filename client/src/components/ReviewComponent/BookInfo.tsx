@@ -1,10 +1,11 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -13,19 +14,12 @@ const useStyles = makeStyles(() =>
       height: 200,
     },
     cover: {
+      marginLeft: '10px',
       width: '100%',
       height: '100%',
     },
   })
 );
-
-const CardContainer = styled(Card)`
-  display: flex;
-  width: 100%;
-  height: 200px;
-  justify-content: center;
-  align-items: center;
-`;
 
 const CardContents = styled.div`
   width: 100%;
@@ -33,7 +27,7 @@ const CardContents = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-right: 10px;
 `;
 
@@ -42,7 +36,7 @@ const CardTitle = styled.h2`
   margin-bottom: 10px;
 `;
 
-const BookInfo = styled.div`
+const BookInfoArea = styled.div`
   margin-bottom: 13px;
   height: 50px;
   /* 확인용 컬러 입니다! */
@@ -67,17 +61,16 @@ const RatingStars = {
   count: 5,
   isHalf: false,
   value: 4,
+  // 리뷰를  api에서 가져오는거니까 Readonly로 하였습니다!
+  edit: false,
   activeColor: '#ffd700',
-  // onChange: newValue => {
-  //   console.log(`Example 3: new value is ${newValue}`);
-  // }
 };
 
-const BookDetailInfoComponent: FunctionComponent = () => {
+const BookInfo: FunctionComponent = () => {
   const classes = useStyles();
 
   return (
-    <CardContainer elevation={0}>
+    <Grid container wrap="nowrap" zeroMinWidth>
       <div className={classes.cardImg}>
         <CardMedia
           className={classes.cover}
@@ -88,7 +81,7 @@ const BookDetailInfoComponent: FunctionComponent = () => {
       </div>
       <CardContents>
         <CardTitle> 책제목 </CardTitle>
-        <BookInfo> 작가 / 발행년도 / 장르 / 출판사 </BookInfo>
+        <BookInfoArea> 작가 / 발행년도 / 장르 / 출판사 </BookInfoArea>
         <BookTag>
           <Chip label="#태그" /> <Chip label="#태그" /> <Chip label="#태그" />
         </BookTag>
@@ -97,8 +90,8 @@ const BookDetailInfoComponent: FunctionComponent = () => {
           <BookRatingScore>4.8</BookRatingScore>
         </BookRating>
       </CardContents>
-    </CardContainer>
+    </Grid>
   );
 };
 
-export default BookDetailInfoComponent;
+export default BookInfo;
