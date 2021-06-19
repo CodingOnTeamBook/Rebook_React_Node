@@ -33,11 +33,13 @@ router.post('/login', async (req, res, next) => {
   try {
     const exUser = await User.findOne({ where: { userId } });
     if (exUser) {
+      const token = signToken(exUser)
+      res.cookie("user_token", token, {httpOnly: true});
       res.json({
         userId: userId,
         success: true,
         type: 1,
-        token: signToken(exUser),
+        token: token,
       });
     } else {
       res.json({
@@ -78,8 +80,19 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
-  // test
+// logout
+router.post('/logout', async (req, res) => {
+  try {
+    res.clearCookie("user_token")
+    res.json ({
+      success:true,
+    })
+  } catch (err) {
+    res.json({
+      success: false,
+      error: err,
+    })
+  }  
 });
 
 module.exports = router;
