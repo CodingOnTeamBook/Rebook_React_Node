@@ -2,8 +2,7 @@ const express = require('express');
 //const passport = require('passport');
 const { signToken } = require('./middlewares');
 //const authRouter = require('./auth');
-const jwt = require('jsonwebtoken');
-const { Devuser, User } = require('../models');
+const { User } = require('../models');
 
 const router = express.Router();
 
@@ -11,7 +10,7 @@ const router = express.Router();
 router.get('/check/:nickname', async (req, res, next) => {
   const nickname = unescape(req.params.nickname);
   try {
-    const exNick = await Devuser.findOne({ where: { nickname } }); //컬럼명 똑같이 넣어줘야함!!!
+    const exNick = await User.findOne({ where: { nickname } }); //컬럼명 똑같이 넣어줘야함!!!
     if (!exNick) {
       res.json({
         success: true,
@@ -55,18 +54,22 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
   const { kakaoId, nickname, genre, gender, avartarImg, age_range } = req.body;
-  //const usergenre =
   try {
-    User.create({
+    await User.create({
       userId: kakaoId,
       provider: 'kakao',
       nickname: nickname,
       gender: gender,
       age_range: age_range,
       user_img: avartarImg,
-    }); //genre 어떻게 할지 ~~~
+    }).then((x) => {
+      res.json({
+        success: true,
+        userId: x.get('userId'),
+      });
+    });
   } catch (err) {
     res.json({
       success: false,
