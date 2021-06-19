@@ -1,23 +1,26 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const cors = require('cors');
-// const { sequelize } = require('./models');
+const { sequelize } = require('./models');
+const apiRouter = require('./route');
+const dotenv = require('dotenv');
 
+dotenv.config();
 app.set('port', process.env.PORT || 5000);
 
 //서버 실행시 MySQL과 연결
-// sequelize
-//   .sync({ force: false }) //force: true서버 실행시마다 테이블 재생성
-//   .then(() => {
-//     console.log('success connecting db');
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
+sequelize
+  .sync({ force: false }) //force: true서버 실행시마다 테이블 재생성
+  .then(() => {
+    console.log('success connecting db');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,8 +31,11 @@ app.use(cors());
 //   next(error);
 // });
 
+app.use('/api', apiRouter);
+
 //frontend test용
-app.get('/api/users/auth', (req, res) => {
+
+/*app.get('/api/users/auth', (req, res) => {
   res.json({
     success: true,
     isAuth: false,
@@ -71,7 +77,7 @@ app.get('/check', (req, res) => {
     userId: req.body.userId,
   });
 });
-
+*/
 app.listen(app.get('port'), () => {
   console.log(`server on port ${app.get('port')}`);
 });
