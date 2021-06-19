@@ -7,8 +7,8 @@ const LoginModalContainer = styled.div`
   position: absolute;
   width: 400;
   padding: 2rem;
-  background-color: white;
-  border: 2px solid #000;
+  background-color: ${(props) => props.theme.palette.white};
+  border-radius: 4px;
 `;
 
 const LogoContainer = styled.img`
