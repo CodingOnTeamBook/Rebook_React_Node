@@ -11,6 +11,7 @@
     ],
     
     // 코드를 해석하는 parser에 대한 설정
+    "parser": "babel-eslint",
     "parserOptions": {
       // 자바스크립트 버전, 7은 ECMA2016
       "ecmaVersion": 7,
@@ -37,6 +38,11 @@
     // ESLint 룰을 설정
     "rules": {
       // prettier에 맞게 룰을 설정
-      "prettier/prettier": "error"
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
     }
-  }
+}

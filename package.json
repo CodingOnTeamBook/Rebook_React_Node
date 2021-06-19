@@ -10,6 +10,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
@@ -17,6 +18,7 @@
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "concurrently": "^6.2.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
@@ -31,7 +33,7 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run start --prefix client\"",
     "prepare": "husky install",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "server": "nodemon app.js"
   },
   "husky": {
@@ -45,5 +47,8 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint"
   }
 }
