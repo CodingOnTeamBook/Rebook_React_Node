@@ -24,7 +24,7 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 // app.use((req, res, next) => {
 //   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
 //   error.status = 404;
