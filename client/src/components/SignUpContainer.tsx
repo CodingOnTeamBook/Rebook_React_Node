@@ -2,7 +2,7 @@ import React, { FunctionComponent, useRef } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../style/componentStyled';
 import CheckboxesGroup from './CheckBoxGroupComponent';
-import UserNameFrom from './UserNameFormComponent';
+import UserNameForm from './UserNameFormComponent';
 import { genreTags } from './defaultData/genre';
 
 const SubTitle = styled.h2`
@@ -29,12 +29,8 @@ const SignUpContainer: FunctionComponent = () => {
   const ChildBoxRef = useRef<HTMLDivElement | any>(null);
   // userNameForm 관련
   const callChildFunc = () => {
-    if (ChildRef.current) {
-      console.log(ChildRef.current.getInputData());
-    }
-    if (ChildBoxRef.current) {
-      console.log(ChildBoxRef.current.getCheckData());
-    }
+    ChildRef.current && console.log(ChildRef.current.getInputData());
+    ChildBoxRef.current && console.log(ChildBoxRef.current.getCheckData());
   };
   return (
     <>
@@ -43,8 +39,8 @@ const SignUpContainer: FunctionComponent = () => {
         <CheckboxesGroup tags={genreTags} ref={ChildBoxRef} />
       </TagsContainer>
       <SubTitle>사용할 닉네임을 입력해주세요</SubTitle>
-      <UserNameFrom ref={ChildRef} />
-      <SignUpBtn onClick={callChildFunc}>회원가입</SignUpBtn>
+      <UserNameForm ref={ChildRef} />
+      <SignUpBtn onClick={() => callChildFunc}>회원가입</SignUpBtn>
     </>
   );
 };
