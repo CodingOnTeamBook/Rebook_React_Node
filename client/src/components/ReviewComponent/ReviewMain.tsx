@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'visible',
     },
     cardImg: {
-      width: 160,
+      width: 162,
+      height: 200,
     },
     cover: {
       width: '100%',
