@@ -90,34 +90,29 @@ const ReviewMain: FunctionComponent = () => {
               src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
             />
           </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column">
-              <Grid item xs>
-                <BookContents>
-                  <BookTitle> 책제목책제목책제목책제목 </BookTitle>
-                  <BookTag>
-                    <Chip label="#태그" /> <Chip label="#태그" />
-                  </BookTag>
-                  {/* 리뷰 부분 클릭 시 리뷰 모달 동작 */}
-                  <BookReview onClick={ReviewModalOpen}>
-                    리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
-                    리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-                    리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰
-                    리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰
-                    리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰
-                  </BookReview>
-                  <ReviewUserInfo>
-                    by 리북이님
-                    <Like>
-                      <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                        name="checkedH"
-                      />
-                    </Like>
-                  </ReviewUserInfo>
-                </BookContents>
-              </Grid>
+          <Grid item xs container direction="column">
+            <Grid item xs>
+              <BookContents>
+                <BookTitle> 책제목책제목책제목책제목 </BookTitle>
+                <BookTag>
+                  <Chip label="#태그" /> <Chip label="#태그" />
+                </BookTag>
+                {/* 리뷰 부분 클릭 시 리뷰 모달 동작 */}
+                <BookReview onClick={ReviewModalOpen}>
+                  리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
+                  리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+                </BookReview>
+                <ReviewUserInfo>
+                  by 리북이님
+                  <Like>
+                    <Checkbox
+                      icon={<FavoriteBorder />}
+                      checkedIcon={<Favorite />}
+                      name="checkedH"
+                    />
+                  </Like>
+                </ReviewUserInfo>
+              </BookContents>
             </Grid>
           </Grid>
         </Grid>
