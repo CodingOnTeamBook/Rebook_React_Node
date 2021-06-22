@@ -80,7 +80,7 @@ const ReviewMain: FunctionComponent = () => {
   const classes = useStyles();
 
   return (
-    // 3 * 4 = 12
+    // 4 * 3 = 12
     <Grid item xs={4} zeroMinWidth>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
