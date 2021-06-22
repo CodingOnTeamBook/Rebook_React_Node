@@ -86,12 +86,12 @@ const ReviewMain: FunctionComponent = () => {
           <Grid item className={classes.cardImg}>
             <img
               className={classes.cover}
-              alt="complex"
+              alt="title"
               src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
             />
           </Grid>
           <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs container direction="column">
               <Grid item xs>
                 <BookContents>
                   <BookTitle> 책제목책제목책제목책제목 </BookTitle>
