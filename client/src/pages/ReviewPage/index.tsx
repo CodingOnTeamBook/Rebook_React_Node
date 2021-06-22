@@ -1,20 +1,10 @@
-import Button from '@material-ui/core/Button';
-import React, { FunctionComponent, useState } from 'react';
-import SimpleModal from '../../components/common/SimpleModal';
-import ReviewModal from '../../components/ReviewComponent/ReviewModal';
+import React, { FunctionComponent } from 'react';
+import ReviewMain from '../../components/ReviewComponent/ReviewMain';
 
 const ReviewPage: FunctionComponent = () => {
-  const [isReviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
-
-  const ReviewModalOpen = () => {
-    setReviewModalOpen(!isReviewModalOpen);
-  };
   return (
     <div>
-      <Button onClick={ReviewModalOpen}>리뷰 눌렀을 때 나오는 리뷰 모달</Button>
-      <SimpleModal open={isReviewModalOpen} setOpen={ReviewModalOpen}>
-        <ReviewModal handleClose={ReviewModalOpen}></ReviewModal>
-      </SimpleModal>
+      <ReviewMain />
     </div>
   );
 };
