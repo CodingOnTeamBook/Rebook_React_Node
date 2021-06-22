@@ -7,9 +7,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   height: 50vh;
-  background-color: ${(props) => props.theme.palette.darkgreen};
   padding: 0 20px;
-  border-radius: 25px;
 `;
 
 const Header = styled.div`
@@ -23,7 +21,6 @@ const Header = styled.div`
 
 const Main = styled.div`
   display: flex;
-  // flex-wrap: wrap;
   justify-content: center;
   padding: 4px;
   margin-bottom: 20px;
@@ -32,18 +29,35 @@ const Main = styled.div`
 `;
 
 const BookContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 200px;
-  margin : 0 16px;
+  margin: 0 16px;
   background-color: ${(props) => props.theme.palette.white};
-  padding: 8px;
+  box-shadow: 0 8px 12px ${(props) => props.theme.palette.gray};
+  cursor: pointer;
 
   img {
-    width: 200px;
-    height : 170px;
+    height : 200px;
+    box-shadow: 0 12px 16px ${(props) => props.theme.palette.gray};
+  }
+
+  .description {
+    position: absolute;
+    bottom: 0;
+    background: ${(props) => props.theme.palette.yellow};
+    width: 100%;
+    transition: .5s ease;
+    opacity: 0;
+    padding: 20px;
+    text-align: center;
+  }
+
+  &:hover .description {
+    opacity: 1;
   }
 }`;
 
@@ -52,23 +66,23 @@ const BookContainer = styled.div`
 const TEST_DATA = [
   {
     img: 'https://www.creativindie.com/wp-content/uploads/2012/07/stock-image-site-pinterest-graphic.jpg',
-    title: '111',
+    title: 'Title 111',
   },
   {
     img: 'https://www.creativindie.com/wp-content/uploads/2012/07/stock-image-site-pinterest-graphic.jpg',
-    title: '222',
+    title: 'Title 222',
   },
   {
     img: 'https://www.creativindie.com/wp-content/uploads/2012/07/stock-image-site-pinterest-graphic.jpg',
-    title: '333',
+    title: 'Title 333',
   },
   {
     img: 'https://www.creativindie.com/wp-content/uploads/2012/07/stock-image-site-pinterest-graphic.jpg',
-    title: '444',
+    title: 'Title 444',
   },
   {
     img: 'https://www.creativindie.com/wp-content/uploads/2012/07/stock-image-site-pinterest-graphic.jpg',
-    title: '555',
+    title: 'Title 555',
   },
 ];
 
@@ -81,7 +95,7 @@ const TestBook: FunctionComponent<Props> = ({ img, title }: Props) => {
   return (
     <BookContainer>
       <img key={title} src={img}></img>
-      <p>{title}</p>
+      <h3 className="description">{title}</h3>
     </BookContainer>
   );
 };
