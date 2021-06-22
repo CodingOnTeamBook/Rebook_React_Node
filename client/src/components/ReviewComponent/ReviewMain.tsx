@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import SimpleModal from '../../components/common/SimpleModal';
 import ReviewModal from '../../components/ReviewComponent/ReviewModal';
 import Paper from '@material-ui/core/Paper';
@@ -10,23 +9,21 @@ import Favorite from '@material-ui/icons/Favorite';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      display: 'flex',
-      padding: theme.spacing(2),
-      overflow: 'visible',
-    },
-    cardImg: {
-      width: 162,
-      height: 200,
-    },
-    cover: {
-      width: '100%',
-      height: '100%',
-    },
-  })
-);
+const PaperContainer = styled(Paper)`
+  display: flex;
+  overflow: visible;
+  padding: 15px;
+`;
+
+const CardImg = styled(Grid)`
+  width: 162px;
+  height: 200px;
+`;
+
+const ImgCover = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 
 const BookContents = styled.div`
   width: 100%;
@@ -77,20 +74,17 @@ const ReviewMain: FunctionComponent = () => {
     setReviewModalOpen(!isReviewModalOpen);
   };
 
-  const classes = useStyles();
-
   return (
     // 4 * 3 = 12
     <Grid item xs={4} zeroMinWidth>
-      <Paper className={classes.paper}>
+      <PaperContainer>
         <Grid container spacing={2}>
-          <Grid item className={classes.cardImg}>
-            <img
-              className={classes.cover}
+          <CardImg item>
+            <ImgCover
               alt="title"
               src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
             />
-          </Grid>
+          </CardImg>
           <Grid item xs container direction="column">
             <Grid item xs>
               <BookContents>
@@ -117,7 +111,7 @@ const ReviewMain: FunctionComponent = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </PaperContainer>
       {/* modal */}
       <SimpleModal open={isReviewModalOpen} setOpen={ReviewModalOpen}>
         <ReviewModal handleClose={ReviewModalOpen}></ReviewModal>

@@ -1,22 +1,17 @@
 import React, { FunctionComponent } from 'react';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    cardImg: {
-      width: 150,
-    },
-    cover: {
-      width: '100%',
-      height: '100%',
-    },
-  })
-);
+const CardImg = styled(Grid)`
+  width: 150px;
+`;
+
+const ImgCover = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 
 const CardContents = styled.div`
   width: 100%;
@@ -59,17 +54,14 @@ const RatingStars = {
 };
 
 const BookInfo: FunctionComponent = () => {
-  const classes = useStyles();
-
   return (
     <Grid container spacing={2}>
-      <Grid item className={classes.cardImg}>
-        <img
-          className={classes.cover}
+      <CardImg item>
+        <ImgCover
           alt="title"
           src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
         />
-      </Grid>
+      </CardImg>
       <Grid item xs container direction="column">
         <Grid item xs>
           <CardContents>

@@ -1,19 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import ReviewMain from '../../components/ReviewComponent/ReviewMain';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import Chip from '@material-ui/core/Chip';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      marginTop: '30px',
-      flexGrow: 1,
-    },
-  })
-);
+const Container = styled.div`
+  margin-top: 30px;
+  flex-grow: 1;
+`;
 
 const SortButton = styled(Button)`
   float: right;
@@ -29,10 +23,8 @@ const SortButton = styled(Button)`
 `;
 
 const ReviewPage: FunctionComponent = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
+    <Container>
       <SortButton variant="outlined" size="large">
         인기순
       </SortButton>
@@ -45,7 +37,7 @@ const ReviewPage: FunctionComponent = () => {
         <ReviewMain />
         <ReviewMain />
       </Grid>
-    </div>
+    </Container>
   );
 };
 
