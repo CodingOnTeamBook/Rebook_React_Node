@@ -2,25 +2,23 @@ import React, { FunctionComponent, useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import SimpleModal from '../../components/common/SimpleModal';
 import ReviewModal from '../../components/ReviewComponent/ReviewModal';
-import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
-import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import Favorite from '@material-ui/icons/Favorite';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       display: 'flex',
       padding: theme.spacing(2),
+      overflow: 'visible',
     },
     cardImg: {
-      width: 250,
+      width: 160,
     },
     cover: {
       width: '100%',
@@ -29,12 +27,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const CardContents = styled.div`
+const BookContents = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10px;
 `;
 
 const BookTitle = styled.h2`
@@ -85,38 +82,45 @@ const ReviewMain: FunctionComponent = () => {
     // 3 * 4 = 12
     <Grid item xs={4} zeroMinWidth>
       <Paper className={classes.paper}>
-        <div className={classes.cardImg}>
-          <CardMedia
-            className={classes.cover}
-            // 테스트용 입니다.
-            image="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
-            title="Live from space album cover"
-          />
-        </div>
-        <CardContents>
-          <BookTitle> 책제목책제목책제목책제목 </BookTitle>
-          <BookTag>
-            <Chip label="#태그" /> <Chip label="#태그" />
-          </BookTag>
-          {/* 리뷰 클릭하면 디테일 상세 리뷰 모달 동작 */}
-          <BookReview onClick={ReviewModalOpen}>
-            리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
-            리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰
-            리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰
-          </BookReview>
-          <ReviewUserInfo>
-            by 리북이님
-            <Like>
-              <Checkbox
-                icon={<FavoriteBorder />}
-                checkedIcon={<Favorite />}
-                name="checkedH"
-              />
-            </Like>
-          </ReviewUserInfo>
-        </CardContents>
+        <Grid container spacing={2}>
+          <Grid item className={classes.cardImg}>
+            <img
+              className={classes.cover}
+              alt="complex"
+              src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
+            />
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <BookContents>
+                  <BookTitle> 책제목책제목책제목책제목 </BookTitle>
+                  <BookTag>
+                    <Chip label="#태그" /> <Chip label="#태그" />
+                  </BookTag>
+                  {/* 리뷰 부분 클릭 시 리뷰 모달 동작 */}
+                  <BookReview onClick={ReviewModalOpen}>
+                    리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
+                    리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+                    리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰
+                    리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰 리뷰
+                    리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰
+                  </BookReview>
+                  <ReviewUserInfo>
+                    by 리북이님
+                    <Like>
+                      <Checkbox
+                        icon={<FavoriteBorder />}
+                        checkedIcon={<Favorite />}
+                        name="checkedH"
+                      />
+                    </Like>
+                  </ReviewUserInfo>
+                </BookContents>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Paper>
       {/* modal */}
       <SimpleModal open={isReviewModalOpen} setOpen={ReviewModalOpen}>
