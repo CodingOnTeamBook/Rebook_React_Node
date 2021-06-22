@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import CarouselComponent from '../../components/CarouselComponent';
 import SearchForm from '../../components/SearchForm';
+import PopularBooks from '../../components/PopularBooks';
 
 const LandingContainer = styled.main`
   display: flex;
@@ -16,7 +17,7 @@ const LandingPage: FunctionComponent = () => {
       <LandingContainer>
         <CarouselComponent />
         <SearchForm />
-        <div>추천 책 컴포넌트</div>
+        <PopularBooks />
         <div>인기 리뷰 컴포넌트</div>
       </LandingContainer>
     </>
