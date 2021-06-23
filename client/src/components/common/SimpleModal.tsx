@@ -12,8 +12,8 @@ const ModalBackground = styled(Modal)`
 
 const ModalContentsContainer = styled.div`
   position: relative;
-  top: -25%;
-  left: -20%;
+  /* top: -25%;
+  left: -20%; */
 `;
 
 interface IModalProps {
