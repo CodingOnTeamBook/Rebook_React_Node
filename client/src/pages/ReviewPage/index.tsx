@@ -3,7 +3,6 @@ import ReviewMain from '../../components/ReviewComponent/ReviewMain';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
 
 const Container = styled.div`
   margin-top: 30px;
