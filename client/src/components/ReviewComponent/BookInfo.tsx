@@ -3,9 +3,15 @@ import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+
+const BookInfoContainer = styled(Grid)`
+  padding: 20px;
+`;
 
 const CardImg = styled(Grid)`
   width: 150px;
+  margin-right: 10px;
 `;
 
 const ImgCover = styled.img`
@@ -55,29 +61,31 @@ const RatingStars = {
 
 const BookInfo: FunctionComponent = () => {
   return (
-    <Grid container spacing={2}>
-      <CardImg item>
-        <ImgCover
-          alt="title"
-          src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
-        />
-      </CardImg>
-      <Grid item xs container direction="column">
-        <Grid item xs>
-          <CardContents>
-            <CardTitle> 책제목 </CardTitle>
-            <BookInfoArea> 작가 / 발행년도 / 장르 / 출판사 </BookInfoArea>
-            <BookTag>
-              <Chip label="#태그" /> <Chip label="#태그" />
-            </BookTag>
-            <BookRating>
-              <ReactStars {...RatingStars} />
-              <BookRatingScore>4.8</BookRatingScore>
-            </BookRating>
-          </CardContents>
+    <Paper elevation={0}>
+      <BookInfoContainer container>
+        <CardImg item>
+          <ImgCover
+            alt="title"
+            src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
+          />
+        </CardImg>
+        <Grid item xs container direction="column">
+          <Grid item xs>
+            <CardContents>
+              <CardTitle> 책제목 </CardTitle>
+              <BookInfoArea> 작가 / 발행년도 / 장르 / 출판사 </BookInfoArea>
+              <BookTag>
+                <Chip label="#태그" /> <Chip label="#태그" />
+              </BookTag>
+              <BookRating>
+                <ReactStars {...RatingStars} />
+                <BookRatingScore>4.8</BookRatingScore>
+              </BookRating>
+            </CardContents>
+          </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      </BookInfoContainer>
+    </Paper>
   );
 };
 

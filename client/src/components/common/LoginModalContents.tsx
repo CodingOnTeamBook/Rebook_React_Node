@@ -8,6 +8,8 @@ const LoginModalContainer = styled.div`
   padding: 2rem;
   background-color: ${(props) => props.theme.palette.white};
   border-radius: 4px;
+  top: 25%;
+  left: 15%;
 `;
 
 const LogoContainer = styled.img`
@@ -23,24 +25,6 @@ const DialogContent = styled.div`
   color: #141414;
   height: 250px;
   width: 300px;
-`;
-
-const KaKaoBtn = styled.button`
-  /* padding: 0; */
-  /* width: 80%; */
-  height: 45px;
-  line-height: 44px;
-  color: #000;
-  background-color: #ffeb00;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0 0px 15px 0 rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const LoginModalContents: FunctionComponent = () => {
