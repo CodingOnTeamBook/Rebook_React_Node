@@ -10,6 +10,12 @@ const ModalBackground = styled(Modal)`
   align-items: center;
 `;
 
+const ModalContentsContainer = styled.div`
+  position: relative;
+  top: -25%;
+  left: -20%;
+`;
+
 interface IModalProps {
   open: boolean;
   setOpen: any; // function(event: object, reason: string) => void 참고
@@ -23,7 +29,7 @@ const SimpleModal: FunctionComponent<IModalProps> = ({
 }: IModalProps) => {
   return (
     <ModalBackground open={open} onClose={setOpen}>
-      {children}
+      <ModalContentsContainer>{children}</ModalContentsContainer>
     </ModalBackground>
   );
 };

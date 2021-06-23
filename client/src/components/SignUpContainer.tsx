@@ -1,8 +1,9 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, useRef } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../style/componentStyled';
 import CheckboxesGroup from './CheckBoxGroupComponent';
-import UserNameFrom from './UserNameFormComponent';
+import UserNameForm from './UserNameFormComponent';
+import { genreTags } from './defaultData/genre';
 
 const SubTitle = styled.h2`
   margin: 48px;
@@ -24,60 +25,22 @@ const SignUpBtn = styled(LineGreenBtn)`
 `;
 
 const SignUpContainer: FunctionComponent = () => {
-  // Tags관련
-  const [checkedTags, setCheckedTags] = useState({
-    소설: false,
-    인문학: false,
-    사회과학: false,
-    역사: false,
-    과학: false,
-    예술: false,
-    종교: false,
-  });
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedTags({
-      ...checkedTags,
-      [event.target.name]: event.target.checked,
-    });
-  };
-
-  const { 소설, 인문학, 사회과학, 역사, 과학, 예술, 종교 } = checkedTags;
-
-  const COUNT_OF_CHECKED = [
-    소설,
-    인문학,
-    사회과학,
-    역사,
-    과학,
-    예술,
-    종교,
-  ].filter((elem) => elem === true).length;
-
-  const ERROR = COUNT_OF_CHECKED < 1 || COUNT_OF_CHECKED > 3;
-
+  const ChildRef = useRef<HTMLDivElement | any>(null);
+  const ChildBoxRef = useRef<HTMLDivElement | any>(null);
   // userNameForm 관련
-  const [userName, setUserName] = useState('');
-
-  const changeUserName = (inputValue: string) => {
-    setUserName(inputValue);
+  const callChildFunc = () => {
+    ChildRef.current && console.log(ChildRef.current.getInputData());
+    ChildBoxRef.current && console.log(ChildBoxRef.current.getCheckData());
   };
-
   return (
     <>
       <SubTitle>선호하는 장르를 알려주세요</SubTitle>
       <TagsContainer>
-        <CheckboxesGroup
-          tags={checkedTags}
-          handleChange={handleChange}
-          error={ERROR}
-        />
+        <CheckboxesGroup tags={genreTags} ref={ChildBoxRef} />
       </TagsContainer>
       <SubTitle>사용할 닉네임을 입력해주세요</SubTitle>
-      <UserNameFrom handleChange={changeUserName} />
-      <SignUpBtn onClick={() => console.log(userName, checkedTags)}>
-        회원가입
-      </SignUpBtn>
+      <UserNameForm ref={ChildRef} />
+      <SignUpBtn onClick={() => callChildFunc}>회원가입</SignUpBtn>
     </>
   );
 };
