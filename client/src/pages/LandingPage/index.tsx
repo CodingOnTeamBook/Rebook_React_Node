@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CarouselComponent from '../../components/CarouselComponent';
 import SearchForm from '../../components/SearchForm';
 import RecommendedBooks from '../../components/RecommendedBooks';
+import PopulateReview from '../../components/PopulateReviews';
 
 const LandingContainer = styled.main`
   display: flex;
@@ -18,7 +19,7 @@ const LandingPage: FunctionComponent = () => {
         <CarouselComponent />
         <SearchForm />
         <RecommendedBooks />
-        <div>인기 리뷰 컴포넌트</div>
+        <PopulateReview />
       </LandingContainer>
     </>
   );
