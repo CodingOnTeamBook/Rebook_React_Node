@@ -6,19 +6,22 @@ import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 
-@Module({ //데코레이터: 클래스에 함수 기능을 추가할 수 있음 
+@Module({
+  //데코레이터: 클래스에 함수 기능을 추가할 수 있음
   imports: [
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '1234',
-      database: 'nestjs',
+      password: 'toor123',
+      database: 'rebook_db',
       models: [User],
       autoLoadModels: true, //
       synchronize: true,
-    }), UsersModule, AuthModule, 
+    }),
+    UsersModule,
+    AuthModule,
   ],
   //controllers: [UsersController],
   //providers: [UsersService],

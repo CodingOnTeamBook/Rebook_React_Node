@@ -1,4 +1,14 @@
-import { Controller, Get, Param, Post, Delete, Patch, Body, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Delete,
+  Patch,
+  Body,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { throws } from 'assert';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UsersService } from './users.service';
@@ -8,10 +18,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('search')
-  search(@Query('title') title: string){
+  search(@Query('title') title: string) {
     return `sdfsdf ${title}`;
   }
-  
+
   @Get('/check/:nickname')
   getNick(@Param('nickname') nickname: string) {
     return this.usersService.checkNick(unescape(nickname));
@@ -26,9 +36,9 @@ export class UsersController {
   //카카오로그인
   @Post('/login')
   kakaologin(@Body() user) {
-      return this.usersService.kakaoLogin(user);
-    }
-  
+    return this.usersService.kakaoLogin(user);
+  }
+
   //카카오회원가입
   @Post('/signup')
   kakaosignup(@Body() user) {
@@ -58,5 +68,4 @@ export class UsersController {
   deleteac(@Body() user) {
     return this.usersService.remove(user);
   }
-
 }

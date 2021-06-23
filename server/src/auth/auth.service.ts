@@ -2,10 +2,10 @@ import { Body, Injectable, Request } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 export interface IIsAuthResponse {
-  success: boolean,
-  isAuth?: boolean,
-  user?: object,
-  error?: string,
+  success: boolean;
+  isAuth?: boolean;
+  user?: any;
+  error?: string;
 }
 
 @Injectable()
@@ -16,34 +16,34 @@ export class AuthService {
   ) {}
 
   async vaildateUser(@Body() user) {
-  //  const userToken = await this.jwtService.verify()
+    //  const userToken = await this.jwtService.verify()
   }
 
   async isAuth(user: any, token: string): Promise<IIsAuthResponse> {
     const bearer = token.split(' ');
     try {
       const decoded = await this.jwtService.verify(bearer[1]);
-      return ({
+      return {
         success: true,
         isAuth: true, //로그인상태?
-        user: decoded //userId, nickname, iat, exp 보내줌
-      })
+        user: decoded, //userId, nickname, iat, exp 보내줌
+      };
     } catch (err) {
-      if(err.name === 'TokenExpiredError') {
-        return({
+      if (err.name === 'TokenExpiredError') {
+        return {
           success: false,
           error: err,
-        })
+        };
       }
-      return ({
+      return {
         success: false,
         error: err,
-      });
+      };
     }
   }
 
   //토큰발행
-  async signToken(user: any) { 
+  async signToken(user: any) {
     const payload = { userId: user.userId, nickname: user.nickname };
     return this.jwtService.sign(payload);
   }

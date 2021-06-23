@@ -5,27 +5,26 @@ import { AuthService } from 'src/auth/auth.service';
 import { bcrypt } from 'bcrypt';
 
 export interface ICheckResponse {
-  success: boolean,
-  result: boolean,
+  success: boolean;
+  result: boolean;
 }
-export interface ILoginResponse{
-  success: boolean,
-  userId?: string,
-  type?: number,
-  accessToken?: string,
-  error?: string,
-}
-
-export interface ICreateUserResponse{
-  success: boolean,
-  userId?: string,
-  error?: string,
+export interface ILoginResponse {
+  success: boolean;
+  userId?: string;
+  type?: number;
+  accessToken?: string;
+  error?: string;
 }
 
+export interface ICreateUserResponse {
+  success: boolean;
+  userId?: string;
+  error?: string;
+}
 
-export interface IDeleteAccountResponse{
-  success: boolean,
-  error?: string,
+export interface IDeleteAccountResponse {
+  success: boolean;
+  error?: string;
 }
 
 @Injectable()
@@ -33,7 +32,7 @@ export class UsersService {
   constructor(
     @InjectModel(User)
     private userModel: typeof User,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   async findOne(userId: string): Promise<User> {
@@ -47,61 +46,61 @@ export class UsersService {
   //닉네임 중복체크
   async checkNick(nickname: string): Promise<ICheckResponse> {
     const exNick = await this.userModel.findOne({ where: { nickname } });
-    if(!exNick){
-      return ({
+    if (!exNick) {
+      return {
         success: true,
         result: true,
-      })
+      };
     } else {
-      return({
+      return {
         success: true,
         result: false,
-      })
+      };
     }
   }
-  
+
   //아이디 중복체크
   async checkId(userId: string): Promise<ICheckResponse> {
-    const exId = await this.userModel.findOne({ where: { userId }});
-    if(!exId){
-      return ({
+    const exId = await this.userModel.findOne({ where: { userId } });
+    if (!exId) {
+      return {
         success: true,
         result: true,
-      })
+      };
     } else {
-      return({
+      return {
         success: true,
         result: false,
-      })
+      };
     }
   }
 
   //카카오로그인
-  async kakaoLogin(user: any): Promise<ILoginResponse>{
+  async kakaoLogin(user: any): Promise<ILoginResponse> {
     const userId = user.kakaoId;
     try {
-      const exUser = await this.userModel.findOne({ where: { userId }});
+      const exUser = await this.userModel.findOne({ where: { userId } });
       if (exUser) {
-        return({
+        return {
           userId: userId,
           success: true,
           type: 1,
           accessToken: await this.authService.signToken(exUser),
-        });
+        };
       } else {
-        return({
+        return {
           success: true,
           type: 0,
-        });
+        };
       }
     } catch (err) {
-      return({
+      return {
         success: false,
         error: err,
-      });
-    };
+      };
+    }
   }
-  
+
   //카카오회원가입
   async createKakaoUser(user: any): Promise<ICreateUserResponse> {
     const { kakaoId, nickname, genre, gender, age_range, avartarImg } = user;
@@ -114,22 +113,23 @@ export class UsersService {
         gender: gender,
         ageRange: age_range,
         profileImg: avartarImg,
-      })
-      return({
+      });
+      return {
         success: true,
-        userId: kakaoId,      
-      })
+        userId: kakaoId,
+      };
     } catch (err) {
-      return({
+      return {
         success: false,
         error: err,
-      })
+      };
     }
   }
 
   //로컬회원가입
   async createLocalUser(user: any): Promise<ICreateUserResponse> {
-    const { userId, nickname, password, genre, gender, age_range, avartarImg } = user;
+    const { userId, nickname, password, genre, gender, age_range, avartarImg } =
+      user;
     try {
       const hash = await bcrypt(password, 12);
       await this.userModel.create({
@@ -141,16 +141,16 @@ export class UsersService {
         gender: gender,
         ageRange: age_range,
         profileImg: avartarImg,
-      })
-      return({
+      });
+      return {
         success: true,
-        userId: userId,      
-      })
+        userId: userId,
+      };
     } catch (err) {
-      return({
+      return {
         success: false,
         error: err,
-      })
+      };
     }
   }
 
@@ -158,49 +158,51 @@ export class UsersService {
   async localLogin(user: any): Promise<ILoginResponse> {
     const { userId, password } = user;
     try {
-      const correctUser = await this.userModel.findOne({ where: { userId }});
+      const correctUser = await this.userModel.findOne({ where: { userId } });
       if (correctUser) {
         const result = await bcrypt.compare(password, correctUser.password);
         if (result) {
-          return({
+          return {
             success: true,
             userId: userId,
             type: 1,
             accessToken: await this.authService.signToken(correctUser),
-          })
-        } else { //아이디 혹은 비밀번호가 일치하지 않습니다.
-          return ({
+          };
+        } else {
+          //아이디 혹은 비밀번호가 일치하지 않습니다.
+          return {
             success: true,
             type: 2, //임의!!
-          })
+          };
         }
-      } else { //아이디 혹은 비밀번호가 일치하지 않습니다.
-        return ({
+      } else {
+        //아이디 혹은 비밀번호가 일치하지 않습니다.
+        return {
           success: true,
           type: 2, //임의!!
-        })
+        };
       }
     } catch (err) {
-      return({
+      return {
         success: false,
         error: err,
-      })
+      };
     }
   }
 
   //회원탈퇴..?
   async remove(user: any): Promise<IDeleteAccountResponse> {
     const userId = user.userId;
-    try{
-      await this.userModel.destroy({ where: { userId }});
-      return({
+    try {
+      await this.userModel.destroy({ where: { userId } });
+      return {
         success: true,
-      })
+      };
     } catch (err) {
-      return({
+      return {
         success: false,
         error: err,
-      });
+      };
     }
   }
 }

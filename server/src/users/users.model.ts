@@ -1,4 +1,10 @@
-import { Column, Model, Table, HasMany, BelongsToMany } from "sequelize-typescript";
+import {
+  Column,
+  Model,
+  Table,
+  HasMany,
+  BelongsToMany,
+} from 'sequelize-typescript';
 //import { Review } from '../reviews/review.model';
 
 @Table
@@ -26,7 +32,7 @@ export class User extends Model {
 
   @Column({ allowNull: true })
   profileImg: string;
-  
+
   //@HasMany(() => Review)
   //reviews: Review[];
 }
