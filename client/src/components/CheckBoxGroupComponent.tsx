@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import styled from 'styled-components';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -8,73 +7,70 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import useCheck from '../hooks/useCheck';
 
 const TagsContainer = styled(FormGroup)`
   display: block;
 `;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      height: '100%',
-    },
-    formControl: {
-      margin: theme.spacing(7),
-    },
-  })
-);
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
 
-interface Props {
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  error: boolean;
-  tags: { [key: string]: boolean };
+const FormControlContainer = styled(FormControl)`
+  margin: 3rem;
+`;
+
+interface IProps {
+  tags: Array<ITag>;
 }
 
-const CheckboxesGroup: FunctionComponent<Props> = ({
-  handleChange,
-  error,
-  tags,
-}: Props) => {
-  const { root, formControl } = useStyles();
+interface ITag {
+  value: string;
+  type: number;
+}
 
-  function renderFormControlLabel(tag: [string, boolean]): JSX.Element {
-    const [tagName, tagValue] = tag;
+const CheckboxesGroup = forwardRef(({ tags }: IProps, ref) => {
+  const tempList: Array<string> = [];
+  const renderFormControlLabel = tags.map((tag: ITag) => {
+    const { value, onChange, CheckedValue } = useCheck({
+      name: tag.value,
+      initialValue: false,
+    });
+    if (CheckedValue) {
+      tempList.push(CheckedValue.name);
+    }
     return (
       <FormControlLabel
-        key={tagName}
+        key={tag.type}
         control={
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={tagValue}
-            onChange={handleChange}
-            name={tagName}
+            checked={value}
+            onChange={onChange}
+            name={tag.value}
           />
         }
-        label={tagName}
+        label={tag.value}
       />
     );
-  }
-
+  });
+  useImperativeHandle(ref, () => ({
+    getCheckData: () => tempList,
+  }));
   return (
-    <div className={root}>
-      <FormControl
-        required
-        error={error}
-        component="fieldset"
-        className={formControl}
-      >
+    <Container>
+      <FormControlContainer required>
         <FormLabel component="legend">최대 3개 까지 선택해주세요</FormLabel>
-        <TagsContainer>
-          {Object.entries(tags).map(renderFormControlLabel)}
-        </TagsContainer>
-      </FormControl>
-    </div>
+        <TagsContainer>{renderFormControlLabel}</TagsContainer>
+      </FormControlContainer>
+    </Container>
   );
-};
+});
 
 export default CheckboxesGroup;
