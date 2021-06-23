@@ -32,7 +32,7 @@ app.use(cors());
 app.get('/api/users/auth', (req, res) => {
   res.json({
     success: true,
-    isAuth: false,
+    isAuth: true,
   });
 });
 app.post('/api/users/login', (req, res) => {

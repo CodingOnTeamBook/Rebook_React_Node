@@ -17,12 +17,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
 `;
 
 const FormControlContainer = styled(FormControl)`
-  margin: 3rem;
+  margin: 1rem 0;
 `;
 
 interface IProps {

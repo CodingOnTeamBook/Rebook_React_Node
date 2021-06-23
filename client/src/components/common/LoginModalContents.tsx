@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import Logo from '../../style/img/logo.png';
 
 const LoginModalContainer = styled.div`
-  position: absolute;
+  position: relative;
   width: 400;
   padding: 2rem;
   background-color: ${(props) => props.theme.palette.white};
   border-radius: 4px;
+  top: 25%;
+  left: 15%;
 `;
 
 const LogoContainer = styled.img`
