@@ -13,9 +13,9 @@ import { AuthModule } from './auth/auth.module';
       dialect: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'root',
-      password: 'toor123',
-      database: 'rebook_db',
+      username: DB 유저 네임
+      password: DB 유저 비밀번호
+      database: DB 테이블 명
       models: [User],
       autoLoadModels: true, //
       synchronize: true,
