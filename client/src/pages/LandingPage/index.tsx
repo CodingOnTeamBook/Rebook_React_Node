@@ -13,7 +13,6 @@ const LandingContainer = styled.main`
 `;
 
 const LandingPage: FunctionComponent = () => {
-  SearchByNickname('test23').then((data) => console.log(data));
   return (
     <>
       <LandingContainer>
