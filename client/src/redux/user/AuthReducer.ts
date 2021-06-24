@@ -1,8 +1,9 @@
 import { AxiosError } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootReducer';
-import { FetchUserAuth } from '../../hooks/USER_API';
-import { IAuthResponse, AuthState } from './type';
+import { auth } from '../../API/USER_PRIVATE_API';
+import { AuthState } from './type';
+import { IAuthResponse } from '../../API/USER_PRIVATE_API/user.interface';
 
 const GET_AUTH = 'GET_AUTH' as const;
 const GET_AUTH_SUCCESS = 'GET_AUTH_SUCCESS' as const;
@@ -36,7 +37,7 @@ export function getAuthThunk(): ThunkAction<
   return async (dispatch) => {
     dispatch(getAuth);
     try {
-      const response = await FetchUserAuth();
+      const response = await auth();
       dispatch(getAuthSuccess(response));
     } catch (error: any) {
       dispatch(getAuthError(error));

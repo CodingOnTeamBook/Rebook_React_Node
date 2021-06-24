@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import { Link } from 'react-router-dom';
-import { FetchUserLogout } from '../../hooks/USER_API';
+import { logout } from '../../API/USER_PRIVATE_API';
 
 const ProfileContainer = styled.div`
   width: 205px;
@@ -57,7 +57,7 @@ const ProfileModal: FunctionComponent<ProfileModalProps> = ({
   nickname,
 }: ProfileModalProps) => {
   const Logout = () => {
-    FetchUserLogout(1784652).then((data) => {
+    logout().then((data) => {
       if (!data.success) {
         alert('로그아웃을 다시 시도해주세요.');
       }
