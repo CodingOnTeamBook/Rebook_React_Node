@@ -1,16 +1,30 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './users.model';
-import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-//import { AuthService } from "src/auth/auth.service";
-import { AuthModule } from 'src/auth/auth.module';
+import { UsersController } from './users.controller';
+import { User } from './entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtKEY } from 'src/config/jwt.config';
+import { AuthMiddleware } from './auth.middleware';
 
 @Module({
-  //forFeature() method to define which models are registered in the current scope.
-  imports: [SequelizeModule.forFeature([User]), AuthModule],
-  providers: [UsersService],
+  imports: [
+    SequelizeModule.forFeature([User]),
+    JwtModule.register({
+      secret: jwtKEY.secreteKey,
+      signOptions: { expiresIn: '1h' },
+    }),
+  ],
   controllers: [UsersController],
-  exports: [UsersService],
+  providers: [UsersService],
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('/api/users');
+  }
+}

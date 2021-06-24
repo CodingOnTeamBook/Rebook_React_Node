@@ -1,71 +1,127 @@
 import {
   Controller,
   Get,
-  Param,
   Post,
-  Delete,
-  Patch,
   Body,
-  Query,
-  UseGuards,
+  Patch,
+  Param,
+  Delete,
+  Res,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
-import { throws } from 'assert';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { AuthUser } from './users.decorator';
 
-@Controller('api/users')
+//에러 처리 middleware 생성하기
+
+@Controller('/api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('search')
-  search(@Query('title') title: string) {
-    return `sdfsdf ${title}`;
+  @Post('/signup')
+  create(@Body() createUserDto: CreateUserDto, @Res() res) {
+    this.usersService.signup(createUserDto).then((value: User) => {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        user: value,
+      });
+    });
+  }
+
+  @Post('/login')
+  login(@Body('kakaoId') kakaoId: string, @Res() res) {
+    this.usersService.Login(kakaoId).then((value: boolean) => {
+      if (value) {
+        this.usersService.generateToken(kakaoId).then((value: string) => {
+          res.cookie('user_Access', value, { httpOnly: true });
+          return res.status(HttpStatus.OK).json({
+            success: true,
+            type: 1,
+            userId: kakaoId,
+            accessToken: value,
+          });
+        });
+      } else {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          type: 0,
+        });
+      }
+    });
   }
 
   @Get('/check/:nickname')
-  getNick(@Param('nickname') nickname: string) {
-    return this.usersService.checkNick(unescape(nickname));
-    //return `${nickname}`;
+  getNick(@Param('nickname') nickname: string, @Res() res) {
+    this.usersService.checkNick(nickname).then((value: boolean) => {
+      const AllowNickname = !value;
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        results: AllowNickname,
+      });
+    });
   }
 
-  @Get('/check/:id')
-  getId(@Param('id') userId: string) {
-    return this.usersService.checkId(userId);
+  @Get('/info/:nickname')
+  findOne(@Param('nickname') nickname: string, @Res() res) {
+    this.usersService.findByNickname(nickname).then((value: User) => {
+      if (value) {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          user: value,
+        });
+      }
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        user: 'none',
+      });
+    });
   }
 
-  //카카오로그인
-  @Post('/login')
-  kakaologin(@Body() user) {
-    return this.usersService.kakaoLogin(user);
+  @Get('/auth')
+  findMe(@AuthUser() data: any, @Res() res) {
+    if (!data || !data.userId) {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        isAuth: false,
+      });
+    }
+    this.usersService.findOne(data.userId).then((value: User) => {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        isAuth: true,
+        user: value,
+      });
+    });
   }
 
-  //카카오회원가입
-  @Post('/signup')
-  kakaosignup(@Body() user) {
-    return this.usersService.createKakaoUser(user);
+  @Delete('/logout')
+  remove(@AuthUser() data: any, @Res() res) {
+    if (!data.userId) {
+      throw new HttpException('id is missing', HttpStatus.BAD_REQUEST);
+    }
+    this.usersService.remove(data.userId).then(() => {
+      res.clearCookie('user_Access');
+      return res.status(HttpStatus.OK).json({
+        success: true,
+      });
+    });
   }
 
-  //로컬로그인 주소 임의
-  @Post('/locallogin')
-  locallogin(@Body() user) {
-    return this.usersService.localLogin(user);
-  }
-
-  //로컬회원가입 주소 임의
-  @Post('/localsignup')
-  localsignup(@Body() user) {
-    return this.usersService.createLocalUser(user);
-  }
-
-  //회원정보수정아직~!~!
-  @UseGuards(JwtAuthGuard)
-  @Post('/modifyuser')
-  modifyUser(@Body() user) {
-    return `d`;
-  }
-
-  @Delete('/deleteaccount')
-  deleteac(@Body() user) {
-    return this.usersService.remove(user);
+  @Patch('/update')
+  update(
+    @AuthUser() data: any,
+    @Body() updateUserDto: UpdateUserDto,
+    @Res() res
+  ) {
+    this.usersService.update(data.userId, updateUserDto).then((value: User) => {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        user: value,
+      });
+    });
   }
 }

@@ -4,11 +4,20 @@ import {
   Table,
   HasMany,
   BelongsToMany,
+  CreatedAt,
+  UpdatedAt,
 } from 'sequelize-typescript';
-//import { Review } from '../reviews/review.model';
 
-@Table
-export class User extends Model {
+@Table({
+  timestamps: true,
+  underscored: true,
+  modelName: 'User',
+  tableName: 'users',
+  paranoid: true,
+  charset: 'utf8',
+  collate: 'utf8_general_ci',
+})
+export class User extends Model<User> {
   @Column({ allowNull: false, unique: true })
   userId: string;
 
@@ -16,13 +25,7 @@ export class User extends Model {
   nickname: string;
 
   @Column({ allowNull: true })
-  password: string;
-
-  @Column({ allowNull: true })
   gender: string;
-
-  @Column({ allowNull: true })
-  provider: string;
 
   @Column({ allowNull: true })
   ageRange: string;
@@ -33,6 +36,6 @@ export class User extends Model {
   @Column({ allowNull: true })
   profileImg: string;
 
-  //@HasMany(() => Review)
-  //reviews: Review[];
+  @Column({ allowNull: true })
+  info: string;
 }
