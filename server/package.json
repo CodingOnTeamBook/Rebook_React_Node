@@ -32,14 +32,14 @@
     "@types/sequelize": "^4.28.9",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
-    "sequelize": "^6.6.2",
-    "sequelize-typescript": "^2.1.0"
+    "typeorm": "^0.2.34"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
