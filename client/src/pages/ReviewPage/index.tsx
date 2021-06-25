@@ -16,6 +16,7 @@ const SortButton = styled(Button)`
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
+  z-index: 0;
   &:hover {
     background-color: ${(props) => props.theme.palette.green};
     color: white;

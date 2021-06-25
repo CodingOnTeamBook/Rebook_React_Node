@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 const ReviewModalContainer = styled.div`
   max-width: 500px;
   flex-grow: 1;
-  overflow: visible;
+  overflow: auto;
   background-color: white;
   height: 100%;
   padding-bottom: 10px;

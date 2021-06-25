@@ -1,10 +1,9 @@
-import React, { forwardRef, FunctionComponent } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 const TagButton = styled(Button)`
-  margin-bottom: 30px;
-  margin-left: 10px;
+  margin-bottom: 20px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
@@ -14,6 +13,9 @@ const TagButton = styled(Button)`
   }
   &::before {
     content: '#';
+  }
+  &:not(:first-of-type) {
+    margin-left: 10px;
   }
 `;
 

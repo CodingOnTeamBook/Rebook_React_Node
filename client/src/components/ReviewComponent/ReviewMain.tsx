@@ -76,7 +76,7 @@ const ReviewMain: FunctionComponent = () => {
 
   return (
     // 4 * 3 = 12
-    <Grid item xs={4} zeroMinWidth>
+    <Grid item sm={4} xs={12} zeroMinWidth>
       <PaperContainer>
         <Grid container spacing={2}>
           <CardImg item>

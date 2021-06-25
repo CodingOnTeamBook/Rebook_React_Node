@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import ListAlt from '@material-ui/icons/ListAlt';
+import PersonAdd from '@material-ui/icons/PersonAdd';
 
 const PaperContainer = styled(Paper)`
   display: flex;
@@ -14,8 +16,8 @@ const PaperContainer = styled(Paper)`
 `;
 
 const UserImg = styled(Avatar)`
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
 `;
 
 const NickName = styled.div`
@@ -31,16 +33,44 @@ const TagArea = styled.div`
 `;
 
 const TagChip = styled(Chip)`
-  margin-left: 10px;
+  &:not(:first-of-type) {
+    margin-left: 10px;
+  }
 `;
 
 const Introduction = styled.div`
   margin-top: 20px;
 `;
 
+const DetailInfo = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ReviewArea = styled.div`
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FollowerArea = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Info = styled.span`
+  margin-left: 10px;
+`;
+
 const Person: FunctionComponent = () => {
   return (
-    <Grid item xs={4} zeroMinWidth>
+    <Grid item sm={4} xs={12} zeroMinWidth>
       <PaperContainer>
         <UserImg
           alt="nickname"
@@ -55,6 +85,16 @@ const Person: FunctionComponent = () => {
           안녕하세요. 반갑습니다! 안녕하세요. 반갑습니다! 안녕하세요.
           안녕하세요. 반갑습니다!
         </Introduction>
+        <DetailInfo>
+          <ReviewArea>
+            <ListAlt></ListAlt>
+            <Info> 2개 </Info>
+          </ReviewArea>
+          <FollowerArea>
+            <PersonAdd></PersonAdd>
+            <Info> 3명 </Info>
+          </FollowerArea>
+        </DetailInfo>
       </PaperContainer>
     </Grid>
   );
