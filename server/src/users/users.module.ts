@@ -1,20 +1,16 @@
-import {
-  Module,
-  NestModule,
-  MiddlewareConsumer,
-  RequestMethod,
-} from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User } from '../entities/user.entity';
+import { Review } from '../entities/review.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtKEY } from 'src/config/jwt.config';
 import { AuthMiddleware } from './auth.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Review]),
     JwtModule.register({
       secret: jwtKEY.secreteKey,
       signOptions: { expiresIn: '1h' },
