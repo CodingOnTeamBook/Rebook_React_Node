@@ -1,8 +1,12 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
+
 import { User } from '../entities/user.entity';
 import { Review } from '../entities/review.entity';
+import { Comment } from '../entities/comment.entity';
+import { Like } from '../entities/like.entity';
+
 import { JwtModule } from '@nestjs/jwt';
 import { jwtKEY } from 'src/config/jwt.config';
 import { AuthMiddleware } from './auth.middleware';
@@ -10,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Review]),
+    TypeOrmModule.forFeature([User, Review, Comment, Like]),
     JwtModule.register({
       secret: jwtKEY.secreteKey,
       signOptions: { expiresIn: '1h' },

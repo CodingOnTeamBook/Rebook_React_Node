@@ -27,8 +27,8 @@ export class Comment {
   @DeleteDateColumn()
   deleteAt: Date;
 
-  @ManyToOne((type) => User, (user) => user.comments)
-  @ManyToOne((type) => Review, (review) => review.comments)
-  user: User;
-  review: Review;
+  // @ManyToOne((type) => User, (user) => user.comments)
+  // @ManyToOne((type) => Review, (review) => review.comments)
+  // user: User;
+  // review: Review;
 }
