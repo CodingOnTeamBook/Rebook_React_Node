@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
@@ -70,8 +69,8 @@ const Info = styled.span`
 
 const Person: FunctionComponent = () => {
   return (
-    <Grid item sm={4} xs={12} zeroMinWidth>
-      <PaperContainer>
+    <>
+      <PaperContainer square>
         <UserImg
           alt="nickname"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
@@ -96,7 +95,7 @@ const Person: FunctionComponent = () => {
           </FollowerArea>
         </DetailInfo>
       </PaperContainer>
-    </Grid>
+    </>
   );
 };
 
