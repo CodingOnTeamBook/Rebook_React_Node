@@ -7,11 +7,11 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
-  JoinTable,
+  JoinTable, 
 } from 'typeorm';
-
+import { Tag } from './tag.entity';
 import { User } from './user.entity';
-// import { Comment } from './comment.entity';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class Review {
@@ -23,8 +23,8 @@ export class Review {
   text: string;
 
   // ISBN
-  @Column('text', { name: 'book_id' })
-  book_id: number;
+  @Column('varchar', { name: 'book_id', length: 20 })
+  book_id: string;
 
   // 점수
   @Column('int', { name: 'score', default: 0 })
@@ -44,23 +44,23 @@ export class Review {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  //   @ManyToOne(() => User, (user) => user.reviews)
-  //   user: User;
+  @ManyToOne(() => User, (user) => user.reviews)
+  user: User;
 
-  //   @OneToMany(() => Comment, (comment) => comment.review)
-  //   comments: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.review, { cascade: true })
+  comments: Comment[];
 
-  //   @ManyToMany(() => Tag)
-  //   @JoinTable({
-  //     name: 'review_tags',
-  //     joinColumn: {
-  //       name: 'review',
-  //       referencedColumnName: 'id',
-  //     },
-  //     inverseJoinColumn: {
-  //       name: 'tag',
-  //       referencedColumnName: 'id',
-  //     },
-  //   })
-  //   tags: Tag[];
+  @ManyToMany(() => Tag, { cascade: true })
+  @JoinTable({
+    name: 'review_tags',
+    joinColumn: {
+      name: 'review',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'tag',
+      referencedColumnName: 'id',
+    },
+  })
+  tags: Tag[];
 }

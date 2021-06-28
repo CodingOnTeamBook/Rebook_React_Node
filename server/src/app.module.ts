@@ -3,13 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { DevDBConfg } from './config/db.config';
 import { UsersModule } from './users/users.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       ...DevDBConfg,
       type: 'mysql',
-      entities: [],
+      entities: [__dirname + 'entities/*.entity.ts'],
       autoLoadEntities: true,
       synchronize: true, //서버 처음에 켤 때 true고 그 이후론 false로 하는 듯
     }),
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
     }),
     UsersModule,
+    ReviewsModule,
   ],
 })
 export class AppModule {}
