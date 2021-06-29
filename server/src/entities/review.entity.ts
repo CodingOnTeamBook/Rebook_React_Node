@@ -27,7 +27,7 @@ export class Review {
   book_id: string;
 
   // 점수
-  @Column('int', { name: 'score', default: 0 })
+  @Column('float', { name: 'score', default: 0 })
   score: number;
 
   // 조회수

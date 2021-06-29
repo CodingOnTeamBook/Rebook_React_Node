@@ -28,17 +28,15 @@ export class ReviewsService {
   }
   */
   async createTag(data: any): Promise<Tag[]> {
-    const tag = new Tag();
     const review = new Review();
     review.tags = [];
-    const dataarr = data.trim().split(' ');
-    console.log(dataarr);
+    const dataarr = data.split(' ');
     for (data of dataarr) {
       const exTag = await this.tagRepository.findOne({ where: { tag: data } });
-      console.log(exTag);
       if (exTag) {
         review.tags.push(exTag);
       } else {
+        const tag = new Tag();
         tag.tag = data;
         const newtag = await this.tagRepository.save(tag);
         review.tags.push(newtag);
@@ -56,11 +54,11 @@ export class ReviewsService {
     const review = new Review();
     review.text = createReviewDto.text;
     review.book_id = createReviewDto.bookId;
-    review.score = Number(createReviewDto.score);
+    review.score = parseFloat(createReviewDto.score);
     review.public = Boolean(createReviewDto.public);
     review.tags = await this.createTag(createReviewDto.tag);
     review.user = await this.userRepository.findOne({ where: { userId } });
-    console.log(review, 1123);
+    console.log(review);
     return this.reviewRepository.save(review);
   }
 }

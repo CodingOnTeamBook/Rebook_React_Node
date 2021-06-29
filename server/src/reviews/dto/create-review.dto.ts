@@ -8,7 +8,7 @@ export class CreateReviewDto {
   readonly bookId: string;
 
   @IsString()
-  readonly score: number;
+  readonly score: string;
 
   @IsString()
   readonly public: boolean = true;
