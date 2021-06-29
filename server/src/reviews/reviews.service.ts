@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ParseBoolPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
@@ -17,16 +17,19 @@ export class ReviewsService {
     private userRepository: Repository<User>
   ) {}
 
-  /*
-  async loadReviews(): Promise<[Review[], number]> {
-    const [list, count] = this.reviewRepository.findAndCount({
+  async loadReviews(skipnum: string): Promise<[Review[], number]> {
+    //console.log(skipnum); { 'skipnum': '0'} 이딴식으로나옴
+    //console.log(parseInt(skipnum), ' ', typeof parseInt(skipnum));
+    const reviews = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      skip: 
-    })
+      skip: 6,
+      take: 3,
+    });
+    return reviews;
   }
-  */
+
   async createTag(data: any): Promise<Tag[]> {
     const review = new Review();
     review.tags = [];
@@ -55,7 +58,7 @@ export class ReviewsService {
     review.text = createReviewDto.text;
     review.book_id = createReviewDto.bookId;
     review.score = parseFloat(createReviewDto.score);
-    review.public = Boolean(createReviewDto.public);
+    review.public = createReviewDto.public;
     review.tags = await this.createTag(createReviewDto.tag);
     review.user = await this.userRepository.findOne({ where: { userId } });
     console.log(review);

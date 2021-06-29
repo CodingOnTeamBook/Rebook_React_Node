@@ -16,10 +16,10 @@ import { AuthUser } from '../users/users.decorator';
 export class ReviewsController {
   constructor(private reviewService: ReviewsService) {}
 
-  /*@Get()
-  loadAll(){
-
-  }*/
+  @Get()
+  loadreviews(@Body() skipnum: string) {
+    return this.reviewService.loadReviews(skipnum);
+  }
 
   @Post('/write')
   write(
