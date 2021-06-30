@@ -3,18 +3,25 @@ import { NestMiddleware, HttpStatus, Injectable } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { jwtKEY } from '../config/jwt.config';
-import { UsersService } from './users.service';
+import { User } from '../entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>
+  ) {}
 
   async use(req: any, res: Response, next: NextFunction) {
     const authHeaders = req.headers.cookie;
     if (authHeaders && (authHeaders as string).split('=')[1]) {
       const token = authHeaders.split('=')[1];
       const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
-      const user = await this.userService.findOne(decoded.id);
+      const user = await this.usersRepository.findOne({
+        where: { userId: decoded.id },
+      });
       if (!user) {
         throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
       }

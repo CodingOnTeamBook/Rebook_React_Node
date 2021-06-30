@@ -9,6 +9,6 @@ export class Like {
   @Column('int', { name: 'count' })
   count: number;
 
-  // @ManyToOne((type) => User, (user) => user.likes)
-  // user: User;
+  @ManyToOne(() => User, (user) => user.likes)
+  user: User;
 }
