@@ -33,10 +33,10 @@ const App: FunctionComponent = () => {
           <GlobalStyle />
           <BrowserRouter>
             <Header />
-            <MinHeightContainer>
-              <Switch>
+            <Switch>
+              <Route path="/my" exact component={Auth(MyPage, true)} />
+              <MinHeightContainer>
                 <Route path="/" exact component={Auth(LandingPage, null)} />
-                <Route path="/my" exact component={Auth(MyPage, true)} />
                 <Route
                   path="/people"
                   exact
@@ -72,8 +72,8 @@ const App: FunctionComponent = () => {
                   exact
                   component={Auth(WriteReviewPage, true)}
                 />
-              </Switch>
-            </MinHeightContainer>
+              </MinHeightContainer>
+            </Switch>
             <Footer />
           </BrowserRouter>
         </StylesProvider>
