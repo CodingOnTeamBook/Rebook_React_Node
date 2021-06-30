@@ -8,3 +8,10 @@ export const LineGreenBtn = styled(Button)`
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
 `;
+
+export const ProfileImg = styled.img`
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+`;
