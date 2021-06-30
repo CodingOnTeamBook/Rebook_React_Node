@@ -13,6 +13,7 @@ const PaperContainer = styled(Paper)`
   display: flex;
   overflow: visible;
   padding: 15px;
+  cursor: pointer;
 `;
 
 const CardImg = styled(Grid)`
@@ -53,18 +54,26 @@ const BookReview = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  cursor: pointer;
 `;
 
-const ReviewUserInfo = styled.div`
-  font-weight: bold;
+const ReviewUserInfo = styled(Paper)`
   display: flex;
-  flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 15px 0 15px;
 `;
 
-const Like = styled.div`
-  margin-left: auto;
+const Nickname = styled.span`
+  flex: 1;
+  &::before {
+    content: 'by';
+  }
+`;
+
+const Like = styled.span`
+  text-align: right;
+  flex: 1;
 `;
 
 const ReviewMain: FunctionComponent = () => {
@@ -75,9 +84,8 @@ const ReviewMain: FunctionComponent = () => {
   };
 
   return (
-    // 4 * 3 = 12
-    <Grid item xs={4} zeroMinWidth>
-      <PaperContainer>
+    <>
+      <PaperContainer square onClick={ReviewModalOpen}>
         <Grid container spacing={2}>
           <CardImg item>
             <ImgCover
@@ -93,30 +101,30 @@ const ReviewMain: FunctionComponent = () => {
                   <Chip label="#태그" /> <Chip label="#태그" />
                 </BookTag>
                 {/* 리뷰 부분 클릭 시 리뷰 모달 동작 */}
-                <BookReview onClick={ReviewModalOpen}>
+                <BookReview>
                   리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
                   리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
                 </BookReview>
-                <ReviewUserInfo>
-                  by 리북이님
-                  <Like>
-                    <Checkbox
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                      name="checkedH"
-                    />
-                  </Like>
-                </ReviewUserInfo>
               </BookContents>
             </Grid>
           </Grid>
         </Grid>
       </PaperContainer>
+      <ReviewUserInfo square>
+        <Nickname> 리북이님 </Nickname>
+        <Like>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            name="checkedH"
+          />
+        </Like>
+      </ReviewUserInfo>
       {/* modal */}
       <SimpleModal open={isReviewModalOpen} setOpen={ReviewModalOpen}>
         <ReviewModal handleClose={ReviewModalOpen}></ReviewModal>
       </SimpleModal>
-    </Grid>
+    </>
   );
 };
 

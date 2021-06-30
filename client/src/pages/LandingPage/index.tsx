@@ -4,6 +4,7 @@ import CarouselComponent from '../../components/CarouselComponent';
 import SearchForm from '../../components/SearchForm';
 import RecommendedBooks from '../../components/RecommendedBooks';
 import PopulateReview from '../../components/PopulateReviews';
+import { CheckNickname, SearchByNickname } from '../../API/USER_PUBLIC_API';
 
 const LandingContainer = styled.main`
   display: flex;

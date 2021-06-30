@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,40 +7,33 @@ import UserReview from './UserReview';
 import AddComment from './AddComment';
 import Grid from '@material-ui/core/Grid';
 
-const CloseButtonArea = styled.p`
+const ReviewModalContainer = styled.div`
+  max-width: 500px;
+  flex-grow: 1;
+  overflow: auto;
   background-color: white;
-  width: 100%;
+  height: 100%;
+  padding-bottom: 10px;
+  border-radius: 10px;
+`;
+
+const CloseButtonArea = styled.div`
+  background-color: white;
   text-align: right;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 `;
 
 interface ReviewModalProps {
   handleClose: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: 500,
-      flexGrow: 1,
-      overflow: 'visible',
-      padding: theme.spacing(0, 3),
-      backgroundColor: 'white',
-      paddingBottom: 15,
-    },
-    paper: {
-      maxWidth: 400,
-      margin: `${theme.spacing(1)}px auto`,
-      padding: theme.spacing(2),
-    },
-  })
-);
-
 const ReviewModal: FunctionComponent<ReviewModalProps> = ({
   handleClose,
 }: ReviewModalProps) => {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <ReviewModalContainer>
       <Grid item zeroMinWidth>
         <CloseButtonArea>
           <IconButton aria-label="close" onClick={handleClose}>
@@ -52,7 +44,7 @@ const ReviewModal: FunctionComponent<ReviewModalProps> = ({
         <UserReview />
         <AddComment />
       </Grid>
-    </div>
+    </ReviewModalContainer>
   );
 };
 

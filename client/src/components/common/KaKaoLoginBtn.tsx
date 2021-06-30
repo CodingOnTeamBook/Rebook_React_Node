@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { FunctionComponent } from 'react';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_API_KEY } from '../../config';
-import { FetchUserLogin } from '../../hooks/USER_API';
+import { login } from '../../API/USER_PRIVATE_API';
 
 const KakaoLoginBtn: FunctionComponent = () => {
   const user = {
@@ -21,7 +21,7 @@ const KakaoLoginBtn: FunctionComponent = () => {
     // user.user_name = profile.properties.nickname;
     // user.user_profile_image = profile.properties.profile_image;
     // user.user_token = response.access_token;
-    FetchUserLogin(profile.id).then((data) => {
+    login(profile.id).then((data) => {
       if (!data.success) {
         alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
         localStorage.clear();
