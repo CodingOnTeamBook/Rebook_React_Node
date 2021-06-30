@@ -15,9 +15,11 @@ const ReviewPage: FunctionComponent = () => {
     <ReviewContainer>
       <SelectSort />
       <GridLayout>
-        <GridItem>
-          <ReviewMain />
-        </GridItem>
+        <>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
+        </>
       </GridLayout>
     </ReviewContainer>
   );

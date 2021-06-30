@@ -10,7 +10,7 @@ const GridLayout: FunctionComponent<IGridProps> = ({
 }: IGridProps) => {
   return (
     <Grid container spacing={3}>
-      {children}
+      <> {children} </>
     </Grid>
   );
 };
