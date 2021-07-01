@@ -17,16 +17,26 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: any, res: Response, next: NextFunction) {
     const authHeaders = req.headers.cookie;
     if (authHeaders && (authHeaders as string).split('=')[1]) {
-      const token = authHeaders.split('=')[1];
-      const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
-      const user = await this.usersRepository.findOne({
-        where: { userId: decoded.id },
-      });
-      if (!user) {
-        throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
+      try {
+        const token = authHeaders.split('=')[1];
+        const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
+        const user = await this.usersRepository.findOne({
+          where: { userId: decoded.id },
+        });
+        if (!user) {
+          throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
+        }
+        req.user = user;
+        next();
+      } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+          throw new HttpException(
+            'Sorry, your token expired',
+            HttpStatus.UNAUTHORIZED
+          );
+        }
+        next();
       }
-      req.user = user;
-      next();
     } else {
       next();
     }

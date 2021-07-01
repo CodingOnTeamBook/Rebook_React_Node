@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
   OneToMany,
   ManyToMany,
   JoinTable,
@@ -30,9 +29,6 @@ export class User {
 
   @Column('varchar', { nullable: true, length: 10 })
   ageRange: string;
-
-  //@Column('varchar', { nullable: true })
-  //genres: string;
 
   @Column('varchar', { nullable: true })
   profileImg: string;
