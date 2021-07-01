@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 const BookInfoContainer = styled(Grid)`
-  padding: 20px;
+  /* padding: 20px; */
 `;
 
 const CardImg = styled(Grid)`

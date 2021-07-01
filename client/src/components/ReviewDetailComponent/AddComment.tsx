@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     input: {
       // marginTop: '10px',
-      marginBottom: '10px',
+      // marginBottom: '10px',
       marginLeft: theme.spacing(1),
       flex: 1,
       width: '100%',

@@ -1,7 +1,5 @@
-import React, { FunctionComponent, useState } from 'react';
-import SimpleModal from '../../components/common/SimpleModal';
-import ReviewModal from '../../components/ReviewComponent/ReviewModal';
-import Paper from '@material-ui/core/Paper';
+import React, { FunctionComponent } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Chip from '@material-ui/core/Chip';
 import Favorite from '@material-ui/icons/Favorite';
@@ -56,16 +54,19 @@ const Like = styled.span`
 `;
 
 const ReviewMain: FunctionComponent = () => {
-  const [isReviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
-
-  const ReviewModalOpen = () => {
-    setReviewModalOpen(!isReviewModalOpen);
-  };
+  const id = 'test';
+  const history = useHistory();
 
   return (
     <>
       <Box display="flex" flexDirection="column" boxShadow={1}>
-        <Box display="flex" flexDirection="row" onClick={ReviewModalOpen}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          onClick={() => {
+            history.push(`/review/${id}`);
+          }}
+        >
           <Box p={1}>
             <ImgCover>
               <CardImg
@@ -97,10 +98,6 @@ const ReviewMain: FunctionComponent = () => {
           </Like>
         </Box>
       </Box>
-      {/* modal */}
-      <SimpleModal open={isReviewModalOpen} setOpen={ReviewModalOpen}>
-        <ReviewModal handleClose={ReviewModalOpen}></ReviewModal>
-      </SimpleModal>
     </>
   );
 };
