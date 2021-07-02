@@ -10,5 +10,5 @@ export class UpdateReviewDto extends PartialType(CreateReviewDto) {
   readonly score: string;
 
   @IsString()
-  readonly public: boolean;
+  readonly isPublic: boolean;
 }

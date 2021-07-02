@@ -54,12 +54,12 @@ export class ReviewsService {
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
     //console.log(typeof createReviewDto.score);
-    //console.log(typeof createReviewDto.public);
+    //console.log(typeof createReviewDto.isPublic);
     const review = new Review();
     review.text = createReviewDto.text;
     review.book_id = createReviewDto.bookId;
     review.score = parseFloat(createReviewDto.score);
-    review.public = createReviewDto.public;
+    review.isPublic = createReviewDto.isPublic;
     review.tags = await this.createTag(createReviewDto.tag);
     review.user = await this.userRepository.findOne({ where: { userId } });
     console.log(review);
@@ -81,8 +81,8 @@ export class ReviewsService {
       review.score = parseFloat(updateReviewDto.score);
     }
 
-    if (updateReviewDto.public) {
-      review.public = updateReviewDto.public;
+    if (updateReviewDto.isPublic) {
+      review.isPublic = updateReviewDto.isPublic;
     }
 
     return this.reviewRepository.save(review);

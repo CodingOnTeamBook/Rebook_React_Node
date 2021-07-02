@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
-  JoinTable, 
+  JoinTable,
 } from 'typeorm';
 import { Tag } from './tag.entity';
 import { User } from './user.entity';
@@ -35,8 +35,8 @@ export class Review {
   view_count: number;
 
   // 공개 여부
-  @Column('boolean', { name: 'public', default: true })
-  public: boolean;
+  @Column('boolean', { name: 'isPublic', default: true })
+  isPublic: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

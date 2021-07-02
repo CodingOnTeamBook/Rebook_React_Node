@@ -11,7 +11,7 @@ export class CreateReviewDto {
   readonly score: string;
 
   @IsString()
-  readonly public: boolean = true;
+  readonly isPublic: boolean = true;
 
   @IsString()
   readonly tag: string;
