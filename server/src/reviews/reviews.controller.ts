@@ -7,6 +7,7 @@ import {
   Post,
   Res,
   Patch,
+  Param,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -55,14 +56,15 @@ export class ReviewsController {
 
   //@Post('/update')
   //update(@Body())
-  @Patch('/update')
+  @Patch('/update/:id')
   update(
-    @AuthUser() data: any,
+    // @AuthUser() data: any,
+    @Param('id') id: string,
     @Body() updateReviewDto: UpdateReviewDto,
     @Res() res
   ) {
     this.reviewService
-      .updateReview(data.reviewId, updateReviewDto)
+      .updateReview(id, updateReviewDto)
       .then((value: Review) => {
         return res.status(HttpStatus.OK).json({
           success: true,

@@ -71,7 +71,7 @@ export class ReviewsService {
     updateReviewDto: UpdateReviewDto
   ): Promise<Review> {
     const review = await this.reviewRepository.findOne({
-      where: { reviewId: id },
+      where: { id: id },
     });
     if (updateReviewDto.text) {
       review.text = updateReviewDto.text;
