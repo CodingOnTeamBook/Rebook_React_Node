@@ -32,7 +32,7 @@ const TEST_BOOK_INFO = {
 const BookDetailContainer = styled.main`
   display: flex;
   justify-contents: center;
-  margin-top: 2rem;
+  margin-top: 50px;
   padding: 2rem;
   background-color: ${(props) => props.theme.palette.white};
 
