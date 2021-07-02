@@ -65,7 +65,7 @@ export class UsersController {
     });
   }
 
-  @Get('/info/:nickname')
+  @Get('/myinfo/:nickname')
   findOne(@Param('nickname') nickname: string, @Res() res) {
     this.usersService.findByNickname(nickname).then((value: User) => {
       if (value) {
@@ -79,6 +79,22 @@ export class UsersController {
         user: 'none',
       });
     });
+  }
+
+  @Patch('/myinfo/update/:nickname')
+  updateUser(
+    @AuthUser() data: any,
+    @Body() updateUserDto: UpdateUserDto,
+    @Res() res
+  ) {
+    this.usersService
+      .updateUser(data.userId, updateUserDto)
+      .then((value: User) => {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          user: value,
+        });
+      });
   }
 
   @Get('/auth')
@@ -107,20 +123,6 @@ export class UsersController {
       res.clearCookie('user_Access');
       return res.status(HttpStatus.OK).json({
         success: true,
-      });
-    });
-  }
-
-  @Patch('/update')
-  update(
-    @AuthUser() data: any,
-    @Body() updateUserDto: UpdateUserDto,
-    @Res() res
-  ) {
-    this.usersService.update(data.userId, updateUserDto).then((value: User) => {
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        user: value,
       });
     });
   }

@@ -34,8 +34,9 @@ export class UsersService {
     //const genres = this.usergenre(createUserDto.genre);
     const user = new User();
     user.userId = createUserDto.kakaoId;
-    user.nickname = createUserDto.nickName;
+    user.nickname = createUserDto.nickname;
     user.gender = createUserDto.gender;
+    user.profileImg = createUserDto.profileImg;
     user.genres = await this.usergenre(createUserDto.genre);
     user.ageRange = createUserDto.ageRange;
     return await this.userRepository.save(user);
@@ -63,17 +64,20 @@ export class UsersService {
     return false;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId: id } });
     if (updateUserDto.info) {
       user.info = updateUserDto.info;
     }
-    //if (updateUserDto.genre) {
-    //  user.genres = updateUserDto.genre;
-    //}
-    if (updateUserDto.imgUrl) {
-      user.profileImg = updateUserDto.imgUrl;
+    if (updateUserDto.nickname) {
+      user.nickname = updateUserDto.nickname;
     }
+    if (updateUserDto.profileImg) {
+      user.profileImg = updateUserDto.profileImg;
+    }
+    // if (updateUserDto.genre) {
+    //   user.genre = updateUserDto.genre;
+    // }
     return this.userRepository.save(user);
   }
 
