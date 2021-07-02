@@ -5,6 +5,7 @@ import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -63,5 +64,32 @@ export class ReviewsService {
     review.user = await this.userRepository.findOne({ where: { userId } });
     console.log(review);
     return this.reviewRepository.save(review);
+  }
+
+  async updateReview(
+    id: string,
+    updateReviewDto: UpdateReviewDto
+  ): Promise<Review> {
+    const review = await this.reviewRepository.findOne({
+      where: { reviewId: id },
+    });
+    if (updateReviewDto.text) {
+      review.text = updateReviewDto.text;
+    }
+
+    if (updateReviewDto.score) {
+      review.score = parseFloat(updateReviewDto.score);
+    }
+
+    if (updateReviewDto.public) {
+      review.public = updateReviewDto.public;
+    }
+
+    return this.reviewRepository.save(review);
+  }
+
+  async removeReview(id: string): Promise<void> {
+    const review = await this.reviewRepository.findOne(id);
+    await this.reviewRepository.delete(review);
   }
 }
