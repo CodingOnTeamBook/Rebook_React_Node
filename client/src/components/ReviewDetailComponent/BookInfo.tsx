@@ -1,52 +1,46 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 
-const BookInfoContainer = styled(Grid)`
-  /* padding: 20px; */
+const BookCover = styled(Box)`
+  width: 200px;
+  height: 250px;
 `;
 
-const CardImg = styled(Grid)`
-  width: 150px;
-  margin-right: 10px;
-`;
-
-const ImgCover = styled.img`
+const BookImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
-const CardContents = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const CardTitle = styled.h2`
+const BookTitle = styled.h1`
   margin-top: 0;
   margin-bottom: 10px;
 `;
 
-const BookInfoArea = styled.div`
-  margin-bottom: 13px;
-  height: 50px;
-  /* 확인용 컬러 입니다! */
-  background: ${(props) => props.theme.palette.yellow};
+const BookInfoDetail = styled.h3`
+  margin-top: 0px;
+  &::after {
+    content: '|';
+  }
+  &:last-child:after {
+    content: '';
+  }
+  &:not(:last-of-type) {
+    content: '';
+    margin-right: 10px;
+  }
 `;
 
-const BookTag = styled.div``;
-
-const BookRating = styled.div`
-  margin-bottom: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const BookRatingScore = styled.div`
-  margin-left: 15px;
+const BookTag = styled(Chip)`
+  margin-top: 0;
+  margin-bottom: 10px;
+  &:not(:last-of-type) {
+    content: '';
+    margin-right: 10px;
+  }
 `;
 
 const RatingStars = {
@@ -60,32 +54,39 @@ const RatingStars = {
 };
 
 const BookInfo: FunctionComponent = () => {
+  // test용 입니당
+  const writer = '롤링';
+  const year = '1997';
+  const genre = '판타지';
+  const publisher = '출판사';
+  const tag = '#' + '판타지';
+
   return (
-    <Paper elevation={0}>
-      <BookInfoContainer container>
-        <CardImg item>
-          <ImgCover
+    <Box>
+      <Box display="flex" flexDirection="row">
+        <BookCover mr={2}>
+          <BookImg
             alt="title"
             src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
           />
-        </CardImg>
-        <Grid item xs container direction="column">
-          <Grid item xs>
-            <CardContents>
-              <CardTitle> 책제목 </CardTitle>
-              <BookInfoArea> 작가 / 발행년도 / 장르 / 출판사 </BookInfoArea>
-              <BookTag>
-                <Chip label="#태그" /> <Chip label="#태그" />
-              </BookTag>
-              <BookRating>
-                <ReactStars {...RatingStars} />
-                <BookRatingScore>4.8</BookRatingScore>
-              </BookRating>
-            </CardContents>
-          </Grid>
-        </Grid>
-      </BookInfoContainer>
-    </Paper>
+        </BookCover>
+        <Box display="flex" flexDirection="column">
+          <BookTitle> 해리포터 마법사의 돌 </BookTitle>
+          <Box display="flex" flexDirection="row">
+            <BookInfoDetail> {writer} </BookInfoDetail>
+            <BookInfoDetail> {year} </BookInfoDetail>
+            <BookInfoDetail> {genre} </BookInfoDetail>
+            <BookInfoDetail> {publisher} </BookInfoDetail>
+          </Box>
+          <Box display="flex" flexDirection="row">
+            <BookTag label={tag} />
+            <BookTag label={tag} />
+            <BookTag label={tag} />
+          </Box>
+          <ReactStars {...RatingStars} />
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
