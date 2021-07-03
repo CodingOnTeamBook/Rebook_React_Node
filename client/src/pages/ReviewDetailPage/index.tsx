@@ -17,11 +17,12 @@ const MarginTop = styled.div`
 
 const ReviewDetailPage: FunctionComponent = () => {
   return (
-    <ReviewDetailContainer container direction="column" justify="center">
+    <ReviewDetailContainer container direction="column" alignItems="center">
       <BookInfo />
       <MarginTop />
       <UserReview />
       <MarginTop />
+      <h1>Comment</h1>
       <CommentList />
       <MarginTop />
       <AddComment />
