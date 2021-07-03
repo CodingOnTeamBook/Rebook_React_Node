@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import Favorite from '@material-ui/icons/Favorite';
 
 const UserReviewContainer = styled(Paper)`
-  padding: 25px 25px 25px 25px;
-  max-width: 50rem;
+  padding: 25px;
+  width: 100%;
 `;
 
 const UserImg = styled(Avatar)`

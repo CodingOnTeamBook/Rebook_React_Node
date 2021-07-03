@@ -6,6 +6,10 @@ import InputBase from '@material-ui/core/InputBase';
 import ArrowForwardOutlined from '@material-ui/icons/ArrowForwardOutlined';
 import styled from 'styled-components';
 
+const AddCommentContainer = styled(Box)`
+  width: 100%;
+`;
+
 const UserImg = styled(Avatar)`
   width: 50px;
   height: 50px;
@@ -18,7 +22,7 @@ const InputArea = styled(InputBase)`
 
 const AddComment: FunctionComponent = () => {
   return (
-    <Box>
+    <AddCommentContainer>
       <Box display="flex" flexDirection="row" alignItems="center">
         <UserImg
           alt="Mark Zuckerberg"
@@ -29,7 +33,7 @@ const AddComment: FunctionComponent = () => {
           <ArrowForwardOutlined />
         </IconButton>
       </Box>
-    </Box>
+    </AddCommentContainer>
   );
 };
 

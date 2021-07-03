@@ -9,6 +9,7 @@ import CommentList from '../../components/ReviewDetailComponent/CommentList';
 const ReviewDetailContainer = styled(Grid)`
   margin-top: 30px;
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 const MarginTop = styled.div`
@@ -17,12 +18,11 @@ const MarginTop = styled.div`
 
 const ReviewDetailPage: FunctionComponent = () => {
   return (
-    <ReviewDetailContainer container direction="column" alignItems="center">
+    <ReviewDetailContainer container direction="column" alignContent="center">
       <BookInfo />
       <MarginTop />
       <UserReview />
       <MarginTop />
-      <h1>Comment</h1>
       <CommentList />
       <MarginTop />
       <AddComment />

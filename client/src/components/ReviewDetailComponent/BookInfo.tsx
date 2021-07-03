@@ -3,6 +3,13 @@ import Chip from '@material-ui/core/Chip';
 import ReactStars from 'react-rating-stars-component';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
+const BookInfoContainer = styled(Paper)`
+  width: 100%;
+  padding: 25px;
+`;
 
 const BookCover = styled(Box)`
   width: 200px;
@@ -15,13 +22,15 @@ const BookImg = styled.img`
   object-fit: cover;
 `;
 
-const BookTitle = styled.h1`
-  margin-top: 0;
+const BookTitle = styled.span`
+  font-size: 30px;
   margin-bottom: 10px;
 `;
 
-const BookInfoDetail = styled.h3`
-  margin-top: 0px;
+const BookInfoDetail = styled.span`
+  /* width: 100%; */
+  margin-bottom: 15px;
+  font-size: 20px;
   &::after {
     content: '|';
   }
@@ -55,23 +64,25 @@ const RatingStars = {
 
 const BookInfo: FunctionComponent = () => {
   // test용 입니당
-  const writer = '롤링';
-  const year = '1997';
-  const genre = '판타지';
+  const writer = '작가';
+  const year = '발행년도';
+  const genre = '장르';
   const publisher = '출판사';
-  const tag = '#' + '판타지';
+  const tag = '#' + '태그';
 
   return (
-    <Box>
-      <Box display="flex" flexDirection="row">
-        <BookCover mr={2}>
-          <BookImg
-            alt="title"
-            src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
-          />
-        </BookCover>
+    <BookInfoContainer>
+      <Grid container>
+        <Grid item>
+          <BookCover mr={2}>
+            <BookImg
+              alt="title"
+              src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
+            />
+          </BookCover>
+        </Grid>
         <Box display="flex" flexDirection="column">
-          <BookTitle> 해리포터 마법사의 돌 </BookTitle>
+          <BookTitle> 해리포터 : 마법사의 돌 </BookTitle>
           <Box display="flex" flexDirection="row">
             <BookInfoDetail> {writer} </BookInfoDetail>
             <BookInfoDetail> {year} </BookInfoDetail>
@@ -85,8 +96,8 @@ const BookInfo: FunctionComponent = () => {
           </Box>
           <ReactStars {...RatingStars} />
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </BookInfoContainer>
   );
 };
 

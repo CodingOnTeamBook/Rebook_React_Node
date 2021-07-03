@@ -4,6 +4,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
 
+const CommentListContainer = styled(Box)`
+  width: 100%;
+`;
+
 const UserImg = styled(Avatar)`
   width: 50px;
   height: 50px;
@@ -24,7 +28,7 @@ const DividerBottom = styled(Divider)`
 
 const CommentList: FunctionComponent = () => {
   return (
-    <>
+    <CommentListContainer>
       <Box display="flex" flexDirection="row">
         <UserImg
           alt="Mark Zuckerberg"
@@ -52,7 +56,7 @@ const CommentList: FunctionComponent = () => {
         </Box>
       </Box>
       <DividerBottom />
-    </>
+    </CommentListContainer>
   );
 };
 
