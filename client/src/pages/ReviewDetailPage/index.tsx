@@ -16,13 +16,17 @@ const MarginTop = styled.div`
   margin-top: 20px;
 `;
 
+const MarginTopTop = styled.div`
+  margin-top: 30px;
+`;
+
 const ReviewDetailPage: FunctionComponent = () => {
   return (
     <ReviewDetailContainer container direction="column" alignContent="center">
       <BookInfo />
       <MarginTop />
       <UserReview />
-      <MarginTop />
+      <MarginTopTop />
       <CommentList />
       <MarginTop />
       <AddComment />

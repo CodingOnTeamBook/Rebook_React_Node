@@ -18,10 +18,9 @@ const UserImg = styled(Avatar)`
 
 const InputArea = styled(InputBase)`
   width: 100%;
-  padding: 10px;
-  outline: solid;
-  outline-width: medium;
-  outline-color: #808080;
+  padding: 15px;
+  border: 2px solid #808080;
+  border-radius: 15px;
 `;
 
 const AddComment: FunctionComponent = () => {
