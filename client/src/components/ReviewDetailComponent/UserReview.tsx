@@ -10,6 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReactStars from 'react-rating-stars-component';
 import Chip from '@material-ui/core/Chip';
+import Checkbox from '@material-ui/core/Checkbox';
+import { FavoriteBorder } from '@material-ui/icons';
 
 const UserReviewContainer = styled(Paper)`
   padding: 25px;
@@ -24,14 +26,6 @@ const UserImg = styled(Avatar)`
 
 const UserName = styled.span`
   font-size: 20px;
-`;
-
-const Review = styled.p`
-  overflow-y: visible;
-`;
-
-const Like = styled.span`
-  margin-left: 10px;
 `;
 
 const ReviewTime = styled.p`
@@ -56,10 +50,10 @@ const RatingStars = {
   activeColor: '#ffd700',
 };
 
-const ITEM_HEIGHT = 48;
-
 const UserReview: FunctionComponent = () => {
-  const test = '10';
+  const ITEM_HEIGHT = 48;
+  // 테스트용
+  const test = 10;
   const tag = '#' + '태그';
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -89,14 +83,14 @@ const UserReview: FunctionComponent = () => {
               <BookTag label={tag} />
               <BookTag label={tag} />
             </Box>
-            <Review>
+            <p>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            </Review>
+            </p>
             <ReviewTime> 2일전 </ReviewTime>
           </Box>
           <Box>
@@ -132,8 +126,12 @@ const UserReview: FunctionComponent = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Favorite color="error" />
-          <Like> {test}명이 리뷰를 좋아합니다. </Like>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            name="checkedH"
+          />
+          <span> {test}명이 리뷰를 좋아합니다. </span>
         </Box>
       </Box>
     </UserReviewContainer>
