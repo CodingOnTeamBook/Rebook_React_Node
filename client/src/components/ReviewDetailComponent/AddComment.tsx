@@ -18,6 +18,10 @@ const UserImg = styled(Avatar)`
 
 const InputArea = styled(InputBase)`
   width: 100%;
+  padding: 10px;
+  outline: solid;
+  outline-width: medium;
+  outline-color: #808080;
 `;
 
 const AddComment: FunctionComponent = () => {
@@ -28,7 +32,7 @@ const AddComment: FunctionComponent = () => {
           alt="Mark Zuckerberg"
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
-        <InputArea placeholder="댓글을 입력해주세요..." multiline rows="2" />
+        <InputArea placeholder="댓글을 입력해주세요..." multiline rows="3" />
         <IconButton type="submit">
           <ArrowForwardOutlined />
         </IconButton>
