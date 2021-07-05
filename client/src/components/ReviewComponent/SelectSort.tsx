@@ -7,7 +7,7 @@ const SelectSortContainer = styled.div`
 `;
 
 const SortButton = styled(Button)`
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};

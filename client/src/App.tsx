@@ -20,6 +20,7 @@ import RecommendBookPage from './pages/RecommendBookPage';
 import SignupPage from './pages/SignupPage';
 import WriteReviewPage from './pages/WriteReviewPage';
 import Footer from './components/common/Footer';
+import ReviewDetailPage from './pages/ReviewDetailPage';
 
 const MinHeightContainer = styled(Container)`
   min-height: 80vh;
@@ -46,6 +47,11 @@ const App: FunctionComponent = () => {
                   path="/review"
                   exact
                   component={Auth(ReviewPage, null)}
+                />
+                <Route
+                  path="/review/:id"
+                  exact
+                  component={Auth(ReviewDetailPage, null)}
                 />
                 <Route
                   path="/search"

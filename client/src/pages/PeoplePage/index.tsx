@@ -8,6 +8,7 @@ import GridItem from '../../components/common/GridItem';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
+  margin-bottom: 30px;
   flex-grow: 1;
 `;
 
@@ -22,13 +23,53 @@ const PeoplePage: FunctionComponent = () => {
         <SelectGenreTag tags={genreTags}></SelectGenreTag>
       </SelectButtonArea>
       <GridLayout>
-        <GridItem>
-          <Person />
-        </GridItem>
-        {/* 이렇게 가져와야해서 데이터 받아왔을 때 효율성 떨어지면 GridItem은 제거하도록 하겠습니다. */}
-        {/* <GridItem>
-          <Person />
-        </GridItem> */}
+        <>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+          <GridItem>
+            <Person />
+          </GridItem>
+        </>
       </GridLayout>
     </PeopleContainer>
   );
