@@ -124,4 +124,11 @@ export class UsersController {
       });
     });
   }
+
+  @Get('/myinfo/reviews')
+  async getReviews(@Body('kakaoId') kakaoId: string) {
+    console.log('kakaoId', kakaoId);
+    const ret = await this.usersService.getMyReviews(kakaoId);
+    return ret;
+  }
 }

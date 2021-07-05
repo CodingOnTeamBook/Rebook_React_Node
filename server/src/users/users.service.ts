@@ -4,8 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
 import { Genre } from '../entities/genre.entity';
+import { Review } from '../entities/review.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,9 @@ export class UsersService {
     private userRepository: Repository<User>,
     @InjectRepository(Genre)
     private genreRepository: Repository<Genre>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    @InjectRepository(Review)
+    private reviewRepository: Repository<Review>
   ) {}
 
   async usergenre(data: any): Promise<Genre[]> {
@@ -84,5 +87,14 @@ export class UsersService {
 
   async generateToken(id: string): Promise<string> {
     return this.jwtService.sign({ id });
+  }
+
+  // async getMyReviews(id: string): Promise<Review> {
+  //   return this.reviewRepository.findAll({ where: { userId: id } });
+  // });
+
+  async getMyReviews(id: string) {
+    const user = await this.userRepository.findOne({ where: { userId: id } });
+    return this.reviewRepository.find({ where: { user: user } });
   }
 }
