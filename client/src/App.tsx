@@ -21,6 +21,7 @@ import SignupPage from './pages/SignupPage';
 import WriteReviewPage from './pages/WriteReviewPage';
 import Footer from './components/common/Footer';
 import ReviewDetailPage from './pages/ReviewDetailPage';
+import PeopleDetailPage from './pages/PeopleDetailPage';
 
 const MinHeightContainer = styled(Container)`
   min-height: 80vh;
@@ -42,6 +43,11 @@ const App: FunctionComponent = () => {
                   path="/people"
                   exact
                   component={Auth(PeoplePage, null)}
+                />
+                <Route
+                  path="/people/:id"
+                  exact
+                  component={Auth(PeopleDetailPage, null)}
                 />
                 <Route
                   path="/review"

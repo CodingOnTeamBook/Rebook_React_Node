@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
@@ -68,9 +69,17 @@ const Info = styled.span`
 `;
 
 const Person: FunctionComponent = () => {
+  const id = 'test';
+  const history = useHistory();
+
   return (
     <>
-      <PaperContainer square>
+      <PaperContainer
+        square
+        onClick={() => {
+          history.push(`/people/${id}`);
+        }}
+      >
         <UserImg
           alt="nickname"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
