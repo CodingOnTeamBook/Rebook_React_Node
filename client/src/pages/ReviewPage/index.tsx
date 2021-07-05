@@ -20,6 +20,12 @@ const ReviewPage: FunctionComponent = () => {
           <GridItem>
             <ReviewMain />
           </GridItem>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
         </>
       </GridLayout>
     </ReviewContainer>

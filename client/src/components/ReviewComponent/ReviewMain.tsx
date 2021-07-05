@@ -7,14 +7,18 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 import { FavoriteBorder } from '@material-ui/icons';
 
+const ReviewMainContainer = styled(Box)`
+  width: 100%;
+`;
+
 const ImgCover = styled(Box)`
   width: 162px;
-  height: 200px;
 `;
 
 const CardImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
 const BookTitle = styled(Box)`
@@ -59,7 +63,7 @@ const ReviewMain: FunctionComponent = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" boxShadow={1}>
+      <ReviewMainContainer display="flex" flexDirection="column" boxShadow={1}>
         <Box
           display="flex"
           flexDirection="row"
@@ -80,7 +84,6 @@ const ReviewMain: FunctionComponent = () => {
             <BookTag>
               <Chip label="#태그" /> <Chip label="#태그" />
             </BookTag>
-            {/* 리뷰 부분 클릭 시 리뷰 모달 동작 */}
             <BookReview>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
               리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
@@ -97,7 +100,7 @@ const ReviewMain: FunctionComponent = () => {
             />
           </Like>
         </Box>
-      </Box>
+      </ReviewMainContainer>
     </>
   );
 };
