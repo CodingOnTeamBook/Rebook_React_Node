@@ -32,15 +32,15 @@ const TEST_BOOK_INFO = {
 const BookDetailContainer = styled.main`
   display: flex;
   justify-contents: center;
+  align-items: center;
   margin-top: 50px;
+  margin-bottom: 50px;
   padding: 2rem;
   background-color: ${(props) => props.theme.palette.white};
 
   .bookCover {
     border-radius: 16px;
-    width: 250px;
-    height: 350px;
-    box-shadow: 0 12px 16px ${(props) => props.theme.palette.gray};
+    box-shadow: 0 12px 16px ${(props) => props.theme.palette.grey};
   }
 
   .detailContainer {
@@ -55,10 +55,11 @@ const BookDetail: FunctionComponent = () => {
   return (
     <BookDetailContainer>
       <a href={link} target="blank">
-        <img className="bookCover" src={cover} />
+        <img className="bookCover" src={cover} alt={cover} />
       </a>
       <div className="detailContainer">
         <h1>{title}</h1>
+        <hr />
         <h2>
           <span>{author}</span>
           {' | '}
