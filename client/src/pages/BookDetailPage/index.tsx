@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import BookDetail from '../../components/BookDetail/BookDetail';
 import BookReview from '../../components/BookDetail/BookReview';
+import ReviewWriteBtn from '../../components/BookDetail/ReviewWriteBtn';
 
 import styled from 'styled-components';
 
@@ -15,6 +16,7 @@ const BookDetailPage: FunctionComponent = () => {
       <BookDetail />
       <h1>REVIEW</h1>
       <BookReview />
+      <ReviewWriteBtn />
     </Container>
   );
 };

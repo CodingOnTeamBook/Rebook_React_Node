@@ -74,7 +74,7 @@ const BookReview: FunctionComponent = () => {
     { name: '인기순', selected: false },
   ]);
 
-  // 📍 날짜순, 좋아요 순으로 정렬해보기위한 Test array data
+  // 📍 날짜순, 좋아요 순으로 정렬해보기위한 Test Array Data
   // 📍 실제 받아오는 데이터와 다름
   const REVIEW_TEST = [
     {
@@ -85,7 +85,7 @@ const BookReview: FunctionComponent = () => {
       },
       review: {
         contents:
-          '진짜 공부하기 싫어서 죽을 것만 같았는데 이 책을 읽고나니 정말 공부하기 싫어졌어요!',
+          '공부하기 싫어서 13500원 내고 책 샀는데 결국은 또 공부 해야돼서 짜증나요',
         date: 20210701,
         liked: 111,
         star: 3,
@@ -100,7 +100,7 @@ const BookReview: FunctionComponent = () => {
       },
       review: {
         contents:
-          '내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2',
+          '내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용',
         date: 20210702,
         liked: 2,
         star: 4,
@@ -131,11 +131,16 @@ const BookReview: FunctionComponent = () => {
     setTabs(tmp);
   };
 
-  const latestOrder = () =>
-    [...REVIEW_TEST].sort((a, b) => b.review.date - a.review.date);
+  const latestOrder = [...REVIEW_TEST].sort(
+    (a, b) => b.review.date - a.review.date
+  );
 
-  const popularityOrder = () =>
-    [...REVIEW_TEST].sort((a, b) => b.review.liked - a.review.liked);
+  const popularityOrder = [...REVIEW_TEST].sort(
+    (a, b) => b.review.liked - a.review.liked
+  );
+
+  // 더보기를 위한 글자수 제한
+  const MAX_LETTERS = 100;
 
   return (
     <Container>
@@ -153,7 +158,7 @@ const BookReview: FunctionComponent = () => {
       <ReviewContainer>
         {tabs[0].selected ? (
           <>
-            {latestOrder().map((review, index) => (
+            {latestOrder.map((review, index) => (
               <Review key={index}>
                 <ProfileImg src={review.user.userImg} />
                 <div className="review_contents">
@@ -161,7 +166,16 @@ const BookReview: FunctionComponent = () => {
                     {review.review.date} 에 {review.user.writer} 님이 올리신
                     글입니다.
                   </h3>
-                  <h4>{review.review.contents}</h4>
+                  <h4>
+                    {review.review.contents.length <= MAX_LETTERS ? (
+                      review.review.contents
+                    ) : (
+                      <>
+                        {review.review.contents.slice(0, MAX_LETTERS - 1)}
+                        <span> ....더보기</span>
+                      </>
+                    )}
+                  </h4>
                   <div className="review_comments">
                     <LikedIcon />
                     {review.review.liked}
@@ -174,7 +188,7 @@ const BookReview: FunctionComponent = () => {
           </>
         ) : (
           <>
-            {popularityOrder().map((review, index) => (
+            {popularityOrder.map((review, index) => (
               <Review key={index}>
                 <ProfileImg src={review.user.userImg} />
                 <div className="review_contents">
