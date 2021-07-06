@@ -17,6 +17,7 @@ const ProfileContainer = styled.div`
   padding: 1rem;
   right: 2rem;
   top: 5rem;
+  z-index: 999;
   background-color: ${(props) => props.theme.palette.darkgreen};
   h5 {
     margin: 0.7rem;

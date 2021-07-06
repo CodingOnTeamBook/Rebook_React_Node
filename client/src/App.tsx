@@ -20,6 +20,8 @@ import RecommendBookPage from './pages/RecommendBookPage';
 import SignupPage from './pages/SignupPage';
 import WriteReviewPage from './pages/WriteReviewPage';
 import Footer from './components/common/Footer';
+import ReviewDetailPage from './pages/ReviewDetailPage';
+import PeopleDetailPage from './pages/PeopleDetailPage';
 
 const MinHeightContainer = styled(Container)`
   min-height: 80vh;
@@ -33,19 +35,29 @@ const App: FunctionComponent = () => {
           <GlobalStyle />
           <BrowserRouter>
             <Header />
-            <MinHeightContainer>
-              <Switch>
+            <Switch>
+              <Route path="/my" exact component={Auth(MyPage, true)} />
+              <MinHeightContainer>
                 <Route path="/" exact component={Auth(LandingPage, null)} />
-                <Route path="/my" exact component={Auth(MyPage, true)} />
                 <Route
                   path="/people"
                   exact
                   component={Auth(PeoplePage, null)}
                 />
                 <Route
+                  path="/people/:id"
+                  exact
+                  component={Auth(PeopleDetailPage, null)}
+                />
+                <Route
                   path="/review"
                   exact
                   component={Auth(ReviewPage, null)}
+                />
+                <Route
+                  path="/review/:id"
+                  exact
+                  component={Auth(ReviewDetailPage, null)}
                 />
                 <Route
                   path="/search"
@@ -72,8 +84,8 @@ const App: FunctionComponent = () => {
                   exact
                   component={Auth(WriteReviewPage, true)}
                 />
-              </Switch>
-            </MinHeightContainer>
+              </MinHeightContainer>
+            </Switch>
             <Footer />
           </BrowserRouter>
         </StylesProvider>
