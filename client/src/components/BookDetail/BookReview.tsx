@@ -196,7 +196,16 @@ const BookReview: FunctionComponent = () => {
                     {review.review.date} 에 {review.user.writer} 님이 올리신
                     글입니다.
                   </h3>
-                  <h4>{review.review.contents}</h4>
+                  <h4>
+                    {review.review.contents.length <= MAX_LETTERS ? (
+                      review.review.contents
+                    ) : (
+                      <>
+                        {review.review.contents.slice(0, MAX_LETTERS - 1)}
+                        <span> ....더보기</span>
+                      </>
+                    )}
+                  </h4>
                   <div className="review_comments">
                     <LikedIcon />
                     {review.review.liked}
