@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';

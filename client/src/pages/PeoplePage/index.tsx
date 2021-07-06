@@ -27,48 +27,6 @@ const PeoplePage: FunctionComponent = () => {
           <GridItem>
             <Person />
           </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
         </>
       </GridLayout>
     </PeopleContainer>
