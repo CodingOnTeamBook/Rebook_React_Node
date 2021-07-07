@@ -93,8 +93,8 @@ export class UsersService {
   //   return this.reviewRepository.findAll({ where: { userId: id } });
   // });
 
-  async getMyReviews(id: string) {
-    const user = await this.userRepository.findOne({ where: { userId: id } });
+  async getMyReviews(nickname: string) {
+    const user = await this.userRepository.findOne({ where: { nickname } });
     return this.reviewRepository.find({ where: { user: user } });
   }
 }
