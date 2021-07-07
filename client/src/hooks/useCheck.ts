@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface IProps {
-  name: string;
+  name: string | number;
   initialValue: boolean;
 }
 

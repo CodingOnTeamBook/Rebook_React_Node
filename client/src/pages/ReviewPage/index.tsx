@@ -7,6 +7,7 @@ import GridItem from '../../components/common/GridItem';
 
 const ReviewContainer = styled.div`
   margin-top: 30px;
+  margin-bottom: 30px;
   flex-grow: 1;
 `;
 
@@ -15,9 +16,17 @@ const ReviewPage: FunctionComponent = () => {
     <ReviewContainer>
       <SelectSort />
       <GridLayout>
-        <GridItem>
-          <ReviewMain />
-        </GridItem>
+        <>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
+          <GridItem>
+            <ReviewMain />
+          </GridItem>
+        </>
       </GridLayout>
     </ReviewContainer>
   );
