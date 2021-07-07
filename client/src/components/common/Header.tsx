@@ -91,7 +91,7 @@ const Header: FunctionComponent = () => {
   };
 
   const SigninModalOpen = () => {
-    setIsSigninModalOpen(!isSigninModalOpen);
+    setIsSigninModalOpen((prev) => !prev);
   };
   return (
     <Container>
@@ -102,7 +102,7 @@ const Header: FunctionComponent = () => {
         {data?.isAuth ? (
           <ProfileIcon onClick={ProfileModalToggle} />
         ) : (
-          <LoginBtn onClick={SigninModalOpen}>로그인</LoginBtn>
+          <LoginBtn onClick={() => SigninModalOpen()}>로그인</LoginBtn>
         )}
       </HeaderContainer>
       <MenuContainer>

@@ -1,2 +1,4 @@
 node_modules
 .husky/
+config
+config.json
