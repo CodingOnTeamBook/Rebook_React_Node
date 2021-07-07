@@ -10,8 +10,12 @@ const SubTitle = styled.h2`
 `;
 
 const TagsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 30vh;
-  margin: 0 auto;
+  margin: 1rem;
   border-radius: 25px;
   box-shadow: 0 10px 20px ${(props) => props.theme.palette.gray},
     0 6px 6px ${(props) => props.theme.palette.gray};

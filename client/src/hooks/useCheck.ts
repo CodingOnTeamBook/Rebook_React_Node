@@ -7,9 +7,8 @@ interface IProps {
 
 const useCheck = ({ name, initialValue }: IProps) => {
   const [value, setValue] = useState<boolean>(initialValue);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setValue(!value);
+  const onChange = () => {
+    setValue((prev) => !prev);
   };
   if (value) {
     return { value, onChange, CheckedValue: { name } };
