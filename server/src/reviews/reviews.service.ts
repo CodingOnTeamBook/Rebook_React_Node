@@ -18,19 +18,19 @@ export class ReviewsService {
     private userRepository: Repository<User>
   ) {}
 
-  async loadReviews(skipnum: string): Promise<[Review[], number]> {
-    //console.log(skipnum); { 'skipnum': '0'} 이딴식으로나옴
-    //console.log(parseInt(skipnum), ' ', typeof parseInt(skipnum));
+  //리뷰 불러오기
+  async loadReviews(page: number): Promise<[Review[], number]> {
     const reviews = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      skip: 6,
-      take: 3,
+      skip: page,
+      take: 12,
     });
     return reviews;
   }
 
+  //태그 삽입
   async createTag(data: any): Promise<Tag[]> {
     const review = new Review();
     review.tags = [];
@@ -49,12 +49,11 @@ export class ReviewsService {
     return review.tags;
   }
 
+  /* 수정필요~~~
   async writeReview(
     userId: string,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
-    //console.log(typeof createReviewDto.score);
-    //console.log(typeof createReviewDto.isPublic);
     const review = new Review();
     review.text = createReviewDto.text;
     review.book_id = createReviewDto.bookId;
@@ -64,32 +63,5 @@ export class ReviewsService {
     review.user = await this.userRepository.findOne({ where: { userId } });
     console.log(review);
     return this.reviewRepository.save(review);
-  }
-
-  async updateReview(
-    id: string,
-    updateReviewDto: UpdateReviewDto
-  ): Promise<Review> {
-    const review = await this.reviewRepository.findOne({
-      where: { id: id },
-    });
-    if (updateReviewDto.text) {
-      review.text = updateReviewDto.text;
-    }
-
-    if (updateReviewDto.score) {
-      review.score = parseFloat(updateReviewDto.score);
-    }
-
-    if (updateReviewDto.isPublic) {
-      review.isPublic = updateReviewDto.isPublic;
-    }
-
-    return this.reviewRepository.save(review);
-  }
-
-  async removeReview(id: string): Promise<void> {
-    const review = await this.reviewRepository.findOne(id);
-    await this.reviewRepository.delete(review);
-  }
+  } */
 }

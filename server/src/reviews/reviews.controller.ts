@@ -4,6 +4,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Res,
   Patch,
@@ -19,11 +20,11 @@ import { AuthUser } from '../users/users.decorator';
 export class ReviewsController {
   constructor(private reviewService: ReviewsService) {}
 
-  @Get()
-  loadreviews(@Body() skipnum: string) {
-    return this.reviewService.loadReviews(skipnum);
+  @Get(':page')
+  loadreviews(@AuthUser() data: any, @Param() page: number) {
+    return this.reviewService.loadReviews(page);
   }
-
+  /*
   @Post('/write')
   write(
     @AuthUser() data: any,
@@ -31,6 +32,7 @@ export class ReviewsController {
     tag: string,
     @Res() res
   ) {
+    console.log(data);
     if (!data.userId) {
       throw new HttpException(
         '유효하지 않은 요청입니다.',
@@ -52,7 +54,7 @@ export class ReviewsController {
           error: err,
         });
       });
-  }
+  }*/
 
   //@Post('/update')
   //update(@Body())

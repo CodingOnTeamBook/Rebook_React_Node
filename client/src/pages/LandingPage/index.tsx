@@ -2,7 +2,8 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import CarouselComponent from '../../components/CarouselComponent';
 import SearchForm from '../../components/SearchForm';
-import PopularBooks from '../../components/PopularBooks';
+import RecommendedBooks from '../../components/RecommendedBooks';
+import PopulateReview from '../../components/PopulateReviews';
 import { CheckNickname, SearchByNickname } from '../../API/USER_PUBLIC_API';
 
 const LandingContainer = styled.main`
@@ -18,8 +19,8 @@ const LandingPage: FunctionComponent = () => {
       <LandingContainer>
         <CarouselComponent />
         <SearchForm />
-        <PopularBooks />
-        <div>인기 리뷰 컴포넌트</div>
+        <RecommendedBooks />
+        <PopulateReview />
       </LandingContainer>
     </>
   );

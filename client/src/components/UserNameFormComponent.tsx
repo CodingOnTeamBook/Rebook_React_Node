@@ -1,8 +1,9 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { LineGreenBtn } from '../style/componentStyled';
 import useInput from '../hooks/useInput';
+import { CheckNickname } from '../API/USER_PUBLIC_API';
 
 const CheckBtn = styled(LineGreenBtn)`
   position: static;
@@ -12,32 +13,46 @@ const CheckBtn = styled(LineGreenBtn)`
 
 const UserNameForm = forwardRef((props, ref) => {
   const { value, onChange } = useInput({ initialValue: '' });
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    // To Do
-    // 닉네임 중복 검사
+  const [isPossible, SetIsPossible] = useState<boolean>(false);
+  const handleSubmit = () => {
+    if (value != '') {
+      CheckNickname(value).then((response) => {
+        if (!response.success) {
+          alert('중복 검사가 완료되지 않았습니다. 다시 시도해주세요.');
+        }
+        SetIsPossible(response.results);
+      });
+    } else {
+      alert('닉네임을 입력 후 시도해주세요.');
+    }
   };
   useImperativeHandle(ref, () => ({
-    getInputData: () => value,
+    getInputData: () => {
+      if (isPossible) return value;
+    },
   }));
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <label>
         <TextField
           autoFocus
-          helperText={'닉네임을 입력하세요'}
           label="user name"
           type="text"
           variant="outlined"
           onChange={onChange}
           name="customer"
           value={value}
+          InputProps={{
+            readOnly: isPossible,
+          }}
         />
       </label>
-      <CheckBtn type="submit" variant="outlined">
-        중복검사
-      </CheckBtn>
-    </form>
+      {!isPossible && (
+        <CheckBtn type="submit" variant="outlined" onClick={handleSubmit}>
+          중복검사
+        </CheckBtn>
+      )}
+    </div>
   );
 });
 

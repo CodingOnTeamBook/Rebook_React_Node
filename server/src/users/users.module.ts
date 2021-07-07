@@ -15,7 +15,6 @@ import { RequestMethod } from '@nestjs/common';
 
 @Module({
   imports: [
-    //관계있는 테이블 무좍건 다 불러와야함ㅜ
     TypeOrmModule.forFeature([User, Genre, Review, Comment, Like, Tag]),
     JwtModule.register({
       secret: jwtKEY.secretKey,

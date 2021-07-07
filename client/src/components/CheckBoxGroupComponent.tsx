@@ -17,12 +17,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
 `;
 
 const FormControlContainer = styled(FormControl)`
-  margin: 3rem;
+  margin: 1rem 0;
 `;
 
 interface IProps {
@@ -35,14 +33,19 @@ interface ITag {
 }
 
 const CheckboxesGroup = forwardRef(({ tags }: IProps, ref) => {
-  const tempList: Array<string> = [];
+  const tempList: Array<string | number> = [];
   const renderFormControlLabel = tags.map((tag: ITag) => {
     const { value, onChange, CheckedValue } = useCheck({
-      name: tag.value,
+      name: tag.type,
       initialValue: false,
     });
     if (CheckedValue) {
-      tempList.push(CheckedValue.name);
+      if (tempList.length > 2) {
+        onChange();
+        alert('3개를 초과할 수 없습니다.');
+      } else {
+        tempList.push(CheckedValue.name);
+      }
     }
     return (
       <FormControlLabel
@@ -61,7 +64,7 @@ const CheckboxesGroup = forwardRef(({ tags }: IProps, ref) => {
     );
   });
   useImperativeHandle(ref, () => ({
-    getCheckData: () => tempList,
+    getCheckData: () => tempList.join(),
   }));
   return (
     <Container>
