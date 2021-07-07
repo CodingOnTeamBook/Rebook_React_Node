@@ -17,7 +17,7 @@ import { RequestMethod } from '@nestjs/common';
   imports: [
     TypeOrmModule.forFeature([User, Genre, Review, Comment, Like, Tag]),
     JwtModule.register({
-      secret: jwtKEY.secreteKey,
+      secret: jwtKEY.secretKey,
       signOptions: { expiresIn: '1h' },
     }),
   ],

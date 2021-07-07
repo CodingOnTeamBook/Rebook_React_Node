@@ -5,6 +5,7 @@ import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -57,7 +58,7 @@ export class ReviewsService {
     review.text = createReviewDto.text;
     review.book_id = createReviewDto.bookId;
     review.score = parseFloat(createReviewDto.score);
-    review.public = createReviewDto.public;
+    review.isPublic = createReviewDto.isPublic;
     review.tags = await this.createTag(createReviewDto.tag);
     review.user = await this.userRepository.findOne({ where: { userId } });
     console.log(review);
