@@ -82,7 +82,7 @@ const App: FunctionComponent = () => {
                 <Route
                   path="/write"
                   exact
-                  component={Auth(WriteReviewPage, true)}
+                  component={Auth(WriteReviewPage, null)}
                 />
               </MinHeightContainer>
             </Switch>
