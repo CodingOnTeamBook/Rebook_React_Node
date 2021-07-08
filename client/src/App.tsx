@@ -36,55 +36,57 @@ const App: FunctionComponent = () => {
           <BrowserRouter>
             <Header />
             <Switch>
-              <Route path="/my" exact component={Auth(MyPage, true)} />
-              <MinHeightContainer>
-                <Route path="/" exact component={Auth(LandingPage, null)} />
-                <Route
-                  path="/people"
-                  exact
-                  component={Auth(PeoplePage, null)}
-                />
-                <Route
-                  path="/people/:id"
-                  exact
-                  component={Auth(PeopleDetailPage, null)}
-                />
-                <Route
-                  path="/review"
-                  exact
-                  component={Auth(ReviewPage, null)}
-                />
-                <Route
-                  path="/review/:id"
-                  exact
-                  component={Auth(ReviewDetailPage, null)}
-                />
-                <Route
-                  path="/search"
-                  exact
-                  component={Auth(SearchPage, null)}
-                />
-                <Route
-                  path="/recommend"
-                  exact
-                  component={Auth(RecommendBookPage, null)}
-                />
-                <Route
-                  path="/book/:id"
-                  exact
-                  component={Auth(BookDetailPage, null)}
-                />
-                <Route
-                  path="/signup"
-                  exact
-                  component={Auth(SignupPage, false)}
-                />
-                <Route
-                  path="/write"
-                  exact
-                  component={Auth(WriteReviewPage, null)}
-                />
-              </MinHeightContainer>
+              <>
+                <Route path="/my" exact component={Auth(MyPage, true)} />
+                <MinHeightContainer>
+                  <Route path="/" exact component={Auth(LandingPage, null)} />
+                  <Route
+                    path="/people"
+                    exact
+                    component={Auth(PeoplePage, null)}
+                  />
+                  <Route
+                    path="/people/:id"
+                    exact
+                    component={Auth(PeopleDetailPage, null)}
+                  />
+                  <Route
+                    path="/review"
+                    exact
+                    component={Auth(ReviewPage, null)}
+                  />
+                  <Route
+                    path="/review/:id"
+                    exact
+                    component={Auth(ReviewDetailPage, null)}
+                  />
+                  <Route
+                    path="/search"
+                    exact
+                    component={Auth(SearchPage, null)}
+                  />
+                  <Route
+                    path="/recommend"
+                    exact
+                    component={Auth(RecommendBookPage, null)}
+                  />
+                  <Route
+                    path="/book/:id"
+                    exact
+                    component={Auth(BookDetailPage, null)}
+                  />
+                  <Route
+                    path="/signup"
+                    exact
+                    component={Auth(SignupPage, false)}
+                  />
+                  <Route
+                    path="/write"
+                    exact
+                    component={Auth(WriteReviewPage, true)}
+                  />
+                </MinHeightContainer>
+              </>
             </Switch>
             <Footer />
           </BrowserRouter>

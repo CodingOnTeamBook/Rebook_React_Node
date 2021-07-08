@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
 interface IProps {
-  name: string;
+  name: string | number;
   initialValue: boolean;
 }
 
 const useCheck = ({ name, initialValue }: IProps) => {
   const [value, setValue] = useState<boolean>(initialValue);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setValue(!value);
+  const onChange = () => {
+    setValue((prev) => !prev);
   };
   if (value) {
     return { value, onChange, CheckedValue: { name } };

@@ -9,7 +9,7 @@ const GridItem: FunctionComponent<IGridItemProps> = ({
   children,
 }: IGridItemProps) => {
   return (
-    <Grid item sm={4} xs={12} zeroMinWidth>
+    <Grid item lg={4} md={6} xs={12} zeroMinWidth>
       {children}
     </Grid>
   );

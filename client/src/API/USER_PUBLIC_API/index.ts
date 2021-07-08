@@ -8,7 +8,9 @@ import {
 export async function CheckNickname(
   nickname: string
 ): Promise<ICheckNickNameResponse> {
-  const response = await axios.get(`${USER_SERVER}/check/${nickname}`);
+  const response = await axios.get<ICheckNickNameResponse>(
+    `${USER_SERVER}/check/${nickname}`
+  );
   return response.data;
 }
 

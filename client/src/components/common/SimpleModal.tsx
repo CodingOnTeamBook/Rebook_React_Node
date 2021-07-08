@@ -1,6 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 const ModalBackground = styled(Modal)`
   display: flex;
@@ -16,7 +17,7 @@ const ModalContentsContainer = styled.div`
 
 interface IModalProps {
   open: boolean;
-  setOpen: any; // function(event: object, reason: string) => void 참고
+  setOpen: any;
   children: JSX.Element;
 }
 
@@ -25,8 +26,9 @@ const SimpleModal: FunctionComponent<IModalProps> = ({
   setOpen,
   children,
 }: IModalProps) => {
+  const location = useLocation();
   return (
-    <ModalBackground open={open} onClose={setOpen}>
+    <ModalBackground open={open} onClose={() => setOpen()}>
       <ModalContentsContainer>{children}</ModalContentsContainer>
     </ModalBackground>
   );

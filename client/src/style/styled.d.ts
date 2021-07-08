@@ -7,5 +7,6 @@ export interface DefaultTheme {
         green: string;
         darkgreen: string;
         yellow: string;
+        darkgray: string;
     }
 }
