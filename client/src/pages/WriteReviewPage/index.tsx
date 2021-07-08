@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import BookDetail from '../../components/common/BookDetail';
 import TagsInput from '../../components/WriteReviewComponent/TagsInput';
 import WriteEditor from '../../components/WriteReviewComponent/WriteEditor';
+import StarRate from '../../components/WriteReviewComponent/StarRate';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ const WriteReviewPage: FunctionComponent = () => {
       <BookDetail />
       <WriteEditor />
       <TagsInput />
+      <StarRate />
     </Container>
   );
 };
