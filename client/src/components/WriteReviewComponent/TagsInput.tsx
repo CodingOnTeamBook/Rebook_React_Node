@@ -10,6 +10,7 @@ const InputWrapper = styled.div`
   width: 100%;
   height: 50px;
   background-color: white;
+  border: 1px solid #ccc;
 `;
 
 const TagWrapper = styled.ul`
@@ -18,7 +19,6 @@ const TagWrapper = styled.ul`
   display: flex;
   align-items: center;
   list-style: none;
-  height: 50px;
   background-color: white;
 
   .tag {

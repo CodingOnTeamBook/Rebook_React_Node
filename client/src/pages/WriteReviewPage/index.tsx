@@ -8,15 +8,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 10vh auto;
   height: 200vh;
-  padding: 3rem;
+  padding: 2rem;
   background-color: ${(props) => props.theme.palette.white};
+`;
+
+const Title = styled.h1`
+  margin-bottom: 0;
+  background-color: white;
 `;
 
 const WriteReviewPage: FunctionComponent = () => {
   return (
     <Container>
-      <h1>리뷰 쓰셈</h1>
+      <Title>리뷰 작성</Title>
       <BookDetail />
       <WriteEditor />
       <TagsInput />

@@ -6,8 +6,6 @@ import 'react-quill/dist/quill.snow.css';
 const Container = styled.div`
   width: 100%;
   background-color: white;
-  height: inherit;
-  overflow: auto;
 
   .quill {
     height: 60%;
@@ -15,6 +13,10 @@ const Container = styled.div`
 
   .quill-editor {
     height: 100%;
+  }
+
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    height: 70vh;
   }
 `;
 
