@@ -20,7 +20,7 @@ export class UsersService {
   async usergenre(data: any): Promise<Genre[]> {
     const user = new User();
     user.genres = [];
-    const dataarr = data.split(' ');
+    const dataarr = data.split(',');
     for (data of dataarr) {
       const usergenre = await this.genreRepository.findOne({
         where: { id: data }, //id를 넘겨주냐, title을 넘겨주냐에따라 바뀐당

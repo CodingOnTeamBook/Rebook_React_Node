@@ -37,7 +37,7 @@ const App: FunctionComponent = () => {
             <Header />
             <Switch>
               <>
-                <Route path="/my" exact component={Auth(MyPage, true)} />
+                <Route path="/my" exact component={Auth(MyPage, null)} />
                 <MinHeightContainer>
                   <Route path="/" exact component={Auth(LandingPage, null)} />
                   <Route
