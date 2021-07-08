@@ -5,6 +5,7 @@ import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { uploadBookCover, uploadReviewHtml } from './reviews.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -17,23 +18,24 @@ export class ReviewsService {
     private userRepository: Repository<User>
   ) {}
 
-  //리뷰 불러오기
-  async loadReviews(page: number): Promise<[Review[], number]> {
+  /*최신순으로 리뷰 불러오기
+  async loadReviews(p: any): Promise<[Review[], number]> {
+    const page = parseInt(p.p);
     const reviews = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      skip: page,
+      skip: page === 1 ? 0 : page - 1,
       take: 12,
     });
     return reviews;
-  }
+  }*/
 
   //태그 삽입
   async createTag(data: any): Promise<Tag[]> {
     const review = new Review();
     review.tags = [];
-    const dataarr = data.split(' ');
+    const dataarr = data.split(',');
     for (data of dataarr) {
       const exTag = await this.tagRepository.findOne({ where: { tag: data } });
       if (exTag) {
@@ -48,19 +50,23 @@ export class ReviewsService {
     return review.tags;
   }
 
-  /* 수정필요~~~
+  //리뷰 작성
   async writeReview(
-    userId: string,
+    reviewfiles,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
     const review = new Review();
-    review.text = createReviewDto.text;
-    review.book_id = createReviewDto.bookId;
+    review.text = await uploadReviewHtml(reviewfiles['reviewHtml']);
+    review.coverImg = await uploadBookCover(reviewfiles['coverImg']);
+    review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
-    review.public = createReviewDto.public;
+    review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
+    review.summary = createReviewDto.summary;
     review.tags = await this.createTag(createReviewDto.tag);
-    review.user = await this.userRepository.findOne({ where: { userId } });
+    review.user = await this.userRepository.findOne({
+      nickname: createReviewDto.writer,
+    });
     console.log(review);
     return this.reviewRepository.save(review);
-  } */
+  }
 }
