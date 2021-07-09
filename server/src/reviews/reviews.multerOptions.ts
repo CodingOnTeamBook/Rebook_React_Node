@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { diskStorage } from 'multer';
 //import { existsSync, mkdirSync } from 'fs';
-import { REVIEW_UPLOADPATH, COVER_UPLOADPATH } from 'src/config/upload.config';
 import * as path from 'path';
+
+const REVIEW_UPLOADPATH = 'review/text';
+const COVER_UPLOADPATH = 'review/cover';
 
 export const reviewmulterOptions = {
   storage: diskStorage({

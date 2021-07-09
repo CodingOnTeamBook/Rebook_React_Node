@@ -27,6 +27,12 @@ export class ReviewsController {
     return this.reviewService.loadReviews(page);
   }*/
 
+  //하나의 리뷰 자세히 불러오기
+  @Get('/detail')
+  loadDetailReview(@Body() reviewid: string) {
+    return this.reviewService.detailReview(reviewid);
+  }
+
   //리뷰 작성
   @Post('/write')
   @UseInterceptors(
@@ -47,7 +53,7 @@ export class ReviewsController {
     if (!data.userId) {
       throw new HttpException(
         '유효하지 않은 요청입니다.',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.UNAUTHORIZED
       );
     }
     this.reviewService

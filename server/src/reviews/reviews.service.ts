@@ -1,5 +1,6 @@
-import { Injectable, ParseBoolPipe } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, ParseBoolPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
@@ -15,7 +16,9 @@ export class ReviewsService {
     @InjectRepository(Tag)
     private tagRepository: Repository<Tag>,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>
   ) {}
 
   /*최신순으로 리뷰 불러오기
@@ -30,6 +33,18 @@ export class ReviewsService {
     });
     return reviews;
   }*/
+
+  //하나의 리뷰 자세히 불러오기
+  async detailReview(reviewid: any): Promise<any> {
+    const id = parseInt(reviewid.reviewid);
+    const review = await this.reviewRepository.find({
+      where: { id },
+      relations: ['tags', 'comments'],
+    });
+    if (review.length === 0)
+      throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+    return review;
+  }
 
   //태그 삽입
   async createTag(data: any): Promise<Tag[]> {
