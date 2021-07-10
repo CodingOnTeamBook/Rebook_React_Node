@@ -1,18 +1,18 @@
 import React, { FunctionComponent } from 'react';
 import Grid from '@material-ui/core/Grid';
 
-interface IGridProps {
+interface IGridItemProps {
   children: JSX.Element;
 }
 
-const GridLayout: FunctionComponent<IGridProps> = ({
+const GridItem: FunctionComponent<IGridItemProps> = ({
   children,
-}: IGridProps) => {
+}: IGridItemProps) => {
   return (
-    <Grid container spacing={3}>
+    <Grid item lg={2} md={3} xs={6} zeroMinWidth>
       {children}
     </Grid>
   );
 };
 
-export default GridLayout;
+export default GridItem;

@@ -16,7 +16,6 @@ import PeoplePage from './pages/PeoplePage';
 import ReviewPage from './pages/ReviewPage';
 import SearchPage from './pages/SearchPage';
 import BookDetailPage from './pages/BookDetailPage';
-import RecommendBookPage from './pages/RecommendBookPage';
 import SignupPage from './pages/SignupPage';
 import WriteReviewPage from './pages/WriteReviewPage';
 import Footer from './components/common/Footer';
@@ -64,11 +63,6 @@ const App: FunctionComponent = () => {
                     path="/search"
                     exact
                     component={Auth(SearchPage, null)}
-                  />
-                  <Route
-                    path="/recommend"
-                    exact
-                    component={Auth(RecommendBookPage, null)}
                   />
                   <Route
                     path="/book/:id"

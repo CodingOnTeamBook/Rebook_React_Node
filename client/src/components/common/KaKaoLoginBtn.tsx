@@ -30,6 +30,11 @@ const KakaoLoginBtn: FunctionComponent = () => {
           state: Data,
         });
       }
+      if (data.type == 1) {
+        axios.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${data.accessToken}`;
+      }
       window.location.reload();
     });
   };
