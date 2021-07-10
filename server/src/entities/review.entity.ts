@@ -43,8 +43,8 @@ export class Review {
   @Column('int', { name: 'view_count', default: 0 })
   view_count: number;
 
-  //공개 여부
-  @Column('boolean', { name: 'is_public', default: true })
+  // 공개 여부
+  @Column('boolean', { name: 'isPublic', default: true })
   isPublic: boolean;
 
   //좋아요 수

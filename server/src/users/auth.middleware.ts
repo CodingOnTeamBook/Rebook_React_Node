@@ -30,10 +30,12 @@ export class AuthMiddleware implements NestMiddleware {
         next();
       } catch (err) {
         if (err.name === 'TokenExpiredError') {
-          throw new HttpException(
-            'Sorry, your token expired',
-            HttpStatus.UNAUTHORIZED
-          );
+          res.status(HttpStatus.OK).json({
+            success: true,
+            isAuth: false,
+            type: 1,
+          });
+          next();
         }
         next();
       }
