@@ -48,19 +48,18 @@ export class ReviewsService {
     return review.tags;
   }
 
-  /* 수정필요~~~
-  async writeReview(
-    userId: string,
-    createReviewDto: CreateReviewDto
-  ): Promise<Review> {
-    const review = new Review();
-    review.text = createReviewDto.text;
-    review.book_id = createReviewDto.bookId;
-    review.score = parseFloat(createReviewDto.score);
-    review.public = createReviewDto.public;
-    review.tags = await this.createTag(createReviewDto.tag);
-    review.user = await this.userRepository.findOne({ where: { userId } });
-    console.log(review);
-    return this.reviewRepository.save(review);
-  } */
+  // async writeReview(
+  //   userId: string,
+  //   createReviewDto: CreateReviewDto
+  // ): Promise<Review> {
+  //   const review = new Review();
+  //   review.text = createReviewDto.text;
+  //   review.book_id = createReviewDto.bookId;
+  //   review.score = parseFloat(createReviewDto.score);
+  //   review.public = createReviewDto.public;
+  //   review.tags = await this.createTag(createReviewDto.tag);
+  //   review.user = await this.userRepository.findOne({ where: { userId } });
+  //   console.log(review);
+  //   return this.reviewRepository.save(review);
+  // }
 }

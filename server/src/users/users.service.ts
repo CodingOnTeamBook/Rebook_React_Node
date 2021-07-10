@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Genre } from '../entities/genre.entity';
+import { Comment } from '../entities/comment.entity';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +15,8 @@ export class UsersService {
     private userRepository: Repository<User>,
     @InjectRepository(Genre)
     private genreRepository: Repository<Genre>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
     private readonly jwtService: JwtService
   ) {}
 
@@ -50,6 +53,10 @@ export class UsersService {
     return this.userRepository.findOne({ where: { nickname } });
   }
 
+  async getAllComment(nickname: string): Promise<Comment[]> {
+    return this.commentRepository.find({ where: { nickname } });
+  }
+
   async checkNick(nickname: string): Promise<boolean> {
     const exNick = await this.userRepository.findOne({ where: { nickname } });
     if (exNick) return true;
@@ -64,8 +71,11 @@ export class UsersService {
     return false;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { userId: id } });
+  async updateUser(
+    nickname: string,
+    updateUserDto: UpdateUserDto
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { nickname } });
     if (updateUserDto.info) {
       user.info = updateUserDto.info;
     }
