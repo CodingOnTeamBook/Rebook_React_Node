@@ -8,6 +8,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 2rem;
   width: 90%;
   height: 100%;
 `;
@@ -61,6 +62,11 @@ const TextArea = styled.textarea`
   padding: 1rem;
 `;
 
+const MyProfileImg = styled(ProfileImg)`
+  padding: 0.2rem;
+  border: 2px solid ${(props) => props.theme.palette.green};
+`;
+
 const Title = styled.h1`
   line-height: 1.4;
 `;
@@ -78,7 +84,7 @@ const MyInfo = () => {
     <Container>
       <Title>내 정보</Title>
       <MainInfo>
-        <ProfileImg src={imgUrl} />
+        <MyProfileImg src={imgUrl} />
         <DisabledArea>
           <DisabledInfoArea>
             <label>닉네임</label>

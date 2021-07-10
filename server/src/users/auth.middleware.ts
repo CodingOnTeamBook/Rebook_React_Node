@@ -18,7 +18,9 @@ export class AuthMiddleware implements NestMiddleware {
     const authHeaders = req.headers.cookie;
     if (authHeaders && (authHeaders as string).split('=')[1]) {
       try {
-        const token = authHeaders.split('=')[1];
+        const arr = authHeaders.split(';');
+        const temp = arr.map((item) => item.split('='));
+        const token = temp.filter((item) => item[0] == ' user_Access')[0][1];
         const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
         const user = await this.usersRepository.findOne({
           where: { userId: decoded.id },

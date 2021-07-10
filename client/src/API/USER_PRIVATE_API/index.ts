@@ -15,7 +15,7 @@ export async function Signup(
   return response.data;
 }
 
-export async function login(kakaoId: string): Promise<ILoginResponse> {
+export async function login(kakaoId: number): Promise<ILoginResponse> {
   const response = await axios.post(`${USER_SERVER}/login`, { kakaoId });
   return response.data;
 }

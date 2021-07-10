@@ -25,12 +25,7 @@ const SideMenuContainer = styled.div`
 const ContentsContainer = styled.div`
   flex: 3;
   min-height: 100%;
-  margin: 1rem;
   min-width: 70%;
-  display: flex;
-  justify-content: center;
-  border-radius: 16px;
-  border: 2px solid ${(props) => props.theme.palette.green};
 `;
 
 type activeTab = 0 | 1 | 2 | 3 | 4;
