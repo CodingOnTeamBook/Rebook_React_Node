@@ -124,4 +124,11 @@ export class UsersController {
       });
     });
   }
+
+  @Get('/myinfo/reviews/:nickname')
+  async getReviews(@Param('nickname') nickname: string) {
+    console.log('nickname', nickname);
+    const ret = await this.usersService.getMyReviews(nickname);
+    return ret;
+  }
 }
