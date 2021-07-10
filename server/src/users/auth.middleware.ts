@@ -19,7 +19,7 @@ export class AuthMiddleware implements NestMiddleware {
     if (authHeaders && (authHeaders as string).split('=')[1]) {
       try {
         const token = authHeaders.split('=')[1];
-        const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
+        const decoded: any = jwt.verify(token, jwtKEY.secretKey);
         const user = await this.usersRepository.findOne({
           where: { userId: decoded.id },
         });
