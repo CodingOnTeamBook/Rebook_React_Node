@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
-  JoinTable, 
+  JoinTable,
 } from 'typeorm';
 import { Tag } from './tag.entity';
 import { User } from './user.entity';
@@ -58,7 +58,7 @@ export class Review {
   user: User;
 
   @OneToMany(() => Comment, (comment) => comment.review, { cascade: true })
-  comments: Comment[];
+  comments: Comment;
 
   @OneToMany(() => Like, (like) => like.review, { cascade: true })
   likes: Like[];

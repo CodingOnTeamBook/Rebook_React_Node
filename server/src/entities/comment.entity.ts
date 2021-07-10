@@ -13,9 +13,12 @@ import { Review } from './review.entity';
 @Entity('comment', { schema: 'Rebook' })
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: number;
+  commentid: number;
 
-  @Column('text', { name: 'text' })
+  @Column('varchar', { nullable: false })
+  nickname: string;
+
+  @Column('text', { nullable: false })
   text: string;
 
   @CreateDateColumn()

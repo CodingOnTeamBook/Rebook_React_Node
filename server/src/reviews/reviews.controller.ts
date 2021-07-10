@@ -21,37 +21,37 @@ export class ReviewsController {
   loadreviews(@AuthUser() data: any, @Param() page: number) {
     return this.reviewService.loadReviews(page);
   }
-  /*
-  @Post('/write')
-  write(
-    @AuthUser() data: any,
-    @Body() createReviewDto: CreateReviewDto,
-    tag: string,
-    @Res() res
-  ) {
-    console.log(data);
-    if (!data.userId) {
-      throw new HttpException(
-        '유효하지 않은 요청입니다.',
-        HttpStatus.BAD_REQUEST
-      );
-    }
-    console.log(data);
-    this.reviewService
-      .writeReview(data.userId, createReviewDto)
-      .then((value: Review) => {
-        return res.status(HttpStatus.OK).json({
-          success: true,
-          review: value,
-        });
-      })
-      .catch((err) => {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          success: false,
-          error: err,
-        });
-      });
-  }*/
+
+  // @Post('/write')
+  // write(
+  //   @AuthUser() data: any,
+  //   @Body() createReviewDto: CreateReviewDto,
+  //   tag: string,
+  //   @Res() res
+  // ) {
+  //   console.log(data);
+  //   if (!data.userId) {
+  //     throw new HttpException(
+  //       '유효하지 않은 요청입니다.',
+  //       HttpStatus.BAD_REQUEST
+  //     );
+  //   }
+  //   console.log(data);
+  //   this.reviewService
+  //     .writeReview(data.userId, createReviewDto)
+  //     .then((value: Review) => {
+  //       return res.status(HttpStatus.OK).json({
+  //         success: true,
+  //         review: value,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       return res.status(HttpStatus.BAD_REQUEST).json({
+  //         success: false,
+  //         error: err,
+  //       });
+  //     });
+  // }
 
   //@Post('/update')
   //update(@Body())
