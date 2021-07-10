@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { Genre } from '../entities/genre.entity';
 import { Review } from '../entities/review.entity';
+import { Like } from '../entities/like.entity';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -17,7 +18,9 @@ export class UsersService {
     private genreRepository: Repository<Genre>,
     private readonly jwtService: JwtService,
     @InjectRepository(Review)
-    private reviewRepository: Repository<Review>
+    private reviewRepository: Repository<Review>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>
   ) {}
 
   async usergenre(data: any): Promise<Genre[]> {
@@ -96,5 +99,10 @@ export class UsersService {
   async getMyReviews(nickname: string) {
     const user = await this.userRepository.findOne({ where: { nickname } });
     return this.reviewRepository.find({ where: { user: user } });
+  }
+
+  async getMyLikes(nickname: string) {
+    const user = await this.userRepository.findOne({ where: { nickname } });
+    return this.likeRepository.find({ where: { user: user } });
   }
 }
