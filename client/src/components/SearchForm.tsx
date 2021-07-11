@@ -35,22 +35,22 @@ const SearchForm: FunctionComponent = () => {
   const [inputValue, setInputValue] = useState('');
   const inputRef: React.MutableRefObject<any> = useRef();
 
-  function OnChange(
+  const OnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) {
+  ) => {
     const searchKeyword = e.target.value;
     setInputValue(searchKeyword);
-  }
+  };
 
-  function onSubmit(e: any) {
+  const onSubmit = (e: any) => {
     // To do : 전송
     alert(`inputValue : ${inputValue}`);
-  }
+  };
 
-  function onReset() {
+  const onReset = () => {
     setInputValue('');
     inputRef.current.focus();
-  }
+  };
 
   return (
     <Wrapper>
@@ -61,7 +61,7 @@ const SearchForm: FunctionComponent = () => {
           type="text"
           inputRef={inputRef}
           fullWidth
-          placeholder="검색어를 입력하세요"
+          placeholder="검색할 책 또는 리뷰어를 입력하세요"
           onChange={(e) => OnChange(e)}
         />
         {inputValue.length > 0 && <CancleBtn onClick={() => onReset()} />}

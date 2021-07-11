@@ -14,13 +14,11 @@ const LandingContainer = styled.main`
 
 const LandingPage: FunctionComponent = () => {
   return (
-    <>
-      <LandingContainer>
-        <CarouselComponent />
-        <SearchForm />
-        <PopulateReview />
-      </LandingContainer>
-    </>
+    <LandingContainer>
+      <CarouselComponent />
+      <SearchForm />
+      <PopulateReview />
+    </LandingContainer>
   );
 };
 
