@@ -20,10 +20,8 @@ export class AuthMiddleware implements NestMiddleware {
       try {
         const arr = authHeaders.split(';');
         const temp = arr.map((item) => item.split('='));
-        const token = temp.filter((item) => item[0] == ' user_Access')[0][1];
-        // token 확인
-        console.log(token);
-        const decoded: any = jwt.verify(token, jwtKEY.secreteKey);
+        const token = temp.filter((item) => item[0] == 'user_Access')[0][1];
+        const decoded: any = jwt.verify(token, jwtKEY.secretKey);
         const user = await this.usersRepository.findOne({
           where: { userId: decoded.id },
         });
