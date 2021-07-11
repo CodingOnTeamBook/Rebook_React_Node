@@ -42,6 +42,7 @@ const KakaoLoginBtn: FunctionComponent = () => {
   const LoginFailure = ({ error }: any) => {
     console.log(error);
   };
+
   return (
     <KakaoLogin
       token={`${KAKAO_API_KEY}`}
