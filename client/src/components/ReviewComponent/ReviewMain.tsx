@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
 import ReactStars from 'react-rating-stars-component';
 
@@ -12,8 +11,6 @@ const ReviewMainContainer = styled(Box)`
 
 const ImgCover = styled(Box)`
   width: 162px;
-  /* width: auto;
-  height: auto; */
 `;
 
 const CardImg = styled.img`
@@ -30,10 +27,6 @@ const BookTitle = styled(Box)`
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-`;
-
-const BookTag = styled.div`
-  margin-bottom: 10px;
 `;
 
 // webkit 지원하지 않는 IE에서는 말줄임 작동X
@@ -101,7 +94,7 @@ const ReviewMain: FunctionComponent = () => {
           display="flex"
           pt={1}
           pb={1}
-          pl={2}
+          pl={3}
           boxShadow={1}
           alignItems="center"
         >
