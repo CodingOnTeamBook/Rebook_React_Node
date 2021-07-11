@@ -18,4 +18,7 @@ export class CreateReviewDto {
 
   @IsString()
   readonly tag: string;
+
+  @IsString()
+  readonly coverImg: string;
 }

@@ -7,7 +7,7 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use('uploads/', express.static(join(__dirname, '../uploads')));
+  app.use('/', express.static(join(__dirname, '../uploads')));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableCors();
   app.useGlobalPipes(

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, ParseBoolPipe } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
@@ -7,7 +7,7 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { uploadBookCover, uploadReviewHtml } from './reviews.multerOptions';
+import { uploadReviewHtml } from './reviews.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -40,11 +40,26 @@ export class ReviewsService {
     const id = parseInt(reviewid.reviewid);
     const review = await this.reviewRepository.find({
       where: { id },
-      relations: ['tags', 'comments'],
+      relations: ['tags', 'user'],
     });
     if (review.length === 0)
       throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
-    return review;
+    const comm = await this.commentRepository.find({
+      where: { review: id },
+      relations: ['user'],
+    });
+    //comment가공
+    const comment = [];
+    for (let i = 0; i < comm.length; i++) {
+      comment[i] = {
+        ...comm[i],
+        user: {
+          nickname: comm[i].user.nickname,
+          profileImg: comm[i].user.profileImg,
+        },
+      };
+    }
+    return { review, comment };
   }
 
   //태그 삽입
@@ -68,12 +83,12 @@ export class ReviewsService {
 
   //리뷰 작성
   async writeReview(
-    reviewfiles,
+    reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
     const review = new Review();
-    review.text = await uploadReviewHtml(reviewfiles['reviewHtml']);
-    review.coverImg = await uploadBookCover(reviewfiles['coverImg']);
+    review.text = await uploadReviewHtml(reviewfile);
+    review.coverImg = createReviewDto.coverImg;
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
@@ -82,7 +97,6 @@ export class ReviewsService {
     review.user = await this.userRepository.findOne({
       nickname: createReviewDto.writer,
     });
-    console.log(review);
     return this.reviewRepository.save(review);
   }
 }

@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { uploadProfileImg } from './users.multerOptions';
 
 @Injectable()
 export class UsersService {
@@ -47,7 +48,11 @@ export class UsersService {
     return false;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: string,
+    imgfile,
+    updateUserDto: UpdateUserDto
+  ): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId: id } });
     if (updateUserDto.info) {
       user.info = updateUserDto.info;
@@ -55,7 +60,9 @@ export class UsersService {
     if (updateUserDto.genre) {
       user.genres = updateUserDto.genre;
     }
-    if (updateUserDto.imgUrl) {
+    if (imgfile) {
+      user.profileImg = await uploadProfileImg(imgfile);
+    } else {
       user.profileImg = updateUserDto.imgUrl;
     }
     return this.userRepository.save(user);

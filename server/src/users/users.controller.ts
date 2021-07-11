@@ -9,12 +9,16 @@ import {
   Res,
   HttpStatus,
   HttpException,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { AuthUser } from './users.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { usersmulterOptions } from './users.multerOptions';
 
 //에러 처리 middleware 생성하기
 
@@ -112,16 +116,20 @@ export class UsersController {
   }
 
   @Patch('/update')
+  @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
   update(
     @AuthUser() data: any,
+    @UploadedFile() file: File[],
     @Body() updateUserDto: UpdateUserDto,
     @Res() res
   ) {
-    this.usersService.update(data.userId, updateUserDto).then((value: User) => {
-      return res.status(HttpStatus.OK).json({
-        success: true,
-        user: value,
+    this.usersService
+      .update(data.userId, file, updateUserDto)
+      .then((value: User) => {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          user: value,
+        });
       });
-    });
   }
 }

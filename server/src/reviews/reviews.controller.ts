@@ -8,8 +8,7 @@ import {
   Post,
   Res,
   Patch,
-  Param,
-  UploadedFiles,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -17,7 +16,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewsService } from './reviews.service';
 import { Review } from '../entities/review.entity';
 import { AuthUser } from '../users/users.decorator';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { reviewmulterOptions } from './reviews.multerOptions';
 
 @Controller('/api/review')
@@ -31,25 +30,17 @@ export class ReviewsController {
   }*/
 
   //하나의 리뷰 자세히 불러오기
-  @Get('/detail')
+  @Post('/detail')
   loadDetailReview(@Body() reviewid: string) {
     return this.reviewService.detailReview(reviewid);
   }
 
   //리뷰 작성
   @Post('/write')
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'reviewHtml', maxCount: 1 },
-        { name: 'coverImg', maxCount: 1 },
-      ],
-      reviewmulterOptions
-    )
-  )
+  @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
   write(
     @AuthUser() data: any,
-    @UploadedFiles() file: File[],
+    @UploadedFile() file: File[],
     @Body() createReviewDto: CreateReviewDto,
     @Res() res
   ) {
@@ -77,7 +68,7 @@ export class ReviewsController {
 
   //@Post('/update')
   //update(@Body())
-  @Patch('/update/:id')
+  /*@Patch('/update/:id')
   update(
     // @AuthUser() data: any,
     @Param('id') id: string,
@@ -92,7 +83,7 @@ export class ReviewsController {
           review: value,
         });
       });
-  }
+  }*/
 
   //@Delete('/')
   //deleteReview(@Body())
