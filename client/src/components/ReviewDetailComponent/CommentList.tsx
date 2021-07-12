@@ -8,6 +8,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+const Title = styled.h1`
+  margin-top: 0;
+`;
+
 const CommentListContainer = styled(Box)`
   background-color: white;
   width: 100%;
@@ -53,6 +57,7 @@ const CommentList: FunctionComponent = () => {
 
   return (
     <CommentListContainer>
+      <Title>Comment</Title>
       <Box display="flex" flexDirection="row">
         <UserImg
           alt="Mark Zuckerberg"

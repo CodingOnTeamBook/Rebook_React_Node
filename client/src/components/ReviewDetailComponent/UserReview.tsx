@@ -15,7 +15,7 @@ import { FavoriteBorder } from '@material-ui/icons';
 
 const UserReviewContainer = styled(Box)`
   background-color: white;
-  padding: 3%;
+  padding: 3% 3% 0 3%;
   width: 100%;
 `;
 
