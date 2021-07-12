@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridItem from '../../components/common/GridItem';
@@ -22,6 +23,11 @@ const BtnArea = styled.div`
 const SearchPage: FunctionComponent = () => {
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
+  const location: any = useLocation();
+  const [inputValue, setInputValue] = useState(location.state.inputValue);
+  const [bookResult, setBookResult] = useState(location.state.item);
+  console.log(inputValue, bookResult);
+
   useEffect(() => {
     if (typeA) {
       setTypeB(false);

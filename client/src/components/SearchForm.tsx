@@ -1,8 +1,10 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
+import axios from 'axios';
 
 const Wrapper = styled.div`
   position: relative;
@@ -31,9 +33,10 @@ const CancleBtn = styled(CancelIcon)`
   color: ${(props) => props.theme.palette.green};
 `;
 
-const SearchForm: FunctionComponent = () => {
+const SearchForm = () => {
   const [inputValue, setInputValue] = useState('');
   const inputRef: React.MutableRefObject<any> = useRef();
+  const history = useHistory();
 
   const OnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -43,13 +46,34 @@ const SearchForm: FunctionComponent = () => {
   };
 
   const onSubmit = (e: any) => {
-    // To do : 전송
-    alert(`inputValue : ${inputValue}`);
+    e.preventDefault();
+    // ⭐ To do
+    // 1. searchPage로 이동
+    // 2. inputValue 전달
+    // 3. 검색어 searchResult action dispatch
+    axios
+      .get(`api/book/search?title=${inputValue}`)
+      .then(
+        ({
+          data: {
+            books: { item },
+          },
+        }) => {
+          history.push({
+            pathname: '/search',
+            state: { inputValue, item },
+          });
+          console.log(item);
+        }
+      )
+      .catch((e) => console.log(e));
   };
 
   const onReset = () => {
     setInputValue('');
     inputRef.current.focus();
+    // To do
+    // store에 저장한 search Keyword 없애기
   };
 
   return (
