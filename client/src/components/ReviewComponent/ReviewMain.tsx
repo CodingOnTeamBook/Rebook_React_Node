@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
 
 const ReviewMainContainer = styled(Box)`
+  border-radius: 20px;
   width: 100%;
   cursor: pointer;
 `;
@@ -83,14 +84,7 @@ const ReviewMain: FunctionComponent = () => {
             </BookReview>
           </Box>
         </Box>
-        <Box
-          display="flex"
-          pt={1}
-          pb={1}
-          pl={3}
-          boxShadow={1}
-          alignItems="center"
-        >
+        <Box display="flex" pb={1} pl={3} alignItems="center">
           <Nickname> 리북이님 </Nickname>
         </Box>
       </ReviewMainContainer>
