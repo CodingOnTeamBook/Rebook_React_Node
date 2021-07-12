@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { uploadProfileImg } from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
