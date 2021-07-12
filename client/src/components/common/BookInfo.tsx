@@ -31,14 +31,14 @@ const ImgArea = styled.div`
   }
 `;
 
-const BookInfo = () => {
+const BookInfo = ({ props }: any) => {
   return (
     <Container>
       <ImgArea>
-        <img src="https://cdn.pixabay.com/photo/2021/07/05/11/05/pink-beach-6388864_960_720.jpg" />
+        <img src={props.cover} />
       </ImgArea>
-      <h2>title</h2>
-      <p>작가</p>
+      <h2>{props.title}</h2>
+      <p>{props.author}</p>
     </Container>
   );
 };

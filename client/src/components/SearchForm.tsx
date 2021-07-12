@@ -6,11 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import {
-  setKeyword,
-  resetKeyword,
-  getSearchResult,
-} from '../redux/search/action';
+import { setKeyword, resetKeyword } from '../redux/search/action';
 
 const Wrapper = styled.div`
   position: relative;
@@ -63,14 +59,12 @@ const SearchForm: FunctionComponent = () => {
     // 1. searchPage로 이동
     // 2. inputValue 전달
     // 3. 검색어 searchResult action dispatch
-    // store에 저장한 기존 search Keyword 없애기
     dispatch(resetKeyword());
     dispatch(setKeyword(inputValue));
     history.push('/search');
   };
 
   const onReset = () => {
-    dispatch(resetKeyword());
     setInputValue('');
     inputRef.current.focus();
   };
@@ -92,21 +86,5 @@ const SearchForm: FunctionComponent = () => {
     </Wrapper>
   );
 };
-
-// store에 있는 keyword 사용
-// const mapStateToProps = (state: any) => {
-//   console.log(state); //search, auth
-//   return {
-//     keyword: state.search.keyword,
-//   };
-// };
-
-// store의 데이터 변경하기
-// const mapDispatchToProps = (dispatch: Dispatch) => {
-//   return {
-//     setKeyword: (inputValue: string) => dispatch(setKeyword(inputValue)),
-//     resetKeyword: () => dispatch(resetKeyword()),
-//   };
-// };
 
 export default SearchForm;

@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridItem from '../../components/common/GridItem';
@@ -8,6 +7,10 @@ import SearchForm from '../../components/SearchForm';
 import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/rootReducer';
+import axios from 'axios';
+import { getSearchResult } from '../../redux/search/action';
 
 const Container = styled.div`
   margin: 2rem;
@@ -23,10 +26,8 @@ const BtnArea = styled.div`
 const SearchPage: FunctionComponent = () => {
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
-  const location: any = useLocation();
-  const [inputValue, setInputValue] = useState(location.state.inputValue);
-  const [bookResult, setBookResult] = useState(location.state.item);
-  console.log(inputValue, bookResult);
+  const [searchResult, setSearchResult] = useState<any>([]);
+  const keyword = useSelector((state: RootState) => state.search.keyword);
 
   useEffect(() => {
     if (typeA) {
@@ -36,17 +37,30 @@ const SearchPage: FunctionComponent = () => {
       setTypeA(false);
     }
   }, [typeA, typeB]);
+
+  useEffect(() => {
+    axios.get(`api/book/search?title=${keyword}`).then(
+      ({
+        data: {
+          books: { item },
+        },
+      }) => setSearchResult(item)
+    );
+  }, [keyword]);
+
+  console.log(searchResult);
+
   return (
     <Container>
       <SearchForm />
       <BtnArea>
         <GreenCheckBox
-          labelName="책 이름으로 찾기"
+          labelName="책 찾기"
           defaultValue={typeA}
           submitValue={setTypeA}
         />
         <GreenCheckBox
-          labelName="유저 이름으로 찾기"
+          labelName="리뷰어 찾기"
           defaultValue={typeB}
           submitValue={setTypeB}
         />
@@ -63,27 +77,13 @@ const SearchPage: FunctionComponent = () => {
           </>
         ) : (
           <>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
-            <GridSmallItem>
-              <BookInfo />
-            </GridSmallItem>
+            {searchResult.map((result: any, index: number) => {
+              return (
+                <GridSmallItem key={index}>
+                  <BookInfo props={result} />
+                </GridSmallItem>
+              );
+            })}
           </>
         )}
       </GridLayout>
