@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import Rating from '@material-ui/lab/Rating';
 import { LineGreenBtn } from '../../style/componentStyled';
 import MenuIconBtn from './MenuIconBtn';
+import Checkbox from '@material-ui/core/Checkbox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import useCheck from '../../hooks/useCheck';
 
 const Container = styled.div`
   width: 100%;
@@ -69,6 +73,7 @@ const TextInfo = styled.div`
   font-size: 11px;
   overflow: hidden;
   margin: 0.2rem;
+  min-height: 30%;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -80,8 +85,22 @@ const MoreInfoBtn = styled(LineGreenBtn)`
   margin-top: 0.6rem;
 `;
 
-const SmallReview = () => {
+const LikeCheckBtn = styled(Checkbox)`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
+interface IProps {
+  like: boolean;
+}
+
+const SmallReview = ({ like }: IProps) => {
   const [rating, setRating] = useState<number>(4);
+  const { value, onChange, CheckedValue } = useCheck({
+    name: 'MyLikeReview',
+    initialValue: true,
+  });
   return (
     <Container>
       <ImgArea>
@@ -93,15 +112,26 @@ const SmallReview = () => {
         </ImgContainer>
       </ImgArea>
       <TextArea>
-        <MenuIconBtn />
+        {like ? (
+          <LikeCheckBtn
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            checked={value}
+            onChange={onChange}
+            name="MyLikeReview"
+          />
+        ) : (
+          <MenuIconBtn />
+        )}
         <BookInfo>
           <a href="">책 제목</a>
           <span>000 지음</span>
         </BookInfo>
         <Rating name="read-only" value={rating} readOnly />
         <TextInfo>
-          리뷰 리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리
-          뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰
+          {like
+            ? '00님이 쓰신 리뷰입니다.'
+            : '리뷰 리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰'}
         </TextInfo>
         <MoreInfoBtn>더 보기</MoreInfoBtn>
       </TextArea>

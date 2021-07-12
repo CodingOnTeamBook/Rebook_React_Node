@@ -107,9 +107,6 @@ const Header: FunctionComponent = () => {
       </HeaderContainer>
       <MenuContainer>
         <li>
-          <Link to="/recommend">추천 도서</Link>
-        </li>
-        <li>
           <Link to="/review">리뷰</Link>
         </li>
         <li>

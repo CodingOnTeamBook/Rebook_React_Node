@@ -132,4 +132,17 @@ export class UsersController {
         });
       });
   }
+
+  @Get('/myinfo/reviews/:nickname')
+  async getReviews(@Param('nickname') nickname: string) {
+    const reviews = await this.usersService.getMyReviews(nickname);
+    return reviews;
+  }
+
+  @Get('/myinfo/likes/:nickname')
+  async getLikes(@Param('nickname') nickname: string) {
+    console.log('nickname', nickname);
+    const likes = await this.usersService.getMyLikes(nickname);
+    return likes;
+  }
 }

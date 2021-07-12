@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+import useCheck from '../../hooks/useCheck';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import styled from 'styled-components';
 import Favorite from '@material-ui/icons/Favorite';
@@ -8,13 +8,14 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ReactStars from 'react-rating-stars-component';
+import Rating from '@material-ui/lab/Rating';
 import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 
-const UserReviewContainer = styled(Paper)`
-  padding: 25px;
+const UserReviewContainer = styled(Box)`
+  background-color: white;
+  padding: 3% 3% 0 3%;
   width: 100%;
 `;
 
@@ -24,38 +25,42 @@ const UserImg = styled(Avatar)`
   margin-right: 10px;
 `;
 
-const UserName = styled.span`
-  font-size: 20px;
+const UserName = styled.div`
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 5px;
+`;
+
+const UserWrite = styled.p`
+  font-size: 1.2rem;
 `;
 
 const ReviewTime = styled.p`
+  font-size: 1rem;
   color: #808080;
 `;
 
 const BookTag = styled(Chip)`
-  margin-top: 10px;
+  margin-top: 5px;
   &:not(:last-of-type) {
     content: '';
     margin-right: 10px;
   }
 `;
 
-const RatingStars = {
-  size: 30,
-  count: 5,
-  isHalf: false,
-  value: 4,
-  // 리뷰를 api에서 가져오는거니까 Readonly로 하였습니다!
-  edit: false,
-  activeColor: '#ffd700',
-};
-
 const UserReview: FunctionComponent = () => {
-  const ITEM_HEIGHT = 48;
   // 테스트용
   const test = 10;
   const tag = '#' + '태그';
 
+  const [rating, setRating] = useState<number>(4);
+
+  const { value, onChange, CheckedValue } = useCheck({
+    name: 'MyLikeReview',
+    initialValue: true,
+  });
+
+  const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -77,20 +82,20 @@ const UserReview: FunctionComponent = () => {
           />
           <Box>
             <UserName>Mark Zuckerberg</UserName>
-            <ReactStars {...RatingStars} />
+            <Rating size="large" name="read-only" value={rating} readOnly />
             <Box display="flex" flexDirection="row">
               <BookTag label={tag} />
               <BookTag label={tag} />
               <BookTag label={tag} />
             </Box>
-            <p>
+            <UserWrite>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            </p>
+            </UserWrite>
             <ReviewTime> 2일전 </ReviewTime>
           </Box>
           <Box>
@@ -129,9 +134,11 @@ const UserReview: FunctionComponent = () => {
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            name="checkedH"
+            checked={value}
+            onChange={onChange}
+            name="MyLikeReview"
           />
-          <span> {test}명이 리뷰를 좋아합니다. </span>
+          <h3> {test}명이 리뷰를 좋아합니다. </h3>
         </Box>
       </Box>
     </UserReviewContainer>

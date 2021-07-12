@@ -4,7 +4,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  Param,
   Post,
   Res,
   Patch,
@@ -66,24 +65,24 @@ export class ReviewsController {
       });
   }
 
-  //@Post('/update')
-  //update(@Body())
-  /*@Patch('/update/:id')
-  update(
-    // @AuthUser() data: any,
-    @Param('id') id: string,
-    @Body() updateReviewDto: UpdateReviewDto,
-    @Res() res
-  ) {
-    this.reviewService
-      .updateReview(id, updateReviewDto)
-      .then((value: Review) => {
-        return res.status(HttpStatus.OK).json({
-          success: true,
-          review: value,
-        });
-      });
-  }*/
+  // //@Post('/update')
+  // //update(@Body())
+  // @Patch('/update/:id')
+  // update(
+  //   // @AuthUser() data: any,
+  //   @Param('id') id: string,
+  //   @Body() updateReviewDto: UpdateReviewDto,
+  //   @Res() res
+  // ) {
+  //   this.reviewService
+  //     .updateReview(id, updateReviewDto)
+  //     .then((value: Review) => {
+  //       return res.status(HttpStatus.OK).json({
+  //         success: true,
+  //         review: value,
+  //       });
+  //     });
+  // }
 
   //@Delete('/')
   //deleteReview(@Body())

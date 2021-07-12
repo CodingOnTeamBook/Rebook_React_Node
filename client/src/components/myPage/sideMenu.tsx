@@ -4,19 +4,18 @@ import { ProfileImg } from '../../style/componentStyled';
 import { Link } from 'react-router-dom';
 
 const ProfileContainer = styled.div`
-  width: 80%;
-  min-height: 150px;
   border-radius: 16px;
-  margin: 1rem;
-  border: 2px solid ${(props) => props.theme.palette.darkgreen};
-  background: ${(props) => props.theme.palette.darkgreen};
+  margin: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  padding: 1.5rem 1rem;
+  height: auto;
+  box-shadow: 2px 2px 4px rgba(40, 40, 40, 0.14);
 `;
 
 const ProfileInfo = styled.div`
-  width: 60%;
+  width: 50%;
   h3 {
     margin: 0;
     padding: 0;
@@ -28,14 +27,22 @@ const ProfileInfo = styled.div`
   }
 `;
 
+const MyProfileImg = styled(ProfileImg)`
+  padding: 0.2rem;
+  border: 2px solid ${(props) => props.theme.palette.green};
+`;
+
 const GenreInfo = styled.div`
   margin-top: 1rem;
-  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   p {
+    display: block;
     padding: 0.4rem;
     background-color: ${(props) => props.theme.palette.yellow};
-    border-radius: 50%;
+    border-radius: 25px;
     display: inline;
+    font-size: 9px;
     margin: 0.3rem;
   }
 `;
@@ -45,18 +52,18 @@ const MenuContainer = styled.ul`
   padding: 0;
   width: 80%;
   height: 100%;
-  border: 2px solid ${(props) => props.theme.palette.green};
-  border-radius: 16px;
+  box-shadow: 2px 2px 4px rgba(40, 40, 40, 0.14);
 `;
 
 const MenuItemContainer = styled.li`
-  width: 100%;
+  width: 60%;
   height: 2.5rem;
   list-style: none;
   margin: 1rem 0;
   padding: 0.5rem 1rem;
   &:hover {
     color: ${(props) => props.theme.palette.darkgreen};
+    border-bottom: 2px solid ${(props) => props.theme.palette.darkgreen};
   }
 `;
 
@@ -66,7 +73,7 @@ const SideMenu = () => {
   return (
     <>
       <ProfileContainer>
-        <ProfileImg src={imgUrl} alt="profileImg" />
+        <MyProfileImg src={imgUrl} alt="profileImg" />
         <ProfileInfo>
           <h3>리북이</h3>
           <p>10대/ 여</p>

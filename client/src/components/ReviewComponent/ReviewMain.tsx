@@ -1,14 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import Chip from '@material-ui/core/Chip';
-import Favorite from '@material-ui/icons/Favorite';
-import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
-import { FavoriteBorder } from '@material-ui/icons';
+import Rating from '@material-ui/lab/Rating';
 
 const ReviewMainContainer = styled(Box)`
+  border-radius: 20px;
   width: 100%;
+  cursor: pointer;
 `;
 
 const ImgCover = styled(Box)`
@@ -16,28 +15,25 @@ const ImgCover = styled(Box)`
 `;
 
 const CardImg = styled.img`
-  width: 100%;
-  height: 100%;
+  max-width: 95%;
+  height: auto;
   object-fit: cover;
 `;
 
 const BookTitle = styled(Box)`
+  margin-bottom: 5px;
   font-size: x-large;
   font-weight: bold;
-  margin-bottom: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: normal;
   overflow: hidden;
-  width: 170px;
-`;
-
-const BookTag = styled.div`
-  margin-bottom: 10px;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `;
 
 // webkit 지원하지 않는 IE에서는 말줄임 작동X
 const BookReview = styled.div`
+  margin-top: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -52,14 +48,11 @@ const Nickname = styled.span`
   }
 `;
 
-const Like = styled.span`
-  text-align: right;
-  flex: 1;
-`;
-
 const ReviewMain: FunctionComponent = () => {
   const id = 'test';
   const history = useHistory();
+
+  const [rating, setRating] = useState<number>(4);
 
   return (
     <>
@@ -67,11 +60,12 @@ const ReviewMain: FunctionComponent = () => {
         <Box
           display="flex"
           flexDirection="row"
+          p={2}
           onClick={() => {
             history.push(`/review/${id}`);
           }}
         >
-          <Box p={1}>
+          <Box>
             <ImgCover>
               <CardImg
                 alt="title"
@@ -79,26 +73,19 @@ const ReviewMain: FunctionComponent = () => {
               />
             </ImgCover>
           </Box>
-          <Box p={1}>
+          <Box>
             <BookTitle> 책제목책제목책제목책제목 </BookTitle>
-            <BookTag>
-              <Chip label="#태그" /> <Chip label="#태그" />
-            </BookTag>
+            <Rating size="large" name="read-only" value={rating} readOnly />
             <BookReview>
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
-              리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
+              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
             </BookReview>
           </Box>
         </Box>
-        <Box display="flex" pl={1} boxShadow={1} alignItems="center">
+        <Box display="flex" pb={1} pl={3} alignItems="center">
           <Nickname> 리북이님 </Nickname>
-          <Like>
-            <Checkbox
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite />}
-              name="checkedH"
-            />
-          </Like>
         </Box>
       </ReviewMainContainer>
     </>

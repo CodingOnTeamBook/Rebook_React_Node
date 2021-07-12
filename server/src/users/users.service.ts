@@ -6,16 +6,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { uploadProfileImg } from './users.multerOptions';
+import { Review } from '../entities/review.entity';
+import { Like } from '../entities/like.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) //쿼리 날리는 클래스
     private userRepository: Repository<User>,
+    @InjectRepository(Review)
+    private reviewRepository: Repository<Review>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>,
     private readonly jwtService: JwtService
   ) {}
 
-  //회원가입
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.userId = createUserDto.kakaoId;
@@ -75,5 +81,19 @@ export class UsersService {
 
   async generateToken(id: string): Promise<string> {
     return this.jwtService.sign({ id });
+  }
+
+  // async getMyReviews(id: string): Promise<Review> {
+  //   return this.reviewRepository.findAll({ where: { userId: id } });
+  // });
+
+  async getMyReviews(nickname: string) {
+    const user = await this.userRepository.findOne({ where: { nickname } });
+    return this.reviewRepository.find({ where: { user: user } });
+  }
+
+  async getMyLikes(nickname: string) {
+    const user = await this.userRepository.findOne({ where: { nickname } });
+    return this.likeRepository.find({ where: { user: user } });
   }
 }

@@ -8,8 +8,14 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+const Title = styled.h1`
+  margin-top: 0;
+`;
+
 const CommentListContainer = styled(Box)`
+  background-color: white;
   width: 100%;
+  padding: 2%;
 `;
 
 const UserImg = styled(Avatar)`
@@ -17,8 +23,6 @@ const UserImg = styled(Avatar)`
   height: 50px;
   margin-right: 10px;
 `;
-
-const UserName = styled.span``;
 
 const ReviewTime = styled.span`
   color: #808080;
@@ -28,8 +32,7 @@ const Review = styled.p`
   margin-top: 5px;
   width: 100%;
   padding: 10px;
-  /* height: 25%; */
-  background-color: #e2e2e2;
+  background-color: ${(props) => props.theme.palette.green};
   padding: 20px;
   border-radius: 20px;
 `;
@@ -54,14 +57,14 @@ const CommentList: FunctionComponent = () => {
 
   return (
     <CommentListContainer>
-      {/* <h1>Comment</h1> */}
+      <Title>Comment</Title>
       <Box display="flex" flexDirection="row">
         <UserImg
           alt="Mark Zuckerberg"
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
         <Box display="flex" flexDirection="column" flexGrow="1">
-          <UserName>Mark Zuckerberg</UserName>
+          <span>Mark Zuckerberg</span>
           <ReviewTime> 1일전 </ReviewTime>
           <Review> 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 </Review>
         </Box>
@@ -99,7 +102,7 @@ const CommentList: FunctionComponent = () => {
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
         <Box display="flex" flexDirection="column">
-          <UserName>Mark Zuckerberg</UserName>
+          <span>Mark Zuckerberg</span>
           <ReviewTime> 1일전 </ReviewTime>
           <Review>
             와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
@@ -136,7 +139,6 @@ const CommentList: FunctionComponent = () => {
           </Menu>
         </Box>
       </Box>
-      <DividerBottom />
     </CommentListContainer>
   );
 };

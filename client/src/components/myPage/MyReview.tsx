@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ReviewMain from '../ReviewComponent/ReviewMain';
 import GridLayout from '../common/GridLayout';
 import GridItem from '../common/GridItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -54,58 +53,10 @@ const MyReview = () => {
       <GridLayout>
         <>
           <GridItem>
-            <SmallReview />
+            <SmallReview like={false} />
           </GridItem>
           <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
-          </GridItem>
-          <GridItem>
-            <SmallReview />
+            <SmallReview like={false} />
           </GridItem>
         </>
       </GridLayout>
