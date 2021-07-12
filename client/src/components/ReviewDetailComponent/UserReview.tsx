@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import useCheck from '../../hooks/useCheck';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,6 +12,7 @@ import Rating from '@material-ui/lab/Rating';
 import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
+import TransferDate from '../../globalFunction/TransferDate';
 
 const UserReviewContainer = styled(Box)`
   background-color: white;
@@ -25,13 +26,14 @@ const UserImg = styled(Avatar)`
   margin-right: 10px;
 `;
 
-const UserName = styled.div`
-  font-weight: bold;
+const UserNickName = styled.div`
+  font-weight: 900;
   font-size: 1.3rem;
   margin-bottom: 5px;
 `;
 
 const UserWrite = styled.p`
+  width: 100%;
   font-size: 1.2rem;
 `;
 
@@ -40,7 +42,7 @@ const ReviewTime = styled.p`
   color: #808080;
 `;
 
-const BookTag = styled(Chip)`
+const BookTag = styled.div`
   margin-top: 5px;
   &:not(:last-of-type) {
     content: '';
@@ -49,11 +51,52 @@ const BookTag = styled(Chip)`
 `;
 
 const UserReview: FunctionComponent = () => {
-  // 테스트용
-  const test = 10;
-  const tag = '#' + '태그';
-
-  const [rating, setRating] = useState<number>(4);
+  // 테스트 데이터
+  const REVIEW_DATA = [
+    {
+      id: 10,
+      text: 'review/text/bb_1625672657116_test.html',
+      book_info: 'sdfsdf',
+      summary: '리뷰리뷰리뷰리뷰리뷰리뷰리뷰리뷰리뷰리뷰',
+      score: 4,
+      coverImg: 'review/cover/sdfsdf_test.JPG',
+      view_count: 0,
+      isPublic: true,
+      like_count: 2,
+      createdAt: '2021-07-07T15:44:17.138Z',
+      updatedAt: '2021-07-07T15:44:17.138Z',
+      tags: [
+        {
+          id: 27,
+          tag: '#리뷰',
+        },
+        {
+          id: 28,
+          tag: '#리리뷰',
+        },
+        {
+          id: 29,
+          tag: '#리리뷰',
+        },
+        {
+          id: 30,
+          tag: '#리리리뷰',
+        },
+      ],
+      user: {
+        id: 2,
+        userId: '1234',
+        nickname: '마크 주커버그',
+        genres: '',
+        gender: 'Secret',
+        ageRange: 'Secret',
+        profileImg: 'defaultImg',
+        info: '안녕하세용~~☺',
+        createdAt: '2021-06-28T08:39:00.108Z',
+        updatedAt: '2021-06-28T08:39:00.162Z',
+      },
+    },
+  ];
 
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
@@ -74,73 +117,76 @@ const UserReview: FunctionComponent = () => {
 
   return (
     <UserReviewContainer>
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="row" flexWrap="nowrap">
-          <UserImg
-            alt="Mark Zuckerberg"
-            src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
-          />
-          <Box>
-            <UserName>Mark Zuckerberg</UserName>
-            <Rating size="large" name="read-only" value={rating} readOnly />
-            <Box display="flex" flexDirection="row">
-              <BookTag label={tag} />
-              <BookTag label={tag} />
-              <BookTag label={tag} />
+      {REVIEW_DATA.map((review) => (
+        <Box display="flex" flexDirection="column" key={review.id}>
+          <Box display="flex" flexDirection="row" flexWrap="nowrap">
+            <UserImg
+              alt={review.user.nickname}
+              src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
+            />
+            <Box width={1}>
+              <UserNickName>{review.user.nickname}</UserNickName>
+              <Rating
+                size="large"
+                name="read-only"
+                value={review.score}
+                readOnly
+              />
+              <Box display="flex" flexDirection="row">
+                {/* 중첩 map 이렇게 사용 */}
+                {review.tags.map((reviewTag) => (
+                  <BookTag key={reviewTag.id}>
+                    <Chip label={reviewTag.tag} />
+                  </BookTag>
+                ))}
+              </Box>
+              <UserWrite> {review.summary} </UserWrite>
+              <ReviewTime> {TransferDate(review.updatedAt)} </ReviewTime>
             </Box>
-            <UserWrite>
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            </UserWrite>
-            <ReviewTime> 2일전 </ReviewTime>
+            <Box>
+              <IconButton
+                aria-label="more"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={menuOpen}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open}
+                onClose={menuClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: '16ch',
+                  },
+                }}
+              >
+                <MenuItem onClick={menuClose}>삭제</MenuItem>
+                <MenuItem onClick={menuClose}>수정</MenuItem>
+              </Menu>
+            </Box>
           </Box>
-          <Box>
-            <IconButton
-              aria-label="more"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={menuOpen}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="long-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={open}
-              onClose={menuClose}
-              PaperProps={{
-                style: {
-                  maxHeight: ITEM_HEIGHT * 4.5,
-                  width: '16ch',
-                },
-              }}
-            >
-              <MenuItem onClick={menuClose}>삭제</MenuItem>
-              <MenuItem onClick={menuClose}>수정</MenuItem>
-            </Menu>
+          <Box
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              checked={value}
+              onChange={onChange}
+              name="MyLikeReview"
+            />
+            <h3> {review.like_count}명이 리뷰를 좋아합니다. </h3>
           </Box>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={value}
-            onChange={onChange}
-            name="MyLikeReview"
-          />
-          <h3> {test}명이 리뷰를 좋아합니다. </h3>
-        </Box>
-      </Box>
+      ))}
     </UserReviewContainer>
   );
 };

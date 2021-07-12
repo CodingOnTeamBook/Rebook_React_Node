@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import TransferDate from '../../globalFunction/TransferDate';
 
 const Title = styled.h1`
   margin-top: 0;
@@ -55,90 +56,77 @@ const CommentList: FunctionComponent = () => {
     setAnchorEl(null);
   };
 
+  // 테스트 데이터
+  const COMMENT_DATA = [
+    {
+      id: 1,
+      text: '코멘트코멘트코멘트',
+      createAt: '2021-07-01T10:39:28.000Z',
+      updateAt: '2021-07-01T10:41:09.493Z',
+      deleteAt: null,
+      user: {
+        nickname: '리북이',
+        profileImg: null,
+      },
+    },
+    {
+      id: 2,
+      text: '코코코 레드코',
+      createAt: '2021-07-13T20:58:21.000Z',
+      updateAt: '2021-07-13T20:58:32.764Z',
+      deleteAt: null,
+      user: {
+        nickname: '오리훈제',
+        profileImg: null,
+      },
+    },
+  ];
+
   return (
     <CommentListContainer>
       <Title>Comment</Title>
-      <Box display="flex" flexDirection="row">
-        <UserImg
-          alt="Mark Zuckerberg"
-          src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
-        />
-        <Box display="flex" flexDirection="column" flexGrow="1">
-          <span>Mark Zuckerberg</span>
-          <ReviewTime> 1일전 </ReviewTime>
-          <Review> 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 </Review>
+      {COMMENT_DATA.map((comment) => (
+        <Box key={comment.id}>
+          <Box display="flex" flexDirection="row">
+            <UserImg
+              alt={comment.user.nickname}
+              src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
+            />
+            <Box display="flex" flexDirection="column" flexGrow="1">
+              <span>{comment.user.nickname}</span>
+              <ReviewTime> {TransferDate(comment.updateAt)} </ReviewTime>
+              <Review> {comment.text} </Review>
+            </Box>
+            <Box>
+              <IconButton
+                aria-label="more"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={menuOpen}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open}
+                onClose={menuClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: '16ch',
+                  },
+                }}
+              >
+                <MenuItem onClick={menuClose}>삭제</MenuItem>
+                <MenuItem onClick={menuClose}>수정</MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+          <DividerBottom />
         </Box>
-        <Box>
-          <IconButton
-            aria-label="more"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={menuOpen}
-          >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            id="long-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={open}
-            onClose={menuClose}
-            PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: '16ch',
-              },
-            }}
-          >
-            <MenuItem onClick={menuClose}>삭제</MenuItem>
-            <MenuItem onClick={menuClose}>수정</MenuItem>
-          </Menu>
-        </Box>
-      </Box>
-      <DividerBottom />
-      <Box display="flex" flexDirection="row">
-        <UserImg
-          alt="Mark Zuckerberg"
-          src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
-        />
-        <Box display="flex" flexDirection="column">
-          <span>Mark Zuckerberg</span>
-          <ReviewTime> 1일전 </ReviewTime>
-          <Review>
-            와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
-            와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
-            와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
-            와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
-            와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄
-          </Review>
-        </Box>
-        <Box>
-          <IconButton
-            aria-label="more"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={menuOpen}
-          >
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            id="long-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={open}
-            onClose={menuClose}
-            PaperProps={{
-              style: {
-                maxHeight: ITEM_HEIGHT * 4.5,
-                width: '16ch',
-              },
-            }}
-          >
-            <MenuItem onClick={menuClose}>삭제</MenuItem>
-            <MenuItem onClick={menuClose}>수정</MenuItem>
-          </Menu>
-        </Box>
-      </Box>
+      ))}
     </CommentListContainer>
   );
 };
