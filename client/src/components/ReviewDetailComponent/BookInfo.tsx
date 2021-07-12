@@ -1,17 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-const BookInfoContainer = styled(Paper)`
-  width: 100%;
-  padding: 25px;
-`;
-
 const BookCover = styled(Box)`
-  width: 200px;
-  /* height: 250px; */
+  width: 250px;
 `;
 
 const BookImg = styled.img`
@@ -21,14 +14,16 @@ const BookImg = styled.img`
 `;
 
 const BookTitle = styled.span`
-  font-size: 30px;
+  color: white;
+  font-size: 2rem;
   margin-bottom: 10px;
 `;
 
 const BookInfoDetail = styled.span`
   /* width: 100%; */
+  color: white;
   margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 1.4rem;
   &::after {
     content: '|';
   }
@@ -41,6 +36,11 @@ const BookInfoDetail = styled.span`
   }
 `;
 
+const BookPlot = styled(Box)`
+  color: white;
+  font-size: 1.2rem;
+`;
+
 const BookInfo: FunctionComponent = () => {
   // test용 입니당
   const writer = '작가';
@@ -49,7 +49,7 @@ const BookInfo: FunctionComponent = () => {
   const publisher = '출판사';
 
   return (
-    <BookInfoContainer>
+    <>
       <Box display="flex" flexDirection="row">
         <Grid container>
           <Grid item>
@@ -69,19 +69,19 @@ const BookInfo: FunctionComponent = () => {
                 <BookInfoDetail> {genre} </BookInfoDetail>
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
-              <Box>
+              <BookPlot>
                 <p>
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                 </p>
-              </Box>
+              </BookPlot>
             </Box>
           </Grid>
         </Grid>
       </Box>
-    </BookInfoContainer>
+    </>
   );
 };
 

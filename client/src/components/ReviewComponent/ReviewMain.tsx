@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import ReactStars from 'react-rating-stars-component';
+import Rating from '@material-ui/lab/Rating';
 
 const ReviewMainContainer = styled(Box)`
   width: 100%;
@@ -20,6 +20,7 @@ const CardImg = styled.img`
 `;
 
 const BookTitle = styled(Box)`
+  margin-bottom: 5px;
   font-size: x-large;
   font-weight: bold;
   overflow: hidden;
@@ -31,7 +32,7 @@ const BookTitle = styled(Box)`
 
 // webkit 지원하지 않는 IE에서는 말줄임 작동X
 const BookReview = styled.div`
-  margin-top: 10px;
+  margin-top: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -46,19 +47,11 @@ const Nickname = styled.span`
   }
 `;
 
-const RatingStars = {
-  size: 30,
-  count: 5,
-  isHalf: false,
-  value: 4,
-  // 리뷰를 api에서 가져오는거니까 Readonly로 하였습니다!
-  edit: false,
-  activeColor: '#ffd700',
-};
-
 const ReviewMain: FunctionComponent = () => {
   const id = 'test';
   const history = useHistory();
+
+  const [rating, setRating] = useState<number>(4);
 
   return (
     <>
@@ -81,7 +74,7 @@ const ReviewMain: FunctionComponent = () => {
           </Box>
           <Box>
             <BookTitle> 책제목책제목책제목책제목 </BookTitle>
-            <ReactStars {...RatingStars} />
+            <Rating size="large" name="read-only" value={rating} readOnly />
             <BookReview>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
