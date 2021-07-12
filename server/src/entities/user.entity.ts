@@ -9,7 +9,6 @@ import {
   JoinTable,
 } from 'typeorm';
 import { Comment } from './comment.entity';
-import { Genre } from './genre.entity';
 import { Like } from './like.entity';
 import { Review } from './review.entity';
 
@@ -23,6 +22,9 @@ export class User {
 
   @Column('varchar', { nullable: false, length: 20, unique: true })
   nickname: string;
+
+  @Column('varchar', { nullable: false, length: 30 })
+  genres: string;
 
   @Column('varchar', { nullable: true, length: 10 })
   gender: string;
@@ -50,10 +52,6 @@ export class User {
 
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
-
-  @ManyToMany(() => Genre, { cascade: true })
-  @JoinTable({ name: 'user_genres' })
-  genres: Genre[];
 
   @ManyToMany(() => User, { cascade: true })
   @JoinTable({

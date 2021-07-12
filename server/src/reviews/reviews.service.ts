@@ -1,11 +1,13 @@
-import { Injectable, ParseBoolPipe } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { uploadReviewHtml } from './reviews.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -15,26 +17,56 @@ export class ReviewsService {
     @InjectRepository(Tag)
     private tagRepository: Repository<Tag>,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>
   ) {}
 
-  //리뷰 불러오기
-  async loadReviews(page: number): Promise<[Review[], number]> {
+  /*최신순으로 리뷰 불러오기
+  async loadReviews(p: any): Promise<[Review[], number]> {
+    const page = parseInt(p.p);
     const reviews = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      skip: page,
+      skip: page === 1 ? 0 : page - 1,
       take: 12,
     });
     return reviews;
+  }*/
+
+  //하나의 리뷰 자세히 불러오기
+  async detailReview(reviewid: any): Promise<any> {
+    const id = parseInt(reviewid.reviewid);
+    const review = await this.reviewRepository.find({
+      where: { id },
+      relations: ['tags', 'user'],
+    });
+    if (review.length === 0)
+      throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+    const comm = await this.commentRepository.find({
+      where: { review: id },
+      relations: ['user'],
+    });
+    //comment가공
+    const comment = [];
+    for (let i = 0; i < comm.length; i++) {
+      comment[i] = {
+        ...comm[i],
+        user: {
+          nickname: comm[i].user.nickname,
+          profileImg: comm[i].user.profileImg,
+        },
+      };
+    }
+    return { review, comment };
   }
 
   //태그 삽입
   async createTag(data: any): Promise<Tag[]> {
     const review = new Review();
     review.tags = [];
-    const dataarr = data.split(' ');
+    const dataarr = data.split(',');
     for (data of dataarr) {
       const exTag = await this.tagRepository.findOne({ where: { tag: data } });
       if (exTag) {
@@ -49,19 +81,22 @@ export class ReviewsService {
     return review.tags;
   }
 
-  /* 수정필요~~~
+  //리뷰 작성
   async writeReview(
-    userId: string,
+    reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
     const review = new Review();
-    review.text = createReviewDto.text;
-    review.book_id = createReviewDto.bookId;
+    review.text = await uploadReviewHtml(reviewfile);
+    review.coverImg = createReviewDto.coverImg;
+    review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
-    review.isPublic = createReviewDto.isPublic;
+    review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
+    review.summary = createReviewDto.summary;
     review.tags = await this.createTag(createReviewDto.tag);
-    review.user = await this.userRepository.findOne({ where: { userId } });
-    console.log(review);
+    review.user = await this.userRepository.findOne({
+      nickname: createReviewDto.writer,
+    });
     return this.reviewRepository.save(review);
-  } */
+  }
 }
