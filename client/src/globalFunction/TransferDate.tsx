@@ -1,6 +1,6 @@
 export default function TransferDate(writeDate: string): string {
   // 작성 날짜
-  const realWriteDate = writeDate.substring(0, 10);
+  const realWriteDate = new Date(writeDate);
   const calcWriteDate = parseInt(
     writeDate.substring(0, 10).split('-').join('')
   );
@@ -18,6 +18,10 @@ export default function TransferDate(writeDate: string): string {
   } else if (calcStandardDate - calcWriteDate < 7) {
     return `${calcStandardDate - calcWriteDate}일전`;
   } else {
-    return `${realWriteDate}`;
+    return realWriteDate.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   }
 }
