@@ -23,11 +23,11 @@ import { reviewmulterOptions } from './reviews.multerOptions';
 export class ReviewsController {
   constructor(private reviewService: ReviewsService) {}
 
-  /*//최신순or인기순으로 리뷰 불러오기
+  //최신순or인기순으로 리뷰 불러오기
   @Get('/:orderby')
   loadreviews(@Param('orderby') orderby: string) {
     return this.reviewService.loadReviews(orderby);
-  }*/
+  }
 
   //하나의 리뷰 자세히 불러오기
   @Post('/detail')

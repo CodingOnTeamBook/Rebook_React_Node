@@ -55,7 +55,7 @@ export class ReviewsService {
     }
     return reviews;
   }
-  /*
+
   //최신순or인기순으로 리뷰 12개 불러오기
   async loadReviews(orderby: string): Promise<any> {
     //const page = parseInt(p.p);
@@ -127,7 +127,7 @@ export class ReviewsService {
       return reviews;
     }
   }
-*/
+
   //하나의 리뷰 자세히 불러오기
   async detailReview(reviewid: any): Promise<any> {
     const id = parseInt(reviewid.reviewid);
