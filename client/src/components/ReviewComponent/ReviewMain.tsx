@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
 
 const ReviewMainContainer = styled(Box)`
-  border-radius: 20px;
+  border-radius: 10px;
   width: 100%;
   cursor: pointer;
 `;
