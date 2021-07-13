@@ -23,12 +23,6 @@ import { reviewmulterOptions } from './reviews.multerOptions';
 export class ReviewsController {
   constructor(private reviewService: ReviewsService) {}
 
-  //최신순or인기순으로 리뷰 불러오기
-  @Get('/:orderby')
-  loadreviews(@Param('orderby') orderby: string) {
-    return this.reviewService.loadReviews(orderby);
-  }
-
   //하나의 리뷰 자세히 불러오기
   @Post('/detail')
   loadDetailReview(@Body() reviewid: string, @Res() res) {
@@ -50,6 +44,7 @@ export class ReviewsController {
       });
     });
   }
+
   //리뷰 작성
   @Post('/write')
   @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
@@ -102,4 +97,16 @@ export class ReviewsController {
 
   //@Delete('/')
   //deleteReview(@Body())
+
+  //api/review/:param이라 가장 뒤쪽에 배치!
+  //최신순or인기순으로 리뷰 불러오기
+  @Get('/:orderby')
+  loadreviews(@Param('orderby') orderby: string, @Res() res) {
+    return this.reviewService.loadReviews(orderby).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        review: value,
+      });
+    });
+  }
 }

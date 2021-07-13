@@ -28,11 +28,13 @@ export class ReviewsService {
         like_count: 'DESC',
         createdAt: 'DESC',
       },
+      where: { isPublic: 1 },
       relations: ['user'],
       select: [
         'id',
         'book_info',
         'score',
+        'isPublic',
         'summary',
         'user',
         'like_count',
