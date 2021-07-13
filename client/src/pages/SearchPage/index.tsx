@@ -32,8 +32,8 @@ const NoResultMsg = styled.h2`
 const SearchPage: FunctionComponent = () => {
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
+
   const [searchResult, setSearchResult] = useState([]);
-  const keyword = useSelector((state: RootState) => state.search.keyword);
   const location = useLocation();
   const query = location.search.split('=')[1];
   console.log(query);
@@ -48,14 +48,14 @@ const SearchPage: FunctionComponent = () => {
   }, [typeA, typeB]);
 
   useEffect(() => {
-    axios.get(`api/book/search?title=${keyword}`).then(
+    axios.get(`api/book/search?title=${query}`).then(
       ({
         data: {
           books: { item },
         },
       }) => setSearchResult(item)
     );
-  }, [keyword]);
+  }, [query]);
 
   console.log(searchResult);
 

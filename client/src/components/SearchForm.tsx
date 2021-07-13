@@ -40,9 +40,6 @@ interface Props {
 }
 
 const SearchForm = ({ query }: Props) => {
-  const location = useLocation();
-  console.log(query);
-  // const keyword = useSelector((state) => state.search.keyword);
   const history = useHistory();
   // const dispatch = useDispatch();
   // const keyword = useSelector((state: RootState) => state.search.keyword);
@@ -59,14 +56,8 @@ const SearchForm = ({ query }: Props) => {
   };
 
   const onSubmit = (e: any) => {
-    console.log('[onSubmit]');
+    console.log('[onSubmit]'); //디버깅용
     e.preventDefault();
-    // ⭐ To do
-    // 1. searchPage로 이동
-    // 2. inputValue 전달
-    // 3. 검색어 searchResult action dispatch
-    // dispatch(resetKeyword());
-    // dispatch(setKeyword(inputValue));
     history.push({
       pathname: '/search',
       search: `?query=${inputValue}`,
