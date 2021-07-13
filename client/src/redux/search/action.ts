@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AxiosError } from 'axios';
-import { ThunkAction } from 'redux-thunk';
-import { RootState } from '../rootReducer';
 
 import {
   FETCH_SEARCH_RESULT,
@@ -30,38 +28,22 @@ export const getSearchResultError = (error: AxiosError) => {
   };
 };
 
-type SearchAction =
-  | ReturnType<typeof fetchSearchResult>
-  | ReturnType<typeof getSearchResultSuccess>
-  | ReturnType<typeof getSearchResultError>;
-
-// export const fetchApi = (
-//   query: string
-// ): ThunkAction<Promise<void>, RootState, null, SearchAction> => {
-//   console.log('fetchApi()'); //디버깅용
-//   console.log(query); //디버깅용
-
-//   return async (dispatch) => {
-//     dispatch(fetchSearchResult);
-//     try {
-//       const res = await axios.get(`api/book/search?title=${query}`);
-//       dispatch(getSearchResultSuccess(res.data.books.item));
-//     } catch (error: any) {
-//       dispatch(getSearchResultError(error));
-//     }
-//   };
-// };
-
 export const fetchApi = (query: string) => {
-  console.log('fetchApi()'); //디버깅용
-
-  return async (dispatch: Dispatch) => {
+  console.log('fetchApi()');
+  return (dispatch: Dispatch) => {
     dispatch(fetchSearchResult());
-    try {
-      const res = await axios.get(`api/book/search?title=${query}`);
-      dispatch(getSearchResultSuccess(res.data.books.item));
-    } catch (error: any) {
-      dispatch(getSearchResultError(error));
-    }
+    axios
+      .get(`api/book/search?title=${query}`)
+      .then(
+        ({
+          data: {
+            books: { item },
+          },
+        }) => {
+          console.log(item); //test용, 제대로 갖고옴
+          dispatch(getSearchResultSuccess(item));
+        }
+      )
+      .catch((error) => dispatch(getSearchResultError(error)));
   };
 };

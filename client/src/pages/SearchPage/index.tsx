@@ -25,24 +25,20 @@ const BtnArea = styled.div`
 
 const NoResultMsg = styled.h2`
   margin: 0 auto;
+  margin-top: 10rem;
 `;
 
 const SearchPage: FunctionComponent = () => {
-  const {
-    search: { item },
-  } = useSelector((state: RootState) => state);
-  console.log(`item--------------`);
-  console.log(item);
+  const dispatch = useDispatch();
 
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
 
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState<any[]>([]);
   const location = useLocation();
   const query = location.search.split('=')[1];
-  console.log(query);
 
-  const dispatch = useDispatch();
+  const { item } = useSelector((state: RootState) => state.search);
 
   useEffect(() => {
     if (typeA) {
@@ -54,13 +50,11 @@ const SearchPage: FunctionComponent = () => {
   }, [typeA, typeB]);
 
   useEffect(() => {
-    // 이 함수들은 렌더링 결과가 실제 DOM에 반영된 후 호출됨
-    console.log('useEffect()호출');
     dispatch(fetchApi(query));
   }, [query]);
 
   useEffect(() => {
-    if (item) setSearchResult(item);
+    item && setSearchResult(item);
   }, [item]);
 
   return (

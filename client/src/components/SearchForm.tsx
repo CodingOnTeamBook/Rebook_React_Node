@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
-import { useSelector, useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   position: relative;
