@@ -1,36 +1,37 @@
-import { SET_KEYWORD, RESET_KEYWORD, GET_SEARCH_RESULT } from './search-type';
+import {
+  FETCH_SEARCH_RESULT,
+  GET_SEARCH_RESULT_SUCCESS,
+  GET_SEARCH_RESULT_ERROR,
+} from './search-type';
 
 const INITIAL_STATE = {
-  keyword: '',
-  data: [],
+  item: [],
+  loading: false,
+  error: null,
 };
 
-type SearchState = {
-  keyword: string;
-  data: any[] | null;
-};
-
-export default function SearchReducer(
-  state: SearchState = INITIAL_STATE,
-  action: any
-): SearchState {
+export default function SearchReducer(state = INITIAL_STATE, action: any) {
   switch (action.type) {
-    case SET_KEYWORD:
+    case FETCH_SEARCH_RESULT:
       return {
         ...state,
-        keyword: action.payload,
-        data: null,
+        loading: true,
+        item: [],
+        error: false,
       };
-    case RESET_KEYWORD:
+    case GET_SEARCH_RESULT_SUCCESS:
       return {
         ...state,
-        keyword: '',
-        data: null,
+        item: action.payload,
+        loading: false,
+        error: false,
       };
-    case GET_SEARCH_RESULT:
+    case GET_SEARCH_RESULT_ERROR:
       return {
         ...state,
-        data: action.payload,
+        error: action.payload,
+        loading: false,
+        item: [],
       };
     default:
       return state;

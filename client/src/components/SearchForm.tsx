@@ -1,12 +1,10 @@
-import React, { FunctionComponent, useState, useRef } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../redux/rootReducer';
-import { setKeyword, resetKeyword } from '../redux/search/action';
 
 const Wrapper = styled.div`
   position: relative;
@@ -41,9 +39,6 @@ interface Props {
 
 const SearchForm = ({ query }: Props) => {
   const history = useHistory();
-  // const dispatch = useDispatch();
-  // const keyword = useSelector((state: RootState) => state.search.keyword);
-  // const keywordResult = useSelector((state: RootState) => state.search.data);
 
   const [inputValue, setInputValue] = useState(query ? query : '');
   const inputRef: React.MutableRefObject<any> = useRef();

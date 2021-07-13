@@ -9,10 +9,8 @@ import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
-import axios from 'axios';
-import { getSearchResult } from '../../redux/search/action';
 import { useLocation } from 'react-router-dom';
-import { KeyboardArrowUpRounded } from '@material-ui/icons';
+import { fetchApi } from '../../redux/search/action';
 
 const Container = styled.div`
   margin: 2rem;
@@ -30,6 +28,12 @@ const NoResultMsg = styled.h2`
 `;
 
 const SearchPage: FunctionComponent = () => {
+  const {
+    search: { item },
+  } = useSelector((state: RootState) => state);
+  console.log(`item--------------`);
+  console.log(item);
+
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
 
@@ -37,6 +41,8 @@ const SearchPage: FunctionComponent = () => {
   const location = useLocation();
   const query = location.search.split('=')[1];
   console.log(query);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (typeA) {
@@ -48,16 +54,14 @@ const SearchPage: FunctionComponent = () => {
   }, [typeA, typeB]);
 
   useEffect(() => {
-    axios.get(`api/book/search?title=${query}`).then(
-      ({
-        data: {
-          books: { item },
-        },
-      }) => setSearchResult(item)
-    );
+    // 이 함수들은 렌더링 결과가 실제 DOM에 반영된 후 호출됨
+    console.log('useEffect()호출');
+    dispatch(fetchApi(query));
   }, [query]);
 
-  console.log(searchResult);
+  useEffect(() => {
+    if (item) setSearchResult(item);
+  }, [item]);
 
   return (
     <Container>
