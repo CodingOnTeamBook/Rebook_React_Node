@@ -7,21 +7,20 @@ import Grid from '@material-ui/core/Grid';
 import CommentList from '../../components/ReviewDetailComponent/CommentList';
 
 const ReviewDetailContainer = styled(Grid)`
+  border-radius: 20px;
+  background-color: #e2e2e2;
   margin-top: 50px;
 `;
 
 const BookInfoWrapper = styled(Grid)`
   width: 100%;
-  border-radius: 20px 20px 0 0;
-  padding: 5%;
-  background-color: ${(props) => props.theme.palette.green};
+  border-radius: 20px;
+  padding: 5% 5% 0 5%;
 `;
 
 const ReviewDetailWrapper = styled(Grid)`
-  border-radius: 0 0 20px 20px;
   width: 100%;
-  padding: 3%;
-  background-color: #e2e2e2;
+  padding: 5%;
   margin-bottom: 50px;
 `;
 
@@ -37,8 +36,8 @@ const ReviewDetailPage: FunctionComponent = () => {
       </BookInfoWrapper>
       <ReviewDetailWrapper container direction="column" alignContent="center">
         <UserReview />
-        <CommentList />
         <MarginTop />
+        <CommentList />
         <AddComment />
       </ReviewDetailWrapper>
     </ReviewDetailContainer>

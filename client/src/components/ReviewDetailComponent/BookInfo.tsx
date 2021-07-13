@@ -14,14 +14,12 @@ const BookImg = styled.img`
 `;
 
 const BookTitle = styled.span`
-  color: white;
   font-size: 2rem;
   margin-bottom: 10px;
 `;
 
 const BookInfoDetail = styled.span`
   /* width: 100%; */
-  color: white;
   margin-bottom: 15px;
   font-size: 1.4rem;
   &::after {
@@ -37,7 +35,6 @@ const BookInfoDetail = styled.span`
 `;
 
 const BookPlot = styled(Box)`
-  color: white;
   font-size: 1.2rem;
 `;
 
