@@ -15,8 +15,10 @@ import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 
 const UserReviewContainer = styled(Box)`
+  border-radius: 20px;
+  position: relative;
   background-color: white;
-  padding: 3% 3% 0 3%;
+  padding: 3%;
   width: 100%;
 `;
 
@@ -42,7 +44,11 @@ const ReviewTime = styled.p`
   color: #808080;
 `;
 
-const BookTag = styled.div`
+const ChipColor = styled(Chip)`
+  background-color: ${(props) => props.theme.palette.green};
+`;
+
+const BookTag = styled(Box)`
   margin-top: 5px;
   &:not(:last-of-type) {
     content: '';
@@ -116,7 +122,7 @@ const UserReview: FunctionComponent = () => {
   };
 
   return (
-    <UserReviewContainer>
+    <UserReviewContainer boxShadow={2}>
       {REVIEW_DATA.map((review) => (
         <Box display="flex" flexDirection="column" key={review.id}>
           <Box display="flex" flexDirection="row" flexWrap="nowrap">
@@ -132,11 +138,11 @@ const UserReview: FunctionComponent = () => {
                 value={review.score}
                 readOnly
               />
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" flexWrap="wrap">
                 {/* 중첩 map 이렇게 사용 */}
                 {review.tags.map((reviewTag) => (
                   <BookTag key={reviewTag.id}>
-                    <Chip label={reviewTag.tag} />
+                    <ChipColor label={reviewTag.tag} />
                   </BookTag>
                 ))}
               </Box>

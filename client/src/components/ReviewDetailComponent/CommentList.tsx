@@ -14,7 +14,6 @@ const Title = styled.h1`
 `;
 
 const CommentListContainer = styled(Box)`
-  background-color: white;
   width: 100%;
   padding: 2%;
 `;

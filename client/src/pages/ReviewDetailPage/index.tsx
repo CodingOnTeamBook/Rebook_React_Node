@@ -15,14 +15,12 @@ const ReviewDetailContainer = styled(Grid)`
 const BookInfoWrapper = styled(Grid)`
   width: 100%;
   border-radius: 20px;
-  padding: 5%;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-  background-color: ${(props) => props.theme.palette.green};
+  padding: 5% 5% 0 5%;
 `;
 
 const ReviewDetailWrapper = styled(Grid)`
   width: 100%;
-  padding: 3%;
+  padding: 5%;
   margin-bottom: 50px;
 `;
 
@@ -38,8 +36,8 @@ const ReviewDetailPage: FunctionComponent = () => {
       </BookInfoWrapper>
       <ReviewDetailWrapper container direction="column" alignContent="center">
         <UserReview />
-        <CommentList />
         <MarginTop />
+        <CommentList />
         <AddComment />
       </ReviewDetailWrapper>
     </ReviewDetailContainer>
