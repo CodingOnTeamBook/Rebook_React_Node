@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
 import axios from 'axios';
 import { getSearchResult } from '../../redux/search/action';
+import { useLocation } from 'react-router-dom';
+import { KeyboardArrowUpRounded } from '@material-ui/icons';
 
 const Container = styled.div`
   margin: 2rem;
@@ -23,11 +25,18 @@ const BtnArea = styled.div`
   margin-bottom: 2rem;
 `;
 
+const NoResultMsg = styled.h2`
+  margin: 0 auto;
+`;
+
 const SearchPage: FunctionComponent = () => {
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
-  const [searchResult, setSearchResult] = useState<any>([]);
+  const [searchResult, setSearchResult] = useState([]);
   const keyword = useSelector((state: RootState) => state.search.keyword);
+  const location = useLocation();
+  const query = location.search.split('=')[1];
+  console.log(query);
 
   useEffect(() => {
     if (typeA) {
@@ -52,7 +61,7 @@ const SearchPage: FunctionComponent = () => {
 
   return (
     <Container>
-      <SearchForm />
+      <SearchForm query={query} />
       <BtnArea>
         <GreenCheckBox
           labelName="책 찾기"
@@ -77,13 +86,17 @@ const SearchPage: FunctionComponent = () => {
           </>
         ) : (
           <>
-            {searchResult.map((result: any, index: number) => {
-              return (
-                <GridSmallItem key={index}>
-                  <BookInfo props={result} />
-                </GridSmallItem>
-              );
-            })}
+            {searchResult.length !== 0 ? (
+              searchResult.map((result: any, index: number) => {
+                return (
+                  <GridSmallItem key={index}>
+                    <BookInfo props={result} />
+                  </GridSmallItem>
+                );
+              })
+            ) : (
+              <NoResultMsg>{query} 검색 결과가 없어요😅</NoResultMsg>
+            )}
           </>
         )}
       </GridLayout>

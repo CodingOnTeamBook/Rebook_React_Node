@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useRef } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -35,14 +35,20 @@ const CancleBtn = styled(CancelIcon)`
   color: ${(props) => props.theme.palette.green};
 `;
 
-const SearchForm: FunctionComponent = () => {
+interface Props {
+  query?: string;
+}
+
+const SearchForm = ({ query }: Props) => {
+  const location = useLocation();
+  console.log(query);
   // const keyword = useSelector((state) => state.search.keyword);
   const history = useHistory();
-  const dispatch = useDispatch();
-  const keyword = useSelector((state: RootState) => state.search.keyword);
+  // const dispatch = useDispatch();
+  // const keyword = useSelector((state: RootState) => state.search.keyword);
   // const keywordResult = useSelector((state: RootState) => state.search.data);
 
-  const [inputValue, setInputValue] = useState(keyword);
+  const [inputValue, setInputValue] = useState(query ? query : '');
   const inputRef: React.MutableRefObject<any> = useRef();
 
   const OnChange = (
@@ -59,9 +65,12 @@ const SearchForm: FunctionComponent = () => {
     // 1. searchPage로 이동
     // 2. inputValue 전달
     // 3. 검색어 searchResult action dispatch
-    dispatch(resetKeyword());
-    dispatch(setKeyword(inputValue));
-    history.push('/search');
+    // dispatch(resetKeyword());
+    // dispatch(setKeyword(inputValue));
+    history.push({
+      pathname: '/search',
+      search: `?query=${inputValue}`,
+    });
   };
 
   const onReset = () => {
