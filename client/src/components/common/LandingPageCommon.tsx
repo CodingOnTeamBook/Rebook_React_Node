@@ -13,13 +13,14 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
 
-  h3 {
+  h2 {
     margin-top: 26px;
   }
 `;
 
 const Main = styled.div`
   display: flex;
+  /* flex-wrap: wrap; */
   justify-content: center;
   margin-bottom: 20px;
   height: 100%;
