@@ -8,7 +8,7 @@ import CommentList from '../../components/ReviewDetailComponent/CommentList';
 
 const ReviewDetailContainer = styled(Grid)`
   border-radius: 20px;
-  background-color: #e2e2e2;
+  background-color: #f6f6f6;
   margin-top: 50px;
 `;
 
