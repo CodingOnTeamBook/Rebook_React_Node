@@ -31,14 +31,20 @@ const ImgArea = styled.div`
   }
 `;
 
-const BookInfo = ({ props }: any) => {
+interface IProps {
+  imgUrl: string;
+  title: string;
+  author: string;
+}
+
+const BookInfo = ({ imgUrl, title, author }: IProps) => {
   return (
     <Container>
       <ImgArea>
-        <img src={props.cover} />
+        <img src={imgUrl} />
       </ImgArea>
-      <h2>{props.title}</h2>
-      <p>{props.author}</p>
+      <h2>{title}</h2>
+      <p>{author}</p>
     </Container>
   );
 };
