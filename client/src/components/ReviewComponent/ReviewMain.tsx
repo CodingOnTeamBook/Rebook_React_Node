@@ -9,22 +9,33 @@ import { FavoriteBorder } from '@material-ui/icons';
 
 const ReviewMainContainer = styled(Box)`
   width: 100%;
+  border-radius: 16px;
+  margin: 0.4rem;
+  border: none;
+  box-shadow: 5px 4px 4px rgba(40, 40, 40, 0.1);
+  cursor: pointer;
+  padding: 1rem;
 `;
 
 const ImgCover = styled(Box)`
-  width: 162px;
+  width: 120px;
+  height: 160px;
+  overflow: hidden;
 `;
 
 const CardImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const BookTitle = styled(Box)`
-  font-size: x-large;
+  font-size: 13px;
   font-weight: bold;
-  margin-bottom: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
@@ -33,12 +44,15 @@ const BookTitle = styled(Box)`
 `;
 
 const BookTag = styled.div`
-  margin-bottom: 10px;
+  div {
+    margin: 0.4rem;
+  }
 `;
 
-// webkit 지원하지 않는 IE에서는 말줄임 작동X
+// webkit 지원하지 않는 IE에서는 말줄임 작동X => 처음부터 길이 제한으로 summary를 저장하는 방법으로 해야할 듯?
 const BookReview = styled.div`
   overflow: hidden;
+  font-size: 11px;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -46,15 +60,17 @@ const BookReview = styled.div`
 `;
 
 const Nickname = styled.span`
+  font-size: 10px;
   flex: 1;
   &::before {
     content: 'by';
   }
 `;
 
-const Like = styled.span`
-  text-align: right;
-  flex: 1;
+const Like = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 
 const ReviewMain: FunctionComponent = () => {
@@ -82,16 +98,15 @@ const ReviewMain: FunctionComponent = () => {
           <Box p={1}>
             <BookTitle> 책제목책제목책제목책제목 </BookTitle>
             <BookTag>
-              <Chip label="#태그" /> <Chip label="#태그" />
+              <Chip label="#태그" variant="outlined" size="small" />
+              <Chip label="#태그" variant="outlined" size="small" />
             </BookTag>
             <BookReview>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰리뷰 리뷰
               리뷰리뷰리뷰리뷰리뷰리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
             </BookReview>
+            <Nickname> 리북이님 </Nickname>
           </Box>
-        </Box>
-        <Box display="flex" pl={1} boxShadow={1} alignItems="center">
-          <Nickname> 리북이님 </Nickname>
           <Like>
             <Checkbox
               icon={<FavoriteBorder />}
