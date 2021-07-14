@@ -54,12 +54,14 @@ const SearchForm = ({ query }: Props) => {
 
   const onSubmit = (e: any) => {
     console.log('[onSubmit]'); //디버깅용
-    // 여기서 dispatch
-    dispatch(fetchApi(inputValue));
     e.preventDefault();
+    // 공백문자 입력시 return
+    if (inputValue.trim().length === 0) return;
+    // 여기서 dispatch
+    dispatch(fetchApi(inputValue.trim()));
     history.push({
       pathname: '/search',
-      search: `?query=${inputValue}`,
+      search: `?query=${inputValue.trim()}`,
     });
   };
 
