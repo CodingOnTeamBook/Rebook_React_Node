@@ -24,6 +24,7 @@ import PeopleDetailPage from './pages/PeopleDetailPage';
 
 const MinHeightContainer = styled(Container)`
   min-height: 80vh;
+  height: auto;
 `;
 
 const App: FunctionComponent = () => {

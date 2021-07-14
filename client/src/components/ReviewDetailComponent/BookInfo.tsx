@@ -10,25 +10,30 @@ const BookInfoContainer = styled(Paper)`
 `;
 
 const BookCover = styled(Box)`
-  width: 200px;
-  /* height: 250px; */
+  width: 115px;
+  height: 150px;
+  overflow: hidden;
+  transition: all 0.2s linear;
 `;
 
 const BookImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const BookTitle = styled.span`
-  font-size: 30px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  margin-bottom: 0.4rem;
 `;
 
 const BookInfoDetail = styled.span`
   /* width: 100%; */
-  margin-bottom: 15px;
-  font-size: 20px;
+  font-size: 14px;
   &::after {
     content: '|';
   }
@@ -39,6 +44,12 @@ const BookInfoDetail = styled.span`
     content: '';
     margin-right: 10px;
   }
+`;
+
+const Story = styled.div`
+  font-size: 10px;
+  padding: 1rem 0;
+  margin-right: 2rem;
 `;
 
 const BookInfo: FunctionComponent = () => {
@@ -70,12 +81,12 @@ const BookInfo: FunctionComponent = () => {
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
               <Box>
-                <p>
+                <Story>
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                </p>
+                </Story>
               </Box>
             </Box>
           </Grid>

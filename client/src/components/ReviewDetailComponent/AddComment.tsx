@@ -11,9 +11,13 @@ const AddCommentContainer = styled(Box)`
 `;
 
 const UserImg = styled(Avatar)`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 2rem;
+  img {
+    padding: 0.4rem;
+    border-radius: 50%;
+  }
 `;
 
 const InputArea = styled(InputBase)`
@@ -21,6 +25,7 @@ const InputArea = styled(InputBase)`
   padding: 15px;
   border: 2px solid #808080;
   border-radius: 15px;
+  font-size: 12px;
 `;
 
 const AddComment: FunctionComponent = () => {

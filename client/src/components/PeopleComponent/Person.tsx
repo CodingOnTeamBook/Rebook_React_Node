@@ -12,60 +12,61 @@ const PaperContainer = styled(Paper)`
   flex-direction: column;
   align-items: center;
   overflow: visible;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 0.4rem;
 `;
 
 const UserImg = styled(Avatar)`
-  width: 90px;
-  height: 90px;
+  width: 60px;
+  height: 60px;
 `;
 
 const NickName = styled.div`
   margin-top: 10px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
 const TagArea = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TagChip = styled(Chip)`
-  &:not(:first-of-type) {
-    margin-left: 10px;
+  div {
+    margin: 0.5rem;
+    font-size: 9px;
   }
 `;
 
 const Introduction = styled.div`
-  margin-top: 20px;
+  margin: 0.7rem;
+  font-size: 10px;
+  padding: 0 3rem;
 `;
 
 const DetailInfo = styled.div`
-  width: 100%;
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  width: 100%;
 `;
 
 const ReviewArea = styled.div`
-  width: 100%;
+  width: 40%;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
 `;
 
 const FollowerArea = styled.div`
-  width: 100%;
+  width: 40%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
 `;
 
 const Info = styled.span`
-  margin-left: 10px;
+  margin-left: 0.5rem;
 `;
 
 const Person: FunctionComponent = () => {
@@ -86,8 +87,9 @@ const Person: FunctionComponent = () => {
         />
         <NickName>리북이</NickName>
         <TagArea>
-          <TagChip label="#태그" /> <TagChip label="#태그" />
-          <TagChip label="#태그" />
+          <Chip label="#태그" size="small" />
+          <Chip label="#태그" size="small" />
+          <Chip label="#태그" size="small" />
         </TagArea>
         <Introduction>
           안녕하세요. 반갑습니다! 안녕하세요. 반갑습니다! 안녕하세요.
@@ -95,11 +97,11 @@ const Person: FunctionComponent = () => {
         </Introduction>
         <DetailInfo>
           <ReviewArea>
-            <ListAlt></ListAlt>
+            <ListAlt style={{ fontSize: '17px' }} />
             <Info> 2개 </Info>
           </ReviewArea>
           <FollowerArea>
-            <PersonAdd></PersonAdd>
+            <PersonAdd style={{ fontSize: '17px' }} />
             <Info> 3명 </Info>
           </FollowerArea>
         </DetailInfo>

@@ -34,13 +34,14 @@ const CardImg = styled.img`
 `;
 
 const BookTitle = styled(Box)`
-  font-size: 13px;
+  font-size: 15px;
   font-weight: bold;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
   overflow: hidden;
   width: 170px;
+  margin: 0.4rem 0;
 `;
 
 const BookTag = styled.div`
@@ -57,6 +58,7 @@ const BookReview = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+  margin: 0.4rem 0;
 `;
 
 const Nickname = styled.span`
