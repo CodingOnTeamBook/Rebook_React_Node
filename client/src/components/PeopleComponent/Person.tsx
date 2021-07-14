@@ -18,7 +18,7 @@ const PersonContainer = styled(Box)`
 
 const UserImg = styled(Avatar)`
   border: 5px solid #000;
-  padding: 5%;
+  padding: 10px;
   width: 90px;
   height: 90px;
 `;
