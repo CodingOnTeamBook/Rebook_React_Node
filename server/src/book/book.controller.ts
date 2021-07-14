@@ -15,4 +15,14 @@ export class BookController {
       });
     });
   }
+
+  @Get('/bestseller')
+  getBestSeller(@Res() res){
+    return this.bookService.getBestSeller().then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        bestSeller: value,
+      });
+    });
+  }
 }

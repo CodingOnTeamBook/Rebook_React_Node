@@ -6,7 +6,6 @@ import { User } from '../entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtKEY } from 'src/config/jwt.config';
 import { AuthMiddleware } from './auth.middleware';
-import { Genre } from 'src/entities/genre.entity';
 import { Review } from 'src/entities/review.entity';
 import { Comment } from 'src/entities/comment.entity';
 import { Like } from 'src/entities/like.entity';
@@ -15,10 +14,10 @@ import { RequestMethod } from '@nestjs/common';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Genre, Review, Comment, Like, Tag]),
+    TypeOrmModule.forFeature([User, Review, Comment, Like, Tag]),
     JwtModule.register({
-      secret: jwtKEY.secreteKey,
-      signOptions: { expiresIn: '1h' },
+      secret: jwtKEY.secretKey,
+      signOptions: { expiresIn: '6h' },
     }),
   ],
   controllers: [UsersController],
