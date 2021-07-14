@@ -19,7 +19,6 @@ const BookTitle = styled.span`
 `;
 
 const BookInfoDetail = styled.span`
-  /* width: 100%; */
   margin-bottom: 15px;
   font-size: 1.4rem;
   &::after {
@@ -57,10 +56,10 @@ const BookInfo: FunctionComponent = () => {
               />
             </BookCover>
           </Grid>
-          <Grid item xs>
+          <Grid item xs sm md>
             <Box display="flex" flexDirection="column">
               <BookTitle> 해리포터와 마법사의 돌 </BookTitle>
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" flexWrap="wrap">
                 <BookInfoDetail> {writer} </BookInfoDetail>
                 <BookInfoDetail> {year} </BookInfoDetail>
                 <BookInfoDetail> {genre} </BookInfoDetail>
