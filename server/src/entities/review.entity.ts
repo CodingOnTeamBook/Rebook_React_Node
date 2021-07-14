@@ -58,16 +58,16 @@ export class Review {
   updatedAt: Date;
 
   //writer: userId가 FK로 저장됨
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, { onDelete: 'SET NULL' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.review, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.review)
   comments: Comment[];
 
-  @OneToMany(() => Like, (like) => like.review, { cascade: true })
+  @OneToMany(() => Like, (like) => like.review)
   likes: Like[];
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { cascade: true })
   @JoinTable({
     name: 'review_tags',
     joinColumn: {

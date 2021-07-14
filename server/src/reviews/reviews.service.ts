@@ -47,6 +47,7 @@ export class ReviewsService {
     for (const review of temp[0]) {
       const bookInfo = JSON.parse(review['book_info']);
       const r = {
+        id: review['id'],
         writer: review['user']['nickname'],
         score: review['score'],
         summary: review['summary'],
@@ -86,6 +87,7 @@ export class ReviewsService {
       for (const review of temp[0]) {
         const bookInfo = JSON.parse(review['book_info']);
         const r = {
+          id: review['id'],
           score: review['score'],
           summary: review['summary'],
           title: bookInfo['title'],
@@ -118,6 +120,7 @@ export class ReviewsService {
       for (const review of temp[0]) {
         const bookInfo = JSON.parse(review['book_info']);
         const r = {
+          id: review['id'],
           score: review['score'],
           summary: review['summary'],
           title: bookInfo['title'],
