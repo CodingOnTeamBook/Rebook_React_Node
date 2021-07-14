@@ -90,7 +90,11 @@ const SearchPage: FunctionComponent = () => {
               searchResult.map((result: any, index: number) => {
                 return (
                   <GridSmallItem key={index}>
-                    <BookInfo props={result} />
+                    <BookInfo
+                      imgUrl={result.url}
+                      title={result.title}
+                      author={result.author}
+                    />
                   </GridSmallItem>
                 );
               })
