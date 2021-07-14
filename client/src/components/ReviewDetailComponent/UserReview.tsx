@@ -14,26 +14,33 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 
 const UserReviewContainer = styled(Paper)`
-  padding: 25px;
+  padding: 2rem;
   width: 100%;
 `;
 
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
-  margin-right: 10px;
+  margin-right: 2rem;
+  img {
+    padding: 0.4rem;
+    border-radius: 50%;
+    border: 2px solid ${(props) => props.theme.palette.green};
+  }
 `;
 
 const UserName = styled.span`
-  font-size: 20px;
+  font-size: 14px;
 `;
 
 const ReviewTime = styled.p`
   color: #808080;
+  font-size: 8px;
 `;
 
 const BookTag = styled(Chip)`
   margin-top: 10px;
+  font-size: 10px;
   &:not(:last-of-type) {
     content: '';
     margin-right: 10px;
@@ -41,7 +48,7 @@ const BookTag = styled(Chip)`
 `;
 
 const RatingStars = {
-  size: 30,
+  size: 20,
   count: 5,
   isHalf: false,
   value: 4,
@@ -83,7 +90,7 @@ const UserReview: FunctionComponent = () => {
               <BookTag label={tag} />
               <BookTag label={tag} />
             </Box>
-            <p>
+            <p style={{ fontSize: '10px' }}>
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
               리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
@@ -110,7 +117,7 @@ const UserReview: FunctionComponent = () => {
               onClose={menuClose}
               PaperProps={{
                 style: {
-                  maxHeight: ITEM_HEIGHT * 4.5,
+                  maxHeight: ITEM_HEIGHT * 3.3,
                   width: '16ch',
                 },
               }}
@@ -131,7 +138,9 @@ const UserReview: FunctionComponent = () => {
             checkedIcon={<Favorite />}
             name="checkedH"
           />
-          <span> {test}명이 리뷰를 좋아합니다. </span>
+          <span style={{ fontSize: '12px' }}>
+            {test}명이 리뷰를 좋아합니다.
+          </span>
         </Box>
       </Box>
     </UserReviewContainer>

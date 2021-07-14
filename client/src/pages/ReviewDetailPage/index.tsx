@@ -9,26 +9,20 @@ import CommentList from '../../components/ReviewDetailComponent/CommentList';
 const ReviewDetailContainer = styled(Grid)`
   margin-top: 30px;
   margin-bottom: 30px;
+  height: auto;
   width: 100%;
-`;
-
-const MarginTop = styled.div`
-  margin-top: 20px;
-`;
-
-const MarginTopTop = styled.div`
-  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 const ReviewDetailPage: FunctionComponent = () => {
   return (
     <ReviewDetailContainer container direction="column" alignContent="center">
       <BookInfo />
-      <MarginTop />
       <UserReview />
-      <MarginTopTop />
       <CommentList />
-      <MarginTop />
       <AddComment />
     </ReviewDetailContainer>
   );

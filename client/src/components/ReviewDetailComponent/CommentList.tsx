@@ -10,22 +10,31 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const CommentListContainer = styled(Box)`
   width: 100%;
+  margin-top: 2rem;
 `;
 
 const UserImg = styled(Avatar)`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 2rem;
+  img {
+    padding: 0.4rem;
+    border-radius: 50%;
+  }
 `;
 
-const UserName = styled.span``;
+const UserName = styled.span`
+  font-size: 12px;
+`;
 
 const ReviewTime = styled.span`
   color: #808080;
+  font-size: 8px;
 `;
 
 const Review = styled.p`
   margin-top: 5px;
+  font-size: 11px;
   width: 100%;
   padding: 10px;
   /* height: 25%; */
@@ -60,7 +69,12 @@ const CommentList: FunctionComponent = () => {
           alt="Mark Zuckerberg"
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
-        <Box display="flex" flexDirection="column" flexGrow="1">
+        <Box
+          display="flex"
+          flexDirection="column"
+          flexGrow="1"
+          style={{ paddingBottom: '1rem' }}
+        >
           <UserName>Mark Zuckerberg</UserName>
           <ReviewTime> 1일전 </ReviewTime>
           <Review> 와라라라ㅏ라라라라ㅏ라라라ㅏ라랄 </Review>
@@ -98,7 +112,11 @@ const CommentList: FunctionComponent = () => {
           alt="Mark Zuckerberg"
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
-        <Box display="flex" flexDirection="column">
+        <Box
+          display="flex"
+          flexDirection="column"
+          style={{ paddingBottom: '1rem' }}
+        >
           <UserName>Mark Zuckerberg</UserName>
           <ReviewTime> 1일전 </ReviewTime>
           <Review>
