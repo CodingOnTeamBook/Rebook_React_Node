@@ -21,19 +21,114 @@ export class ReviewsService {
     @InjectRepository(Comment)
     private commentRepository: Repository<Comment>
   ) {}
-
-  /*최신순으로 리뷰 불러오기
-  async loadReviews(p: any): Promise<[Review[], number]> {
-    const page = parseInt(p.p);
-    const reviews = await this.reviewRepository.findAndCount({
+  //인기리뷰 6개 불러오기
+  async orderbyLike(): Promise<any> {
+    const temp = await this.reviewRepository.findAndCount({
       order: {
+        like_count: 'DESC',
         createdAt: 'DESC',
       },
-      skip: page === 1 ? 0 : page - 1,
-      take: 12,
+      where: { isPublic: 1 },
+      relations: ['user'],
+      select: [
+        'id',
+        'book_info',
+        'score',
+        'isPublic',
+        'summary',
+        'user',
+        'like_count',
+        'createdAt',
+      ],
+      skip: 0,
+      take: 6,
     });
+    const reviews = [];
+    for (const review of temp[0]) {
+      const bookInfo = JSON.parse(review['book_info']);
+      const r = {
+        writer: review['user']['nickname'],
+        score: review['score'],
+        summary: review['summary'],
+        title: bookInfo['title'],
+        cover: bookInfo['cover'],
+      };
+      reviews.push(r);
+    }
     return reviews;
-  }*/
+  }
+
+  //최신순or인기순으로 리뷰 12개 불러오기
+  async loadReviews(orderby: string): Promise<any> {
+    //const page = parseInt(p.p);
+    if (orderby === 'popularity') {
+      const temp = await this.reviewRepository.findAndCount({
+        order: {
+          like_count: 'DESC',
+          createdAt: 'DESC',
+        },
+        select: [
+          'id',
+          'book_info',
+          'score',
+          'summary',
+          'isPublic',
+          'like_count',
+          'createdAt',
+        ],
+        where: { isPublic: 1 },
+        relations: ['tags'],
+        //skip: page === 1 ? 0 : page - 1,
+        skip: 0,
+        take: 12,
+      });
+      const reviews = [];
+      for (const review of temp[0]) {
+        const bookInfo = JSON.parse(review['book_info']);
+        const r = {
+          score: review['score'],
+          summary: review['summary'],
+          title: bookInfo['title'],
+          cover: bookInfo['cover'],
+          tags: review['tags'],
+        };
+        reviews.push(r);
+      }
+      return reviews;
+    } else if (orderby === 'created') {
+      const temp = await this.reviewRepository.findAndCount({
+        order: {
+          createdAt: 'DESC',
+        },
+        select: [
+          'id',
+          'book_info',
+          'score',
+          'summary',
+          'isPublic',
+          'createdAt',
+        ],
+        where: { isPublic: 1 },
+        relations: ['tags'],
+        //skip: page === 1 ? 0 : page - 1,
+        skip: 0,
+        take: 12,
+      });
+      const reviews = [];
+      for (const review of temp[0]) {
+        const bookInfo = JSON.parse(review['book_info']);
+        const r = {
+          score: review['score'],
+          summary: review['summary'],
+          title: bookInfo['title'],
+          cover: bookInfo['cover'],
+          tags: review['tags'],
+        };
+        reviews.push(r);
+      }
+      return reviews;
+    }
+  }
 
   //하나의 리뷰 자세히 불러오기
   async detailReview(reviewid: any): Promise<any> {
