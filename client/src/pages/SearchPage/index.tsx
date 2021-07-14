@@ -7,10 +7,9 @@ import SearchForm from '../../components/SearchForm';
 import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
 import { useLocation } from 'react-router-dom';
-import { fetchApi } from '../../redux/search/action';
 
 const Container = styled.div`
   margin: 2rem;
@@ -51,13 +50,12 @@ const SearchPage: FunctionComponent = () => {
     }
   }, [typeA, typeB]);
 
-  // useEffect(() => {
-  //   dispatch(fetchApi(query));
-  // }, [query]);
-
   useEffect(() => {
-    if (item) setSearchResult(item);
-  });
+    item && setSearchResult(item);
+    return () => {
+      setSearchResult(['']);
+    };
+  }, [item]);
 
   console.log(searchResult);
 

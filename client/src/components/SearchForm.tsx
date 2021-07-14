@@ -5,7 +5,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
 import { fetchApi } from '../redux/search/action';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   position: relative;
@@ -54,6 +54,7 @@ const SearchForm = ({ query }: Props) => {
 
   const onSubmit = (e: any) => {
     console.log('[onSubmit]'); //디버깅용
+    // 여기서 dispatch
     dispatch(fetchApi(inputValue));
     e.preventDefault();
     history.push({
