@@ -33,7 +33,7 @@ export default function SearchReducer(
       return {
         ...state,
         item: action.payload,
-        loading: true,
+        loading: false,
         error: false,
       };
     case GET_SEARCH_RESULT_ERROR:

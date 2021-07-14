@@ -9,6 +9,9 @@ const Container = styled.div`
     padding: 0;
     text-align: center;
     font-size: 16px;
+    overflow: hidden;
+    width: 100%;
+    height: 24px;
   }
   p {
     margin: 0;
@@ -43,7 +46,7 @@ const BookInfo = ({ imgUrl, title, author }: IProps) => {
       <ImgArea>
         <img src={imgUrl} />
       </ImgArea>
-      <h2>{title}</h2>
+      <h2 title={title}>{title}</h2>
       <p>{author}</p>
     </Container>
   );

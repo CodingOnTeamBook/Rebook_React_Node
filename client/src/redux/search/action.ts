@@ -28,19 +28,17 @@ export const getSearchResultError = (error: AxiosError) => {
   };
 };
 
-export const fetchApi = (query: string) => {
-  console.log('fetchApi()');
-  return (dispatch: Dispatch) => {
+export const fetchApi = (query: string, page: number) => {
+  return async (dispatch: Dispatch) => {
     dispatch(fetchSearchResult());
     axios
-      .get(`api/book/search?title=${query}`)
+      .get(`api/book/search?title=${query}&page=${page}`)
       .then(
         ({
           data: {
             books: { item },
           },
         }) => {
-          console.log(item); //test용, 제대로 갖고옴
           dispatch(getSearchResultSuccess(item));
         }
       )

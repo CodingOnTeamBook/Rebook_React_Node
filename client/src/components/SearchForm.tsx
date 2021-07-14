@@ -42,7 +42,7 @@ const SearchForm = ({ query }: Props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [inputValue, setInputValue] = useState(query ? query : '');
+  const [inputValue, setInputValue] = useState(query ? decodeURI(query) : '');
   const inputRef: React.MutableRefObject<any> = useRef();
 
   const OnChange = (
@@ -55,10 +55,9 @@ const SearchForm = ({ query }: Props) => {
   const onSubmit = (e: any) => {
     console.log('[onSubmit]'); //디버깅용
     e.preventDefault();
-    // 공백문자 입력시 return
     if (inputValue.trim().length === 0) return;
     // 여기서 dispatch
-    dispatch(fetchApi(inputValue.trim()));
+    dispatch(fetchApi(inputValue.trim(), 1));
     history.push({
       pathname: '/search',
       search: `?query=${inputValue.trim()}`,

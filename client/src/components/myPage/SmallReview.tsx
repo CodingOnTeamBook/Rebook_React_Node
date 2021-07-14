@@ -47,7 +47,7 @@ const ImgContainer = styled.div`
     transition: all 0.2s linear;
   }
   img:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
 `;
 

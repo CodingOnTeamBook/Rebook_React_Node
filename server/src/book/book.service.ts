@@ -10,7 +10,7 @@ export class BookService {
 
     // 🧡 커버이미지 화질 구지 때문에 검색조건에 Cover=Big 추가했어영🧡 (by 유진)
     const title = encodeURI(query.title);
-    const start = 1; //검색결과 시작페이지
+    const start = query.page; //검색결과 시작페이지
     const maxReults = 10; //검색결과 한페이지당 최대 출력 개수(임의)
     const reponse = await this.httpService
       .get(
