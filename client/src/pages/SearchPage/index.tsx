@@ -29,16 +29,18 @@ const NoResultMsg = styled.h2`
 `;
 
 const SearchPage: FunctionComponent = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
 
-  const [searchResult, setSearchResult] = useState<any[]>([]);
+  const [searchResult, setSearchResult] = useState<any[]>(['']);
   const location = useLocation();
   const query = location.search.split('=')[1];
 
-  const { item } = useSelector((state: RootState) => state.search);
+  const { item, loading, error } = useSelector(
+    (state: RootState) => state.search
+  );
 
   useEffect(() => {
     if (typeA) {
@@ -49,13 +51,15 @@ const SearchPage: FunctionComponent = () => {
     }
   }, [typeA, typeB]);
 
-  useEffect(() => {
-    dispatch(fetchApi(query));
-  }, [query]);
+  // useEffect(() => {
+  //   dispatch(fetchApi(query));
+  // }, [query]);
 
   useEffect(() => {
-    item && setSearchResult(item);
-  }, [item]);
+    if (item) setSearchResult(item);
+  });
+
+  console.log(searchResult);
 
   return (
     <Container>

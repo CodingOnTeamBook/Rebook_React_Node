@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
+import { fetchApi } from '../redux/search/action';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Wrapper = styled.div`
   position: relative;
@@ -37,6 +39,7 @@ interface Props {
 }
 
 const SearchForm = ({ query }: Props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const [inputValue, setInputValue] = useState(query ? query : '');
@@ -51,6 +54,7 @@ const SearchForm = ({ query }: Props) => {
 
   const onSubmit = (e: any) => {
     console.log('[onSubmit]'); //디버깅용
+    dispatch(fetchApi(inputValue));
     e.preventDefault();
     history.push({
       pathname: '/search',
