@@ -53,9 +53,11 @@ export class User {
   @OneToMany(() => Like, (like) => like.user)
   likes: Like[];
 
+  //팔로워 수 카운트
   @Column('int', { default: 0 })
   countFollower: number;
 
+  //팔로잉 수 카운트
   @Column('int', { default: 0 })
   countFollowing: number;
 
