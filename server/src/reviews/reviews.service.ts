@@ -76,9 +76,10 @@ export class ReviewsService {
           'isPublic',
           'like_count',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
@@ -93,6 +94,10 @@ export class ReviewsService {
           title: bookInfo['title'],
           cover: bookInfo['cover'],
           tags: review['tags'],
+          user: {
+            userId: review['user']['userId'],
+            nickname: review['user']['nickname'],
+          },
         };
         reviews.push(r);
       }
@@ -109,9 +114,10 @@ export class ReviewsService {
           'summary',
           'isPublic',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
@@ -126,6 +132,10 @@ export class ReviewsService {
           title: bookInfo['title'],
           cover: bookInfo['cover'],
           tags: review['tags'],
+          user: {
+            userId: review['user']['userId'],
+            nickname: review['user']['nickname'],
+          },
         };
         reviews.push(r);
       }
