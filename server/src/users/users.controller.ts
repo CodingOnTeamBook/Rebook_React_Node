@@ -145,4 +145,15 @@ export class UsersController {
     const likes = await this.usersService.getMyLikes(nickname);
     return likes;
   }
+
+  //nickname으로 유저 서치
+  @Get('/search/:nickname')
+  getUserByNick(@Param('nickname') nickname: string, @Res() res) {
+    return this.usersService.getUserByNickname(nickname).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        user: value,
+      });
+    });
+  }
 }

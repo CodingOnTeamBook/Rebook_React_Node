@@ -95,4 +95,14 @@ export class UsersService {
     const user = await this.userRepository.findOne({ where: { nickname } });
     return this.likeRepository.find({ where: { user: user } });
   }
+
+  //nickname으로 유저 서치
+  async getUserByNickname(nickname: string) {
+    const exUser = await this.userRepository.findOne({ where: { nickname } });
+    if (exUser) {
+      return exUser;
+    } else {
+      return { type: 0, error: 'User not found' };
+    }
+  }
 }
