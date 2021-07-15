@@ -69,9 +69,11 @@ const SearchPage: FunctionComponent = () => {
   useEffect(() => {
     item && setSearchResult([...item]);
     return () => {
-      setSearchResult(['']);
+      setSearchResult([]);
     };
   }, [item]);
+
+  console.log(searchResult);
 
   const Header = () => {
     return (
