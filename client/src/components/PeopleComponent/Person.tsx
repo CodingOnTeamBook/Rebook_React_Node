@@ -25,51 +25,50 @@ const UserImg = styled(Avatar)`
 
 const NickName = styled.div`
   margin-top: 10px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
 const TagArea = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TagChip = styled(Chip)`
-  &:not(:first-of-type) {
-    margin-left: 10px;
+  div {
+    margin: 0.5rem;
+    font-size: 9px;
   }
   background-color: ${(props) => props.theme.palette.green};
 `;
 
 const Introduction = styled.div`
-  margin-top: 20px;
+  margin: 0.7rem;
+  font-size: 10px;
+  padding: 0 3rem;
 `;
 
 const DetailInfo = styled.div`
-  width: 100%;
-  margin-top: 20px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  width: 100%;
 `;
 
 const ReviewArea = styled.div`
-  width: 100%;
+  width: 40%;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
 `;
 
 const FollowerArea = styled.div`
-  width: 100%;
+  width: 40%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
 `;
 
 const Info = styled.span`
-  margin-left: 10px;
+  margin-left: 0.5rem;
 `;
 
 const Person: FunctionComponent = () => {

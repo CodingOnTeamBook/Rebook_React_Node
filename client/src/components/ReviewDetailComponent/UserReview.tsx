@@ -25,7 +25,12 @@ const UserReviewContainer = styled(Box)`
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
-  margin-right: 10px;
+  margin-right: 2rem;
+  img {
+    padding: 0.4rem;
+    border-radius: 50%;
+    border: 2px solid ${(props) => props.theme.palette.green};
+  }
 `;
 
 const UserNickName = styled.div`
@@ -42,6 +47,7 @@ const UserWrite = styled.p`
 const ReviewTime = styled.p`
   font-size: 1rem;
   color: #808080;
+  font-size: 8px;
 `;
 
 const ChipColor = styled(Chip)`
