@@ -4,7 +4,6 @@ import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 
 const UserInfoContainer = styled.div`
   padding: 0 20px 20px 20px;
@@ -13,6 +12,7 @@ const UserInfoContainer = styled.div`
 const UserInfoWrapper = styled(Box)`
   padding: 20px;
   width: 100%;
+  border-radius: 10px;
 `;
 const UserImg = styled(Avatar)`
   width: 90px;
@@ -59,37 +59,35 @@ const FollowButton = styled(Button)`
 const UserInfo: FunctionComponent = () => {
   return (
     <UserInfoContainer>
-      <Paper variant="outlined">
-        <UserInfoWrapper display="flex" flexDirection="column">
-          <Box display="flex" flexDirection="row">
-            <UserImg
-              alt="nickname"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
-            />
-            <Box display="flex" flexDirection="column">
-              <UserName> User Name </UserName>
-              <span>
-                <UserNum>리뷰수 {22}</UserNum>
-                <UserNum>팔로우 {22}</UserNum>
-                <UserNum>팔로잉 {22}</UserNum>
-              </span>
-              <FollowButton variant="contained">팔로우</FollowButton>
-            </Box>
+      <UserInfoWrapper display="flex" flexDirection="column" boxShadow={2}>
+        <Box display="flex" flexDirection="row">
+          <UserImg
+            alt="nickname"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
+          />
+          <Box display="flex" flexDirection="column" flexWrap="wrap">
+            <UserName> User Name </UserName>
+            <span>
+              <UserNum>리뷰수 {22}</UserNum>
+              <UserNum>팔로우 {22}</UserNum>
+              <UserNum>팔로잉 {22}</UserNum>
+            </span>
+            <FollowButton variant="contained">팔로우</FollowButton>
           </Box>
-          <Box display="flex" flexDirection="row">
-            <TagChip label="#태그" />
-            <TagChip label="#태그" />
-            <TagChip label="#태그" />
-          </Box>
-          <Introduction>
-            자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-            자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-            자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-            자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-            자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-          </Introduction>
-        </UserInfoWrapper>
-      </Paper>
+        </Box>
+        <Box display="flex" flexDirection="row">
+          <TagChip label="#태그" />
+          <TagChip label="#태그" />
+          <TagChip label="#태그" />
+        </Box>
+        <Introduction>
+          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
+          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
+          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
+          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
+          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
+        </Introduction>
+      </UserInfoWrapper>
     </UserInfoContainer>
   );
 };

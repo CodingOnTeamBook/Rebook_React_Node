@@ -2,7 +2,9 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Header, Main } from './common/LandingPageCommon';
-import ReviewMain from './ReviewComponent/ReviewMain';
+import SmallReview from './myPage/SmallReview';
+import GridLayouot from './common/GridLayout';
+import GridItem from './common/GridItem';
 
 const ReviewContainer = styled(Main)``;
 
@@ -16,9 +18,19 @@ const PopulateReview: FunctionComponent = () => {
         </h3>
       </Header>
       <ReviewContainer>
-        <ReviewMain />
-        <ReviewMain />
-        <ReviewMain />
+        <GridLayouot>
+          <>
+            <GridItem>
+              <SmallReview like={false} />
+            </GridItem>
+            <GridItem>
+              <SmallReview like={false} />
+            </GridItem>
+            <GridItem>
+              <SmallReview like={false} />
+            </GridItem>
+          </>
+        </GridLayouot>
       </ReviewContainer>
     </Container>
   );
