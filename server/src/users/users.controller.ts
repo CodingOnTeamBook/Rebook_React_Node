@@ -19,6 +19,7 @@ import { User } from '../entities/user.entity';
 import { AuthUser } from './users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { usersmulterOptions } from './users.multerOptions';
+import { throws } from 'assert';
 
 //에러 처리 middleware 생성하기
 
@@ -144,6 +145,38 @@ export class UsersController {
     console.log('nickname', nickname);
     const likes = await this.usersService.getMyLikes(nickname);
     return likes;
+  }
+
+  //팔로우기능
+  @Post('/follow')
+  async followUser(
+    @AuthUser() data: any,
+    @Body() nickname: string,
+    @Res() res
+  ) {
+    return this.usersService.followUser(data.userId, nickname).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        result: value,
+      });
+    });
+  }
+
+  //언팔로우기능
+  @Post('/unfollow')
+  async unfollowUser(
+    @AuthUser() data: any,
+    @Body() nickname: string,
+    @Res() res
+  ) {
+    return this.usersService
+      .unfollowUser(data.userId, nickname)
+      .then((value) => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          result: value,
+        });
+      });
   }
 
   //nickname으로 유저 서치

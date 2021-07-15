@@ -105,4 +105,64 @@ export class UsersService {
       return { type: 0, error: 'User not found' };
     }
   }
+
+  //follow기능
+  async followUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository.findOne({ userId: currentUserId });
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository.findOne({
+      nickname: opponentUserNickname,
+    });
+
+    if (opponent === undefined) return 'User not found';
+
+    I.followings = [opponent];
+    I.countFollowing++;
+
+    opponent.followers = [I];
+    opponent.countFollower++;
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return false;
+    else return false;
+  }
+
+  //unfollow기능
+  async unfollowUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.userId = :userId', { userId: currentUserId })
+      .innerJoinAndSelect('user.followings', 'followings')
+      .getOne();
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.nickname = :nickname', { nickname: opponentUserNickname })
+      .innerJoinAndSelect('user.followers', 'followers')
+      .getOne();
+
+    if (opponent === undefined) return 'User not found';
+
+    I.followings = I.followings.filter((following) => {
+      following.id !== opponent.id;
+    });
+    I.countFollowing--;
+
+    opponent.followers = opponent.followers.filter((follower) => {
+      follower.id !== I.id;
+    });
+    opponent.countFollower--;
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return true;
+    else return false;
+  }
 }
