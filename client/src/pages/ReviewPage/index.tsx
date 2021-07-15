@@ -28,7 +28,7 @@ const SortButton = styled(Button)`
   &:not(:last-of-type) {
     margin-right: 10px;
   }
-  &:active {
+  &:focus {
     background-color: ${(props) => props.theme.palette.green};
     color: white;
   }
@@ -37,12 +37,22 @@ const SortButton = styled(Button)`
 const ReviewPage: FunctionComponent = () => {
   const [createdReviews, setCreatedReviews] = useState<any[]>([]);
   const [populatedReviews, setPopulatedReviews] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [sorts, setSorts] = useState([
     { name: '최신순', selected: true },
     { name: '인기순', selected: false },
   ]);
+
+  useEffect(() => {
+    axios
+      .all([axios.get('api/review/created'), axios.get('api/review/populated')])
+      .then(
+        axios.spread((res1, res2) => {
+          setCreatedReviews(res1.data.review);
+          setPopulatedReviews(res2.data.review);
+        })
+      )
+      .catch((err) => console.log(err));
+  }, []);
 
   const onClick = (index: number) => {
     const tmp = [...sorts];
@@ -50,46 +60,6 @@ const ReviewPage: FunctionComponent = () => {
     index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
     setSorts(tmp);
   };
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null);
-        setCreatedReviews([]);
-        // loading 상태를 true 로 바꿉니다.
-        setLoading(true);
-        const response = await axios.get('api/review/created');
-        setCreatedReviews(response.data.review); // 데이터는 response.data 안에 들어있습니다.
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null);
-        setPopulatedReviews([]);
-        // loading 상태를 true 로 바꿉니다.
-        setLoading(true);
-        const response = await axios.get('api/review/populated');
-        setPopulatedReviews(response.data.review); // 데이터는 response.data 안에 들어있습니다.
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
-    fetchUsers();
-  }, []);
-
-  if (loading) return <div>로딩중..</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
-  if (!createdReviews) return null;
 
   return (
     <ReviewContainer>
