@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridItem from '../../components/common/GridItem';
 import GridSmallItem from '../../components/common/GridSmallItem';
-import SearchForm from '../../components/SearchForm';
+import SearchForm from '../../components/common/SearchForm';
 import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
