@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import UserInfo from '../../components/PeopleDetialComponent/UserInfo';
-import ReviewMain from '../../components/ReviewComponent/ReviewMain';
+import ReviewItem from '../../components/ReviewComponent/ReviewItem';
 
 const PeopleDetailContainer = styled(Grid)`
   margin-top: 30px;
