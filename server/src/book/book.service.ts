@@ -20,4 +20,21 @@ export class BookService {
 
     return reponse.data;
   }
+
+  async getBestSeller(): Promise<any> {
+    const response = await this.httpService
+      .get(
+        `http://book.interpark.com/api/bestSeller.api?key=4F5F52E3F9AE0A4CB75F9CEBA00D237D749C0B85EB5DE447D2CAF90018ED592F&categoryId=100&output=json`
+      )
+      .toPromise();
+    const processedData = [];
+    for (let i = 0; i < 5; i++) {
+      processedData[i] = {
+        title: response.data.item[i].title,
+        isbn: response.data.item[i].isbn,
+        coverLargeUrl: response.data.item[i].coverLargeUrl,
+      };
+    }
+    return processedData;
+  }
 }

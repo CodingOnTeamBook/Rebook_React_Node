@@ -20,19 +20,24 @@ export class Review {
   id: number;
 
   // 내용
-  //@Column('text', { name: 'text' })
-  //text: string;
-  // ISBN
-  //@Column('varchar', { name: 'book_id', length: 20 })
-  //book_id: string;
+  @Column('varchar', { name: 'text' })
+  text: string;
+
+  //bookInfo
+  @Column('text', { name: 'book_info' })
+  book_info: string;
 
   //요약
-  @Column('varchar', { name: 'summary' })
+  @Column('varchar', { name: 'summary', default: '' })
   summary: string;
 
   // 점수
   @Column('float', { name: 'score', default: 0 })
   score: number;
+
+  //book cover
+  @Column('varchar', { name: 'cover_img' })
+  coverImg: string;
 
   // 조회수
   @Column('int', { name: 'view_count', default: 0 })
@@ -43,10 +48,9 @@ export class Review {
   isPublic: boolean;
 
   //좋아요 수
-  @Column('int', { name: 'like', default: 0 })
+  @Column('int', { name: 'like_count', default: 0 })
   like_count: number;
 
-  //imageurl
   @CreateDateColumn()
   createdAt: Date;
 

@@ -23,9 +23,19 @@ const UserImg = styled(Avatar)`
 const InputArea = styled(InputBase)`
   width: 100%;
   padding: 15px;
-  border: 2px solid #808080;
+  background-color: white;
+  border: 5px solid white;
   border-radius: 15px;
   font-size: 12px;
+`;
+
+const ButtonColor = styled(IconButton)`
+  margin-left: 10px;
+  background-color: ${(props) => props.theme.palette.green};
+`;
+
+const ArrowIconColor = styled(ArrowForwardOutlined)`
+  color: white;
 `;
 
 const AddComment: FunctionComponent = () => {
@@ -37,9 +47,9 @@ const AddComment: FunctionComponent = () => {
           src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
         />
         <InputArea placeholder="댓글을 입력해주세요..." multiline rows="3" />
-        <IconButton type="submit">
-          <ArrowForwardOutlined />
-        </IconButton>
+        <ButtonColor type="submit">
+          <ArrowIconColor />
+        </ButtonColor>
       </Box>
     </AddCommentContainer>
   );

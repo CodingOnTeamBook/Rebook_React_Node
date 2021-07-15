@@ -1,19 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-const BookInfoContainer = styled(Paper)`
-  width: 100%;
-  padding: 25px;
-`;
-
 const BookCover = styled(Box)`
-  width: 115px;
-  height: 150px;
-  overflow: hidden;
-  transition: all 0.2s linear;
+  width: 250px;
 `;
 
 const BookImg = styled.img`
@@ -27,13 +18,13 @@ const BookImg = styled.img`
 `;
 
 const BookTitle = styled.span`
-  font-size: 16px;
-  margin-bottom: 0.4rem;
+  font-size: 2rem;
+  margin-bottom: 10px;
 `;
 
 const BookInfoDetail = styled.span`
-  /* width: 100%; */
-  font-size: 14px;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
   &::after {
     content: '|';
   }
@@ -46,10 +37,8 @@ const BookInfoDetail = styled.span`
   }
 `;
 
-const Story = styled.div`
-  font-size: 10px;
-  padding: 1rem 0;
-  margin-right: 2rem;
+const BookPlot = styled(Box)`
+  font-size: 1.2rem;
 `;
 
 const BookInfo: FunctionComponent = () => {
@@ -60,7 +49,7 @@ const BookInfo: FunctionComponent = () => {
   const publisher = '출판사';
 
   return (
-    <BookInfoContainer>
+    <>
       <Box display="flex" flexDirection="row">
         <Grid container>
           <Grid item>
@@ -71,28 +60,28 @@ const BookInfo: FunctionComponent = () => {
               />
             </BookCover>
           </Grid>
-          <Grid item xs>
+          <Grid item xs sm md>
             <Box display="flex" flexDirection="column">
               <BookTitle> 해리포터와 마법사의 돌 </BookTitle>
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" flexWrap="wrap">
                 <BookInfoDetail> {writer} </BookInfoDetail>
                 <BookInfoDetail> {year} </BookInfoDetail>
                 <BookInfoDetail> {genre} </BookInfoDetail>
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
-              <Box>
-                <Story>
+              <BookPlot>
+                <p>
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
                   줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                </Story>
-              </Box>
+                </p>
+              </BookPlot>
             </Box>
           </Grid>
         </Grid>
       </Box>
-    </BookInfoContainer>
+    </>
   );
 };
 

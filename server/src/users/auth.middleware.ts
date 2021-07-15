@@ -18,9 +18,7 @@ export class AuthMiddleware implements NestMiddleware {
     const authHeaders = req.headers.cookie;
     if (authHeaders && (authHeaders as string).split('=')[1]) {
       try {
-        const arr = authHeaders.split(';');
-        const temp = arr.map((item) => item.split('='));
-        const token = temp.filter((item) => item[0] == 'user_Access')[0][1];
+        const token = authHeaders.split('=')[1];
         const decoded: any = jwt.verify(token, jwtKEY.secretKey);
         const user = await this.usersRepository.findOne({
           where: { userId: decoded.id },
@@ -32,10 +30,12 @@ export class AuthMiddleware implements NestMiddleware {
         next();
       } catch (err) {
         if (err.name === 'TokenExpiredError') {
-          throw new HttpException(
-            'Sorry, your token expired',
-            HttpStatus.UNAUTHORIZED
-          );
+          res.status(HttpStatus.OK).json({
+            success: true,
+            isAuth: false,
+            type: 1,
+          });
+          next();
         }
         next();
       }

@@ -7,23 +7,39 @@ import Grid from '@material-ui/core/Grid';
 import CommentList from '../../components/ReviewDetailComponent/CommentList';
 
 const ReviewDetailContainer = styled(Grid)`
-  margin-top: 30px;
-  margin-bottom: 30px;
-  height: auto;
+  border-radius: 20px;
+  background-color: #f6f6f6;
+  margin-top: 50px;
+`;
+
+const BookInfoWrapper = styled(Grid)`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+  border-radius: 20px;
+  padding: 5% 5% 0 5%;
+`;
+
+const ReviewDetailWrapper = styled(Grid)`
+  width: 100%;
+  padding: 5%;
+  margin-bottom: 50px;
+`;
+
+const MarginTop = styled.div`
+  margin-top: 30px;
 `;
 
 const ReviewDetailPage: FunctionComponent = () => {
   return (
-    <ReviewDetailContainer container direction="column" alignContent="center">
-      <BookInfo />
-      <UserReview />
-      <CommentList />
-      <AddComment />
+    <ReviewDetailContainer>
+      <BookInfoWrapper>
+        <BookInfo />
+      </BookInfoWrapper>
+      <ReviewDetailWrapper container direction="column" alignContent="center">
+        <UserReview />
+        <MarginTop />
+        <CommentList />
+        <AddComment />
+      </ReviewDetailWrapper>
     </ReviewDetailContainer>
   );
 };

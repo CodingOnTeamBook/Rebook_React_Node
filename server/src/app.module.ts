@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { DevDBConfg } from './config/db.config';
+import { DevDBConfig } from './config/db.config';
 import { UsersModule } from './users/users.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BookModule } from './book/book.module';
@@ -9,7 +9,7 @@ import { BookModule } from './book/book.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      ...DevDBConfg,
+      ...DevDBConfig,
       type: 'mysql',
       entities: [__dirname + 'entities/*.entity.ts'],
       autoLoadEntities: true,

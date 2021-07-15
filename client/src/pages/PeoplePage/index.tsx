@@ -23,23 +23,7 @@ const PeoplePage: FunctionComponent = () => {
         <SelectGenreTag tags={genreTags}></SelectGenreTag>
       </SelectButtonArea>
       <GridLayout>
-        <>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-          <GridItem>
-            <Person />
-          </GridItem>
-        </>
+        <Person />
       </GridLayout>
     </PeopleContainer>
   );
