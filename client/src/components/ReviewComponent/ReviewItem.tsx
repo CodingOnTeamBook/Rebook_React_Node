@@ -42,16 +42,16 @@ const BookTitle = styled(Box)`
 const BookReview = styled.div`
   margin-top: 5px;
   overflow: hidden;
-  font-size: 11px;
+  font-size: 13px;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  line-height: 1.2em;
+  max-height: 3.6em;
   margin: 0.4rem 0;
+  height: 50px;
 `;
 
 const Nickname = styled.span`
-  font-size: 10px;
+  font-size: 11px;
   flex: 1;
   &::before {
     content: 'by';
@@ -66,7 +66,7 @@ interface IReviewProps {
   summary: string;
 }
 
-const ReviewMain: FunctionComponent<IReviewProps> = ({
+const ReviewItem: FunctionComponent<IReviewProps> = ({
   id,
   cover,
   title,
@@ -103,4 +103,4 @@ const ReviewMain: FunctionComponent<IReviewProps> = ({
   );
 };
 
-export default ReviewMain;
+export default ReviewItem;
