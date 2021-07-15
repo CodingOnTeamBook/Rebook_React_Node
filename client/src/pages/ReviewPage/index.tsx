@@ -74,7 +74,7 @@ const ReviewPage: FunctionComponent = () => {
     fetchReviews();
   }, []);
 
-  const onClick = (index: number) => {
+  const onSortChange = (index: number) => {
     const tmp = [...sorts];
     tmp[index].selected = true;
     index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
@@ -88,7 +88,7 @@ const ReviewPage: FunctionComponent = () => {
           <SortButton
             size="large"
             key={index}
-            onClick={() => onClick(index)}
+            onClick={() => onSortChange(index)}
             className={selected ? 'selected' : ''}
           >
             {name}
