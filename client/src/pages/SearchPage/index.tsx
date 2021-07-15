@@ -7,13 +7,13 @@ import SearchForm from '../../components/SearchForm';
 import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
 import { useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import { useDispatch } from 'react-redux';
 import { fetchApi } from '../../redux/search/action';
+import useCheck from '../../hooks/useCheck';
 
 const Container = styled.div`
   margin: 2rem;
@@ -49,7 +49,7 @@ const SearchPage: FunctionComponent = () => {
   const location = useLocation();
   const query = decodeURI(location.search.split('=')[1]);
 
-  const { item, loading, error } = useSelector(
+  const { item, loading, error, msg } = useSelector(
     (state: RootState) => state.search
   );
 
@@ -69,9 +69,12 @@ const SearchPage: FunctionComponent = () => {
   useEffect(() => {
     item && setSearchResult([...item]);
     return () => {
-      setSearchResult(['']);
+      setSearchResult(undefined);
     };
   }, [item]);
+
+  console.log(searchResult);
+  console.log(msg);
 
   const Header = () => {
     return (
@@ -134,8 +137,8 @@ const SearchPage: FunctionComponent = () => {
           </>
         ) : (
           <>
-            {searchResult ? (
-              searchResult.map((result: any, index: number) => {
+            {searchResult && !msg ? (
+              searchResult?.map((result: any, index: number) => {
                 return (
                   <GridSmallItem key={index}>
                     <BookInfo
@@ -147,7 +150,7 @@ const SearchPage: FunctionComponent = () => {
                 );
               })
             ) : (
-              <NoResultMsg>{query} 검색 결과가 없어요😅</NoResultMsg>
+              <NoResultMsg>{msg}</NoResultMsg>
             )}
           </>
         )}
