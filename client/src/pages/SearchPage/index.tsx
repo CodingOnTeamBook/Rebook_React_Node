@@ -7,7 +7,6 @@ import SearchForm from '../../components/SearchForm';
 import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
-<<<<<<< Updated upstream
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
 import { useLocation } from 'react-router-dom';
@@ -15,9 +14,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { useDispatch } from 'react-redux';
 import { fetchApi } from '../../redux/search/action';
-=======
-import useCheck from '../../hooks/useCheck';
->>>>>>> Stashed changes
 
 const Container = styled.div`
   margin: 2rem;
