@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+
 import CarouselComponent from '../../components/LandingPage/CarouselComponent';
 import SearchForm from '../../components/common/SearchForm';
 import PopulateReview from '../../components/LandingPage/PopulateReviews';

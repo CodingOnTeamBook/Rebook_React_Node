@@ -19,17 +19,23 @@ const CommentListContainer = styled(Box)`
 `;
 
 const UserImg = styled(Avatar)`
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  margin-right: 2rem;
+  img {
+    padding: 0.4rem;
+    border-radius: 50%;
+  }
 `;
 
 const ReviewTime = styled.span`
   color: #808080;
+  font-size: 8px;
 `;
 
 const Review = styled.p`
   margin-top: 5px;
+  font-size: 11px;
   width: 100%;
   padding: 10px;
   background-color: ${(props) => props.theme.palette.green};

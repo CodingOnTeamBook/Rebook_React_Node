@@ -1,8 +1,11 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
+import { fetchApi } from '../redux/search/action';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   position: relative;
@@ -31,26 +34,40 @@ const CancleBtn = styled(CancelIcon)`
   color: ${(props) => props.theme.palette.green};
 `;
 
-const SearchForm: FunctionComponent = () => {
-  const [inputValue, setInputValue] = useState('');
+interface Props {
+  query?: string;
+}
+
+const SearchForm = ({ query }: Props) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [inputValue, setInputValue] = useState(query ? decodeURI(query) : '');
   const inputRef: React.MutableRefObject<any> = useRef();
 
-  function OnChange(
+  const OnChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) {
+  ) => {
     const searchKeyword = e.target.value;
     setInputValue(searchKeyword);
-  }
+  };
 
-  function onSubmit(e: any) {
-    // To do : 전송
-    alert(`inputValue : ${inputValue}`);
-  }
+  const onSubmit = (e: any) => {
+    console.log('[onSubmit]'); //디버깅용
+    e.preventDefault();
+    if (inputValue.trim().length === 0) return;
+    // 여기서 dispatch
+    dispatch(fetchApi(inputValue.trim(), 1));
+    history.push({
+      pathname: '/search',
+      search: `?query=${inputValue.trim()}`,
+    });
+  };
 
-  function onReset() {
+  const onReset = () => {
     setInputValue('');
     inputRef.current.focus();
-  }
+  };
 
   return (
     <Wrapper>
@@ -61,7 +78,7 @@ const SearchForm: FunctionComponent = () => {
           type="text"
           inputRef={inputRef}
           fullWidth
-          placeholder="검색어를 입력하세요"
+          placeholder="검색할 책 또는 리뷰어를 입력하세요"
           onChange={(e) => OnChange(e)}
         />
         {inputValue.length > 0 && <CancleBtn onClick={() => onReset()} />}
