@@ -28,7 +28,7 @@ const SortButton = styled(Button)`
   &:not(:last-of-type) {
     margin-right: 10px;
   }
-  &:focus {
+  &.selected {
     background-color: ${(props) => props.theme.palette.green};
     color: white;
   }
@@ -44,7 +44,10 @@ const ReviewPage: FunctionComponent = () => {
 
   useEffect(() => {
     axios
-      .all([axios.get('api/review/created'), axios.get('api/review/populated')])
+      .all([
+        axios.get('api/review/created'),
+        axios.get('api/review/popularity'),
+      ])
       .then(
         axios.spread((res1, res2) => {
           setCreatedReviews(res1.data.review);
@@ -91,17 +94,16 @@ const ReviewPage: FunctionComponent = () => {
           </>
         ) : (
           <>
-            {populatedReviews &&
-              populatedReviews.map((review, index) => (
-                <ReviewMain
-                  key={index}
-                  id={index}
-                  cover={review.cover}
-                  title={review.title}
-                  summary={review.summary}
-                  score={review.score}
-                />
-              ))}
+            {populatedReviews.map((review, index) => (
+              <ReviewMain
+                key={index}
+                id={index}
+                cover={review.cover}
+                title={review.title}
+                summary={review.summary}
+                score={review.score}
+              />
+            ))}
           </>
         )}
       </GridLayout>
