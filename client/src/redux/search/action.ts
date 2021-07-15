@@ -6,6 +6,7 @@ import {
   FETCH_SEARCH_RESULT,
   GET_SEARCH_RESULT_SUCCESS,
   GET_SEARCH_RESULT_ERROR,
+  GET_NO_RESULT,
 } from './search-type';
 
 export const fetchSearchResult = () => {
@@ -28,6 +29,13 @@ export const getSearchResultError = (error: AxiosError) => {
   };
 };
 
+export const getNoResult = (msg: string) => {
+  return {
+    type: GET_NO_RESULT,
+    payload: msg,
+  };
+};
+
 export const fetchApi = (query: string, page: number) => {
   return async (dispatch: Dispatch) => {
     dispatch(fetchSearchResult());
@@ -39,7 +47,9 @@ export const fetchApi = (query: string, page: number) => {
             books: { item },
           },
         }) => {
-          dispatch(getSearchResultSuccess(item));
+          item.length
+            ? dispatch(getSearchResultSuccess(item))
+            : dispatch(getNoResult(`${query} 의 검색 결과가 없어요😢`));
         }
       )
       .catch((error) => dispatch(getSearchResultError(error)));
