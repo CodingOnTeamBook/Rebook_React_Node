@@ -34,16 +34,18 @@ const SortButton = styled(Button)`
   }
 `;
 
-const Error = styled.span`
+const Message = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 300;
+  font-size: 30px;
 `;
 
 const ReviewPage: FunctionComponent = () => {
   const [createdReviews, setCreatedReviews] = useState<any[]>([]);
   const [populatedReviews, setPopulatedReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sorts, setSorts] = useState([
     { name: '최신순', selected: true },
@@ -56,6 +58,7 @@ const ReviewPage: FunctionComponent = () => {
         setError(null);
         setCreatedReviews([]);
         setPopulatedReviews([]);
+        setLoading(true);
         await axios
           .all([
             axios.get('api/review/created'),
@@ -70,6 +73,7 @@ const ReviewPage: FunctionComponent = () => {
       } catch (err) {
         setError(err);
       }
+      setLoading(false);
     };
     fetchReviews();
   }, []);
@@ -95,8 +99,12 @@ const ReviewPage: FunctionComponent = () => {
           </SortButton>
         ))}
       </SelectSortContainer>
-      {error ? (
-        <Error>에러가 발생했습니다😭</Error>
+      {error || loading ? (
+        error ? (
+          <Message>에러가 발생했습니다 😭</Message>
+        ) : (
+          <Message> 로딩 중입니다 📚</Message>
+        )
       ) : (
         <GridLayout>
           {sorts[0].selected ? (
