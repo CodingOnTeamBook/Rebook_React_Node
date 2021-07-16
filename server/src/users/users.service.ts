@@ -119,10 +119,8 @@ export class UsersService {
     if (opponent === undefined) return 'User not found';
 
     I.followings = [opponent];
-    I.countFollowing++;
 
     opponent.followers = [I];
-    opponent.countFollower++;
 
     const result1 = await this.userRepository.save(I);
     const result2 = await this.userRepository.save(opponent);
@@ -152,12 +150,10 @@ export class UsersService {
     I.followings = I.followings.filter((following) => {
       following.id !== opponent.id;
     });
-    I.countFollowing--;
 
     opponent.followers = opponent.followers.filter((follower) => {
       follower.id !== I.id;
     });
-    opponent.countFollower--;
 
     const result1 = await this.userRepository.save(I);
     const result2 = await this.userRepository.save(opponent);

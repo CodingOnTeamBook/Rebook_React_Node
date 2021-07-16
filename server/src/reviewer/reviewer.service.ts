@@ -17,39 +17,27 @@ export class ReviewerService {
   //reviewer page
   async getReviewer(genre: string): Promise<any> {
     // , = %2C 공백은 +
-    const decodedgenre = decodeURIComponent(genre);
-    const r = await this.userRepository.findOne({
-      select: ['id', 'nickname'],
-      where: { genres: decodedgenre },
-      relations: ['followers'],
-    });
-    console.log(r, ' ', r['followers'].length);
-    const qb = await getRepository(User).createQueryBuilder('user');
-    const reviewer = await qb
-      .where('user.genres = :genres', { genres: genre })
-      .select('user.nickname')
-      .innerJoinAndSelect('user.followers', 'user_following_user')
-      .andWhere(
-        'user.id' + qb.subQuery().addSelect('COUNT(user.followers)', 'count')
-      )
-      //.addSelect('COUNT(user.followers)')
-      .getMany();
-    /*const reviewer = await getRepository(User)
-      .createQueryBuilder('user')
-      .where('user.genres = :genres', { genres: genre })
-      .select('user.nickname')
-      .getMany();*/
-    /*({
+    const reviewer = await this.userRepository.findAndCount({
+      where: { genres: genre },
+      select: ['id', 'nickname', 'genres', 'info', 'profileImg', 'createdAt'],
+      relations: ['reviews', 'followers'],
       order: {
-        subQuery.followers: 'DESC',
         createdAt: 'DESC',
       },
-      select: ['genres', 'id', 'nickname', 'info'],
-      where: { genres: genre },
-      skip: 0,
-      take: 2,
-    });*/
-    console.log(reviewer);
-    //return reviewer;
+      take: 9,
+    });
+
+    reviewer[0].map((value) => {
+      value['countUserReviews'] = value['reviews'].length;
+      value['countFollowers'] = value['followers'].length;
+      delete value['reviews'];
+      delete value['followers'];
+    });
+
+    reviewer[0].sort((a, b) => {
+      return b['countFollowers'] - a['countFollowers'];
+    });
+
+    return reviewer[0];
   }
 }
