@@ -31,6 +31,7 @@ export class ReviewerService {
       const tempArray = value['reviews'].filter(
         (review) => review.isPublic === true
       );
+      //리뷰수, 팔로우 수 카운트 후 본래 배열 제거
       value['countUserReview'] = tempArray.length;
       value['countFollowers'] = value['followers'].length;
       delete value['reviews'];
@@ -57,20 +58,27 @@ export class ReviewerService {
       (review) => review.isPublic === true
     );
 
-    reviewer['reviews'].map((value) => {
-      value['book_info'] = JSON.parse(value['book_info']);
-      ['createdAt', 'updatedAt', 'view_count', 'isPublic'].forEach(
-        (item) => delete value[item]
-      );
-    });
-
+    //리뷰수, 팔로, 팔로잉수 카운트 후 followers, followings 제거
     reviewer['countUserReviews'] = reviewer['reviews'].length;
     reviewer['countFollowers'] = reviewer['followers'].length;
     reviewer['countFollowings'] = reviewer['followings'].length;
     delete reviewer['followers'];
     delete reviewer['followings'];
 
-    console.log(reviewer);
+    reviewer['reviews'].map((value) => {
+      const bookInfo = JSON.parse(value['book_info']);
+      value['bookTitle'] = bookInfo['title'];
+      value['bookCover'] = bookInfo['cover'];
+      [
+        'createdAt',
+        'updatedAt',
+        'view_count',
+        'isPublic',
+        'book_info',
+        'text',
+      ].forEach((item) => delete value[item]);
+    });
+
     return reviewer;
   }
 }

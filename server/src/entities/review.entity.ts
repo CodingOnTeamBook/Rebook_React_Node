@@ -38,10 +38,6 @@ export class Review {
   @Column('float', { name: 'score', default: 0 })
   score: number;
 
-  //book cover
-  @Column('varchar', { name: 'cover_img' })
-  coverImg: string;
-
   // 조회수
   @Column('int', { name: 'view_count', default: 0 })
   view_count: number;

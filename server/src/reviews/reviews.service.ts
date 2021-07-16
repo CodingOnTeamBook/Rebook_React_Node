@@ -151,7 +151,6 @@ export class ReviewsService {
   ): Promise<Review> {
     const review = new Review();
     review.text = await uploadReviewHtml(reviewfile);
-    review.coverImg = createReviewDto.coverImg;
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
