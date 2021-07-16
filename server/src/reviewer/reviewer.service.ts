@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { count } from 'console';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReviewerService {
@@ -58,7 +57,7 @@ export class ReviewerService {
       (review) => review.isPublic === true
     );
 
-    reviewer['reviews'].map((value, index) => {
+    reviewer['reviews'].map((value) => {
       value['book_info'] = JSON.parse(value['book_info']);
       ['createdAt', 'updatedAt', 'view_count', 'isPublic'].forEach(
         (item) => delete value[item]

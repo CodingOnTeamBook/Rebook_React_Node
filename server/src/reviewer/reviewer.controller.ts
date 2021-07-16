@@ -6,8 +6,8 @@ export class ReviewerController {
   constructor(private reviewerService: ReviewerService) {}
 
   @Get('/detail/:nickname')
-  getReviwerDetail(@Param('nickname') nickname: string, @Res() res){
-    return this.reviewerService.reviewerDetail(nickname).then((value)=> {
+  getReviwerDetail(@Param('nickname') nickname: string, @Res() res) {
+    return this.reviewerService.reviewerDetail(nickname).then((value) => {
       res.status(HttpStatus.OK).json({
         success: true,
         reviewer: value,

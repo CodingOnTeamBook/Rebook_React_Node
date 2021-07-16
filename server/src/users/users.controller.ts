@@ -19,7 +19,6 @@ import { User } from '../entities/user.entity';
 import { AuthUser } from './users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { usersmulterOptions } from './users.multerOptions';
-import { throws } from 'assert';
 
 //에러 처리 middleware 생성하기
 
