@@ -86,4 +86,10 @@ export class ReviewsController {
 
   //@Delete('/')
   //deleteReview(@Body())
+
+  // 좋아요 기능
+  @Post('/like')
+  likeReview(@Body() reviewid: string) {
+    return this.reviewService.likeReview(reviewid);
+  }
 }

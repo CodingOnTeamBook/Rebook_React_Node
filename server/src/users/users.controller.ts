@@ -141,7 +141,6 @@ export class UsersController {
 
   @Get('/myinfo/likes/:nickname')
   async getLikes(@Param('nickname') nickname: string) {
-    console.log('nickname', nickname);
     const likes = await this.usersService.getMyLikes(nickname);
     return likes;
   }

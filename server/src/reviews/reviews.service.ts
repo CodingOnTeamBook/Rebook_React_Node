@@ -4,6 +4,7 @@ import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
+import { Like } from 'src/entities/like.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -19,7 +20,9 @@ export class ReviewsService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Comment)
-    private commentRepository: Repository<Comment>
+    private commentRepository: Repository<Comment>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>
   ) {}
 
   /*최신순으로 리뷰 불러오기
@@ -98,5 +101,17 @@ export class ReviewsService {
       nickname: createReviewDto.writer,
     });
     return this.reviewRepository.save(review);
+  }
+
+  // 좋아요 기능
+  async likeReview(reviewid: any): Promise<Like> {
+    const like = new Like();
+    const r_id = parseInt(reviewid.reviewid);
+    const u_id = parseInt(reviewid.userid);
+    like.review = await this.reviewRepository.findOne({ where: { id: r_id } });
+    like.user = await this.userRepository.findOne({ where: { id: u_id } });
+    console.log(like.review);
+    console.log(like.user); // 왜 안 되지....
+    return this.likeRepository.save(like);
   }
 }

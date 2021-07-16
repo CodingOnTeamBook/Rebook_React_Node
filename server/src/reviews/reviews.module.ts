@@ -4,12 +4,13 @@ import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
+import { Like } from 'src/entities/like.entity';
 import { AuthMiddleware } from 'src/users/auth.middleware';
 import { ReviewsController } from './reviews.controller';
 import { ReviewsService } from './reviews.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Review, Tag, Comment])],
+  imports: [TypeOrmModule.forFeature([User, Review, Tag, Comment, Like])],
   providers: [ReviewsService],
   controllers: [ReviewsController],
 })
