@@ -7,6 +7,7 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { processingReview } from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
 
 @Injectable()
@@ -43,20 +44,8 @@ export class ReviewsService {
       skip: 0,
       take: 6,
     });
-    const reviews = [];
-    for (const review of temp[0]) {
-      const bookInfo = JSON.parse(review['book_info']);
-      const r = {
-        id: review['id'],
-        writer: review['user']['nickname'],
-        score: review['score'],
-        summary: review['summary'],
-        title: bookInfo['title'],
-        cover: bookInfo['cover'],
-      };
-      reviews.push(r);
-    }
-    return reviews;
+
+    return await processingReview(temp[0], false);
   }
 
   //최신순or인기순으로 리뷰 12개 불러오기
@@ -84,24 +73,7 @@ export class ReviewsService {
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          id: review['id'],
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-          user: {
-            userId: review['user']['userId'],
-            nickname: review['user']['nickname'],
-          },
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
     } else if (orderby === 'created') {
       const temp = await this.reviewRepository.findAndCount({
         order: {
@@ -122,24 +94,7 @@ export class ReviewsService {
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          id: review['id'],
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-          user: {
-            userId: review['user']['userId'],
-            nickname: review['user']['nickname'],
-          },
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
     }
   }
 

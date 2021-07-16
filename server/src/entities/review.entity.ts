@@ -19,6 +19,9 @@ export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column('varchar', { name: 'isbn', length: 13 })
+  isbn: string;
+
   // 내용
   @Column('varchar', { name: 'text' })
   text: string;

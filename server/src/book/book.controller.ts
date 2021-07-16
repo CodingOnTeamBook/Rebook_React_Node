@@ -6,7 +6,7 @@ export class BookController {
   constructor(private bookService: BookService) {}
 
   //쿼리? 파라미터?
-  @Get('/search/')
+  @Get('/search')
   search(@Query() query, @Res() res) {
     return this.bookService.getBooks(query).then((value) => {
       res.status(HttpStatus.OK).json({

@@ -14,7 +14,7 @@ export class ReviewerService {
     private reviewRepository: Repository<Review>
   ) {}
 
-  //reviewer page
+  //param과 맞는 장르를 가진 리뷰어를 불러옴
   async getReviewer(genre: string): Promise<any> {
     // , = %2C 공백은 +
     const reviewer = await this.userRepository.findAndCount({
@@ -60,10 +60,9 @@ export class ReviewerService {
 
     reviewer['reviews'].map((value, index) => {
       value['book_info'] = JSON.parse(value['book_info']);
-      delete value['createdAt'];
-      delete value['updatedAt'];
-      delete value['view_count'];
-      delete value['isPublic'];
+      ['createdAt', 'updatedAt', 'view_count', 'isPublic'].forEach(
+        (item) => delete value[item]
+      );
     });
 
     reviewer['countUserReviews'] = reviewer['reviews'].length;
