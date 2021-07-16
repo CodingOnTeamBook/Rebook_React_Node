@@ -27,17 +27,52 @@ export class ReviewerService {
       take: 9,
     });
 
+    //review는 isPublic===true인것만 카운트함
     reviewer[0].map((value) => {
-      value['countUserReviews'] = value['reviews'].length;
+      const tempArray = value['reviews'].filter(
+        (review) => review.isPublic === true
+      );
+      value['countUserReview'] = tempArray.length;
       value['countFollowers'] = value['followers'].length;
       delete value['reviews'];
       delete value['followers'];
     });
 
+    //팔로우 수 내림차순으로 정렬
     reviewer[0].sort((a, b) => {
       return b['countFollowers'] - a['countFollowers'];
     });
 
     return reviewer[0];
+  }
+
+  //reviewer detail page
+  async reviewerDetail(nickname: string): Promise<any> {
+    const reviewer = await this.userRepository.findOne({
+      where: { nickname },
+      select: ['id', 'nickname', 'genres', 'info'],
+      relations: ['reviews', 'reviews.tags', 'followers', 'followings'],
+    });
+
+    reviewer['reviews'] = reviewer['reviews'].filter(
+      (review) => review.isPublic === true
+    );
+
+    reviewer['reviews'].map((value, index) => {
+      value['book_info'] = JSON.parse(value['book_info']);
+      delete value['createdAt'];
+      delete value['updatedAt'];
+      delete value['view_count'];
+      delete value['isPublic'];
+    });
+
+    reviewer['countUserReviews'] = reviewer['reviews'].length;
+    reviewer['countFollowers'] = reviewer['followers'].length;
+    reviewer['countFollowings'] = reviewer['followings'].length;
+    delete reviewer['followers'];
+    delete reviewer['followings'];
+
+    console.log(reviewer);
+    return reviewer;
   }
 }
