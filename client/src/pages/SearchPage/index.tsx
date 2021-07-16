@@ -76,16 +76,21 @@ const SearchPage: FunctionComponent = () => {
   console.log(searchResult);
 
   const onClick = (index: number) => {
-    getBookISBN();
-    function getBookISBN() {
-      const bookInfo = [...(searchResult as Array<any>)];
-      const isbn = bookInfo[index].isbn;
-      const bookData = bookInfo[index];
-      history.push({
-        pathname: `book/${isbn}`,
-        state: { isbn, bookData },
-      });
+    let isbn;
+    let bookData;
+
+    getBookInfo();
+
+    function getBookInfo() {
+      const booksInfo = [...(searchResult as Array<any>)];
+      isbn = booksInfo[index].isbn;
+      bookData = booksInfo[index];
     }
+
+    history.push({
+      pathname: `book/${isbn}`,
+      state: { isbn, bookData },
+    });
   };
 
   const Header = () => {
