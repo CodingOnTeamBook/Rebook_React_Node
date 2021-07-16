@@ -125,7 +125,7 @@ export class UsersService {
     const result1 = await this.userRepository.save(I);
     const result2 = await this.userRepository.save(opponent);
 
-    if (result1 && result2) return false;
+    if (result1 && result2) return true;
     else return false;
   }
 
