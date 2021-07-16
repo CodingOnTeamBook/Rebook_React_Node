@@ -9,11 +9,10 @@ import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../redux/search/action';
-import useCheck from '../../hooks/useCheck';
 
 const Container = styled.div`
   margin: 2rem;
@@ -41,6 +40,7 @@ const TempContainer = styled.div`
 
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
@@ -74,7 +74,19 @@ const SearchPage: FunctionComponent = () => {
   }, [item]);
 
   console.log(searchResult);
-  console.log(msg);
+
+  const onClick = (index: number) => {
+    getBookISBN();
+    function getBookISBN() {
+      const bookInfo = [...(searchResult as Array<any>)];
+      const isbn = bookInfo[index].isbn;
+      const bookData = bookInfo[index];
+      history.push({
+        pathname: `book/${isbn}`,
+        state: { isbn, bookData },
+      });
+    }
+  };
 
   const Header = () => {
     return (
@@ -125,15 +137,7 @@ const SearchPage: FunctionComponent = () => {
       <GridLayout>
         {typeB && !loading ? (
           <>
-            <GridItem>
-              <Person />
-            </GridItem>
-            <GridItem>
-              <Person />
-            </GridItem>
-            <GridItem>
-              <button>더 보기</button>
-            </GridItem>
+            <Person />
           </>
         ) : (
           <>
@@ -142,6 +146,7 @@ const SearchPage: FunctionComponent = () => {
                 return (
                   <GridSmallItem key={index}>
                     <BookInfo
+                      onClick={() => onClick(index)}
                       imgUrl={result.cover}
                       title={result.title}
                       author={result.author}
