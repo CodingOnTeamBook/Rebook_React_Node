@@ -11,23 +11,14 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-export interface BookProps {
-  isbn?: string;
-  bookData?: any;
-}
-
 const BookDetailPage: FunctionComponent = () => {
-  const location = useLocation<BookProps>();
-  const { bookData } = location.state;
-  console.log(bookData);
-
+  const location = useLocation();
+  console.log(location);
   // Todo
-  // BookDetail에 넘겨주기
-  // BookDetail은 reviewWrite에서도 쓰이니까 state로 상태관리 하면 될듯
-
+  // BookReview 컴포넌트에서 최신순 or 인기순 클릭시 백에 isbn 데이터 넘겨야 함
   return (
     <Container>
-      <BookDetail bookData={bookData} />
+      <BookDetail />
       <h1>REVIEW</h1>
       <BookReview />
       <ReviewWriteBtn />

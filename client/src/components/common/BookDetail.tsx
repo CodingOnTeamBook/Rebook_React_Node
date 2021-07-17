@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { BookProps } from '../../pages/BookDetailPage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/rootReducer';
 
 const BookDetailContainer = styled.main`
   display: flex;
@@ -22,28 +22,28 @@ const BookDetailContainer = styled.main`
   }
 `;
 
-const BookDetail = ({ bookData }: BookProps) => {
-  const [bookInfo, setbookInfo] = useState({ ...bookData });
-  const { link, cover, title, author, publisher, pubDate, description } =
-    bookInfo;
-
-  console.log(bookInfo);
+const BookDetail: FunctionComponent = () => {
+  const { bookInfo } = useSelector((state: RootState) => state.book);
 
   return (
     <BookDetailContainer>
-      <a href={link} target="blank">
-        <img className="bookCover" src={cover} alt={cover} />
+      <a href={bookInfo?.link} target="blank">
+        <img
+          className="bookCover"
+          src={bookInfo?.cover}
+          alt={bookInfo?.cover}
+        />
       </a>
       <div className="detailContainer">
-        <h1>{title}</h1>
+        <h1>{bookInfo?.title}</h1>
         <hr />
         <h2>
-          <span>{author}</span>
+          <span>{bookInfo?.author}</span>
           {' | '}
-          <span>{publisher}</span>
+          <span>{bookInfo?.publisher}</span>
         </h2>
-        <h3>{pubDate}</h3>
-        <h3>{description}</h3>
+        <h3>{bookInfo?.pubDate}</h3>
+        <h3>{bookInfo?.description}</h3>
       </div>
     </BookDetailContainer>
   );

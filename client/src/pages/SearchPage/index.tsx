@@ -77,7 +77,7 @@ const SearchPage: FunctionComponent = () => {
   const onClick = (index: number) => {
     const booksInfo = [...(searchResult as Array<any>)];
 
-    // bookInfo에서 필요한 정보만 추출
+    // bookInfo에서 필요한 속성만 추출
     const {
       link,
       cover,
@@ -100,15 +100,10 @@ const SearchPage: FunctionComponent = () => {
       isbn,
     };
 
-    console.log(bookData);
-
     // To do : 해당 책 정보를 store에 dispatch
     dispatch(setBookInfo(bookData));
 
-    history.push({
-      pathname: `book/${isbn}`,
-      state: { isbn, bookData },
-    });
+    history.push(`book/${isbn}`);
   };
 
   const Header = () => {
