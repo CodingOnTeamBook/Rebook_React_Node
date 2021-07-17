@@ -64,6 +64,7 @@ interface IReviewProps {
   title: string;
   score: number;
   summary: string;
+  writer: string;
 }
 
 const ReviewItem: FunctionComponent<IReviewProps> = ({
@@ -72,6 +73,7 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
   title,
   score,
   summary,
+  writer,
 }: IReviewProps) => {
   const history = useHistory();
 
@@ -95,7 +97,7 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
             <BookTitle> {title} </BookTitle>
             <Rating size="large" name="read-only" value={score} readOnly />
             <BookReview> {summary} </BookReview>
-            <Nickname> 리북이님 </Nickname>
+            <Nickname> {writer} </Nickname>
           </Box>
         </Box>
       </ReviewMainContainer>

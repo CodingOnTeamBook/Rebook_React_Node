@@ -60,7 +60,8 @@ const ReviewPage: FunctionComponent = () => {
       setReviews([]);
       setLoading(true);
       const res = await axios.get(`api/review/${sort}`);
-      setReviews(res.data.review);
+      setReviews(res.data.reviews);
+      console.log(res.data);
     } catch (err) {
       setError(err);
     }
@@ -106,11 +107,12 @@ const ReviewPage: FunctionComponent = () => {
                 reviews.map((review, index) => (
                   <ReviewItem
                     key={index}
-                    id={index}
-                    cover={review.cover}
-                    title={review.title}
+                    id={review.id}
+                    cover={review.bookCover}
+                    title={review.bookTitle}
                     summary={review.summary}
                     score={review.score}
+                    writer={review.writer}
                   />
                 ))}
             </>
@@ -120,11 +122,12 @@ const ReviewPage: FunctionComponent = () => {
                 reviews.map((review, index) => (
                   <ReviewItem
                     key={index}
-                    id={index}
-                    cover={review.cover}
-                    title={review.title}
+                    id={review.id}
+                    cover={review.bookCover}
+                    title={review.bookTitle}
                     summary={review.summary}
                     score={review.score}
+                    writer={review.writer}
                   />
                 ))}
             </>
