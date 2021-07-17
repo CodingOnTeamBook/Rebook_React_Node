@@ -102,29 +102,31 @@ const ReviewPage: FunctionComponent = () => {
         <GridLayout>
           {sorts[0].selected ? (
             <>
-              {reviews.map((review, index) => (
-                <ReviewItem
-                  key={index}
-                  id={index}
-                  cover={review.cover}
-                  title={review.title}
-                  summary={review.summary}
-                  score={review.score}
-                />
-              ))}
+              {reviews &&
+                reviews.map((review, index) => (
+                  <ReviewItem
+                    key={index}
+                    id={index}
+                    cover={review.cover}
+                    title={review.title}
+                    summary={review.summary}
+                    score={review.score}
+                  />
+                ))}
             </>
           ) : (
             <>
-              {reviews.map((review, index) => (
-                <ReviewItem
-                  key={index}
-                  id={index}
-                  cover={review.cover}
-                  title={review.title}
-                  summary={review.summary}
-                  score={review.score}
-                />
-              ))}
+              {reviews &&
+                reviews.map((review, index) => (
+                  <ReviewItem
+                    key={index}
+                    id={index}
+                    cover={review.cover}
+                    title={review.title}
+                    summary={review.summary}
+                    score={review.score}
+                  />
+                ))}
             </>
           )}
         </GridLayout>
