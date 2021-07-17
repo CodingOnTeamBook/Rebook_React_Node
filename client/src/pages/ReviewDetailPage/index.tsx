@@ -51,7 +51,7 @@ const ReviewDetailPage: FunctionComponent = () => {
           reviewid: id,
         });
         setReviewDetail(res.data.review.review);
-        console.log(res.data.review.review);
+        console.log(reviewDetail);
       } catch (err) {
         setError(err);
       }
@@ -60,18 +60,20 @@ const ReviewDetailPage: FunctionComponent = () => {
     fetchReviews();
   }, []);
 
+  // review 에서 isbn 값 받기
+  // 이 isbn 값 이용해서
+  // fetchBookData(isbn) 함수 만들기
+
+  // 코멘트는 그냥 잘 가져오면 될듯?!
+
   return (
     <ReviewDetailContainer>
-      {reviewDetail.map((review) => (
-        <>
-          <BookInfoWrapper>
-            <BookInfo />
-          </BookInfoWrapper>
-          <ReviewDetailWrapper
-            container
-            direction="column"
-            alignContent="center"
-          >
+      <BookInfoWrapper>
+        <BookInfo />
+      </BookInfoWrapper>
+      <ReviewDetailWrapper container direction="column" alignContent="center">
+        {reviewDetail &&
+          reviewDetail.map((review) => (
             <UserReview
               key={review.id}
               id={review.id}
@@ -81,12 +83,11 @@ const ReviewDetailPage: FunctionComponent = () => {
               updatedTime={review.updatedAt}
               like_count={review.like_count}
             />
-            <MarginTop />
-            <CommentList />
-            <AddComment />
-          </ReviewDetailWrapper>
-        </>
-      ))}
+          ))}
+        <MarginTop />
+        <CommentList />
+        <AddComment />
+      </ReviewDetailWrapper>
     </ReviewDetailContainer>
   );
 };
