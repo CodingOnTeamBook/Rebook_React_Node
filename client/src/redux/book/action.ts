@@ -15,9 +15,9 @@ interface bookProps {
   bookInfo: bookInfo[];
 }
 
-export const setBookInfo = (bookProps: bookProps) => {
+export const setBookInfo = (bookInfo: bookProps) => {
   return {
     type: SET_BOOK_INFO,
-    payload: bookProps,
+    payload: bookInfo,
   };
 };
