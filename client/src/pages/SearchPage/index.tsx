@@ -100,7 +100,7 @@ const SearchPage: FunctionComponent = () => {
       isbn,
     };
 
-    // To do : 해당 책 정보를 store에 dispatch
+    // 해당 책 정보를 store에 dispatch
     dispatch(setBookInfo(bookData));
 
     history.push(`book/${isbn}`);

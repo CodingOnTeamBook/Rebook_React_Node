@@ -14,7 +14,7 @@ const Container = styled.div`
 const BookDetailPage: FunctionComponent = () => {
   const location = useLocation();
   console.log(location);
-  // Todo
+  // 📌 Todo
   // BookReview 컴포넌트에서 최신순 or 인기순 클릭시 백에 isbn 데이터 넘겨야 함
   return (
     <Container>
