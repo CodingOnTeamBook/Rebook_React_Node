@@ -40,7 +40,6 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [error, setError] = useState(null);
 
   const { id } = useParams<IdType>();
-  console.log(id);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -51,8 +50,8 @@ const ReviewDetailPage: FunctionComponent = () => {
         const res = await axios.post('/api/review/detail', {
           reviewid: id,
         });
-        setReviewDetail(res.data.reviews);
-        console.log(res.data.review.review[0].book_info);
+        setReviewDetail(res.data.review.review);
+        console.log(res.data.review.review);
       } catch (err) {
         setError(err);
       }
@@ -63,15 +62,31 @@ const ReviewDetailPage: FunctionComponent = () => {
 
   return (
     <ReviewDetailContainer>
-      <BookInfoWrapper>
-        <BookInfo />
-      </BookInfoWrapper>
-      <ReviewDetailWrapper container direction="column" alignContent="center">
-        <UserReview />
-        <MarginTop />
-        <CommentList />
-        <AddComment />
-      </ReviewDetailWrapper>
+      {reviewDetail.map((review) => (
+        <>
+          <BookInfoWrapper>
+            <BookInfo />
+          </BookInfoWrapper>
+          <ReviewDetailWrapper
+            container
+            direction="column"
+            alignContent="center"
+          >
+            <UserReview
+              key={review.id}
+              id={review.id}
+              score={review.score}
+              summary={review.summary}
+              nickname={review.user.nickname}
+              updatedTime={review.updatedAt}
+              like_count={review.like_count}
+            />
+            <MarginTop />
+            <CommentList />
+            <AddComment />
+          </ReviewDetailWrapper>
+        </>
+      ))}
     </ReviewDetailContainer>
   );
 };
