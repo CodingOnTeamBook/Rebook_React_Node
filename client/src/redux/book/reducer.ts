@@ -1,8 +1,8 @@
 import { SET_BOOK_INFO } from './book-type';
-import { bookProps } from './action';
+import { bookInfo } from './action';
 
 export type BookState = {
-  bookInfo: bookProps | null;
+  bookInfo: bookInfo | null;
 };
 
 const INITIAL_STATE = {

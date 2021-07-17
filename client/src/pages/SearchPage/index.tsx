@@ -13,6 +13,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../redux/search/action';
+import { setBookInfo } from '../../redux/book/action';
 
 const Container = styled.div`
   margin: 2rem;
@@ -73,19 +74,36 @@ const SearchPage: FunctionComponent = () => {
     };
   }, [item]);
 
-  console.log(searchResult);
-
   const onClick = (index: number) => {
-    let isbn;
-    let bookData;
+    const booksInfo = [...(searchResult as Array<any>)];
 
-    getBookInfo();
+    // bookInfo에서 필요한 정보만 추출
+    const {
+      link,
+      cover,
+      title,
+      author,
+      publisher,
+      pubDate,
+      description,
+      isbn,
+    } = booksInfo[index];
 
-    function getBookInfo() {
-      const booksInfo = [...(searchResult as Array<any>)];
-      isbn = booksInfo[index].isbn;
-      bookData = booksInfo[index];
-    }
+    const bookData = {
+      link,
+      cover,
+      title,
+      author,
+      publisher,
+      pubDate,
+      description,
+      isbn,
+    };
+
+    console.log(bookData);
+
+    // To do : 해당 책 정보를 store에 dispatch
+    dispatch(setBookInfo(bookData));
 
     history.push({
       pathname: `book/${isbn}`,

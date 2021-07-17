@@ -1,6 +1,6 @@
 import { SET_BOOK_INFO } from './book-type';
 
-interface bookInfo {
+export interface bookInfo {
   isbn: string;
   link: string;
   cover: string;
@@ -11,11 +11,7 @@ interface bookInfo {
   description: string;
 }
 
-interface bookProps {
-  bookInfo: bookInfo[];
-}
-
-export const setBookInfo = (bookInfo: bookProps) => {
+export const setBookInfo = (bookInfo: bookInfo) => {
   return {
     type: SET_BOOK_INFO,
     payload: bookInfo,
