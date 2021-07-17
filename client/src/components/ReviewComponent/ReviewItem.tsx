@@ -1,8 +1,9 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
+import GridItem from '../common/GridItem';
 
 const ReviewMainContainer = styled(Box)`
   border-radius: 10px;
@@ -41,30 +42,41 @@ const BookTitle = styled(Box)`
 const BookReview = styled.div`
   margin-top: 5px;
   overflow: hidden;
-  font-size: 11px;
+  font-size: 13px;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  line-height: 1.2em;
+  max-height: 3.6em;
   margin: 0.4rem 0;
+  height: 50px;
 `;
 
 const Nickname = styled.span`
-  font-size: 10px;
+  font-size: 11px;
   flex: 1;
   &::before {
     content: 'by';
   }
 `;
 
-const ReviewMain: FunctionComponent = () => {
-  const id = 'test';
+interface IReviewProps {
+  id: number;
+  cover: string;
+  title: string;
+  score: number;
+  summary: string;
+}
+
+const ReviewItem: FunctionComponent<IReviewProps> = ({
+  id,
+  cover,
+  title,
+  score,
+  summary,
+}: IReviewProps) => {
   const history = useHistory();
 
-  const [rating, setRating] = useState<number>(4);
-
   return (
-    <>
+    <GridItem>
       <ReviewMainContainer display="flex" flexDirection="column" boxShadow={1}>
         <Box
           display="flex"
@@ -76,30 +88,19 @@ const ReviewMain: FunctionComponent = () => {
         >
           <Box>
             <ImgCover>
-              <CardImg
-                alt="title"
-                src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
-              />
+              <CardImg alt={title} src={cover} />
             </ImgCover>
           </Box>
           <Box>
-            <BookTitle> 책제목책제목책제목책제목 </BookTitle>
-            <Rating size="large" name="read-only" value={rating} readOnly />
-            <BookReview>
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-              리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰 리뷰
-            </BookReview>
+            <BookTitle> {title} </BookTitle>
+            <Rating size="large" name="read-only" value={score} readOnly />
+            <BookReview> {summary} </BookReview>
             <Nickname> 리북이님 </Nickname>
           </Box>
         </Box>
-        <Box display="flex" pb={1} pl={3} alignItems="center">
-          <Nickname> 리북이님 </Nickname>
-        </Box>
       </ReviewMainContainer>
-    </>
+    </GridItem>
   );
 };
 
-export default ReviewMain;
+export default ReviewItem;

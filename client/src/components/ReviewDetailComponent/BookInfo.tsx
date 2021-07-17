@@ -10,6 +10,7 @@ const BookCover = styled(Box)`
 const BookImg = styled.img`
   width: 100%;
   height: 100%;
+  margin-right: 10%;
   object-fit: cover;
   transition: all 0.2s linear;
   &:hover {
@@ -52,15 +53,15 @@ const BookInfo: FunctionComponent = () => {
     <>
       <Box display="flex" flexDirection="row">
         <Grid container>
-          <Grid item>
-            <BookCover mr={2}>
+          <Grid item lg={3} xl={3}>
+            <BookCover>
               <BookImg
                 alt="title"
                 src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
               />
             </BookCover>
           </Grid>
-          <Grid item xs sm md>
+          <Grid item xs={12} sm={12} lg={9} xl={9}>
             <Box display="flex" flexDirection="column">
               <BookTitle> 해리포터와 마법사의 돌 </BookTitle>
               <Box display="flex" flexDirection="row" flexWrap="wrap">

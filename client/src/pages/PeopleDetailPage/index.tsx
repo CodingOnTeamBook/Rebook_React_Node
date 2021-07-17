@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import UserInfo from '../../components/PeopleDetialComponent/UserInfo';
-import ReviewMain from '../../components/ReviewComponent/ReviewMain';
+import ReviewItem from '../../components/ReviewComponent/ReviewItem';
 
 const PeopleDetailContainer = styled(Grid)`
   margin-top: 30px;
@@ -32,7 +32,7 @@ const PeopleDetailPage: FunctionComponent = () => {
       </UserInfoContainer>
       <UserReviewContainer item xs={12} sm={8} zeroMinWidth>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <ReviewMain />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -46,7 +46,7 @@ const PeopleDetailPage: FunctionComponent = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <ReviewMain />
-          </Grid>
+          </Grid> */}
         </Grid>
       </UserReviewContainer>
     </PeopleDetailContainer>
