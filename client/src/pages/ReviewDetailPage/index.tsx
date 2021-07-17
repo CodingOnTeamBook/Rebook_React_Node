@@ -1,10 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import AddComment from '../../components/ReviewDetailComponent/AddComment';
 import BookInfo from '../../components/ReviewDetailComponent/BookInfo';
 import UserReview from '../../components/ReviewDetailComponent/UserReview';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import CommentList from '../../components/ReviewDetailComponent/CommentList';
+import { useParams } from 'react-router';
+import axios from 'axios';
 
 const ReviewDetailContainer = styled(Grid)`
   border-radius: 20px;
@@ -28,7 +30,37 @@ const MarginTop = styled.div`
   margin-top: 30px;
 `;
 
+interface IdType {
+  id: string;
+}
+
 const ReviewDetailPage: FunctionComponent = () => {
+  const [reviewDetail, setReviewDetail] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const { id } = useParams<IdType>();
+  console.log(id);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setError(null);
+        setReviewDetail([]);
+        setLoading(true);
+        const res = await axios.post('/api/review/detail', {
+          reviewid: id,
+        });
+        setReviewDetail(res.data.reviews);
+        console.log(res.data.review.review[0].book_info);
+      } catch (err) {
+        setError(err);
+      }
+      setLoading(false);
+    };
+    fetchReviews();
+  }, []);
+
   return (
     <ReviewDetailContainer>
       <BookInfoWrapper>
