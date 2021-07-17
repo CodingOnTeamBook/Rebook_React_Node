@@ -32,7 +32,12 @@ export class BookService {
       processedData[i] = {
         title: response.data.item[i].title,
         isbn: response.data.item[i].isbn,
-        coverLargeUrl: response.data.item[i].coverLargeUrl,
+        cover: response.data.item[i].coverLargeUrl,
+        description: response.data.item[i].description,
+        author: response.data.item[i].author,
+        publisher: response.data.item[i].publisher,
+        pubDate: response.data.item[i].pubDate,
+        link: response.data.item[i].link,
       };
     }
     return processedData;

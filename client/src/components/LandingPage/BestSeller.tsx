@@ -27,11 +27,18 @@ const BestSeller = () => {
   const [BestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
+    // 📌 To do
+    // 에러시 화면이나 메시지 만들기
     axios
       .get('api/book/bestseller')
-      .then(({ data: { bestSeller } }) => setBestSeller(bestSeller))
+      .then(({ data: { bestSeller } }) => {
+        console.log(bestSeller);
+        setBestSeller(bestSeller);
+      })
       .catch((err) => console.log(err));
   }, []);
+
+  console.log(BestSeller);
 
   return (
     <Container>
@@ -39,13 +46,8 @@ const BestSeller = () => {
         <h2>이 책은 어때요?</h2>
       </Header>
       <Main>
-        {BestSeller.map(({ title, isbn, coverLargeUrl }) => (
-          <BestSellerBook
-            key={isbn}
-            isbn={isbn}
-            img={coverLargeUrl}
-            title={title}
-          />
+        {BestSeller.map(({ title, isbn, cover }) => (
+          <BestSellerBook key={isbn} isbn={isbn} img={cover} title={title} />
         ))}
       </Main>
     </Container>
