@@ -20,7 +20,6 @@ const SortButton = styled(Button)`
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
-  z-index: 0;
   &:hover {
     background-color: ${(props) => props.theme.palette.green};
     color: white;
@@ -43,40 +42,30 @@ const Message = styled.span`
 `;
 
 const ReviewPage: FunctionComponent = () => {
-  const [createdReviews, setCreatedReviews] = useState<any[]>([]);
-  const [populatedReviews, setPopulatedReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sorts, setSorts] = useState([
-    { name: '최신순', selected: true },
-    { name: '인기순', selected: false },
+    { name: 'created', text: '최신순', selected: true },
+    { name: 'popularity', text: '인기순', selected: false },
   ]);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setError(null);
-        setCreatedReviews([]);
-        setPopulatedReviews([]);
-        setLoading(true);
-        await axios
-          .all([
-            axios.get('api/review/created'),
-            axios.get('api/review/popularity'),
-          ])
-          .then(
-            axios.spread((res1, res2) => {
-              setCreatedReviews(res1.data.review);
-              setPopulatedReviews(res2.data.review);
-            })
-          );
-      } catch (err) {
-        setError(err);
-      }
-      setLoading(false);
-    };
-    fetchReviews();
+    fetchReviews('created');
   }, []);
+
+  const fetchReviews = async (sort: string) => {
+    try {
+      setError(null);
+      setReviews([]);
+      setLoading(true);
+      const res = await axios.get(`api/review/${sort}`);
+      setReviews(res.data.review);
+    } catch (err) {
+      setError(err);
+    }
+    setLoading(false);
+  };
 
   const onSortChange = (index: number) => {
     const tmp = [...sorts];
@@ -88,14 +77,18 @@ const ReviewPage: FunctionComponent = () => {
   return (
     <ReviewContainer>
       <SelectSortContainer>
-        {sorts.map(({ name, selected }, index) => (
+        {sorts.map(({ text, name, selected }, index) => (
           <SortButton
             size="large"
             key={index}
-            onClick={() => onSortChange(index)}
+            onClick={() => {
+              onSortChange(index);
+              fetchReviews(name);
+            }}
+            onSelect={() => fetchReviews(name)}
             className={selected ? 'selected' : ''}
           >
-            {name}
+            {text}
           </SortButton>
         ))}
       </SelectSortContainer>
@@ -109,7 +102,7 @@ const ReviewPage: FunctionComponent = () => {
         <GridLayout>
           {sorts[0].selected ? (
             <>
-              {createdReviews.map((review, index) => (
+              {reviews.map((review, index) => (
                 <ReviewItem
                   key={index}
                   id={index}
@@ -122,7 +115,7 @@ const ReviewPage: FunctionComponent = () => {
             </>
           ) : (
             <>
-              {populatedReviews.map((review, index) => (
+              {reviews.map((review, index) => (
                 <ReviewItem
                   key={index}
                   id={index}
