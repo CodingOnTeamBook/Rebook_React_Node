@@ -5,6 +5,7 @@ import { DevDBConfig } from './config/db.config';
 import { UsersModule } from './users/users.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { BookModule } from './book/book.module';
+import { ReviewerModule } from './reviewer/reviewer.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BookModule } from './book/book.module';
     UsersModule,
     ReviewsModule,
     BookModule,
+    ReviewerModule,
   ],
 })
 export class AppModule {}

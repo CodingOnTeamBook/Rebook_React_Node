@@ -105,7 +105,7 @@ export class ReviewsController {
     return this.reviewService.loadReviews(orderby).then((value) => {
       res.status(HttpStatus.OK).json({
         success: true,
-        review: value,
+        reviews: value,
       });
     });
   }

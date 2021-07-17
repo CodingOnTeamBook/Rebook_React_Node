@@ -95,4 +95,70 @@ export class UsersService {
     const user = await this.userRepository.findOne({ where: { nickname } });
     return this.likeRepository.find({ where: { user: user } });
   }
+
+  //nickname으로 유저 서치
+  async getUserByNickname(nickname: string) {
+    const exUser = await this.userRepository.findOne({ where: { nickname } });
+    if (exUser) {
+      return exUser;
+    } else {
+      return { type: 0, error: 'User not found' };
+    }
+  }
+
+  //follow기능
+  async followUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository.findOne({ userId: currentUserId });
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository.findOne({
+      nickname: opponentUserNickname,
+    });
+
+    if (opponent === undefined) return 'User not found';
+
+    I.followings = [opponent];
+
+    opponent.followers = [I];
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return true;
+    else return false;
+  }
+
+  //unfollow기능
+  async unfollowUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.userId = :userId', { userId: currentUserId })
+      .innerJoinAndSelect('user.followings', 'followings')
+      .getOne();
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.nickname = :nickname', { nickname: opponentUserNickname })
+      .innerJoinAndSelect('user.followers', 'followers')
+      .getOne();
+
+    if (opponent === undefined) return 'User not found';
+
+    I.followings = I.followings.filter((following) => {
+      following.id !== opponent.id;
+    });
+
+    opponent.followers = opponent.followers.filter((follower) => {
+      follower.id !== I.id;
+    });
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return true;
+    else return false;
+  }
 }

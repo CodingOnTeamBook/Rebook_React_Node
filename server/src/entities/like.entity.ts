@@ -8,9 +8,9 @@ export class Like {
   id: number;
 
   //어떤 유저가 어떤 리뷰에 좋아요를 눌렀는지
-  @ManyToOne(() => User, (user) => user.likes)
+  @ManyToOne(() => User, (user) => user.likes, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Review, (review) => review.likes)
+  @ManyToOne(() => Review, (review) => review.likes, { onDelete: 'CASCADE' })
   review: Review;
 }

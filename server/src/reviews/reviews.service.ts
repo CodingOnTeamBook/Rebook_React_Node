@@ -7,6 +7,7 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { processingReview } from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
 
 @Injectable()
@@ -43,19 +44,8 @@ export class ReviewsService {
       skip: 0,
       take: 6,
     });
-    const reviews = [];
-    for (const review of temp[0]) {
-      const bookInfo = JSON.parse(review['book_info']);
-      const r = {
-        writer: review['user']['nickname'],
-        score: review['score'],
-        summary: review['summary'],
-        title: bookInfo['title'],
-        cover: bookInfo['cover'],
-      };
-      reviews.push(r);
-    }
-    return reviews;
+
+    return await processingReview(temp[0], false);
   }
 
   //최신순or인기순으로 리뷰 12개 불러오기
@@ -75,26 +65,15 @@ export class ReviewsService {
           'isPublic',
           'like_count',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
     } else if (orderby === 'created') {
       const temp = await this.reviewRepository.findAndCount({
         order: {
@@ -107,26 +86,15 @@ export class ReviewsService {
           'summary',
           'isPublic',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
     }
   }
 
@@ -183,7 +151,6 @@ export class ReviewsService {
   ): Promise<Review> {
     const review = new Review();
     review.text = await uploadReviewHtml(reviewfile);
-    review.coverImg = createReviewDto.coverImg;
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));

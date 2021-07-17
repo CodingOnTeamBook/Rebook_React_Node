@@ -145,4 +145,47 @@ export class UsersController {
     const likes = await this.usersService.getMyLikes(nickname);
     return likes;
   }
+
+  //팔로우기능
+  @Post('/follow')
+  async followUser(
+    @AuthUser() data: any,
+    @Body() nickname: string,
+    @Res() res
+  ) {
+    return this.usersService.followUser(data.userId, nickname).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        result: value,
+      });
+    });
+  }
+
+  //언팔로우기능
+  @Post('/unfollow')
+  async unfollowUser(
+    @AuthUser() data: any,
+    @Body() nickname: string,
+    @Res() res
+  ) {
+    return this.usersService
+      .unfollowUser(data.userId, nickname)
+      .then((value) => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          result: value,
+        });
+      });
+  }
+
+  //nickname으로 유저 서치
+  @Get('/search/:nickname')
+  getUserByNick(@Param('nickname') nickname: string, @Res() res) {
+    return this.usersService.getUserByNickname(nickname).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        user: value,
+      });
+    });
+  }
 }
