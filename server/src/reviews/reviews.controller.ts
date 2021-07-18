@@ -76,24 +76,23 @@ export class ReviewsController {
       });
   }
 
-  // //@Post('/update')
-  // //update(@Body())
-  // @Patch('/update/:id')
-  // update(
-  //   // @AuthUser() data: any,
-  //   @Param('id') id: string,
-  //   @Body() updateReviewDto: UpdateReviewDto,
-  //   @Res() res
-  // ) {
-  //   this.reviewService
-  //     .updateReview(id, updateReviewDto)
-  //     .then((value: Review) => {
-  //       return res.status(HttpStatus.OK).json({
-  //         success: true,
-  //         review: value,
-  //       });
-  //     });
-  // }
+  @Patch('/update')
+  @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
+  updateReview(
+    @AuthUser() data: any,
+    @UploadedFile() file: File[],
+    @Body() updateReviewDto: UpdateReviewDto,
+    @Res() res
+  ) {
+    this.reviewService
+      .updateReview(data.userId, file, updateReviewDto)
+      .then((value: Review) => {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          review: value,
+        });
+      });
+  }
 
   //@Delete('/')
   //deleteReview(@Body())

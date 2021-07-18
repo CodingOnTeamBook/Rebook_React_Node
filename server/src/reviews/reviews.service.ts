@@ -9,6 +9,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { processingReview } from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
+import * as fs from 'fs';
 
 @Injectable()
 export class ReviewsService {
@@ -159,6 +160,40 @@ export class ReviewsService {
     review.user = await this.userRepository.findOne({
       nickname: createReviewDto.writer,
     });
+    return this.reviewRepository.save(review);
+  }
+
+  //리뷰 수정
+  async updateReview(
+    userId: string,
+    reviewfile,
+    updateReviewDto: UpdateReviewDto
+  ): Promise<Review> {
+    const review = await this.reviewRepository.findOne({
+      where: { id: parseInt(updateReviewDto.reviewid) },
+      relations: ['tags', 'user'],
+    });
+    if (review.user.userId !== userId) {
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    }
+    fs.unlink(`uploads/${review.text}`, (err) => {
+      console.log(err);
+    });
+    review.text = await uploadReviewHtml(reviewfile);
+    review.summary = updateReviewDto.summary;
+    if (updateReviewDto.score) {
+      review.score = parseFloat(updateReviewDto.score);
+    }
+    if (updateReviewDto.isPublic) {
+      review.isPublic = Boolean(parseInt(updateReviewDto.isPublic));
+    }
+    if (updateReviewDto.tag) {
+      console.log(review.tags);
+      review.tags = [];
+      console.log(review.tags);
+      review.tags = await this.createTag(updateReviewDto.tag);
+      console.log(review.tags);
+    }
     return this.reviewRepository.save(review);
   }
 }
