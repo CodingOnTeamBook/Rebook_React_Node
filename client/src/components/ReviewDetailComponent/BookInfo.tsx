@@ -42,28 +42,39 @@ const BookPlot = styled(Box)`
   font-size: 1.2rem;
 `;
 
-const BookInfo: FunctionComponent = () => {
-  // test용 입니당
-  const writer = '작가';
-  const year = '발행년도';
-  const genre = '장르';
-  const publisher = '출판사';
+interface IBookInfoProps {
+  id: string;
+  writer: string;
+  year: string;
+  genre: string;
+  publisher: string;
+  title: string;
+  plot: string;
+  bookCover: string;
+}
 
+const BookInfo: FunctionComponent<IBookInfoProps> = ({
+  id,
+  writer,
+  year,
+  genre,
+  publisher,
+  title,
+  plot,
+  bookCover,
+}: IBookInfoProps) => {
   return (
     <>
       <Box display="flex" flexDirection="row">
         <Grid container>
           <Grid item lg={3} xl={3}>
             <BookCover>
-              <BookImg
-                alt="title"
-                src="https://prodimage.images-bn.com/pimages/9781338311501_p0_v2_s550x406.jpg"
-              />
+              <BookImg alt={title} src={bookCover} />
             </BookCover>
           </Grid>
           <Grid item xs={12} sm={12} lg={9} xl={9}>
             <Box display="flex" flexDirection="column">
-              <BookTitle> 해리포터와 마법사의 돌 </BookTitle>
+              <BookTitle> {title} </BookTitle>
               <Box display="flex" flexDirection="row" flexWrap="wrap">
                 <BookInfoDetail> {writer} </BookInfoDetail>
                 <BookInfoDetail> {year} </BookInfoDetail>
@@ -71,12 +82,7 @@ const BookInfo: FunctionComponent = () => {
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
               <BookPlot>
-                <p>
-                  줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                  줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                  줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                  줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리줄거리
-                </p>
+                <p> {plot} </p>
               </BookPlot>
             </Box>
           </Grid>

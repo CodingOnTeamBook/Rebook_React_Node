@@ -34,8 +34,14 @@ interface IdType {
   id: string;
 }
 
+const Title = styled.h1`
+  margin-top: 0;
+`;
+
 const ReviewDetailPage: FunctionComponent = () => {
   const [reviewDetail, setReviewDetail] = useState<any[]>([]);
+  const [reviewComment, setReviewComment] = useState<any[]>([]);
+  const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -51,7 +57,7 @@ const ReviewDetailPage: FunctionComponent = () => {
           reviewid: id,
         });
         setReviewDetail(res.data.review.review);
-        console.log(reviewDetail);
+        setReviewComment(res.data.review.comment);
       } catch (err) {
         setError(err);
       }
@@ -60,16 +66,50 @@ const ReviewDetailPage: FunctionComponent = () => {
     fetchReviews();
   }, []);
 
+  // console.log(reviewDetail);
+  console.log(reviewComment);
+
+  // const fetchBookDetail = async (isbn: string) => {
+  //   try {
+  //     setError(null);
+  //     setBookDetail([]);
+  //     setLoading(true);
+  //     const res = await axios.get(`/api/book/search?isbn=${isbn}`);
+  //     setBookDetail(res.data);
+  //     console.log(bookDetail);
+  //   } catch (err) {
+  //     // setError(err);
+  //     console.log(err);
+  //   }
+  //   setLoading(false);
+  // };
+
+  // fetchBookDetail('9780780797086');
+
   // review 에서 isbn 값 받기
   // 이 isbn 값 이용해서
   // fetchBookData(isbn) 함수 만들기
+  // 태그 속성 넣어두고 아마 userreview에서도 map 돌려 줘야할듯?
 
   // 코멘트는 그냥 잘 가져오면 될듯?!
 
   return (
     <ReviewDetailContainer>
       <BookInfoWrapper>
-        <BookInfo />
+        {/* {reviewDetail &&
+          reviewDetail.map((review) => (
+            <BookInfo
+              key={review.id}
+              id={review.id}
+              writer={review.isbn}
+              year={review.isbn}
+              genre={review.isbn}
+              publisher={review.isbn}
+              title={review.isbn}
+              plot={review.isbn}
+              bookCover={review.isbn}
+            />
+          ))} */}
       </BookInfoWrapper>
       <ReviewDetailWrapper container direction="column" alignContent="center">
         {reviewDetail &&
@@ -85,7 +125,19 @@ const ReviewDetailPage: FunctionComponent = () => {
             />
           ))}
         <MarginTop />
-        <CommentList />
+        <Title>Comment</Title>
+        {reviewComment &&
+          reviewComment.map((comment) => (
+            <CommentList
+              key={comment.id}
+              id={comment.id}
+              text={comment.text}
+              nickname={comment.user.nickname}
+              updateAt={comment.updateAt}
+              userImg={comment.user.profileImg}
+            />
+          ))}
+        <MarginTop />
         <AddComment />
       </ReviewDetailWrapper>
     </ReviewDetailContainer>
