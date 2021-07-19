@@ -13,7 +13,7 @@ const AddCommentContainer = styled(Box)`
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
-  margin-right: 2rem;
+  margin-right: 10px;
   img {
     padding: 0.4rem;
     border-radius: 50%;
