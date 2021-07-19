@@ -8,10 +8,18 @@ export class ReviewerController {
   @Get('/detail/:nickname')
   getReviwerDetail(@Param('nickname') nickname: string, @Res() res) {
     return this.reviewerService.reviewerDetail(nickname).then((value) => {
-      res.status(HttpStatus.OK).json({
-        success: true,
-        reviewer: value,
-      });
+      if (value === '1') {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          error: 1,
+          message: 'User not found',
+        });
+      } else {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          reviewer: value,
+        });
+      }
     });
   }
 

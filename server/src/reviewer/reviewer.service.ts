@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 
 @Injectable()
 export class ReviewerService {
@@ -54,7 +54,7 @@ export class ReviewerService {
       relations: ['reviews', 'reviews.tags', 'followers', 'followings'],
     });
 
-    if (reviewer === undefined) return 'User not found';
+    if (reviewer === undefined) return '1';
 
     reviewer['reviews'] = reviewer['reviews'].filter(
       (review) => review.isPublic === true
