@@ -4,7 +4,6 @@ import GridLayout from '../../components/common/GridLayout';
 import GridItem from '../../components/common/GridItem';
 import GridSmallItem from '../../components/common/GridSmallItem';
 import SearchForm from '../../components/common/SearchForm';
-import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +13,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../redux/search/action';
 import { setBookInfo } from '../../redux/book/action';
+import { SortButton } from '../ReviewPage';
+import axios from 'axios';
+import { SearchUsersByNickname } from '../../API/USER_PUBLIC_API/index';
+import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 
 const Container = styled.div`
   margin: 2rem;
@@ -43,8 +46,12 @@ const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [typeA, setTypeA] = useState<boolean>(true);
-  const [typeB, setTypeB] = useState<boolean>(false);
+  const [sorts, setSorts] = useState([
+    { text: '책 검색', selected: true },
+    { text: '리뷰어 검색', selected: false },
+  ]);
+
+  console.log([...sorts].map(({ selected }) => selected));
 
   const [searchResult, setSearchResult] = useState<any[]>();
   const location = useLocation();
@@ -54,18 +61,29 @@ const SearchPage: FunctionComponent = () => {
     (state: RootState) => state.search
   );
 
-  useEffect(() => {
-    dispatch(fetchApi(query, 1));
-  }, [location]);
+  const [reviewerInfo, setReviewerInfo] = useState<Array<IReviewer>>([]);
+
+  // state의 selected 속성을 바꾸는 함수
+  const onSortChange = (index: number) => {
+    const tmp = [...sorts];
+    tmp[index].selected = true;
+    index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
+    setSorts(tmp);
+  };
 
   useEffect(() => {
-    if (typeA) {
-      setTypeB(false);
+    if (sorts[0].selected) {
+      dispatch(fetchApi(query, 1));
     }
-    if (typeB) {
-      setTypeA(false);
+    if (sorts[1].selected) {
+      console.log('닉네임 검색');
+      const getReviewer = async () => {
+        const response = await SearchUsersByNickname(query);
+        setReviewerInfo(response.users);
+      };
+      getReviewer();
     }
-  }, [typeA, typeB]);
+  }, [sorts]);
 
   useEffect(() => {
     item && setSearchResult([...item]);
@@ -111,16 +129,19 @@ const SearchPage: FunctionComponent = () => {
       <>
         <SearchForm query={query} />
         <BtnArea>
-          <GreenCheckBox
-            labelName="책 찾기"
-            defaultValue={typeA}
-            submitValue={setTypeA}
-          />
-          <GreenCheckBox
-            labelName="리뷰어 찾기"
-            defaultValue={typeB}
-            submitValue={setTypeB}
-          />
+          {sorts.map(({ text, selected }, index) => (
+            <SortButton
+              size="large"
+              key={index}
+              onClick={() => {
+                onSortChange(index);
+                console.log(sorts);
+              }}
+              className={selected ? 'selected' : ''}
+            >
+              {text}
+            </SortButton>
+          ))}
         </BtnArea>
       </>
     );
@@ -153,9 +174,9 @@ const SearchPage: FunctionComponent = () => {
     <Container>
       <Header />
       <GridLayout>
-        {typeB && !loading ? (
+        {sorts[1].selected && !loading ? (
           <>
-            <Person />
+            <Person reviewer={reviewerInfo} />
           </>
         ) : (
           <>
