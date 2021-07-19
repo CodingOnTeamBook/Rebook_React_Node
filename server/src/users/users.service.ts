@@ -27,10 +27,11 @@ export class UsersService {
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.userId = createUserDto.kakaoId;
-    user.nickname = createUserDto.nickname;
+    user.nickname = createUserDto.nickName;
     user.gender = createUserDto.gender;
     user.genres = createUserDto.genre;
     user.ageRange = createUserDto.ageRange;
+    user.profileImg = createUserDto.profileImg;
     return await this.userRepository.save(user);
   }
 
