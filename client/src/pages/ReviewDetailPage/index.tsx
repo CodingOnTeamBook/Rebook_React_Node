@@ -77,8 +77,8 @@ const ReviewDetailPage: FunctionComponent = () => {
         });
         setReviewDetail(res.data.review.review);
         fetchBookDetail(res.data.review.review[0].isbn);
+        console.log(res.data.review.review);
         setReviewComment(res.data.review.comment);
-        console.log(reviewComment.length);
       } catch (err) {
         setError(err);
       }
@@ -143,6 +143,7 @@ const ReviewDetailPage: FunctionComponent = () => {
                   profileImg={review.user.profileImg}
                   updatedTime={review.updatedAt}
                   like_count={review.like_count}
+                  tags={review.tags}
                 />
               ))}
             <MarginTop />

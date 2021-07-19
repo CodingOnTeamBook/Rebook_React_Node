@@ -71,7 +71,7 @@ interface IUserReviewProps {
   profileImg: string;
   updatedTime: string;
   like_count: number;
-  // tag: object;
+  tags: any;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -82,6 +82,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   profileImg,
   updatedTime,
   like_count,
+  tags,
 }: IUserReviewProps) => {
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
@@ -109,15 +110,15 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             <UserNickName>{nickname}</UserNickName>
             <Rating size="large" name="read-only" value={score} readOnly />
             <Box display="flex" flexDirection="row" flexWrap="wrap">
-              <BookTag>
+              {/* <BookTag>
                 <ChipColor label="test" />
-              </BookTag>
-              {/* 중첩 map 이렇게 사용
-              {review.tags.map((reviewTag) => (
-                <BookTag key={reviewTag.id}>
-                  <ChipColor label={reviewTag.tag} />
+              </BookTag> */}
+              {/* 중첩 map 이렇게 사용 */}
+              {tags.map((tag: any) => (
+                <BookTag key={tag.id}>
+                  <ChipColor label={tag.tag} />
                 </BookTag>
-              ))} */}
+              ))}
             </Box>
             <UserWrite> {summary} </UserWrite>
             <ReviewDay> {TransferDate(updatedTime)} </ReviewDay>
