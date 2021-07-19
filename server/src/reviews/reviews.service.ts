@@ -7,7 +7,10 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { processingReview } from './reviews.exportFunction';
+import {
+  processingReview,
+  processingReviewISBN,
+} from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
 import * as fs from 'fs';
 
@@ -96,6 +99,38 @@ export class ReviewsService {
         take: 12,
       });
       return await processingReview(temp[0], true);
+    }
+  }
+
+  //책에 대한 리뷰 불러오기: 최신순, 인기순 5개
+  async loadReviewbyIsbn(isbn: string, orderby: string) {
+    const ISBN = isbn['isbn'];
+    const ORDERBY = orderby['orderby'];
+    if (ORDERBY === 'created') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          createdAt: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      console.log(review);
+      return await processingReviewISBN(review[0]);
+    } else if (ORDERBY === 'popularity') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          like_count: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      return await processingReviewISBN(review[0]);
     }
   }
 
@@ -194,8 +229,14 @@ export class ReviewsService {
     return this.reviewRepository.save(review);
   }
 
-  /*async deleteReview(userId: string, reviewid: string) {
-    user
-    //return this.reviewRepository.delete({ id: reviewid });
-  }*/
+  async deleteReview(userId: string, reviewid: string) {
+    const id = parseInt(reviewid['reviewid']);
+    const review = await this.reviewRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    if (review.user.userId !== userId)
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    return this.reviewRepository.delete({ id });
+  }
 }

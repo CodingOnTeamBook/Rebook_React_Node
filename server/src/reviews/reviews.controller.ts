@@ -46,6 +46,17 @@ export class ReviewsController {
     });
   }
 
+  //책에 대한 리뷰 불러오기: 최신순 혹은 인기순으로 5개
+  @Post('/load/:isbn')
+  loadReviewbyIsbn(@Param() isbn: string, @Body() orderby: string, @Res() res) {
+    return this.reviewService.loadReviewbyIsbn(isbn, orderby).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        reviews: value,
+      });
+    });
+  }
+
   //리뷰 작성
   @Post('/write')
   @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
@@ -95,7 +106,7 @@ export class ReviewsController {
       });
   }
 
-  /*@Delete('/delete')
+  @Delete('/delete')
   deleteReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
     return this.reviewService
       .deleteReview(data.userId, reviewid)
@@ -105,7 +116,7 @@ export class ReviewsController {
           result: value,
         });
       });
-  }*/
+  }
 
   //api/review/:param이라 가장 뒤쪽에 배치!
   //최신순or인기순으로 리뷰 불러오기

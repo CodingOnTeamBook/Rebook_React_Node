@@ -25,3 +25,20 @@ export const processingReview = async (review: any, includeTag: boolean) => {
   }
   return reviews;
 };
+
+export const processingReviewISBN = async (review: any) => {
+  const reviews = [];
+  for (const data of review) {
+    const temp = {
+      id: data['id'],
+      writer: data['user']['nickname'],
+      writerProfileImg: data['user']['profileImg'],
+      summary: data['summary'],
+      likeCount: data['like_count'],
+      createdAt: data['createdAt'],
+      commentCount: data['comments'].length,
+    };
+    reviews.push(temp);
+  }
+  return reviews;
+};
