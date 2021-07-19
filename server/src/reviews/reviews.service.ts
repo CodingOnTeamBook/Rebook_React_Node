@@ -188,12 +188,14 @@ export class ReviewsService {
       review.isPublic = Boolean(parseInt(updateReviewDto.isPublic));
     }
     if (updateReviewDto.tag) {
-      console.log(review.tags);
       review.tags = [];
-      console.log(review.tags);
       review.tags = await this.createTag(updateReviewDto.tag);
-      console.log(review.tags);
     }
     return this.reviewRepository.save(review);
   }
+
+  /*async deleteReview(userId: string, reviewid: string) {
+    user
+    //return this.reviewRepository.delete({ id: reviewid });
+  }*/
 }

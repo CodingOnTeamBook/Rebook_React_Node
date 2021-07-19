@@ -8,6 +8,7 @@ import {
   Res,
   Patch,
   Param,
+  Delete,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -94,8 +95,17 @@ export class ReviewsController {
       });
   }
 
-  //@Delete('/')
-  //deleteReview(@Body())
+  /*@Delete('/delete')
+  deleteReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+    return this.reviewService
+      .deleteReview(data.userId, reviewid)
+      .then((value) => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          result: value,
+        });
+      });
+  }*/
 
   //api/review/:param이라 가장 뒤쪽에 배치!
   //최신순or인기순으로 리뷰 불러오기
