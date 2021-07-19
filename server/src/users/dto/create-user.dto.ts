@@ -5,7 +5,7 @@ export class CreateUserDto {
   readonly kakaoId: string;
 
   @IsString()
-  readonly nickname: string;
+  readonly nickName: string;
 
   @IsString()
   readonly genre: string;

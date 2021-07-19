@@ -4,7 +4,7 @@ import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
 import { AuthMiddleware } from 'src/users/auth.middleware';
-import { CommentsController } from './commnets.controller';
+import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
 
 @Module({
