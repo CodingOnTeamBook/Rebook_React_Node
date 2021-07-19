@@ -66,7 +66,7 @@ const App: FunctionComponent = () => {
                     component={Auth(SearchPage, null)}
                   />
                   <Route
-                    path="/book/:id"
+                    path="/book/:isbn"
                     exact
                     component={Auth(BookDetailPage, null)}
                   />

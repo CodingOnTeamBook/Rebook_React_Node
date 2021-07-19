@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
+  cursor: pointer;
+
   h2 {
     margin-top: 0.4rem;
     margin-bottom: 0;
@@ -38,11 +40,12 @@ interface IProps {
   imgUrl: string;
   title: string;
   author: string;
+  onClick: () => void;
 }
 
-const BookInfo = ({ imgUrl, title, author }: IProps) => {
+const BookInfo = ({ imgUrl, title, author, onClick }: IProps) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <ImgArea>
         <img src={imgUrl} />
       </ImgArea>
