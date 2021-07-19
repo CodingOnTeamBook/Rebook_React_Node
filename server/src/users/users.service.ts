@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like as likes } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -109,11 +109,26 @@ export class UsersService {
 
   //nickname으로 유저 서치
   async getUserByNickname(nickname: string) {
-    const exUser = await this.userRepository.findOne({ where: { nickname } });
-    if (exUser) {
-      return exUser;
+    const exUsers = await this.userRepository.findAndCount({
+      where: { nickname: likes(`%${nickname}%`) },
+      select: ['id', 'nickname', 'profileImg', 'genres', 'info'],
+      relations: ['reviews', 'followers'],
+      skip: 0,
+      take: 12,
+    });
+    console.log(exUsers[0]);
+    if (exUsers) {
+      const users = [];
+      exUsers[0].forEach((user) => {
+        user['countFollowers'] = user['followers'].length;
+        user['countUserReviews'] = user['reviews'].length;
+        delete user['followers'];
+        delete user['reviews'];
+        users.push(user);
+      });
+      return users;
     } else {
-      return { type: 0, error: 'User not found' };
+      return '1';
     }
   }
 
