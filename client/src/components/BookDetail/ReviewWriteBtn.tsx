@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import AddIcon from '@material-ui/icons/Add';
 import { useHistory } from 'react-router';
+import { auth } from '../../API/USER_PRIVATE_API/index';
 
 const Button = styled(LineGreenBtn)`
   position: fixed;
@@ -24,10 +25,12 @@ const Button = styled(LineGreenBtn)`
 const ReviewWriteBtn: FunctionComponent = () => {
   const history = useHistory();
   const onClick = () => {
-    // Todo
-    // 로그인 되어있는지 여부 확인해야함
-    // 로그아웃 상태면 페이지 넘어가지 않고 로그인해주세요 alert창
-    history.push('/write');
+    async function getAuth() {
+      const response = await auth();
+      if (response.isAuth) history.push('/write');
+      else alert('먼저 로그인 해주세요!');
+    }
+    getAuth();
   };
   return (
     <Button onClick={onClick}>
