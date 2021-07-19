@@ -25,12 +25,17 @@ const Button = styled(LineGreenBtn)`
 const ReviewWriteBtn: FunctionComponent = () => {
   const history = useHistory();
   const onClick = () => {
-    async function getAuth() {
-      const response = await auth();
-      if (response.isAuth) history.push('/write');
-      else alert('먼저 로그인 해주세요!');
-    }
     getAuth();
+    async function getAuth() {
+      try {
+        const response = await auth();
+        response.isAuth
+          ? history.push('/write')
+          : alert('먼저 로그인 해주세요!');
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
   return (
     <Button onClick={onClick}>
