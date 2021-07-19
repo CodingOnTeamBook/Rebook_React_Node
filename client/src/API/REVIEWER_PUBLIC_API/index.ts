@@ -1,0 +1,10 @@
+import axios from 'axios';
+import { REVIEWER_SERVER } from '../../config';
+import { IReviewerResponse } from './reviewer.interface';
+
+export async function SearchReviewerByNickname(
+  nickname: string
+): Promise<IReviewerResponse> {
+  const response = await axios.get(`${REVIEWER_SERVER}/detail/${nickname}`);
+  return response.data;
+}
