@@ -20,7 +20,6 @@ const Header = styled.div`
 
 const Main = styled.div`
   display: flex;
-  /* flex-wrap: wrap; */
   justify-content: center;
   margin-bottom: 20px;
   height: 100%;
@@ -34,6 +33,7 @@ const ItemContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 200px;
+  height: 300px;
   margin: 0 16px;
   background-color: ${(props) => props.theme.palette.white};
   box-shadow: 0 8px 12px ${(props) => props.theme.palette.gray};
