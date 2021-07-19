@@ -102,7 +102,7 @@ export class ReviewsService {
     }
   }
 
-  //책에 대한 리뷰 불러오기: 최신순, 인기순 5개
+  //책에 대한 리뷰 불러오기: 최신순, 인기순 5개 로드
   async loadReviewbyIsbn(isbn: string, orderby: string) {
     const ISBN = isbn['isbn'];
     const ORDERBY = orderby['orderby'];
@@ -117,7 +117,6 @@ export class ReviewsService {
         skip: 0,
         take: 5,
       });
-      console.log(review);
       return await processingReviewISBN(review[0]);
     } else if (ORDERBY === 'popularity') {
       const review = await this.reviewRepository.findAndCount({
