@@ -36,6 +36,7 @@ const CancleBtn = styled(CancelIcon)`
 
 interface Props {
   query?: string;
+  selected?: Array<boolean>;
 }
 
 const SearchForm = ({ query }: Props) => {
@@ -53,10 +54,8 @@ const SearchForm = ({ query }: Props) => {
   };
 
   const onSubmit = (e: any) => {
-    console.log('[onSubmit]'); //디버깅용
     e.preventDefault();
     if (inputValue.trim().length === 0) return;
-    // 여기서 dispatch
     dispatch(fetchApi(inputValue.trim(), 1));
     history.push({
       pathname: '/search',

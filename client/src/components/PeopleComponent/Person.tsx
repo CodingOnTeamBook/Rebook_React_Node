@@ -9,6 +9,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import GridItem from '../common/GridItem';
 import { myInfo, myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
+import { NoResultMsg } from '../../pages/SearchPage';
 
 const PersonContainer = styled(Box)`
   border-radius: 10px;
@@ -73,54 +74,60 @@ const Info = styled.span`
   margin-left: 10px;
 `;
 
+// 다른 곳에도 Person이 쓰이는 것 같아서 일단 optional로 해둡니다
 interface IProps {
   reviewer?: Array<IReviewer>;
 }
 
 const Person: FunctionComponent<IProps> = ({ reviewer }: IProps) => {
-  console.log(reviewer);
-  const genresArr = reviewer?.map(({ genres }) => genres);
-  console.log(genresArr);
-
-  const id = 'test';
   const history = useHistory();
+  console.log(reviewer);
 
   return (
     <>
-      {reviewer?.map((user: any, index: number) => (
-        <GridItem key={user.id}>
-          <PersonContainer
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            boxShadow={2}
-            onClick={() => {
-              history.push(`/people/${user.id}`);
-            }}
-          >
-            <UserImg alt={user.nickname} src={myProfileImg(user.profileImg)} />
-            <NickName>{user.nickname}</NickName>
-            <TagArea>
-              {user.genres.split(',').map((tag: any, index: number) => (
-                <TagChip key={index} label={tag} />
-              ))}
-            </TagArea>
-            <Introduction>
-              {myInfo(user.info === null ? 'defaultInfo' : user.info)}
-            </Introduction>
-            <DetailInfo>
-              <ReviewArea>
-                <ListAlt></ListAlt>
-                <Info> {user.countUserReviews}개 </Info>
-              </ReviewArea>
-              <FollowerArea>
-                <PersonAdd></PersonAdd>
-                <Info> {user.countFollowers}명 </Info>
-              </FollowerArea>
-            </DetailInfo>
-          </PersonContainer>
-        </GridItem>
-      ))}
+      {reviewer?.length ? (
+        reviewer?.map((user: any, index: number) => (
+          <GridItem key={user.id}>
+            <PersonContainer
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              boxShadow={2}
+              onClick={() => {
+                history.push(`/people/${user.id}`);
+              }}
+            >
+              <UserImg
+                alt={user.nickname}
+                src={myProfileImg(
+                  !user.profileImg ? 'defaultImg' : user.myProfileImg
+                )}
+              />
+              <NickName>{user.nickname}</NickName>
+              <TagArea>
+                {user.genres.split(',').map((tag: any, index: number) => (
+                  <TagChip key={index} label={tag} />
+                ))}
+              </TagArea>
+              <Introduction>
+                {myInfo(!user.info ? 'defaultInfo' : user.info)}
+              </Introduction>
+              <DetailInfo>
+                <ReviewArea>
+                  <ListAlt></ListAlt>
+                  <Info> {user.countUserReviews}개 </Info>
+                </ReviewArea>
+                <FollowerArea>
+                  <PersonAdd></PersonAdd>
+                  <Info> {user.countFollowers}명 </Info>
+                </FollowerArea>
+              </DetailInfo>
+            </PersonContainer>
+          </GridItem>
+        ))
+      ) : (
+        <NoResultMsg>검색 결과가 없어요😢</NoResultMsg>
+      )}
     </>
   );
 };

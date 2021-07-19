@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
-import GridItem from '../../components/common/GridItem';
 import GridSmallItem from '../../components/common/GridSmallItem';
 import SearchForm from '../../components/common/SearchForm';
 import Person from '../../components/PeopleComponent/Person';
@@ -14,7 +13,6 @@ import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../redux/search/action';
 import { setBookInfo } from '../../redux/book/action';
 import { SortButton } from '../ReviewPage';
-import axios from 'axios';
 import { SearchUsersByNickname } from '../../API/USER_PUBLIC_API/index';
 import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 
@@ -29,7 +27,7 @@ const BtnArea = styled.div`
   margin-bottom: 2rem;
 `;
 
-const NoResultMsg = styled.h2`
+export const NoResultMsg = styled.h2`
   margin: 0 auto;
   margin-top: 10rem;
 `;
@@ -51,7 +49,8 @@ const SearchPage: FunctionComponent = () => {
     { text: '리뷰어 검색', selected: false },
   ]);
 
-  console.log([...sorts].map(({ selected }) => selected));
+  // console.log([...sorts].map(({ selected }) => selected));
+  const selectedArr = [...sorts].map(({ selected }) => selected);
 
   const [searchResult, setSearchResult] = useState<any[]>();
   const location = useLocation();
@@ -127,7 +126,7 @@ const SearchPage: FunctionComponent = () => {
   const Header = () => {
     return (
       <>
-        <SearchForm query={query} />
+        <SearchForm query={query} selected={selectedArr} />
         <BtnArea>
           {sorts.map(({ text, selected }, index) => (
             <SortButton
@@ -135,7 +134,6 @@ const SearchPage: FunctionComponent = () => {
               key={index}
               onClick={() => {
                 onSortChange(index);
-                console.log(sorts);
               }}
               className={selected ? 'selected' : ''}
             >
@@ -175,9 +173,7 @@ const SearchPage: FunctionComponent = () => {
       <Header />
       <GridLayout>
         {sorts[1].selected && !loading ? (
-          <>
-            <Person reviewer={reviewerInfo} />
-          </>
+          <Person reviewer={reviewerInfo} />
         ) : (
           <>
             {searchResult && !msg ? (
