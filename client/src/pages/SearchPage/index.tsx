@@ -154,9 +154,7 @@ const SearchPage: FunctionComponent = () => {
       <Header />
       <GridLayout>
         {typeB && !loading ? (
-          <>
-            <Person />
-          </>
+          <>{/* <Person /> */}</>
         ) : (
           <>
             {searchResult && !msg ? (

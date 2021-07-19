@@ -72,95 +72,53 @@ const Info = styled.span`
   margin-left: 10px;
 `;
 
-const Person: FunctionComponent = () => {
-  // 테스트 데이터
-  const USER_DATA = [
-    {
-      id: 1,
-      userId: '1234',
-      nickname: '리북이',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용~~☺',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 2,
-      userId: '1234',
-      nickname: '리자몽',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용~~☺',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 3,
-      userId: '1234',
-      nickname: '꼬부기',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용 나는 꼬부기~',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 4,
-      userId: '1234',
-      nickname: '어니부기',
-      genres: '',
-      gender: 'Secret',
-      ageRange: 'Secret',
-      profileImg: 'defaultImg',
-      info: 'defaultInfo',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-  ];
-  const id = 'test';
-  const history = useHistory();
+interface IPersonProps {
+  nickname: string;
+  profileImg: string;
+  info: string;
+  countFollowers: number;
+  countUserReview: number;
+}
 
+const Person: FunctionComponent<IPersonProps> = ({
+  nickname,
+  profileImg,
+  info,
+  countFollowers,
+  countUserReview,
+}: IPersonProps) => {
+  const history = useHistory();
   return (
     <>
-      {USER_DATA.map((user) => (
-        <GridItem key={user.id}>
-          <PersonContainer
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            boxShadow={2}
-            key={user.id}
-            onClick={() => {
-              history.push(`/people/${id}`);
-            }}
-          >
-            <UserImg alt={user.nickname} src={myProfileImg(user.profileImg)} />
-            <NickName>{user.nickname}</NickName>
-            <TagArea>
-              <TagChip label="#태그" /> <TagChip label="#태그" />
-              <TagChip label="#태그" />
-            </TagArea>
-            <Introduction> {myInfo(user.info)} </Introduction>
-            <DetailInfo>
-              <ReviewArea>
-                <ListAlt></ListAlt>
-                <Info> 2개 </Info>
-              </ReviewArea>
-              <FollowerArea>
-                <PersonAdd></PersonAdd>
-                <Info> 3명 </Info>
-              </FollowerArea>
-            </DetailInfo>
-          </PersonContainer>
-        </GridItem>
-      ))}
+      <GridItem>
+        <PersonContainer
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          boxShadow={2}
+          onClick={() => {
+            history.push(`/people/${nickname}`);
+          }}
+        >
+          <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+          <NickName>{nickname}</NickName>
+          <TagArea>
+            <TagChip label="#태그" /> <TagChip label="#태그" />
+            <TagChip label="#태그" />
+          </TagArea>
+          <Introduction> {myInfo(info)} </Introduction>
+          <DetailInfo>
+            <ReviewArea>
+              <ListAlt></ListAlt>
+              <Info> {countUserReview} </Info>
+            </ReviewArea>
+            <FollowerArea>
+              <PersonAdd></PersonAdd>
+              <Info> {countFollowers} </Info>
+            </FollowerArea>
+          </DetailInfo>
+        </PersonContainer>
+      </GridItem>
     </>
   );
 };

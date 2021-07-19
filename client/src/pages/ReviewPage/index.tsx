@@ -85,7 +85,6 @@ const ReviewPage: FunctionComponent = () => {
               onSortChange(index);
               fetchReviews(name);
             }}
-            onSelect={() => fetchReviews(name)}
             className={selected ? 'selected' : ''}
           >
             {text}

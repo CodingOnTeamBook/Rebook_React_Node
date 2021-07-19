@@ -17,20 +17,34 @@ const TagButton = styled(Button)`
   &:not(:first-of-type) {
     margin-left: 10px;
   }
+  &.selected {
+    background-color: ${(props) => props.theme.palette.green};
+    color: white;
+  }
 `;
 
 interface IProps {
   tags: Array<ITag>;
+  onSelect(value: string): any;
 }
 
 interface ITag {
   value: string;
   type: number;
+  selected: boolean;
 }
 
-const SelectTag = ({ tags }: IProps) => {
+const SelectTag = ({ tags, onSelect }: IProps) => {
   const tagButton = tags.map((tag: ITag) => {
-    return <TagButton key={tag.type}> {tag.value} </TagButton>;
+    return (
+      <TagButton
+        key={tag.type}
+        className={tag.selected ? 'selected' : ''}
+        onClick={() => onSelect(tag.value)}
+      >
+        {tag.value}
+      </TagButton>
+    );
   });
   return <div> {tagButton} </div>;
 };
