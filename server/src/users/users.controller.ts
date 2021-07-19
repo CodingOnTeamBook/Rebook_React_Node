@@ -185,10 +185,18 @@ export class UsersController {
     @Res() res
   ) {
     return this.usersService.followUser(data.userId, nickname).then((value) => {
-      res.status(HttpStatus.OK).json({
-        success: true,
-        result: value,
-      });
+      if (value === '1') {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          error: 1,
+          message: 'User not found',
+        });
+      } else {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          result: value,
+        });
+      }
     });
   }
 
@@ -202,21 +210,45 @@ export class UsersController {
     return this.usersService
       .unfollowUser(data.userId, nickname)
       .then((value) => {
-        res.status(HttpStatus.OK).json({
-          success: true,
-          result: value,
-        });
+        if (value === '1') {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            error: 1,
+            message: 'User not found',
+          });
+        } else {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            result: value,
+          });
+        }
       });
   }
 
   //nickname으로 유저 서치
   @Get('/search/:nickname')
   getUserByNick(@Param('nickname') nickname: string, @Res() res) {
-    return this.usersService.getUserByNickname(nickname).then((value) => {
-      res.status(HttpStatus.OK).json({
-        success: true,
-        user: value,
+    return this.usersService
+      .getUserByNickname(nickname)
+      .then((value) => {
+        if (value === '1') {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            error: 1,
+            message: 'User not found',
+          });
+        } else {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            users: value,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          result: err,
+        });
       });
-    });
   }
 }

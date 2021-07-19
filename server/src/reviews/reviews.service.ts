@@ -7,8 +7,12 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { processingReview } from './reviews.exportFunction';
+import {
+  processingReview,
+  processingReviewISBN,
+} from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
+import * as fs from 'fs';
 
 @Injectable()
 export class ReviewsService {
@@ -98,6 +102,37 @@ export class ReviewsService {
     }
   }
 
+  //책에 대한 리뷰 불러오기: 최신순, 인기순 5개 로드
+  async loadReviewbyIsbn(isbn: string, orderby: string) {
+    const ISBN = isbn['isbn'];
+    const ORDERBY = orderby['orderby'];
+    if (ORDERBY === 'created') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          createdAt: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      return await processingReviewISBN(review[0]);
+    } else if (ORDERBY === 'popularity') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          like_count: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      return await processingReviewISBN(review[0]);
+    }
+  }
+
   //하나의 리뷰 자세히 불러오기
   async detailReview(reviewid: any): Promise<any> {
     const id = parseInt(reviewid.reviewid);
@@ -160,5 +195,47 @@ export class ReviewsService {
       nickname: createReviewDto.writer,
     });
     return this.reviewRepository.save(review);
+  }
+
+  //리뷰 수정
+  async updateReview(
+    userId: string,
+    reviewfile,
+    updateReviewDto: UpdateReviewDto
+  ): Promise<Review> {
+    const review = await this.reviewRepository.findOne({
+      where: { id: parseInt(updateReviewDto.reviewid) },
+      relations: ['tags', 'user'],
+    });
+    if (review.user.userId !== userId) {
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    }
+    fs.unlink(`uploads/${review.text}`, (err) => {
+      console.log(err);
+    });
+    review.text = await uploadReviewHtml(reviewfile);
+    review.summary = updateReviewDto.summary;
+    if (updateReviewDto.score) {
+      review.score = parseFloat(updateReviewDto.score);
+    }
+    if (updateReviewDto.isPublic) {
+      review.isPublic = Boolean(parseInt(updateReviewDto.isPublic));
+    }
+    if (updateReviewDto.tag) {
+      review.tags = [];
+      review.tags = await this.createTag(updateReviewDto.tag);
+    }
+    return this.reviewRepository.save(review);
+  }
+
+  async deleteReview(userId: string, reviewid: string) {
+    const id = parseInt(reviewid['reviewid']);
+    const review = await this.reviewRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    if (review.user.userId !== userId)
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    return this.reviewRepository.delete({ id });
   }
 }
