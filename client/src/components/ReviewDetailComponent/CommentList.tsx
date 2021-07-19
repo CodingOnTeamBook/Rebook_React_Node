@@ -18,21 +18,21 @@ const CommentListContainer = styled(Box)`
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
-  margin-right: 2rem;
+  margin-right: 1rem;
   img {
     padding: 0.4rem;
     border-radius: 50%;
   }
 `;
 
-const ReviewTime = styled.span`
+const CommentDay = styled.span`
   color: #808080;
-  font-size: 8px;
+  font-size: 0.8rem;
 `;
 
-const Review = styled.p`
+const CommentText = styled.p`
   margin-top: 5px;
-  font-size: 13px;
+  font-size: 0.8rem;
   font-weight: 600;
   width: 100%;
   padding: 10px;
@@ -80,8 +80,8 @@ const CommentList: FunctionComponent<ICommentProps> = ({
           <UserImg alt={nickname} src={myProfileImg(userImg)} />
           <Box display="flex" flexDirection="column" flexGrow="1">
             <span>{nickname}</span>
-            <ReviewTime> {TransferDate(updateAt)} </ReviewTime>
-            <Review> {text} </Review>
+            <CommentDay> {TransferDate(updateAt)} </CommentDay>
+            <CommentText> {text} </CommentText>
           </Box>
           <Box>
             <IconButton

@@ -30,13 +30,30 @@ const MarginTop = styled.div`
   margin-top: 30px;
 `;
 
-interface IdType {
-  id: string;
-}
-
 const Title = styled.h1`
   margin-top: 0;
 `;
+
+const Message = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 30px;
+`;
+
+const CommentZero = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 200;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+interface IdType {
+  id: string;
+}
 
 const ReviewDetailPage: FunctionComponent = () => {
   const [reviewDetail, setReviewDetail] = useState<any[]>([]);
@@ -52,12 +69,16 @@ const ReviewDetailPage: FunctionComponent = () => {
       try {
         setError(null);
         setReviewDetail([]);
+        setReviewComment([]);
+        setBookDetail([]);
         setLoading(true);
         const res = await axios.post('/api/review/detail', {
           reviewid: id,
         });
         setReviewDetail(res.data.review.review);
+        fetchBookDetail(res.data.review.review[0].isbn);
         setReviewComment(res.data.review.comment);
+        console.log(reviewComment.length);
       } catch (err) {
         setError(err);
       }
@@ -66,80 +87,86 @@ const ReviewDetailPage: FunctionComponent = () => {
     fetchReviews();
   }, []);
 
-  // console.log(reviewDetail);
-  console.log(reviewComment);
-
-  // const fetchBookDetail = async (isbn: string) => {
-  //   try {
-  //     setError(null);
-  //     setBookDetail([]);
-  //     setLoading(true);
-  //     const res = await axios.get(`/api/book/search?isbn=${isbn}`);
-  //     setBookDetail(res.data);
-  //     console.log(bookDetail);
-  //   } catch (err) {
-  //     // setError(err);
-  //     console.log(err);
-  //   }
-  //   setLoading(false);
-  // };
-
-  // fetchBookDetail('9780780797086');
-
-  // review 에서 isbn 값 받기
-  // 이 isbn 값 이용해서
-  // fetchBookData(isbn) 함수 만들기
-  // 태그 속성 넣어두고 아마 userreview에서도 map 돌려 줘야할듯?
+  const fetchBookDetail = async (isbn: any) => {
+    try {
+      setError(null);
+      setBookDetail([]);
+      setLoading(true);
+      const res = await axios.get(`/api/book/search?title=${isbn}`);
+      setBookDetail(res.data.books.item);
+      console.log(res.data.books.item);
+    } catch (err) {
+      setError(err);
+    }
+    setLoading(false);
+  };
 
   // 코멘트는 그냥 잘 가져오면 될듯?!
 
   return (
     <ReviewDetailContainer>
-      <BookInfoWrapper>
-        {/* {reviewDetail &&
-          reviewDetail.map((review) => (
-            <BookInfo
-              key={review.id}
-              id={review.id}
-              writer={review.isbn}
-              year={review.isbn}
-              genre={review.isbn}
-              publisher={review.isbn}
-              title={review.isbn}
-              plot={review.isbn}
-              bookCover={review.isbn}
-            />
-          ))} */}
-      </BookInfoWrapper>
-      <ReviewDetailWrapper container direction="column" alignContent="center">
-        {reviewDetail &&
-          reviewDetail.map((review) => (
-            <UserReview
-              key={review.id}
-              id={review.id}
-              score={review.score}
-              summary={review.summary}
-              nickname={review.user.nickname}
-              updatedTime={review.updatedAt}
-              like_count={review.like_count}
-            />
-          ))}
-        <MarginTop />
-        <Title>Comment</Title>
-        {reviewComment &&
-          reviewComment.map((comment) => (
-            <CommentList
-              key={comment.id}
-              id={comment.id}
-              text={comment.text}
-              nickname={comment.user.nickname}
-              updateAt={comment.updateAt}
-              userImg={comment.user.profileImg}
-            />
-          ))}
-        <MarginTop />
-        <AddComment />
-      </ReviewDetailWrapper>
+      {error || loading ? (
+        error ? (
+          <Message>에러가 발생했습니다 😭</Message>
+        ) : (
+          <Message> 로딩 중입니다 📚</Message>
+        )
+      ) : (
+        <>
+          <BookInfoWrapper>
+            {bookDetail &&
+              bookDetail.map((review) => (
+                <BookInfo
+                  key={review.isbn}
+                  writer={review.author}
+                  year={review.pubDate}
+                  publisher={review.publisher}
+                  title={review.title}
+                  plot={review.description}
+                  bookCover={review.cover}
+                />
+              ))}
+          </BookInfoWrapper>
+          <ReviewDetailWrapper
+            container
+            direction="column"
+            alignContent="center"
+          >
+            {reviewDetail &&
+              reviewDetail.map((review) => (
+                <UserReview
+                  key={review.id}
+                  id={review.id}
+                  score={review.score}
+                  summary={review.summary}
+                  nickname={review.user.nickname}
+                  profileImg={review.user.profileImg}
+                  updatedTime={review.updatedAt}
+                  like_count={review.like_count}
+                />
+              ))}
+            <MarginTop />
+            <Title>Comment</Title>
+            {reviewComment.length === 0 ? (
+              <CommentZero> 작성된 댓글이 없습니다. </CommentZero>
+            ) : (
+              reviewComment &&
+              reviewComment.map((comment) => (
+                <CommentList
+                  key={comment.id}
+                  id={comment.id}
+                  text={comment.text}
+                  nickname={comment.user.nickname}
+                  userImg={comment.user.profileImg}
+                  updateAt={comment.updateAt}
+                />
+              ))
+            )}
+            <MarginTop />
+            <AddComment />
+          </ReviewDetailWrapper>
+        </>
+      )}
     </ReviewDetailContainer>
   );
 };

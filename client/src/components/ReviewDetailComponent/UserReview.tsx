@@ -13,6 +13,7 @@ import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
+import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -25,7 +26,7 @@ const UserReviewContainer = styled(Box)`
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
-  margin-right: 2rem;
+  margin-right: 1rem;
   img {
     padding: 0.4rem;
     border-radius: 50%;
@@ -44,10 +45,10 @@ const UserWrite = styled.p`
   font-size: 1.2rem;
 `;
 
-const ReviewTime = styled.p`
+const ReviewDay = styled.p`
   font-size: 1rem;
   color: #808080;
-  font-size: 8px;
+  font-size: 1rem;
 `;
 
 const ChipColor = styled(Chip)`
@@ -67,6 +68,7 @@ interface IUserReviewProps {
   score: number;
   summary: string;
   nickname: string;
+  profileImg: string;
   updatedTime: string;
   like_count: number;
   // tag: object;
@@ -77,6 +79,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   score,
   summary,
   nickname,
+  profileImg,
   updatedTime,
   like_count,
 }: IUserReviewProps) => {
@@ -101,10 +104,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     <UserReviewContainer boxShadow={2}>
       <Box display="flex" flexDirection="column" key={id}>
         <Box display="flex" flexDirection="row" flexWrap="nowrap">
-          <UserImg
-            alt={nickname}
-            src="https://about.fb.com/ko/wp-content/uploads/sites/16/2019/01/mz.jpg?w=2048"
-          />
+          <UserImg alt={nickname} src={myProfileImg(profileImg)} />
           <Box width={1}>
             <UserNickName>{nickname}</UserNickName>
             <Rating size="large" name="read-only" value={score} readOnly />
@@ -120,7 +120,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
               ))} */}
             </Box>
             <UserWrite> {summary} </UserWrite>
-            <ReviewTime> {TransferDate(updatedTime)} </ReviewTime>
+            <ReviewDay> {TransferDate(updatedTime)} </ReviewDay>
           </Box>
           <Box>
             <IconButton

@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 const BookCover = styled(Box)`
   width: 250px;
+  height: 350px;
 `;
 
 const BookImg = styled.img`
@@ -43,10 +44,8 @@ const BookPlot = styled(Box)`
 `;
 
 interface IBookInfoProps {
-  id: string;
   writer: string;
   year: string;
-  genre: string;
   publisher: string;
   title: string;
   plot: string;
@@ -54,10 +53,8 @@ interface IBookInfoProps {
 }
 
 const BookInfo: FunctionComponent<IBookInfoProps> = ({
-  id,
   writer,
   year,
-  genre,
   publisher,
   title,
   plot,
@@ -78,7 +75,6 @@ const BookInfo: FunctionComponent<IBookInfoProps> = ({
               <Box display="flex" flexDirection="row" flexWrap="wrap">
                 <BookInfoDetail> {writer} </BookInfoDetail>
                 <BookInfoDetail> {year} </BookInfoDetail>
-                <BookInfoDetail> {genre} </BookInfoDetail>
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
               <BookPlot>
