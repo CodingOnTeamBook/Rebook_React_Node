@@ -31,6 +31,7 @@ export class UsersService {
     user.gender = createUserDto.gender;
     user.genres = createUserDto.genre;
     user.ageRange = createUserDto.ageRange;
+    user.profileImg = createUserDto.profileImg;
     return await this.userRepository.save(user);
   }
 
