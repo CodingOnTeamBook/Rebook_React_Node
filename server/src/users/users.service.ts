@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { uploadProfileImg } from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
+import { Comment } from '../entities/comment.entity';
 
 @Injectable()
 export class UsersService {
@@ -18,13 +19,15 @@ export class UsersService {
     private reviewRepository: Repository<Review>,
     @InjectRepository(Like)
     private likeRepository: Repository<Like>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
     private readonly jwtService: JwtService
   ) {}
 
   async signup(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.userId = createUserDto.kakaoId;
-    user.nickname = createUserDto.nickName;
+    user.nickname = createUserDto.nickname;
     user.gender = createUserDto.gender;
     user.genres = createUserDto.genre;
     user.ageRange = createUserDto.ageRange;
@@ -37,6 +40,10 @@ export class UsersService {
 
   async findByNickname(nickname: string): Promise<User> {
     return this.userRepository.findOne({ where: { nickname } });
+  }
+
+  async getAllComment(nickname: string): Promise<Comment[]> {
+    return this.commentRepository.find({ where: { nickname } });
   }
 
   async checkNick(nickname: string): Promise<boolean> {
@@ -69,6 +76,9 @@ export class UsersService {
       user.profileImg = await uploadProfileImg(imgfile);
     } else {
       user.profileImg = updateUserDto.imgUrl;
+    }
+    if (updateUserDto.profileImg) {
+      user.profileImg = updateUserDto.profileImg;
     }
     return this.userRepository.save(user);
   }

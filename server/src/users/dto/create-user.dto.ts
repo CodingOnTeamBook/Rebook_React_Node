@@ -5,7 +5,7 @@ export class CreateUserDto {
   readonly kakaoId: string;
 
   @IsString()
-  readonly nickName: string;
+  readonly nickname: string;
 
   @IsString()
   readonly genre: string;
@@ -15,4 +15,10 @@ export class CreateUserDto {
 
   @IsString()
   readonly ageRange: string = 'Secret';
+
+  @IsString()
+  readonly profileImg: string;
+
+  @IsString()
+  readonly info: string;
 }

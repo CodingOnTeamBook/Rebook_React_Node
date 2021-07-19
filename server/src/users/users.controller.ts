@@ -19,6 +19,7 @@ import { User } from '../entities/user.entity';
 import { AuthUser } from './users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { usersmulterOptions } from './users.multerOptions';
+import { Comment } from '../entities/comment.entity';
 
 //에러 처리 middleware 생성하기
 
@@ -69,7 +70,8 @@ export class UsersController {
     });
   }
 
-  @Get('/info/:nickname')
+  //내 정보 조회
+  @Get('/myinfo/:nickname')
   findOne(@Param('nickname') nickname: string, @Res() res) {
     this.usersService.findByNickname(nickname).then((value: User) => {
       if (value) {
@@ -84,6 +86,53 @@ export class UsersController {
       });
     });
   }
+
+  @Patch('/myinfo/update')
+  @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
+  update(
+    @AuthUser() data: any,
+    @UploadedFile() file: File[],
+    @Body() updateUserDto: UpdateUserDto,
+    @Res() res
+  ) {
+    this.usersService
+      .update(data.userId, file, updateUserDto)
+      .then((value: User) => {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          user: value,
+        });
+      });
+  }
+
+  //내가 쓴 댓글 조회
+  @Get('myinfo/comments/:nickname')
+  async findAllComment(
+    @Param('nickname') nickname: string
+  ): Promise<Comment[]> {
+    const userList = await this.usersService.getAllComment(nickname);
+    return Object.assign({
+      data: userList,
+      statusCode: 200,
+      statusMsg: `데이터 조회가 성공적으로 완료되었습니다.`,
+    });
+  }
+
+  // @Get('/myinfo/reviews')
+  // findOne(@Param('nickname') nickname: string, @Res() res) {
+  //   this.usersService.findByNickname(nickname).then((value: User) => {
+  //     if (value) {
+  //       return res.status(HttpStatus.OK).json({
+  //         success: true,
+  //         user: value,
+  //       });
+  //     }
+  //     return res.status(HttpStatus.OK).json({
+  //       success: true,
+  //       user: 'none',
+  //     });
+  //   });
+  // }
 
   @Get('/auth')
   findMe(@AuthUser() data: any, @Res() res) {
@@ -113,24 +162,6 @@ export class UsersController {
         success: true,
       });
     });
-  }
-
-  @Patch('/update')
-  @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
-  update(
-    @AuthUser() data: any,
-    @UploadedFile() file: File[],
-    @Body() updateUserDto: UpdateUserDto,
-    @Res() res
-  ) {
-    this.usersService
-      .update(data.userId, file, updateUserDto)
-      .then((value: User) => {
-        return res.status(HttpStatus.OK).json({
-          success: true,
-          user: value,
-        });
-      });
   }
 
   @Get('/myinfo/reviews/:nickname')
