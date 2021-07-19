@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Review } from './review.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
+import { Review } from './review.entity';
 
 @Entity('like', { schema: 'Rebook' })
 export class Like {
