@@ -32,9 +32,11 @@ const MarginTop = styled.div`
 
 const Title = styled.h1`
   margin-top: 0;
+  margin-bottom: 0;
 `;
 
 const Message = styled.span`
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +50,7 @@ const CommentZero = styled.span`
   align-items: center;
   font-weight: 200;
   font-size: 20px;
-  margin-bottom: 20px;
+  margin: 20px 20px;
 `;
 
 interface IdType {
@@ -75,14 +77,13 @@ const ReviewDetailPage: FunctionComponent = () => {
         const res = await axios.post('/api/review/detail', {
           reviewid: id,
         });
-        setReviewDetail(res.data.review.review);
         fetchBookDetail(res.data.review.review[0].isbn);
-        console.log(res.data.review.review);
+        setReviewDetail(res.data.review.review);
         setReviewComment(res.data.review.comment);
       } catch (err) {
         setError(err);
       }
-      setLoading(false);
+      return () => setLoading(false);
     };
     fetchReviews();
   }, []);
@@ -94,17 +95,14 @@ const ReviewDetailPage: FunctionComponent = () => {
       setLoading(true);
       const res = await axios.get(`/api/book/search?title=${isbn}`);
       setBookDetail(res.data.books.item);
-      console.log(res.data.books.item);
     } catch (err) {
       setError(err);
     }
     setLoading(false);
   };
 
-  // 코멘트는 그냥 잘 가져오면 될듯?!
-
   return (
-    <ReviewDetailContainer>
+    <>
       {error || loading ? (
         error ? (
           <Message>에러가 발생했습니다 😭</Message>
@@ -112,17 +110,17 @@ const ReviewDetailPage: FunctionComponent = () => {
           <Message> 로딩 중입니다 📚</Message>
         )
       ) : (
-        <>
+        <ReviewDetailContainer>
           <BookInfoWrapper>
             {bookDetail &&
               bookDetail.map((review) => (
                 <BookInfo
                   key={review.isbn}
-                  writer={review.author}
-                  year={review.pubDate}
+                  author={review.author}
+                  pubDate={review.pubDate}
                   publisher={review.publisher}
                   title={review.title}
-                  plot={review.description}
+                  description={review.description}
                   bookCover={review.cover}
                 />
               ))}
@@ -136,12 +134,11 @@ const ReviewDetailPage: FunctionComponent = () => {
               reviewDetail.map((review) => (
                 <UserReview
                   key={review.id}
-                  id={review.id}
                   score={review.score}
                   summary={review.summary}
                   nickname={review.user.nickname}
                   profileImg={review.user.profileImg}
-                  updatedTime={review.updatedAt}
+                  updatedAt={review.updatedAt}
                   like_count={review.like_count}
                   tags={review.tags}
                 />
@@ -155,10 +152,9 @@ const ReviewDetailPage: FunctionComponent = () => {
               reviewComment.map((comment) => (
                 <CommentList
                   key={comment.id}
-                  id={comment.id}
                   text={comment.text}
                   nickname={comment.user.nickname}
-                  userImg={comment.user.profileImg}
+                  profileImg={comment.user.profileImg}
                   updateAt={comment.updateAt}
                 />
               ))
@@ -166,9 +162,9 @@ const ReviewDetailPage: FunctionComponent = () => {
             <MarginTop />
             <AddComment />
           </ReviewDetailWrapper>
-        </>
+        </ReviewDetailContainer>
       )}
-    </ReviewDetailContainer>
+    </>
   );
 };
 

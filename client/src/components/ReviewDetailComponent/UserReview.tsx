@@ -64,23 +64,21 @@ const BookTag = styled(Box)`
 `;
 
 interface IUserReviewProps {
-  id: number;
   score: number;
   summary: string;
   nickname: string;
   profileImg: string;
-  updatedTime: string;
+  updatedAt: string;
   like_count: number;
   tags: any;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
-  id,
   score,
   summary,
   nickname,
   profileImg,
-  updatedTime,
+  updatedAt,
   like_count,
   tags,
 }: IUserReviewProps) => {
@@ -103,17 +101,13 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
 
   return (
     <UserReviewContainer boxShadow={2}>
-      <Box display="flex" flexDirection="column" key={id}>
+      <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="row" flexWrap="nowrap">
           <UserImg alt={nickname} src={myProfileImg(profileImg)} />
           <Box width={1}>
             <UserNickName>{nickname}</UserNickName>
             <Rating size="large" name="read-only" value={score} readOnly />
             <Box display="flex" flexDirection="row" flexWrap="wrap">
-              {/* <BookTag>
-                <ChipColor label="test" />
-              </BookTag> */}
-              {/* 중첩 map 이렇게 사용 */}
               {tags.map((tag: any) => (
                 <BookTag key={tag.id}>
                   <ChipColor label={tag.tag} />
@@ -121,7 +115,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
               ))}
             </Box>
             <UserWrite> {summary} </UserWrite>
-            <ReviewDay> {TransferDate(updatedTime)} </ReviewDay>
+            <ReviewDay> {TransferDate(updatedAt)} </ReviewDay>
           </Box>
           <Box>
             <IconButton

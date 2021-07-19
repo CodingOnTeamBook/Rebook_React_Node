@@ -44,20 +44,20 @@ const BookPlot = styled(Box)`
 `;
 
 interface IBookInfoProps {
-  writer: string;
-  year: string;
+  author: string;
+  pubDate: string;
   publisher: string;
   title: string;
-  plot: string;
+  description: string;
   bookCover: string;
 }
 
 const BookInfo: FunctionComponent<IBookInfoProps> = ({
-  writer,
-  year,
+  author,
+  pubDate,
   publisher,
   title,
-  plot,
+  description,
   bookCover,
 }: IBookInfoProps) => {
   return (
@@ -73,12 +73,12 @@ const BookInfo: FunctionComponent<IBookInfoProps> = ({
             <Box display="flex" flexDirection="column">
               <BookTitle> {title} </BookTitle>
               <Box display="flex" flexDirection="row" flexWrap="wrap">
-                <BookInfoDetail> {writer} </BookInfoDetail>
-                <BookInfoDetail> {year} </BookInfoDetail>
+                <BookInfoDetail> {author} </BookInfoDetail>
+                <BookInfoDetail> {pubDate} </BookInfoDetail>
                 <BookInfoDetail> {publisher} </BookInfoDetail>
               </Box>
               <BookPlot>
-                <p> {plot} </p>
+                <p> {description} </p>
               </BookPlot>
             </Box>
           </Grid>

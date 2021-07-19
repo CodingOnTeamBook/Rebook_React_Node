@@ -61,7 +61,6 @@ const ReviewPage: FunctionComponent = () => {
       setLoading(true);
       const res = await axios.get(`api/review/${sort}`);
       setReviews(res.data.reviews);
-      console.log(res.data);
     } catch (err) {
       setError(err);
     }

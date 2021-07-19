@@ -46,17 +46,15 @@ const DividerBottom = styled(Divider)`
 `;
 
 interface ICommentProps {
-  id: string;
   nickname: string;
-  userImg: string;
+  profileImg: string;
   updateAt: string;
   text: string;
 }
 
 const CommentList: FunctionComponent<ICommentProps> = ({
-  id,
   nickname,
-  userImg,
+  profileImg,
   updateAt,
   text,
 }: ICommentProps) => {
@@ -75,9 +73,9 @@ const CommentList: FunctionComponent<ICommentProps> = ({
 
   return (
     <CommentListContainer>
-      <Box key={id}>
+      <Box>
         <Box display="flex" flexDirection="row">
-          <UserImg alt={nickname} src={myProfileImg(userImg)} />
+          <UserImg alt={nickname} src={myProfileImg(profileImg)} />
           <Box display="flex" flexDirection="column" flexGrow="1">
             <span>{nickname}</span>
             <CommentDay> {TransferDate(updateAt)} </CommentDay>
