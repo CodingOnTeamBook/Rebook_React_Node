@@ -1,8 +1,14 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ProfileImg } from '../../style/componentStyled';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SmsIcon from '@material-ui/icons/Sms';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/rootReducer';
+import axios from 'axios';
+import TransferDate from '../../globalFunction/TransferDate';
+import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
+import { useHistory } from 'react-router';
 
 const Container = styled.main`
   margin: 50px 0;
@@ -62,85 +68,83 @@ const Review = styled.div`
 const LikedIcon = styled(FavoriteIcon)`
   color: red;
   margin: 0 4px;
+  font-size: 18px;
 `;
 
 const CommentsIcon = styled(SmsIcon)`
   margin: 0 4px;
+  font-size: 18px;
+`;
+
+const SeeMore = styled.span`
+  color: ${(props) => props.theme.palette.darkgreen};
+  cursor: pointer;
+`;
+
+const ErrorMsg = styled.h1`
+  margin: auto;
+  color: ${(props) => props.theme.palette.white};
+`;
+
+const NoResultMsg = styled.h1`
+  margin: auto;
+  color: ${(props) => props.theme.palette.white};
 `;
 
 const BookReview: FunctionComponent = () => {
+  const { bookInfo } = useSelector((state: RootState) => state.book);
+  const history = useHistory();
+  const [reviews, setReviews] = useState([]);
+  const [isEmptyReviews, setIsEmptyReviews] = useState<null | boolean>(null);
+  const [isError, setError] = useState<null | boolean>(null);
+
   const [tabs, setTabs] = useState([
     { name: '최신순', selected: true },
     { name: '인기순', selected: false },
   ]);
 
-  // 📍 날짜순, 좋아요 순으로 정렬해보기위한 Test Array Data
-  // 📍 실제 받아오는 데이터와 다름
-  const REVIEW_TEST = [
-    {
-      user: {
-        writer: '차유진',
-        userImg:
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
-      },
-      review: {
-        contents:
-          '공부하기 싫어서 13500원 내고 책 샀는데 결국은 또 공부 해야돼서 짜증나요',
-        date: 20210701,
-        liked: 111,
-        star: 3,
-        comments: 3,
-      },
-    },
-    {
-      user: {
-        writer: '최경득',
-        userImg:
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
-      },
-      review: {
-        contents:
-          '내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용',
-        date: 20210702,
-        liked: 2,
-        star: 4,
-        comments: 33,
-      },
-    },
-    {
-      user: {
-        writer: '풀떼기',
-        userImg:
-          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
-      },
-      review: {
-        contents:
-          '내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3내용3',
-        date: 20210703,
-        liked: 11,
-        star: 5,
-        comments: 100,
-      },
-    },
-  ];
+  useEffect(() => {
+    fetchReviews('created');
+  }, []);
+
+  const fetchReviews = async (sortBy: string) => {
+    try {
+      const response = await axios.post(`/api/review/load/${bookInfo?.isbn}`, {
+        orderby: `${sortBy}`,
+      });
+      if (response.data.reviews.length) {
+        setReviews(response.data.reviews);
+        setIsEmptyReviews(false);
+        setError(false);
+      } else {
+        setIsEmptyReviews(true);
+        setError(false);
+      }
+    } catch (err) {
+      setError(true);
+    }
+  };
 
   const onClick = (index: number) => {
+    switchTab(index);
+    switch (index) {
+      case 0:
+        return fetchReviews('created');
+      case 1:
+        return fetchReviews('popularity');
+      default:
+        return;
+    }
+  };
+
+  function switchTab(index: number) {
     const tmp = [...tabs];
     tmp[index].selected = true;
     index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
     setTabs(tmp);
-  };
+  }
 
-  const latestOrder = [...REVIEW_TEST].sort(
-    (a, b) => b.review.date - a.review.date
-  );
-
-  const popularityOrder = [...REVIEW_TEST].sort(
-    (a, b) => b.review.liked - a.review.liked
-  );
-
-  // 더보기를 위한 글자수 제한
-  const MAX_LETTERS = 100;
+  const onClickSeeDetail = (id: number) => history.push(`/review/${id}`);
 
   return (
     <Container>
@@ -156,65 +160,104 @@ const BookReview: FunctionComponent = () => {
         ))}
       </TabContainer>
       <ReviewContainer>
+        {isError && (
+          <ErrorMsg>
+            에러가 발생했어요😨 <br /> 나중에 다시 시도해주세요
+          </ErrorMsg>
+        )}
+        {isEmptyReviews && (
+          <NoResultMsg>
+            아직 작성된 리뷰가 없어요😢 <br /> 첫 리뷰를 작성해주세요!
+          </NoResultMsg>
+        )}
         {tabs[0].selected ? (
           <>
-            {latestOrder.map((review, index) => (
-              <Review key={index}>
-                <ProfileImg src={review.user.userImg} />
-                <div className="review_contents">
-                  <h3>
-                    {review.review.date} 에 {review.user.writer} 님이 올리신
-                    글입니다.
-                  </h3>
-                  <h4>
-                    {review.review.contents.length <= MAX_LETTERS ? (
-                      review.review.contents
-                    ) : (
-                      <>
-                        {review.review.contents.slice(0, MAX_LETTERS - 1)}
-                        <span> ....더보기</span>
-                      </>
-                    )}
-                  </h4>
-                  <div className="review_comments">
-                    <LikedIcon />
-                    {review.review.liked}
-                    <CommentsIcon />
-                    {review.review.comments}
+            {reviews.map(
+              (
+                {
+                  commentCount,
+                  likeCount,
+                  summary,
+                  writer,
+                  writerProfileImg,
+                  createdAt,
+                  id,
+                },
+                index: number
+              ) => (
+                <Review key={index}>
+                  <ProfileImg
+                    src={
+                      !writerProfileImg
+                        ? myProfileImg('defaultImg')
+                        : writerProfileImg
+                    }
+                  />
+                  <div className="review_contents">
+                    <h3>
+                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
+                    </h3>
+                    <h4>
+                      {summary}
+                      <SeeMore onClick={() => onClickSeeDetail(id)}>
+                        {' '}
+                        ....더보기
+                      </SeeMore>
+                    </h4>
+                    <div className="review_comments">
+                      <LikedIcon />
+                      {likeCount} <CommentsIcon />
+                      {commentCount}
+                    </div>
                   </div>
-                </div>
-              </Review>
-            ))}
+                </Review>
+              )
+            )}
           </>
         ) : (
           <>
-            {popularityOrder.map((review, index) => (
-              <Review key={index}>
-                <ProfileImg src={review.user.userImg} />
-                <div className="review_contents">
-                  <h3>
-                    {review.review.date} 에 {review.user.writer} 님이 올리신
-                    글입니다.
-                  </h3>
-                  <h4>
-                    {review.review.contents.length <= MAX_LETTERS ? (
-                      review.review.contents
-                    ) : (
-                      <>
-                        {review.review.contents.slice(0, MAX_LETTERS - 1)}
-                        <span> ....더보기</span>
-                      </>
-                    )}
-                  </h4>
-                  <div className="review_comments">
-                    <LikedIcon />
-                    {review.review.liked}
-                    <CommentsIcon />
-                    {review.review.comments}
+            {reviews.map(
+              (
+                {
+                  commentCount,
+                  likeCount,
+                  summary,
+                  writer,
+                  writerProfileImg,
+                  createdAt,
+                  id,
+                },
+                index: number
+              ) => (
+                <Review key={index}>
+                  <ProfileImg
+                    src={
+                      !writerProfileImg
+                        ? myProfileImg('defaultImg')
+                        : writerProfileImg
+                    }
+                  />
+                  <div className="review_contents">
+                    <h3>
+                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
+                    </h3>
+                    <h4>
+                      {summary}
+                      <SeeMore onClick={() => onClickSeeDetail(id)}>
+                        {' '}
+                        ....더보기
+                      </SeeMore>
+                    </h4>
+                    <div className="review_comments">
+                      <LikedIcon />
+                      {likeCount}
+                      <CommentsIcon />
+                      {commentCount}
+                    </div>
                   </div>
-                </div>
-              </Review>
-            ))}
+                </Review>
+              )
+            )}
           </>
         )}
       </ReviewContainer>
