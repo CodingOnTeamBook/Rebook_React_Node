@@ -8,6 +8,7 @@ import { RootState } from '../../redux/rootReducer';
 import axios from 'axios';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
+import { useHistory } from 'react-router';
 
 const Container = styled.main`
   margin: 50px 0;
@@ -92,6 +93,7 @@ const NoResultMsg = styled.h1`
 
 const BookReview: FunctionComponent = () => {
   const { bookInfo } = useSelector((state: RootState) => state.book);
+  const history = useHistory();
   const [reviews, setReviews] = useState([]);
   const [isEmptyReviews, setIsEmptyReviews] = useState<null | boolean>(null);
   const [isError, setError] = useState<null | boolean>(null);
@@ -142,7 +144,7 @@ const BookReview: FunctionComponent = () => {
     setTabs(tmp);
   }
 
-  console.log(reviews);
+  const onClickSeeDetail = (id: number) => history.push(`/review/${id}`);
 
   return (
     <Container>
@@ -179,6 +181,7 @@ const BookReview: FunctionComponent = () => {
                   writer,
                   writerProfileImg,
                   createdAt,
+                  id,
                 },
                 index: number
               ) => (
@@ -192,12 +195,14 @@ const BookReview: FunctionComponent = () => {
                   />
                   <div className="review_contents">
                     <h3>
-                      {TransferDate(createdAt)}에 {writer} 님이 올리신
-                      리뷰입니다.
+                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
                     </h3>
                     <h4>
                       {summary}
-                      <SeeMore> ....더보기</SeeMore>
+                      <SeeMore onClick={() => onClickSeeDetail(id)}>
+                        {' '}
+                        ....더보기
+                      </SeeMore>
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
@@ -220,6 +225,7 @@ const BookReview: FunctionComponent = () => {
                   writer,
                   writerProfileImg,
                   createdAt,
+                  id,
                 },
                 index: number
               ) => (
@@ -233,12 +239,14 @@ const BookReview: FunctionComponent = () => {
                   />
                   <div className="review_contents">
                     <h3>
-                      {TransferDate(createdAt)}에 {writer} 님이 올리신
-                      리뷰입니다.
+                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
                     </h3>
                     <h4>
                       {summary}
-                      <SeeMore> ....더보기</SeeMore>
+                      <SeeMore onClick={() => onClickSeeDetail(id)}>
+                        {' '}
+                        ....더보기
+                      </SeeMore>
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
