@@ -106,7 +106,7 @@ const PeoplePage: FunctionComponent = ({}) => {
             <Message> 로딩 중입니다 📚</Message>
           )
         ) : people.length == 0 ? (
-          <Message> 등록된 리뷰어가 없습니다. </Message>
+          <Message> 등록된 리뷰어가 없습니다 😢 </Message>
         ) : (
           <GridLayout>
             <>
