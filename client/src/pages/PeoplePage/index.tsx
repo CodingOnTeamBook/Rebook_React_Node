@@ -55,7 +55,7 @@ const PeoplePage: FunctionComponent = ({}) => {
         setPeople([]);
         setLoading(true);
         if (isSelected.length == 0) {
-          alert('장르를 하나 이상 선택해주세요😅');
+          alert('장르를 하나 이상 선택해주세요 😅');
           setIsSelected([0]);
         } else if (0 <= isSelected.length && isSelected.length <= 3) {
           isSelected.sort();
@@ -63,7 +63,7 @@ const PeoplePage: FunctionComponent = ({}) => {
           setPeople(res.data.reviewers);
         } else if (isSelected.length >= 4) {
           isSelected.pop();
-          alert('장르를 3개 이하만 선택해주세요😅');
+          alert('장르를 3개 이하만 선택해주세요 😅');
           fetchPerson();
         }
       } catch (err) {
@@ -81,9 +81,6 @@ const PeoplePage: FunctionComponent = ({}) => {
   };
 
   const checkFunc = (index: any) => isSelected.includes(index);
-
-  console.log(isSelected);
-  console.log(people);
 
   return (
     <PeopleContainer>
