@@ -18,9 +18,6 @@ export default function Auth(
       if (!loading && !data && !error) {
         dispatch(getAuthThunk());
       }
-      if (error) {
-        history.push('/');
-      }
       if (data?.isAuth && option == false) {
         history.push('/');
       }
