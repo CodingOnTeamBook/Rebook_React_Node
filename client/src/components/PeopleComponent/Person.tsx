@@ -17,7 +17,7 @@ const PersonContainer = styled(Box)`
 `;
 
 const UserImg = styled(Avatar)`
-  border: 5px solid #000;
+  /* border: 5px solid #000; */
   padding: 10px;
   width: 90px;
   height: 90px;
@@ -29,16 +29,14 @@ const NickName = styled.div`
   font-weight: bold;
 `;
 
-const TagArea = styled.div`
+const GenreTagWrapper = styled.div`
   margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TagChip = styled(Chip)`
   &:not(:first-of-type) {
     margin-left: 10px;
   }
+`;
+
+const TagChip = styled(Chip)`
   background-color: ${(props) => props.theme.palette.green};
 `;
 
@@ -46,26 +44,13 @@ const Introduction = styled.div`
   margin-top: 20px;
 `;
 
-const DetailInfo = styled.div`
+const InfoContainer = styled(Box)`
   width: 100%;
   margin-top: 20px;
-  display: flex;
-  flex-direction: row;
 `;
 
-const ReviewArea = styled.div`
+const InfoWrapper = styled(Box)`
   width: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FollowerArea = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Info = styled.span`
@@ -78,7 +63,22 @@ interface IPersonProps {
   info: string;
   countFollowers: number;
   countUserReview: number;
+  genres: any;
 }
+
+interface IGenreTagsType {
+  [key: number]: string;
+}
+
+const genreTags: IGenreTagsType = {
+  0: '소설',
+  1: '인문학',
+  2: '사회과학',
+  3: '역사',
+  4: '과학',
+  5: '예술',
+  6: '종교',
+};
 
 const Person: FunctionComponent<IPersonProps> = ({
   nickname,
@@ -86,40 +86,56 @@ const Person: FunctionComponent<IPersonProps> = ({
   info,
   countFollowers,
   countUserReview,
+  genres,
 }: IPersonProps) => {
   const history = useHistory();
+
+  const genreToArr = (genre: any) => {
+    const genreNumArr = genre.split(',').map(Number);
+    return genreNumArr;
+  };
+
   return (
-    <>
-      <GridItem>
-        <PersonContainer
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          boxShadow={2}
-          onClick={() => {
-            history.push(`/people/${nickname}`);
-          }}
-        >
-          <UserImg alt={nickname} src={myProfileImg(profileImg)} />
-          <NickName>{nickname}</NickName>
-          <TagArea>
-            <TagChip label="#태그" /> <TagChip label="#태그" />
-            <TagChip label="#태그" />
-          </TagArea>
-          <Introduction> {myInfo(info)} </Introduction>
-          <DetailInfo>
-            <ReviewArea>
-              <ListAlt></ListAlt>
-              <Info> {countUserReview} </Info>
-            </ReviewArea>
-            <FollowerArea>
-              <PersonAdd></PersonAdd>
-              <Info> {countFollowers} </Info>
-            </FollowerArea>
-          </DetailInfo>
-        </PersonContainer>
-      </GridItem>
-    </>
+    <GridItem>
+      <PersonContainer
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        boxShadow={2}
+        onClick={() => {
+          history.push(`/people/${nickname}`);
+        }}
+      >
+        <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+        <NickName>{nickname}</NickName>
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
+          {genreToArr(genres).map((genre: any) => (
+            <GenreTagWrapper key={genre}>
+              <TagChip label={genreTags[genre]} />
+            </GenreTagWrapper>
+          ))}
+        </Box>
+        <Introduction> {myInfo(info)} </Introduction>
+        <InfoContainer display="flex" flexDirection="row">
+          <InfoWrapper
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <ListAlt></ListAlt>
+            <Info> {countUserReview}개 </Info>
+          </InfoWrapper>
+          <InfoWrapper
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <PersonAdd></PersonAdd>
+            <Info> {countFollowers}명 </Info>
+          </InfoWrapper>
+        </InfoContainer>
+      </PersonContainer>
+    </GridItem>
   );
 };
 

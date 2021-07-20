@@ -16,7 +16,7 @@ const SelectButtonArea = styled.div`
   text-align: center;
 `;
 
-const TagButton = styled(Button)`
+const GenreButton = styled(Button)`
   margin-bottom: 30px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
@@ -44,7 +44,6 @@ const Message = styled.span`
 
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
-  const [filterSelected, setFilterSelected] = useState(false);
   const [isSelected, setIsSelected] = useState<any[]>([0]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -90,13 +89,13 @@ const PeoplePage: FunctionComponent = ({}) => {
     <PeopleContainer>
       <SelectButtonArea>
         {genreTags.map((tag, index) => (
-          <TagButton
+          <GenreButton
             key={tag.type}
             onClick={() => genreSelect(tag, index)}
             className={checkFunc(index) ? 'selected' : ''}
           >
             {tag.value}
-          </TagButton>
+          </GenreButton>
         ))}
       </SelectButtonArea>
       <>
@@ -107,7 +106,7 @@ const PeoplePage: FunctionComponent = ({}) => {
             <Message> 로딩 중입니다 📚</Message>
           )
         ) : people.length == 0 ? (
-          <Message> 작성된 댓글이 없습니다. </Message>
+          <Message> 등록된 리뷰어가 없습니다. </Message>
         ) : (
           <GridLayout>
             <>
@@ -117,6 +116,7 @@ const PeoplePage: FunctionComponent = ({}) => {
                     key={person.id}
                     nickname={person.nickname}
                     profileImg={person.profileImg}
+                    genres={person.genres}
                     info={person.info}
                     countFollowers={person.countFollowers}
                     countUserReview={person.countUserReview}
