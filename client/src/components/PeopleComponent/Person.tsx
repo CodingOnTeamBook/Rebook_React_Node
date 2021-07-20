@@ -74,18 +74,21 @@ const Info = styled.span`
   margin-left: 10px;
 `;
 
-// 다른 곳에도 Person이 쓰이는 것 같아서 일단 optional로 해둡니다
+// 📌 다른 곳에도 Person이 쓰이는 것 같아서 일단 optional로 해둡니다
 interface IProps {
   reviewer?: Array<IReviewer>;
+  error?: boolean;
 }
 
-const Person: FunctionComponent<IProps> = ({ reviewer }: IProps) => {
+const Person: FunctionComponent<IProps> = ({ reviewer, error }: IProps) => {
   const history = useHistory();
-  console.log(reviewer);
+  console.log(error);
 
   return (
     <>
-      {reviewer?.length ? (
+      {error ? (
+        <NoResultMsg>찾는 유저가 없어요😢</NoResultMsg>
+      ) : (
         reviewer?.map((user: any, index: number) => (
           <GridItem key={user.id}>
             <PersonContainer
@@ -125,8 +128,6 @@ const Person: FunctionComponent<IProps> = ({ reviewer }: IProps) => {
             </PersonContainer>
           </GridItem>
         ))
-      ) : (
-        <NoResultMsg>검색 결과가 없어요😢</NoResultMsg>
       )}
     </>
   );
