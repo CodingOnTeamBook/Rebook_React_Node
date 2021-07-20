@@ -8,12 +8,12 @@ import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/rootReducer';
+import { RootState } from '../../modules/rootReducer';
 import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
-import { fetchApi } from '../../redux/search/action';
-import { setBookInfo } from '../../redux/book/action';
+import { fetchApi } from '../../modules/search/action';
+import { setBookInfo } from '../../modules/book/action';
 
 const Container = styled.div`
   margin: 2rem;

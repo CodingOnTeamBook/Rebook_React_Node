@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Auth from 'hocAuth';
 import { Provider } from 'react-redux';
 import Main from 'layout/Main';
-import store from 'redux/store';
+import ModalLayout from 'layout/Modal';
+import store from 'modules/store';
 import Header from 'components/common/Header';
 import LandingPage from 'pages/LandingPage';
 import MyPage from 'pages/MyPage';
@@ -16,6 +17,7 @@ import WriteReviewPage from 'pages/WriteReviewPage';
 import Footer from 'components/common/Footer';
 import ReviewDetailPage from 'pages/ReviewDetailPage';
 import PeopleDetailPage from 'pages/PeopleDetailPage';
+import LoginModalContents from 'components/common/LoginModalContents';
 
 const App: FunctionComponent = () => {
   return (
@@ -55,6 +57,9 @@ const App: FunctionComponent = () => {
           </Switch>
           <Footer />
         </BrowserRouter>
+        <ModalLayout>
+          <LoginModalContents />
+        </ModalLayout>
       </Main>
     </Provider>
   );
