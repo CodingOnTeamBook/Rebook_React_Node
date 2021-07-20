@@ -57,6 +57,13 @@ interface IdType {
   id: string;
 }
 
+//에러 헨들링 => 에러 페이지로 redirect
+//로딩중 if(loading) return <div> 로딩중.. <div>
+//값이 없을 때 => alert띄우거나, <div>값이 없습니다. </div>
+//API 폴더에 fetchReview만들고, fetchReview.then().catch() 형식으로 작성
+//에러, 로딩 표시에 더 용이
+//구조 자체는 layout으로 빼는 것이 best지만 딱히 지장은 없으므로 패스
+
 const ReviewDetailPage: FunctionComponent = () => {
   const [reviewDetail, setReviewDetail] = useState<any[]>([]);
   const [reviewComment, setReviewComment] = useState<any[]>([]);

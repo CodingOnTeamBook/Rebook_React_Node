@@ -12,7 +12,7 @@ import { useHistory } from 'react-router';
 
 const Container = styled.main`
   margin: 50px 0;
-  height: 80vh;
+  height: 80v;
   background-color: ${(props) => props.theme.palette.green};
 `;
 
@@ -91,6 +91,10 @@ const NoResultMsg = styled.h1`
   color: ${(props) => props.theme.palette.white};
 `;
 
+//bookreview 넘겨받은 초기 배열로 review 뿌려주서(캐싱 개념으로 가지고 있기)
+//state를 따로 관리해서 인기순 누르면 fetchAPI 호출 후 리로딩
+//다음 페이지로 넘어갈 때는 Link to={`/review/${id}`}로 작성 ( Link가 React에서 최적화 되어있기도 하고 가독성이 좋아서.)
+//빈 값일 때는 따로 return 하기 안에서 {isEmpty && }이런식으로 작성하지 말구
 const BookReview: FunctionComponent = () => {
   const { bookInfo } = useSelector((state: RootState) => state.book);
   const history = useHistory();

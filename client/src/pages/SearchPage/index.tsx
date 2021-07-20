@@ -40,6 +40,14 @@ const TempContainer = styled.div`
   align-items: center;
 `;
 
+//다음 페이지로 넘어갈 때는 Link 사용
+//Search도 페이지네이션이 이루어지기 때문에
+//select 했을 때 api endpoint만 바꿈.
+//page는 ref값으로 관리
+//select값 바꿨을 때 endpoint, page 리셋(리셋하는 함수 따로 빼기)
+//한 페이지씩 로드했을 때 추가하기(현재 endpoint, 현재 page로 api 호출해서 배열에 추가)
+//해당 북 정보는 북 디테일 페이지에서 해결
+
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
