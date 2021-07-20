@@ -15,7 +15,7 @@ const SelectSortContainer = styled.div`
   text-align: right;
 `;
 
-const SortButton = styled(Button)`
+export const SortButton = styled(Button)`
   margin-bottom: 30px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
@@ -85,7 +85,6 @@ const ReviewPage: FunctionComponent = () => {
               onSortChange(index);
               fetchReviews(name);
             }}
-            onSelect={() => fetchReviews(name)}
             className={selected ? 'selected' : ''}
           >
             {text}

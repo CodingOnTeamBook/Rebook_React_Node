@@ -109,7 +109,6 @@ export class UsersService {
 
   //nickname으로 유저 서치
   async getUserByNickname(nickname: string) {
-    console.log(nickname);
     const exUsers = await this.userRepository.findAndCount({
       where: { nickname: likes(`%${nickname}%`) },
       select: ['id', 'nickname', 'profileImg', 'genres', 'info'],
@@ -127,7 +126,6 @@ export class UsersService {
         delete user['reviews'];
         users.push(user);
       });
-      console.log(users);
       return users;
     } else {
       return '1';

@@ -1,10 +1,8 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
-import GridItem from '../../components/common/GridItem';
 import GridSmallItem from '../../components/common/GridSmallItem';
 import SearchForm from '../../components/common/SearchForm';
-import GreenCheckBox from '../../components/common/GreenCheckboxAndLabel';
 import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +12,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../modules/search/action';
 import { setBookInfo } from '../../modules/book/action';
+import { SortButton } from '../ReviewPage';
+import { SearchUsersByNickname } from '../../API/USER_PUBLIC_API/index';
+import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 
 const Container = styled.div`
   margin: 2rem;
@@ -26,7 +27,7 @@ const BtnArea = styled.div`
   margin-bottom: 2rem;
 `;
 
-const NoResultMsg = styled.h2`
+export const NoResultMsg = styled.h2`
   margin: 0 auto;
   margin-top: 10rem;
 `;
@@ -42,11 +43,6 @@ const TempContainer = styled.div`
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [typeA, setTypeA] = useState<boolean>(true);
-  const [typeB, setTypeB] = useState<boolean>(false);
-
-  const [searchResult, setSearchResult] = useState<any[]>();
   const location = useLocation();
   const query = decodeURI(location.search.split('=')[1]);
 
@@ -54,28 +50,47 @@ const SearchPage: FunctionComponent = () => {
     (state: RootState) => state.search
   );
 
-  useEffect(() => {
-    dispatch(fetchApi(query, 1));
-  }, [location]);
+  const [sorts, setSorts] = useState([
+    { text: '도서 검색', selected: true },
+    { text: '리뷰어 검색', selected: false },
+  ]);
+
+  const [searchBookResult, setSearchBookResult] = useState<any[]>();
+  const [reviewerResult, setReviewerResult] = useState<Array<IReviewer>>();
+  const [noReviewerResult, setNoReviewerResult] = useState(false);
+
+  // sorts state의 selected 속성을 바꾸는 함수
+  const onSortChange = (index: number) => {
+    const tmp = [...sorts];
+    tmp[index].selected = true;
+    index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
+    setSorts(tmp);
+  };
 
   useEffect(() => {
-    if (typeA) {
-      setTypeB(false);
+    if (sorts[0].selected) dispatch(fetchApi(query, 1));
+    if (sorts[1].selected) {
+      const getReviewer = async () => {
+        const response = await SearchUsersByNickname(query);
+        if (!response.users.length) setNoReviewerResult(true);
+        else {
+          setNoReviewerResult(false);
+          setReviewerResult(response.users);
+        }
+      };
+      getReviewer();
     }
-    if (typeB) {
-      setTypeA(false);
-    }
-  }, [typeA, typeB]);
+  }, [sorts]);
 
   useEffect(() => {
-    item && setSearchResult([...item]);
+    item && setSearchBookResult([...item]);
     return () => {
-      setSearchResult(undefined);
+      setSearchBookResult(undefined);
     };
   }, [item]);
 
   const onClick = (index: number) => {
-    const booksInfo = [...(searchResult as Array<any>)];
+    const booksInfo = [...(searchBookResult as Array<any>)];
 
     // bookInfo에서 필요한 속성만 추출
     const {
@@ -111,22 +126,24 @@ const SearchPage: FunctionComponent = () => {
       <>
         <SearchForm query={query} />
         <BtnArea>
-          <GreenCheckBox
-            labelName="책 찾기"
-            defaultValue={typeA}
-            submitValue={setTypeA}
-          />
-          <GreenCheckBox
-            labelName="리뷰어 찾기"
-            defaultValue={typeB}
-            submitValue={setTypeB}
-          />
+          {sorts.map(({ text, selected }, index) => (
+            <SortButton
+              size="large"
+              key={index}
+              onClick={() => {
+                onSortChange(index);
+              }}
+              className={selected ? 'selected' : ''}
+            >
+              {text}
+            </SortButton>
+          ))}
         </BtnArea>
       </>
     );
   };
 
-  if (loading && !searchResult)
+  if (loading && !searchBookResult)
     return (
       <Container>
         <Header />
@@ -153,25 +170,25 @@ const SearchPage: FunctionComponent = () => {
     <Container>
       <Header />
       <GridLayout>
-        {typeB && !loading ? (
-          <>
-            <Person />
-          </>
+        {sorts[1].selected && !loading ? (
+          <Person reviewer={reviewerResult} error={noReviewerResult} />
         ) : (
           <>
-            {searchResult && !msg ? (
-              searchResult?.map((result: any, index: number) => {
-                return (
-                  <GridSmallItem key={index}>
-                    <BookInfo
-                      onClick={() => onClick(index)}
-                      imgUrl={result.cover}
-                      title={result.title}
-                      author={result.author}
-                    />
-                  </GridSmallItem>
-                );
-              })
+            {searchBookResult && !msg ? (
+              searchBookResult?.map(
+                ({ cover, title, author }, index: number) => {
+                  return (
+                    <GridSmallItem key={index}>
+                      <BookInfo
+                        onClick={() => onClick(index)}
+                        imgUrl={cover}
+                        title={title}
+                        author={author}
+                      />
+                    </GridSmallItem>
+                  );
+                }
+              )
             ) : (
               <NoResultMsg>{msg}</NoResultMsg>
             )}
