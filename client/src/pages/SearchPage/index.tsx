@@ -106,6 +106,12 @@ const SearchPage: FunctionComponent = () => {
     history.push(`book/${isbn}`);
   };
 
+  // people page 변경으로 충돌 발생하여서
+  // test용 데이터를 만들었슴다...😂
+
+  const test = 'test';
+  const test2 = 1;
+
   const Header = () => {
     return (
       <>
@@ -154,7 +160,18 @@ const SearchPage: FunctionComponent = () => {
       <Header />
       <GridLayout>
         {typeB && !loading ? (
-          <>{/* <Person /> */}</>
+          <>
+            {
+              <Person
+                nickname={test}
+                profileImg={test}
+                info={test}
+                countFollowers={test2}
+                countUserReview={test2}
+                genres={test}
+              />
+            }
+          </>
         ) : (
           <>
             {searchResult && !msg ? (
