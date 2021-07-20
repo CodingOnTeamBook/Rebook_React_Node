@@ -1,11 +1,10 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import Person from '../../components/PeopleComponent/Person';
 import styled from 'styled-components';
-import SelectGenreTag from '../../components/PeopleComponent/SelectGenreTag';
 import GridLayout from '../../components/common/GridLayout';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { selectGenre } from '../../components/defaultData/selectGenre';
+import { genreTags } from '../../components/defaultData/genre';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
@@ -22,10 +21,6 @@ const TagButton = styled(Button)`
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
-  &:hover {
-    background-color: ${(props) => props.theme.palette.green};
-    color: white;
-  }
   &::before {
     content: '#';
   }
@@ -40,21 +35,39 @@ const TagButton = styled(Button)`
 
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
-  const [checkedGenre, setCheckedGenre] = useState([]);
+  const [filterSelected, setFilterSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState<any[]>([0]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchPerson('0');
-  }, []);
+  }, [isSelected]);
+
+  const _handleFilterPress = (tag: number, index: number) => {
+    if (isSelected.includes(index)) {
+      setIsSelected((prevItems) => prevItems.filter((el) => el !== index));
+    } else setIsSelected((prevItems) => [...prevItems, index]);
+  };
+
+  const checkFunc = (index: any) => isSelected.includes(index);
 
   const fetchPerson = async (type: any) => {
     try {
       setError(null);
       setPeople([]);
       setLoading(true);
-      const res = await axios.get(`/api/reviewer/${type}`);
-      setPeople(res.data.reviewers);
+      if (isSelected.length == 0) {
+        alert('장르를 하나 이상 선택해주세요😅');
+        setIsSelected([0]);
+      } else if (isSelected.length < 4) {
+        isSelected.sort();
+        const res = await axios.get(`/api/reviewer/${isSelected}`);
+        setPeople(res.data.reviewers);
+      } else {
+        isSelected.pop();
+        alert('장르를 3개 이하만 선택해주세요😅');
+      }
       console.log(people);
     } catch (err) {
       setError(err);
@@ -62,29 +75,18 @@ const PeoplePage: FunctionComponent = ({}) => {
     return () => setLoading(false);
   };
 
-  const onGenreChange = (type: any) => {
-    if (type) {
-      console.log(type);
-      setCheckedGenre(type);
-    }
-  };
-
-  // 장르 클릭 하면 setChecked에 들어가고 fetchPerson에 넣어줌
-  // '1,2,3' 이런식으로
-  // 최대 세 개만 가능하게 하기
-
   return (
     <PeopleContainer>
       <SelectButtonArea>
-        {selectGenre.map((tag, index) => (
+        {genreTags.map((tag, index) => (
           <TagButton
             key={tag.type}
             // onClick={() => fetchPerson(tag.type)}
             onClick={() => {
-              onGenreChange(tag.type);
+              _handleFilterPress(tag.type, index);
               fetchPerson(tag.type);
             }}
-            className={tag.selected ? 'selected' : ''}
+            className={checkFunc(index) ? 'selected' : ''}
           >
             {tag.value}
           </TagButton>
