@@ -43,16 +43,6 @@ const TempContainer = styled.div`
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const [sorts, setSorts] = useState([
-    { text: '책 검색', selected: true },
-    { text: '리뷰어 검색', selected: false },
-  ]);
-
-  // console.log([...sorts].map(({ selected }) => selected));
-  const selectedArr = [...sorts].map(({ selected }) => selected);
-
-  const [searchResult, setSearchResult] = useState<any[]>();
   const location = useLocation();
   const query = decodeURI(location.search.split('=')[1]);
 
@@ -60,9 +50,16 @@ const SearchPage: FunctionComponent = () => {
     (state: RootState) => state.search
   );
 
-  const [reviewerInfo, setReviewerInfo] = useState<Array<IReviewer>>([]);
+  const [sorts, setSorts] = useState([
+    { text: '도서 검색', selected: true },
+    { text: '리뷰어 검색', selected: false },
+  ]);
 
-  // state의 selected 속성을 바꾸는 함수
+  const [searchBookResult, setSearchBookResult] = useState<any[]>();
+  const [reviewerResult, setReviewerResult] = useState<Array<IReviewer>>();
+  const [noReviewerResult, setNoReviewerResult] = useState(false);
+
+  // sorts state의 selected 속성을 바꾸는 함수
   const onSortChange = (index: number) => {
     const tmp = [...sorts];
     tmp[index].selected = true;
@@ -71,28 +68,26 @@ const SearchPage: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    if (sorts[0].selected) {
-      dispatch(fetchApi(query, 1));
-    }
+    if (sorts[0].selected) dispatch(fetchApi(query, 1));
     if (sorts[1].selected) {
-      console.log('닉네임 검색');
       const getReviewer = async () => {
         const response = await SearchUsersByNickname(query);
-        setReviewerInfo(response.users);
+        if (!response.users.length) setNoReviewerResult(true);
+        else setReviewerResult(response.users);
       };
       getReviewer();
     }
   }, [sorts]);
 
   useEffect(() => {
-    item && setSearchResult([...item]);
+    item && setSearchBookResult([...item]);
     return () => {
-      setSearchResult(undefined);
+      setSearchBookResult(undefined);
     };
   }, [item]);
 
   const onClick = (index: number) => {
-    const booksInfo = [...(searchResult as Array<any>)];
+    const booksInfo = [...(searchBookResult as Array<any>)];
 
     // bookInfo에서 필요한 속성만 추출
     const {
@@ -126,7 +121,7 @@ const SearchPage: FunctionComponent = () => {
   const Header = () => {
     return (
       <>
-        <SearchForm query={query} selected={selectedArr} />
+        <SearchForm query={query} />
         <BtnArea>
           {sorts.map(({ text, selected }, index) => (
             <SortButton
@@ -145,7 +140,7 @@ const SearchPage: FunctionComponent = () => {
     );
   };
 
-  if (loading && !searchResult)
+  if (loading && !searchBookResult)
     return (
       <Container>
         <Header />
@@ -173,22 +168,24 @@ const SearchPage: FunctionComponent = () => {
       <Header />
       <GridLayout>
         {sorts[1].selected && !loading ? (
-          <Person reviewer={reviewerInfo} />
+          <Person reviewer={reviewerResult} error={noReviewerResult} />
         ) : (
           <>
-            {searchResult && !msg ? (
-              searchResult?.map((result: any, index: number) => {
-                return (
-                  <GridSmallItem key={index}>
-                    <BookInfo
-                      onClick={() => onClick(index)}
-                      imgUrl={result.cover}
-                      title={result.title}
-                      author={result.author}
-                    />
-                  </GridSmallItem>
-                );
-              })
+            {searchBookResult && !msg ? (
+              searchBookResult?.map(
+                ({ cover, title, author }, index: number) => {
+                  return (
+                    <GridSmallItem key={index}>
+                      <BookInfo
+                        onClick={() => onClick(index)}
+                        imgUrl={cover}
+                        title={title}
+                        author={author}
+                      />
+                    </GridSmallItem>
+                  );
+                }
+              )
             ) : (
               <NoResultMsg>{msg}</NoResultMsg>
             )}
