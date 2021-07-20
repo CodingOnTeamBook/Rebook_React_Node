@@ -73,7 +73,10 @@ const SearchPage: FunctionComponent = () => {
       const getReviewer = async () => {
         const response = await SearchUsersByNickname(query);
         if (!response.users.length) setNoReviewerResult(true);
-        else setReviewerResult(response.users);
+        else {
+          setNoReviewerResult(false);
+          setReviewerResult(response.users);
+        }
       };
       getReviewer();
     }
