@@ -5,9 +5,10 @@ import { StylesProvider } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { ThemeProvider } from 'styled-components';
 import theme from 'style/theme';
+import Footer from 'components/common/Footer';
 
 const MinHeightContainer = styled(Container)`
-  min-height: 80vh;
+  min-height: 100vh;
   height: auto;
 `;
 
@@ -21,6 +22,7 @@ const Main: FunctionComponent<IProps> = ({ children }: IProps) => {
       <StylesProvider injectFirst>
         <GlobalStyle />
         <MinHeightContainer>{children}</MinHeightContainer>
+        <Footer />
       </StylesProvider>
     </ThemeProvider>
   );

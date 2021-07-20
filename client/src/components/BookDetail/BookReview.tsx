@@ -4,7 +4,7 @@ import { ProfileImg } from '../../style/componentStyled';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SmsIcon from '@material-ui/icons/Sms';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/rootReducer';
+import { RootState } from 'modules/rootReducer';
 import axios from 'axios';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';

@@ -20,6 +20,7 @@ const Container = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const HeaderContainer = styled.div`

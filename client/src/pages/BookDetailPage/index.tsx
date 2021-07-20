@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import BookDetail from '../../components/common/BookDetail';
-import BookReview from '../../components/BookDetail/BookReview';
-import ReviewWriteBtn from '../../components/BookDetail/ReviewWriteBtn';
+import BookDetail from 'components/common/BookDetail';
+import BookReview from 'components/BookDetail/BookReview';
+import ReviewWriteBtn from 'components/BookDetail/ReviewWriteBtn';
 
 import styled from 'styled-components';
 
