@@ -1,7 +1,7 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from './redux/rootReducer';
-import { getAuthThunk } from './redux/user/AuthReducer';
+import { RootState } from 'modules/rootReducer';
+import { getAuthThunk } from 'modules/user/AuthReducer';
 import { RouteComponentProps } from 'react-router';
 
 export default function Auth(
@@ -17,9 +17,6 @@ export default function Auth(
     useEffect(() => {
       if (!loading && !data && !error) {
         dispatch(getAuthThunk());
-      }
-      if (error) {
-        history.push('/');
       }
       if (data?.isAuth && option == false) {
         history.push('/');

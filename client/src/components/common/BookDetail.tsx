@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/rootReducer';
+import { RootState } from '../../modules/rootReducer';
 
 const BookDetailContainer = styled.main`
   display: flex;

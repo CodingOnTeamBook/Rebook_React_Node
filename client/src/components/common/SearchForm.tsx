@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import CancelIcon from '@material-ui/icons/Cancel';
 import InputBase from '@material-ui/core/InputBase';
-import { fetchApi } from '../../redux/search/action';
+import { fetchApi } from '../../modules/search/action';
 import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`

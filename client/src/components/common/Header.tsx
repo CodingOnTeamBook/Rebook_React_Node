@@ -1,15 +1,14 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAuthThunk } from '../../redux/index';
-import { RootState } from '../../redux/rootReducer';
+import { getAuthThunk } from '../../modules/index';
+import { RootState } from '../../modules/rootReducer';
 import Logo from '../../style/img/logo.png';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
-import SimpleModal from './SimpleModal';
-import LoginModalContents from './LoginModalContents';
+import { modalOpen } from 'modules';
 
 const LogoContainer = styled.img`
   width: 200px;
@@ -73,26 +72,26 @@ const MenuContainer = styled.ul`
 `;
 
 const Header: FunctionComponent = () => {
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState<boolean>(false);
-  const [isSigninModalOpen, setIsSigninModalOpen] = useState<boolean>(false);
+  const [isProfileModalOpen, setIsProfileModal] = useState<boolean>(false);
+  const Location = useLocation();
+  const ProfileModalToggle = () => {
+    setIsProfileModal((prev) => !prev);
+  };
+  const CloseProfileModal = () => {
+    setIsProfileModal(false);
+  };
   const { loading, data, error } = useSelector(
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (!loading && !data && !error) {
       dispatch(getAuthThunk());
     }
   }, [data, error]);
-
-  const ProfileModalToggle = () => {
-    setIsProfileModalOpen(!isProfileModalOpen);
-  };
-
-  const SigninModalOpen = () => {
-    setIsSigninModalOpen((prev) => !prev);
-  };
+  useEffect(() => {
+    CloseProfileModal();
+  }, [Location]);
   return (
     <Container>
       <HeaderContainer>
@@ -100,9 +99,9 @@ const Header: FunctionComponent = () => {
           <LogoContainer src={Logo} />
         </Link>
         {data?.isAuth ? (
-          <ProfileIcon onClick={ProfileModalToggle} />
+          <ProfileIcon onClick={() => ProfileModalToggle()} />
         ) : (
-          <LoginBtn onClick={() => SigninModalOpen()}>로그인</LoginBtn>
+          <LoginBtn onClick={() => dispatch(modalOpen())}>로그인</LoginBtn>
         )}
       </HeaderContainer>
       <MenuContainer>
@@ -113,15 +112,11 @@ const Header: FunctionComponent = () => {
           <Link to="/people">리뷰어</Link>
         </li>
       </MenuContainer>
-      {isProfileModalOpen && (
-        <ProfileModal
-          imgUrl="https://cdn.pixabay.com/photo/2021/05/17/01/39/iris-6259565_960_720.jpg"
-          nickname="리북이"
-        />
-      )}
-      <SimpleModal open={isSigninModalOpen} setOpen={SigninModalOpen}>
-        <LoginModalContents />
-      </SimpleModal>
+      <ProfileModal
+        state={isProfileModalOpen}
+        imgUrl="https://cdn.pixabay.com/photo/2021/05/17/01/39/iris-6259565_960_720.jpg"
+        nickname="리북이"
+      />
     </Container>
   );
 };

@@ -6,9 +6,9 @@ import {
   ItemContainer,
 } from '../common/LandingPageCommon';
 import axios from 'axios';
-import { setBookInfo } from '../../redux/book/action';
+import { setBookInfo } from '../../modules/book/action';
 import { useDispatch } from 'react-redux';
-import { bookInfo } from '../../redux/book/action';
+import { bookInfo } from '../../modules/book/action';
 import { useHistory } from 'react-router';
 
 const BestSeller = () => {
