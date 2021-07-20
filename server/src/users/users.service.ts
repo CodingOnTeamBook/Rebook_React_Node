@@ -142,7 +142,7 @@ export class UsersService {
       nickname: opponentUserNickname,
     });
 
-    if (opponent === undefined) return 'User not found';
+    if (opponent === undefined) return '1';
 
     I.followings = [opponent];
 
@@ -171,7 +171,7 @@ export class UsersService {
       .innerJoinAndSelect('user.followers', 'followers')
       .getOne();
 
-    if (opponent === undefined) return 'User not found';
+    if (opponent === undefined) return '1';
 
     I.followings = I.followings.filter((following) => {
       following.id !== opponent.id;
