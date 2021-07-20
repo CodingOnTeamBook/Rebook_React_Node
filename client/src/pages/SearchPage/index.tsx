@@ -9,11 +9,11 @@ import Person from '../../components/PeopleComponent/Person';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../redux/search/action';
-import useCheck from '../../hooks/useCheck';
+import { setBookInfo } from '../../redux/book/action';
 
 const Container = styled.div`
   margin: 2rem;
@@ -41,6 +41,7 @@ const TempContainer = styled.div`
 
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [typeA, setTypeA] = useState<boolean>(true);
   const [typeB, setTypeB] = useState<boolean>(false);
@@ -73,8 +74,37 @@ const SearchPage: FunctionComponent = () => {
     };
   }, [item]);
 
-  console.log(searchResult);
-  console.log(msg);
+  const onClick = (index: number) => {
+    const booksInfo = [...(searchResult as Array<any>)];
+
+    // bookInfo에서 필요한 속성만 추출
+    const {
+      link,
+      cover,
+      title,
+      author,
+      publisher,
+      pubDate,
+      description,
+      isbn,
+    } = booksInfo[index];
+
+    const bookData = {
+      link,
+      cover,
+      title,
+      author,
+      publisher,
+      pubDate,
+      description,
+      isbn,
+    };
+
+    // 해당 책 정보를 store에 dispatch
+    dispatch(setBookInfo(bookData));
+
+    history.push(`book/${isbn}`);
+  };
 
   const Header = () => {
     return (
@@ -125,15 +155,7 @@ const SearchPage: FunctionComponent = () => {
       <GridLayout>
         {typeB && !loading ? (
           <>
-            <GridItem>
-              <Person />
-            </GridItem>
-            <GridItem>
-              <Person />
-            </GridItem>
-            <GridItem>
-              <button>더 보기</button>
-            </GridItem>
+            <Person />
           </>
         ) : (
           <>
@@ -142,6 +164,7 @@ const SearchPage: FunctionComponent = () => {
                 return (
                   <GridSmallItem key={index}>
                     <BookInfo
+                      onClick={() => onClick(index)}
                       imgUrl={result.cover}
                       title={result.title}
                       author={result.author}

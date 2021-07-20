@@ -57,11 +57,11 @@ export class User {
   @JoinTable({
     name: 'following',
     joinColumn: {
-      name: 'following',
+      name: 'userId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'userId',
+      name: 'following',
       referencedColumnName: 'id',
     },
   })
@@ -71,11 +71,11 @@ export class User {
   @JoinTable({
     name: 'follower',
     joinColumn: {
-      name: 'follower',
+      name: 'userId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'userId',
+      name: 'follower',
       referencedColumnName: 'id',
     },
   })

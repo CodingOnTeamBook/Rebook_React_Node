@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like as likes } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { uploadProfileImg } from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
+import { Comment } from '../entities/comment.entity';
 
 @Injectable()
 export class UsersService {
@@ -18,6 +19,8 @@ export class UsersService {
     private reviewRepository: Repository<Review>,
     @InjectRepository(Like)
     private likeRepository: Repository<Like>,
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
     private readonly jwtService: JwtService
   ) {}
 
@@ -28,6 +31,7 @@ export class UsersService {
     user.gender = createUserDto.gender;
     user.genres = createUserDto.genre;
     user.ageRange = createUserDto.ageRange;
+    user.profileImg = createUserDto.profileImg;
     return await this.userRepository.save(user);
   }
 
@@ -37,6 +41,10 @@ export class UsersService {
 
   async findByNickname(nickname: string): Promise<User> {
     return this.userRepository.findOne({ where: { nickname } });
+  }
+
+  async getAllComment(nickname: string): Promise<Comment[]> {
+    return this.commentRepository.find({ where: { nickname } });
   }
 
   async checkNick(nickname: string): Promise<boolean> {
@@ -70,6 +78,9 @@ export class UsersService {
     } else {
       user.profileImg = updateUserDto.imgUrl;
     }
+    if (updateUserDto.profileImg) {
+      user.profileImg = updateUserDto.profileImg;
+    }
     return this.userRepository.save(user);
   }
 
@@ -94,5 +105,88 @@ export class UsersService {
   async getMyLikes(nickname: string) {
     const user = await this.userRepository.findOne({ where: { nickname } });
     return this.likeRepository.find({ where: { user: user } });
+  }
+
+  //nickname으로 유저 서치
+  async getUserByNickname(nickname: string) {
+    console.log(nickname);
+    const exUsers = await this.userRepository.findAndCount({
+      where: { nickname: likes(`%${nickname}%`) },
+      select: ['id', 'nickname', 'profileImg', 'genres', 'info'],
+      relations: ['reviews', 'followers'],
+      skip: 0,
+      take: 12,
+    });
+    console.log(exUsers[0]);
+    if (exUsers) {
+      const users = [];
+      exUsers[0].forEach((user) => {
+        user['countFollowers'] = user['followers'].length;
+        user['countUserReviews'] = user['reviews'].length;
+        delete user['followers'];
+        delete user['reviews'];
+        users.push(user);
+      });
+      console.log(users);
+      return users;
+    } else {
+      return '1';
+    }
+  }
+
+  //follow기능
+  async followUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository.findOne({ userId: currentUserId });
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository.findOne({
+      nickname: opponentUserNickname,
+    });
+
+    if (opponent === undefined) return '1';
+
+    I.followings = [opponent];
+
+    opponent.followers = [I];
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return true;
+    else return false;
+  }
+
+  //unfollow기능
+  async unfollowUser(currentUserId: string, nickname: string) {
+    const I = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.userId = :userId', { userId: currentUserId })
+      .innerJoinAndSelect('user.followings', 'followings')
+      .getOne();
+
+    const opponentUserNickname = nickname['nickname'];
+
+    const opponent = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.nickname = :nickname', { nickname: opponentUserNickname })
+      .innerJoinAndSelect('user.followers', 'followers')
+      .getOne();
+
+    if (opponent === undefined) return '1';
+
+    I.followings = I.followings.filter((following) => {
+      following.id !== opponent.id;
+    });
+
+    opponent.followers = opponent.followers.filter((follower) => {
+      follower.id !== I.id;
+    });
+
+    const result1 = await this.userRepository.save(I);
+    const result2 = await this.userRepository.save(opponent);
+
+    if (result1 && result2) return true;
+    else return false;
   }
 }

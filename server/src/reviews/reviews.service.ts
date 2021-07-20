@@ -7,7 +7,12 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import {
+  processingReview,
+  processingReviewISBN,
+} from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
+import * as fs from 'fs';
 
 @Injectable()
 export class ReviewsService {
@@ -43,19 +48,8 @@ export class ReviewsService {
       skip: 0,
       take: 6,
     });
-    const reviews = [];
-    for (const review of temp[0]) {
-      const bookInfo = JSON.parse(review['book_info']);
-      const r = {
-        writer: review['user']['nickname'],
-        score: review['score'],
-        summary: review['summary'],
-        title: bookInfo['title'],
-        cover: bookInfo['cover'],
-      };
-      reviews.push(r);
-    }
-    return reviews;
+
+    return await processingReview(temp[0], false);
   }
 
   //최신순or인기순으로 리뷰 12개 불러오기
@@ -75,26 +69,15 @@ export class ReviewsService {
           'isPublic',
           'like_count',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
     } else if (orderby === 'created') {
       const temp = await this.reviewRepository.findAndCount({
         order: {
@@ -107,26 +90,46 @@ export class ReviewsService {
           'summary',
           'isPublic',
           'createdAt',
+          'user',
         ],
         where: { isPublic: 1 },
-        relations: ['tags'],
+        relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
         skip: 0,
         take: 12,
       });
-      const reviews = [];
-      for (const review of temp[0]) {
-        const bookInfo = JSON.parse(review['book_info']);
-        const r = {
-          score: review['score'],
-          summary: review['summary'],
-          title: bookInfo['title'],
-          cover: bookInfo['cover'],
-          tags: review['tags'],
-        };
-        reviews.push(r);
-      }
-      return reviews;
+      return await processingReview(temp[0], true);
+    }
+  }
+
+  //책에 대한 리뷰 불러오기: 최신순, 인기순 5개 로드
+  async loadReviewbyIsbn(isbn: string, orderby: string) {
+    const ISBN = isbn['isbn'];
+    const ORDERBY = orderby['orderby'];
+    if (ORDERBY === 'created') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          createdAt: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      return await processingReviewISBN(review[0]);
+    } else if (ORDERBY === 'popularity') {
+      const review = await this.reviewRepository.findAndCount({
+        where: { isbn: ISBN },
+        select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
+        relations: ['user', 'comments'],
+        order: {
+          like_count: 'DESC',
+        },
+        skip: 0,
+        take: 5,
+      });
+      return await processingReviewISBN(review[0]);
     }
   }
 
@@ -183,7 +186,6 @@ export class ReviewsService {
   ): Promise<Review> {
     const review = new Review();
     review.text = await uploadReviewHtml(reviewfile);
-    review.coverImg = createReviewDto.coverImg;
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
@@ -193,5 +195,47 @@ export class ReviewsService {
       nickname: createReviewDto.writer,
     });
     return this.reviewRepository.save(review);
+  }
+
+  //리뷰 수정
+  async updateReview(
+    userId: string,
+    reviewfile,
+    updateReviewDto: UpdateReviewDto
+  ): Promise<Review> {
+    const review = await this.reviewRepository.findOne({
+      where: { id: parseInt(updateReviewDto.reviewid) },
+      relations: ['tags', 'user'],
+    });
+    if (review.user.userId !== userId) {
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    }
+    fs.unlink(`uploads/${review.text}`, (err) => {
+      console.log(err);
+    });
+    review.text = await uploadReviewHtml(reviewfile);
+    review.summary = updateReviewDto.summary;
+    if (updateReviewDto.score) {
+      review.score = parseFloat(updateReviewDto.score);
+    }
+    if (updateReviewDto.isPublic) {
+      review.isPublic = Boolean(parseInt(updateReviewDto.isPublic));
+    }
+    if (updateReviewDto.tag) {
+      review.tags = [];
+      review.tags = await this.createTag(updateReviewDto.tag);
+    }
+    return this.reviewRepository.save(review);
+  }
+
+  async deleteReview(userId: string, reviewid: string) {
+    const id = parseInt(reviewid['reviewid']);
+    const review = await this.reviewRepository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+    if (review.user.userId !== userId)
+      throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
+    return this.reviewRepository.delete({ id });
   }
 }
