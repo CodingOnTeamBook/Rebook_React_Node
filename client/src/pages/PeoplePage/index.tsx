@@ -33,6 +33,15 @@ const TagButton = styled(Button)`
   }
 `;
 
+const Message = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 200;
+  font-size: 20px;
+  margin: 20px 20px;
+`;
+
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
   const [filterSelected, setFilterSelected] = useState(false);
@@ -66,7 +75,7 @@ const PeoplePage: FunctionComponent = ({}) => {
     fetchPerson();
   }, [isSelected]);
 
-  const _handleFilterPress = (tag: any, index: any) => {
+  const genreSelect = (tag: any, index: any) => {
     if (isSelected.includes(index)) {
       setIsSelected((prevItems) => prevItems.filter((el) => el !== index));
     } else setIsSelected((prevItems) => [...prevItems, index]);
@@ -83,32 +92,40 @@ const PeoplePage: FunctionComponent = ({}) => {
         {genreTags.map((tag, index) => (
           <TagButton
             key={tag.type}
-            onClick={() => {
-              _handleFilterPress(tag, index);
-              // fetchPerson();
-              // console.log(` 인덱스 : ${index}`);
-            }}
+            onClick={() => genreSelect(tag, index)}
             className={checkFunc(index) ? 'selected' : ''}
           >
             {tag.value}
           </TagButton>
         ))}
       </SelectButtonArea>
-      <GridLayout>
-        <>
-          {people &&
-            people.map((person) => (
-              <Person
-                key={person.id}
-                nickname={person.nickname}
-                profileImg={person.profileImg}
-                info={person.info}
-                countFollowers={person.countFollowers}
-                countUserReview={person.countUserReview}
-              />
-            ))}
-        </>
-      </GridLayout>
+      <>
+        {error || isLoading ? (
+          error ? (
+            <Message>에러가 발생했습니다 😭</Message>
+          ) : (
+            <Message> 로딩 중입니다 📚</Message>
+          )
+        ) : people.length == 0 ? (
+          <Message> 작성된 댓글이 없습니다. </Message>
+        ) : (
+          <GridLayout>
+            <>
+              {people &&
+                people.map((person) => (
+                  <Person
+                    key={person.id}
+                    nickname={person.nickname}
+                    profileImg={person.profileImg}
+                    info={person.info}
+                    countFollowers={person.countFollowers}
+                    countUserReview={person.countUserReview}
+                  />
+                ))}
+            </>
+          </GridLayout>
+        )}
+      </>
     </PeopleContainer>
   );
 };
