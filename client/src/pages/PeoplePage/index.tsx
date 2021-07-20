@@ -41,10 +41,32 @@ const PeoplePage: FunctionComponent = ({}) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchPerson('0');
+    const fetchPerson = async () => {
+      try {
+        setError(null);
+        setPeople([]);
+        setLoading(true);
+        if (isSelected.length == 0) {
+          alert('장르를 하나 이상 선택해주세요😅');
+          setIsSelected([0]);
+        } else if (0 <= isSelected.length && isSelected.length <= 3) {
+          isSelected.sort();
+          const res = await axios.get(`/api/reviewer/${isSelected}`);
+          setPeople(res.data.reviewers);
+        } else if (isSelected.length >= 4) {
+          isSelected.pop();
+          alert('장르를 3개 이하만 선택해주세요😅');
+          fetchPerson();
+        }
+      } catch (err) {
+        setError(err);
+      }
+      setLoading(false);
+    };
+    fetchPerson();
   }, [isSelected]);
 
-  const _handleFilterPress = (tag: number, index: number) => {
+  const _handleFilterPress = (tag: any, index: any) => {
     if (isSelected.includes(index)) {
       setIsSelected((prevItems) => prevItems.filter((el) => el !== index));
     } else setIsSelected((prevItems) => [...prevItems, index]);
@@ -52,28 +74,8 @@ const PeoplePage: FunctionComponent = ({}) => {
 
   const checkFunc = (index: any) => isSelected.includes(index);
 
-  const fetchPerson = async (type: any) => {
-    try {
-      setError(null);
-      setPeople([]);
-      setLoading(true);
-      if (isSelected.length == 0) {
-        alert('장르를 하나 이상 선택해주세요😅');
-        setIsSelected([0]);
-      } else if (isSelected.length < 4) {
-        isSelected.sort();
-        const res = await axios.get(`/api/reviewer/${isSelected}`);
-        setPeople(res.data.reviewers);
-      } else {
-        isSelected.pop();
-        alert('장르를 3개 이하만 선택해주세요😅');
-      }
-      console.log(people);
-    } catch (err) {
-      setError(err);
-    }
-    return () => setLoading(false);
-  };
+  console.log(isSelected);
+  console.log(people);
 
   return (
     <PeopleContainer>
@@ -81,10 +83,10 @@ const PeoplePage: FunctionComponent = ({}) => {
         {genreTags.map((tag, index) => (
           <TagButton
             key={tag.type}
-            // onClick={() => fetchPerson(tag.type)}
             onClick={() => {
-              _handleFilterPress(tag.type, index);
-              fetchPerson(tag.type);
+              _handleFilterPress(tag, index);
+              // fetchPerson();
+              // console.log(` 인덱스 : ${index}`);
             }}
             className={checkFunc(index) ? 'selected' : ''}
           >
