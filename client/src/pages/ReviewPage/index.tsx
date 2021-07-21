@@ -39,7 +39,7 @@ const Message = styled.span`
   justify-content: center;
   align-items: center;
   font-weight: 300;
-  font-size: 30px;
+  font-size: 20px;
 `;
 
 // endpoint에 따라서 reviews가 달라지기 때문에 같은 배열에서 관리
