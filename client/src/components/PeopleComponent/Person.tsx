@@ -17,7 +17,7 @@ const PersonContainer = styled(Box)`
 `;
 
 const UserImg = styled(Avatar)`
-  border: 5px solid #000;
+  /* border: 5px solid #000; */
   padding: 10px;
   width: 90px;
   height: 90px;
@@ -29,16 +29,14 @@ const NickName = styled.div`
   font-weight: bold;
 `;
 
-const TagArea = styled.div`
+const GenreTagWrapper = styled.div`
   margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TagChip = styled(Chip)`
   &:not(:first-of-type) {
     margin-left: 10px;
   }
+`;
+
+const TagChip = styled(Chip)`
   background-color: ${(props) => props.theme.palette.green};
 `;
 
@@ -46,122 +44,98 @@ const Introduction = styled.div`
   margin-top: 20px;
 `;
 
-const DetailInfo = styled.div`
+const InfoContainer = styled(Box)`
   width: 100%;
   margin-top: 20px;
-  display: flex;
-  flex-direction: row;
 `;
 
-const ReviewArea = styled.div`
+const InfoWrapper = styled(Box)`
   width: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FollowerArea = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Info = styled.span`
   margin-left: 10px;
 `;
 
-const Person = () => {
+interface IPersonProps {
+  nickname: string;
+  profileImg: string;
+  info: string;
+  countFollowers: number;
+  countUserReview: number;
+  genres: any;
+}
+
+interface IGenreTagsType {
+  [key: number]: string;
+}
+
+const genreTags: IGenreTagsType = {
+  0: '소설',
+  1: '인문학',
+  2: '사회과학',
+  3: '역사',
+  4: '과학',
+  5: '예술',
+  6: '종교',
+};
+
+const Person: FunctionComponent<IPersonProps> = ({
+  nickname,
+  profileImg,
+  info,
+  countFollowers,
+  countUserReview,
+  genres,
+}: IPersonProps) => {
   const history = useHistory();
 
-  // 테스트 데이터
-  const USER_DATA = [
-    {
-      id: 1,
-      userId: '1234',
-      nickname: '리북이',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용~~☺',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 2,
-      userId: '1234',
-      nickname: '리자몽',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용~~☺',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 3,
-      userId: '1234',
-      nickname: '꼬부기',
-      genres: '',
-      gender: 'Secret',
-      ageRange: '20대',
-      profileImg: 'defaultImg',
-      info: '안녕하세용 나는 꼬부기~',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-    {
-      id: 4,
-      userId: '1234',
-      nickname: '어니부기',
-      genres: '',
-      gender: 'Secret',
-      ageRange: 'Secret',
-      profileImg: 'defaultImg',
-      info: 'defaultInfo',
-      createdAt: '2021-06-28T08:39:00.108Z',
-      updatedAt: '2021-06-28T08:39:00.162Z',
-    },
-  ];
-  const id = 'test';
+  const genreToArr = (genre: any) => {
+    const genreNumArr = genre.split(',').map(Number);
+    return genreNumArr;
+  };
+
   return (
-    <>
-      {USER_DATA.map((user) => (
-        <GridItem key={user.id}>
-          <PersonContainer
+    <GridItem>
+      <PersonContainer
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        boxShadow={2}
+        onClick={() => {
+          history.push(`/people/${nickname}`);
+        }}
+      >
+        <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+        <NickName>{nickname}</NickName>
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
+          {genreToArr(genres).map((genre: any) => (
+            <GenreTagWrapper key={genre}>
+              <TagChip label={genreTags[genre]} />
+            </GenreTagWrapper>
+          ))}
+        </Box>
+        <Introduction> {myInfo(info)} </Introduction>
+        <InfoContainer display="flex" flexDirection="row">
+          <InfoWrapper
             display="flex"
-            flexDirection="column"
+            justifyContent="center"
             alignItems="center"
-            boxShadow={2}
-            key={user.id}
-            onClick={() => {
-              history.push(`/people/${id}`);
-            }}
           >
-            <UserImg alt={user.nickname} src={myProfileImg(user.profileImg)} />
-            <NickName>{user.nickname}</NickName>
-            <TagArea>
-              <TagChip label="#태그" /> <TagChip label="#태그" />
-              <TagChip label="#태그" />
-            </TagArea>
-            <Introduction> {myInfo(user.info)} </Introduction>
-            <DetailInfo>
-              <ReviewArea>
-                <ListAlt></ListAlt>
-                <Info> 2개 </Info>
-              </ReviewArea>
-              <FollowerArea>
-                <PersonAdd></PersonAdd>
-                <Info> 3명 </Info>
-              </FollowerArea>
-            </DetailInfo>
-          </PersonContainer>
-        </GridItem>
-      ))}
-    </>
+            <ListAlt></ListAlt>
+            <Info> {countUserReview}개 </Info>
+          </InfoWrapper>
+          <InfoWrapper
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <PersonAdd></PersonAdd>
+            <Info> {countFollowers}명 </Info>
+          </InfoWrapper>
+        </InfoContainer>
+      </PersonContainer>
+    </GridItem>
   );
 };
 
