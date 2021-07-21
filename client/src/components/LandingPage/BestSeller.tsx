@@ -6,44 +6,24 @@ import {
   ItemContainer,
 } from '../common/LandingPageCommon';
 import axios from 'axios';
-import { setBookInfo } from '../../redux/book/action';
-import { useDispatch } from 'react-redux';
-import { bookInfo } from '../../redux/book/action';
-import { useHistory } from 'react-router';
 
 const BestSeller = () => {
   const [BestSeller, setBestSeller] = useState<any>([]);
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const [err, setErr] = useState<boolean>(false);
 
   useEffect(() => {
-    // 📌 To do
-    // 에러시 화면이나 메시지 만들기
     axios
       .get('api/book/bestseller')
       .then(({ data: { bestSeller } }) => setBestSeller(bestSeller))
-      .catch((err) => console.log(err));
+      .catch((err) => setErr(true));
   }, []);
 
-  const onClick = (index: number) => {
-    const { isbn } = BestSeller[index];
-    dispatch(setBookInfo({ ...BestSeller[index] }));
-    history.push(`book/${isbn}`);
-  };
+  // 📌 To do
+  // 에러시 화면이나 메시지 만들기 => 에러 모음 화면 만드는 것도 고려
 
-  interface Props {
-    onClick: () => void;
-    bookInfo: bookInfo;
+  if (err) {
+    return <div> 에러가 발생했습니다. 다시 시도해주세요. </div>;
   }
-
-  const BestSellerBook = ({ bookInfo, onClick }: Props) => {
-    return (
-      <ItemContainer onClick={() => onClick()}>
-        <img key={bookInfo.title} src={bookInfo.cover}></img>
-        <h3 className="description">{bookInfo.title}</h3>
-      </ItemContainer>
-    );
-  };
 
   return (
     <Container>
@@ -52,11 +32,10 @@ const BestSeller = () => {
       </Header>
       <Main>
         {BestSeller.map((book: any, index: number) => (
-          <BestSellerBook
-            key={index}
-            onClick={() => onClick(index)}
-            bookInfo={book}
-          />
+          <ItemContainer to={`book/${book.isbn}`} key={index}>
+            <img key={book.title} src={book.cover}></img>
+            <h3 className="description">{book.title}</h3>
+          </ItemContainer>
         ))}
       </Main>
     </Container>

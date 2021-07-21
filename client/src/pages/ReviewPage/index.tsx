@@ -15,7 +15,7 @@ const SelectSortContainer = styled.div`
   text-align: right;
 `;
 
-const SortButton = styled(Button)`
+export const SortButton = styled(Button)`
   margin-bottom: 30px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
@@ -40,6 +40,11 @@ const Message = styled.span`
   font-weight: 300;
   font-size: 30px;
 `;
+
+// endpoint에 따라서 reviews가 달라지기 때문에 같은 배열에서 관리
+// select 한 상태에 따라서 api parmas에 변화
+// 에러는 던지고, loading 중은 if(loading) return 메세지
+// select 값에 따라 endpoint 고정 후에 페이지 네이션 진행
 
 const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);

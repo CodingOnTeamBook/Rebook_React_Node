@@ -24,6 +24,11 @@ const UserReviewContainer = styled(Grid)`
   z-index: 9;
 `;
 
+//grid는 layout에서 가져다 쓰기(거의 똑같고, children type부분만 다름. 그런데 component라기 보다는 layout이기 때문에 따로 뺐음.)
+//여기서 api호출 하고 page네이션도 가능하도록 구현
+//값이 없을 때와 에러 부분 헨들링 , 에러는 에러 페이지로 redirect
+//reviewMain은 사용자가 수정하는 부분이 없으므로 props로 넘김.
+
 const PeopleDetailPage: FunctionComponent = () => {
   return (
     <PeopleDetailContainer container alignContent="center">

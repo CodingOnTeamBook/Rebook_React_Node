@@ -54,7 +54,7 @@ export class ReviewerService {
       relations: ['reviews', 'reviews.tags', 'followers', 'followings'],
     });
 
-    if (reviewer === undefined) return 'User not found';
+    if (reviewer === undefined) return '1';
 
     reviewer['reviews'] = reviewer['reviews'].filter(
       (review) => review.isPublic === true

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -12,6 +13,7 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  cursor: default;
 
   h2 {
     margin-top: 26px;
@@ -21,41 +23,43 @@ const Header = styled.div`
 const Main = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
   height: 100%;
   width: 100%;
+  justify-content: space-around;
 `;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled(Link)`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 300px;
+  width: 2100px;
+  height: 280px;
   margin: 0 16px;
-  background-color: ${(props) => props.theme.palette.white};
-  box-shadow: 0 8px 12px ${(props) => props.theme.palette.gray};
   cursor: pointer;
 
   img {
-    height : 200px;
-    box-shadow: 0 12px 16px ${(props) => props.theme.palette.gray};
+    object-fit: cover;
+    box-shadow: 0 8px 12px ${(props) => props.theme.palette.gray};
   }
 
   .description {
+    border-radius: 10px;
     position: absolute;
-    bottom: 0;
-    background: ${(props) => props.theme.palette.yellow};
-    width: 100%;
+    bottom: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    width: 80%;
     transition: .5s ease;
     opacity: 0;
     padding: 20px;
+    color: rgba(200, 200, 200);
     text-align: center;
+    font-size: 14px;
   }
 
   &:hover .description {
+    transform: translateY(10%);
     opacity: 1;
   }
 }`;

@@ -30,6 +30,10 @@ const ContentsContainer = styled.div`
 
 type activeTab = 0 | 1 | 2 | 3 | 4;
 
+// layout 따로 빼고 나머지만 관리하는 방향으로 가면 좋을 것 같고,
+// tab에 따라서 api 호출 다르게 해서 각 탭에 넣어주는게 베스트
+// 수정, 삭제는 해당 component 안에서 작업
+
 const MyPage: FunctionComponent = () => {
   const query = location.href.split('=');
   const tab = {
