@@ -50,7 +50,7 @@ export class ReviewerService {
   async reviewerDetail(nickname: string): Promise<any> {
     const reviewer = await this.userRepository.findOne({
       where: { nickname },
-      select: ['id', 'nickname', 'genres', 'info'],
+      select: ['id', 'nickname', 'genres', 'info', 'profileImg'],
       relations: ['reviews', 'reviews.tags', 'followers', 'followings'],
     });
 

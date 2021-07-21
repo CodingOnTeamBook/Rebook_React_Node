@@ -3,6 +3,7 @@ import ReviewItem from '../../components/ReviewComponent/ReviewItem';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
+import GridItem from 'layout/GridItem';
 import axios from 'axios';
 
 const ReviewContainer = styled.div`
@@ -108,30 +109,32 @@ const ReviewPage: FunctionComponent = () => {
             <>
               {reviews &&
                 reviews.map((review, index) => (
-                  <ReviewItem
-                    key={index}
-                    id={review.id}
-                    cover={review.bookCover}
-                    title={review.bookTitle}
-                    summary={review.summary}
-                    score={review.score}
-                    writer={review.writer}
-                  />
+                  <GridItem key={index}>
+                    <ReviewItem
+                      id={review.id}
+                      cover={review.bookCover}
+                      title={review.bookTitle}
+                      summary={review.summary}
+                      score={review.score}
+                      writer={review.writer}
+                    />
+                  </GridItem>
                 ))}
             </>
           ) : (
             <>
               {reviews &&
                 reviews.map((review, index) => (
-                  <ReviewItem
-                    key={index}
-                    id={review.id}
-                    cover={review.bookCover}
-                    title={review.bookTitle}
-                    summary={review.summary}
-                    score={review.score}
-                    writer={review.writer}
-                  />
+                  <GridItem key={index}>
+                    <ReviewItem
+                      id={review.id}
+                      cover={review.bookCover}
+                      title={review.bookTitle}
+                      summary={review.summary}
+                      score={review.score}
+                      writer={review.writer}
+                    />
+                  </GridItem>
                 ))}
             </>
           )}

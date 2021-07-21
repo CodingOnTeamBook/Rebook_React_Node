@@ -31,6 +31,13 @@ const UserNum = styled.span`
   }
 `;
 
+const GenreTagWrapper = styled.div`
+  margin-top: 10px;
+  &:not(:first-of-type) {
+    margin-left: 10px;
+  }
+`;
+
 const TagChip = styled(Chip)`
   margin-top: 10px;
   &:not(:first-of-type) {
@@ -56,37 +63,60 @@ const FollowButton = styled(Button)`
   }
 `;
 
-const UserInfo: FunctionComponent = () => {
+interface IUserInfoProps {
+  nickname: string;
+  info: string;
+  countUserReviews: number;
+  profileImg: string;
+  genres: any;
+}
+
+interface IGenreTagsType {
+  [key: number]: string;
+}
+
+const genreTags: IGenreTagsType = {
+  0: '소설',
+  1: '인문학',
+  2: '사회과학',
+  3: '역사',
+  4: '과학',
+  5: '예술',
+  6: '종교',
+};
+
+const genreToArr = (genre: any) => {
+  const genreNumArr = genre.split(',').map(Number);
+  return genreNumArr;
+};
+
+const UserInfo: FunctionComponent<IUserInfoProps> = ({
+  nickname,
+  info,
+  countUserReviews,
+  profileImg,
+  genres,
+}: IUserInfoProps) => {
   return (
     <UserInfoContainer>
       <UserInfoWrapper display="flex" flexDirection="column" boxShadow={2}>
         <Box display="flex" flexDirection="row">
-          <UserImg
-            alt="nickname"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
-          />
+          <UserImg alt={nickname} src={profileImg} />
           <Box display="flex" flexDirection="column" flexWrap="wrap">
-            <UserName> User Name </UserName>
+            <UserName> {nickname} </UserName>
             <span>
-              <UserNum>리뷰수 {22}</UserNum>
-              <UserNum>팔로우 {22}</UserNum>
-              <UserNum>팔로잉 {22}</UserNum>
+              <UserNum>리뷰수 {countUserReviews}개</UserNum>
             </span>
-            <FollowButton variant="contained">팔로우</FollowButton>
           </Box>
         </Box>
-        <Box display="flex" flexDirection="row">
-          <TagChip label="#태그" />
-          <TagChip label="#태그" />
-          <TagChip label="#태그" />
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
+          {genreToArr(genres).map((genre: any) => (
+            <GenreTagWrapper key={genre}>
+              <TagChip label={genreTags[genre]} />
+            </GenreTagWrapper>
+          ))}
         </Box>
-        <Introduction>
-          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-          자기소개 자기소개 자기소개 자기소개 자기소개 자기소개 자기소개
-        </Introduction>
+        <Introduction> {info} </Introduction>
       </UserInfoWrapper>
     </UserInfoContainer>
   );

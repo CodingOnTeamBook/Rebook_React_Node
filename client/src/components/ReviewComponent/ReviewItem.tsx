@@ -78,30 +78,28 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
   const history = useHistory();
 
   return (
-    <GridItem>
-      <ReviewMainContainer display="flex" flexDirection="column" boxShadow={1}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          p={2}
-          onClick={() => {
-            history.push(`/review/${id}`);
-          }}
-        >
-          <Box>
-            <ImgCover>
-              <CardImg alt={title} src={cover} />
-            </ImgCover>
-          </Box>
-          <Box>
-            <BookTitle> {title} </BookTitle>
-            <Rating size="large" name="read-only" value={score} readOnly />
-            <BookReview> {summary} </BookReview>
-            <Nickname> {writer} </Nickname>
-          </Box>
+    <ReviewMainContainer display="flex" flexDirection="column" boxShadow={1}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        p={2}
+        onClick={() => {
+          history.push(`/review/${id}`);
+        }}
+      >
+        <Box>
+          <ImgCover>
+            <CardImg alt={title} src={cover} />
+          </ImgCover>
         </Box>
-      </ReviewMainContainer>
-    </GridItem>
+        <Box>
+          <BookTitle> {title} </BookTitle>
+          <Rating size="large" name="read-only" value={score} readOnly />
+          <BookReview> {summary} </BookReview>
+          <Nickname> {writer} </Nickname>
+        </Box>
+      </Box>
+    </ReviewMainContainer>
   );
 };
 
