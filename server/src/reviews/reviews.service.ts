@@ -11,8 +11,13 @@ import {
   processingReview,
   processingReviewISBN,
 } from './reviews.exportFunction';
-import { uploadReviewHtml } from './reviews.multerOptions';
+import {
+  uploadReviewTxt,
+  deleteReviewTxt,
+  getReviewTxt,
+} from './reviews.multerOptions';
 import * as fs from 'fs';
+import { getSignedUrlofProfileImg } from 'src/users/users.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -136,12 +141,18 @@ export class ReviewsService {
   //하나의 리뷰 자세히 불러오기
   async detailReview(reviewid: any): Promise<any> {
     const id = parseInt(reviewid.reviewid);
-    const review = await this.reviewRepository.find({
+    const review = await this.reviewRepository.findOne({
       where: { id },
       relations: ['tags', 'user'],
     });
-    if (review.length === 0)
-      throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+    if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+
+    review.text = await getReviewTxt(review.text);
+    if (review['user']['profileImg'] !== null)
+      review['user']['profileImg'] = getSignedUrlofProfileImg(
+        review['user']['profileImg']
+      );
+
     const comm = await this.commentRepository.find({
       where: { review: id },
       relations: ['user'],
@@ -153,7 +164,7 @@ export class ReviewsService {
         ...comm[i],
         user: {
           nickname: comm[i].user.nickname,
-          profileImg: comm[i].user.profileImg,
+          profileImg: getSignedUrlofProfileImg(comm[i].user.profileImg),
         },
       };
     }
@@ -184,8 +195,9 @@ export class ReviewsService {
     reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
+    const isbn = JSON.parse(createReviewDto.bookInfo).isbn;
     const review = new Review();
-    review.text = await uploadReviewHtml(reviewfile);
+    review.text = await uploadReviewTxt(reviewfile);
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
@@ -194,6 +206,7 @@ export class ReviewsService {
     review.user = await this.userRepository.findOne({
       nickname: createReviewDto.writer,
     });
+    review.isbn = isbn;
     return this.reviewRepository.save(review);
   }
 
@@ -210,10 +223,8 @@ export class ReviewsService {
     if (review.user.userId !== userId) {
       throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
     }
-    fs.unlink(`uploads/${review.text}`, (err) => {
-      console.log(err);
-    });
-    review.text = await uploadReviewHtml(reviewfile);
+    await deleteReviewTxt(review.text);
+    review.text = await uploadReviewTxt(reviewfile);
     review.summary = updateReviewDto.summary;
     if (updateReviewDto.score) {
       review.score = parseFloat(updateReviewDto.score);

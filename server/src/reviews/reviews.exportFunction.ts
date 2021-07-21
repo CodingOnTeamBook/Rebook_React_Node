@@ -1,3 +1,5 @@
+import { getSignedUrlofProfileImg } from 'src/users/users.multerOptions';
+
 export const processingReview = async (review: any, includeTag: boolean) => {
   const reviews = [];
   for (const data of review) {
@@ -32,7 +34,10 @@ export const processingReviewISBN = async (review: any) => {
     const temp = {
       id: data['id'],
       writer: data['user']['nickname'],
-      writerProfileImg: data['user']['profileImg'],
+      writerProfileImg:
+        data['user']['profileImg'] === null
+          ? null
+          : getSignedUrlofProfileImg(data['user']['profileImg']),
       summary: data['summary'],
       likeCount: data['like_count'],
       createdAt: data['createdAt'],

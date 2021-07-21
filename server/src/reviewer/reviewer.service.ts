@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
+import { getSignedUrlofProfileImg } from 'src/users/users.multerOptions';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -31,6 +32,8 @@ export class ReviewerService {
       const tempArray = value['reviews'].filter(
         (review) => review.isPublic === true
       );
+      if (value['profileImg'] !== null)
+        value['profileImg'] = getSignedUrlofProfileImg(value['profileImg']);
       //리뷰수, 팔로우 수 카운트 후 본래 배열 제거
       value['countUserReview'] = tempArray.length;
       value['countFollowers'] = value['followers'].length;
@@ -50,7 +53,7 @@ export class ReviewerService {
   async reviewerDetail(nickname: string): Promise<any> {
     const reviewer = await this.userRepository.findOne({
       where: { nickname },
-      select: ['id', 'nickname', 'genres', 'info'],
+      select: ['id', 'nickname', 'genres', 'info', 'profileImg'],
       relations: ['reviews', 'reviews.tags', 'followers', 'followings'],
     });
 
@@ -59,7 +62,8 @@ export class ReviewerService {
     reviewer['reviews'] = reviewer['reviews'].filter(
       (review) => review.isPublic === true
     );
-
+    if (reviewer['profileImg'] !== null)
+      reviewer['profileImg'] = getSignedUrlofProfileImg(reviewer['profileImg']);
     //리뷰수, 팔로, 팔로잉수 카운트 후 followers, followings 제거
     reviewer['countUserReviews'] = reviewer['reviews'].length;
     reviewer['countFollowers'] = reviewer['followers'].length;
