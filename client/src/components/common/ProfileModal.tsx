@@ -1,16 +1,16 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import { Link } from 'react-router-dom';
 import { logout } from '../../API/USER_PRIVATE_API';
 
-const ProfileContainer = styled.div`
+const ProfileContainer = styled.div<{ open: boolean }>`
+  display: ${(props) => (props.open ? 'flex' : 'none')};
   width: 205px;
   height: 335px;
   box-shadow: 4px 4px rgba(8, 8, 8, 0.15);
   border-radius: 25px;
   position: absolute;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -51,11 +51,13 @@ const ModalButton = styled(LineGreenBtn)`
 interface ProfileModalProps {
   imgUrl: string;
   nickname: string;
+  state: boolean;
 }
 
 const ProfileModal: FunctionComponent<ProfileModalProps> = ({
   imgUrl,
   nickname,
+  state,
 }: ProfileModalProps) => {
   const Logout = () => {
     logout().then((data) => {
@@ -68,7 +70,7 @@ const ProfileModal: FunctionComponent<ProfileModalProps> = ({
     });
   };
   return (
-    <ProfileContainer>
+    <ProfileContainer open={state}>
       <ProfileImg src={imgUrl} alt="profileImg" />
       <h5>{nickname}</h5>
       <Link to="/my">

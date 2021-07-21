@@ -13,9 +13,12 @@ import { Review } from './review.entity';
 @Entity('comment', { schema: 'Rebook' })
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: number;
+  commentid: number;
 
-  @Column('text', { name: 'text' })
+  @Column('varchar', { nullable: false })
+  nickname: string;
+
+  @Column('text', { nullable: false })
   text: string;
 
   @CreateDateColumn()
@@ -27,9 +30,9 @@ export class Comment {
   @DeleteDateColumn()
   deleteAt: Date;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'SET NULL' })
   user: User;
 
-  @ManyToOne(() => Review, (review) => review.comments)
+  @ManyToOne(() => Review, (review) => review.comments, { onDelete: 'CASCADE' })
   review: Review;
 }

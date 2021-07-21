@@ -2,8 +2,8 @@ import React, { FunctionComponent } from 'react';
 import Item from './CarouselItem';
 import styled from 'styled-components';
 import Carousel from 'react-material-ui-carousel';
-import banner_001 from '../style/img/banner_001.png';
-import banner_002 from '../style/img/banner_002.png';
+import banner_001 from '../../style/img/banner_001.png';
+import banner_002 from '../../style/img/banner_002.png';
 
 const CarouselContainer = styled.div`
   margin-top: 50px;

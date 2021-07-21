@@ -2,6 +2,8 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import AddIcon from '@material-ui/icons/Add';
+import { useHistory } from 'react-router';
+import { auth } from '../../API/USER_PRIVATE_API/index';
 
 const Button = styled(LineGreenBtn)`
   position: fixed;
@@ -21,8 +23,22 @@ const Button = styled(LineGreenBtn)`
 `;
 
 const ReviewWriteBtn: FunctionComponent = () => {
+  const history = useHistory();
+  const onClick = () => {
+    getAuth();
+    async function getAuth() {
+      try {
+        const response = await auth();
+        response.isAuth
+          ? history.push('/write')
+          : alert('먼저 로그인 해주세요!');
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
   return (
-    <Button>
+    <Button onClick={onClick}>
       <AddIcon fontSize="large" />
     </Button>
   );

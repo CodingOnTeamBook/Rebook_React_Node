@@ -7,6 +7,8 @@ import {
   Post,
   Res,
   Patch,
+  Param,
+  Delete,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,16 +24,37 @@ import { reviewmulterOptions } from './reviews.multerOptions';
 export class ReviewsController {
   constructor(private reviewService: ReviewsService) {}
 
-  /*최신순으로 리뷰 불러오기
-  @Get(':page')
-  loadreviews(@Param() page: number) {
-    return this.reviewService.loadReviews(page);
-  }*/
-
   //하나의 리뷰 자세히 불러오기
   @Post('/detail')
-  loadDetailReview(@Body() reviewid: string) {
-    return this.reviewService.detailReview(reviewid);
+  loadDetailReview(@Body() reviewid: string, @Res() res) {
+    return this.reviewService.detailReview(reviewid).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        review: value,
+      });
+    });
+  }
+
+  //인기리뷰6개 불러오기
+  @Get('/home')
+  load6PopularReviews(@Res() res) {
+    return this.reviewService.orderbyLike().then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        reviews: value,
+      });
+    });
+  }
+
+  //책에 대한 리뷰 불러오기: 최신순 혹은 인기순으로 5개
+  @Post('/load/:isbn')
+  loadReviewbyIsbn(@Param() isbn: string, @Body() orderby: string, @Res() res) {
+    return this.reviewService.loadReviewbyIsbn(isbn, orderby).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        reviews: value,
+      });
+    });
   }
 
   //리뷰 작성
@@ -65,25 +88,47 @@ export class ReviewsController {
       });
   }
 
-  // //@Post('/update')
-  // //update(@Body())
-  // @Patch('/update/:id')
-  // update(
-  //   // @AuthUser() data: any,
-  //   @Param('id') id: string,
-  //   @Body() updateReviewDto: UpdateReviewDto,
-  //   @Res() res
-  // ) {
-  //   this.reviewService
-  //     .updateReview(id, updateReviewDto)
-  //     .then((value: Review) => {
-  //       return res.status(HttpStatus.OK).json({
-  //         success: true,
-  //         review: value,
-  //       });
-  //     });
-  // }
+  @Patch('/update')
+  @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
+  updateReview(
+    @AuthUser() data: any,
+    @UploadedFile() file: File[],
+    @Body() updateReviewDto: UpdateReviewDto,
+    @Res() res
+  ) {
+    this.reviewService
+      .updateReview(data.userId, file, updateReviewDto)
+      .then((value: Review) => {
+        return res.status(HttpStatus.OK).json({
+          success: true,
+          review: value,
+        });
+      });
+  }
 
+  @Delete('/delete')
+  deleteReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+    return this.reviewService
+      .deleteReview(data.userId, reviewid)
+      .then((value) => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          result: value,
+        });
+      });
+  }
+
+  //api/review/:param이라 가장 뒤쪽에 배치!
+  //최신순or인기순으로 리뷰 불러오기
+  @Get('/:orderby')
+  loadreviews(@Param('orderby') orderby: string, @Res() res) {
+    return this.reviewService.loadReviews(orderby).then((value) => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+        reviews: value,
+      });
+    });
+  }
   //@Delete('/')
   //deleteReview(@Body())
 

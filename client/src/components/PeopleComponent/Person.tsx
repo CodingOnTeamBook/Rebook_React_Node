@@ -1,21 +1,24 @@
 import React, { FunctionComponent } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import ListAlt from '@material-ui/icons/ListAlt';
 import PersonAdd from '@material-ui/icons/PersonAdd';
+import GridItem from '../common/GridItem';
+import { myInfo, myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 
-const PaperContainer = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: visible;
-  padding: 25px;
+const PersonContainer = styled(Box)`
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  padding: 10%;
 `;
 
 const UserImg = styled(Avatar)`
+  /* border: 5px solid #000; */
+  padding: 10px;
   width: 90px;
   height: 90px;
 `;
@@ -26,85 +29,113 @@ const NickName = styled.div`
   font-weight: bold;
 `;
 
-const TagArea = styled.div`
+const GenreTagWrapper = styled.div`
   margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TagChip = styled(Chip)`
   &:not(:first-of-type) {
     margin-left: 10px;
   }
+`;
+
+const TagChip = styled(Chip)`
+  background-color: ${(props) => props.theme.palette.green};
 `;
 
 const Introduction = styled.div`
   margin-top: 20px;
 `;
 
-const DetailInfo = styled.div`
+const InfoContainer = styled(Box)`
   width: 100%;
   margin-top: 20px;
-  display: flex;
-  flex-direction: row;
 `;
 
-const ReviewArea = styled.div`
+const InfoWrapper = styled(Box)`
   width: 100%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const FollowerArea = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Info = styled.span`
   margin-left: 10px;
 `;
 
-const Person: FunctionComponent = () => {
-  const id = 'test';
+interface IPersonProps {
+  nickname: string;
+  profileImg: string;
+  info: string;
+  countFollowers: number;
+  countUserReview: number;
+  genres: any;
+}
+
+interface IGenreTagsType {
+  [key: number]: string;
+}
+
+const genreTags: IGenreTagsType = {
+  0: '소설',
+  1: '인문학',
+  2: '사회과학',
+  3: '역사',
+  4: '과학',
+  5: '예술',
+  6: '종교',
+};
+
+const Person: FunctionComponent<IPersonProps> = ({
+  nickname,
+  profileImg,
+  info,
+  countFollowers,
+  countUserReview,
+  genres,
+}: IPersonProps) => {
   const history = useHistory();
 
+  const genreToArr = (genre: any) => {
+    const genreNumArr = genre.split(',').map(Number);
+    return genreNumArr;
+  };
+
   return (
-    <>
-      <PaperContainer
-        square
+    <GridItem>
+      <PersonContainer
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        boxShadow={2}
         onClick={() => {
-          history.push(`/people/${id}`);
+          history.push(`/people/${nickname}`);
         }}
       >
-        <UserImg
-          alt="nickname"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQqLXPdwanG-kTsMGmC6Ff4lmKkw1LBy4G4G1tYxDNWV-8MCAI&usqp=CAU"
-        />
-        <NickName>리북이</NickName>
-        <TagArea>
-          <TagChip label="#태그" /> <TagChip label="#태그" />
-          <TagChip label="#태그" />
-        </TagArea>
-        <Introduction>
-          안녕하세요. 반갑습니다! 안녕하세요. 반갑습니다! 안녕하세요.
-          안녕하세요. 반갑습니다!
-        </Introduction>
-        <DetailInfo>
-          <ReviewArea>
+        <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+        <NickName>{nickname}</NickName>
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
+          {genreToArr(genres).map((genre: any) => (
+            <GenreTagWrapper key={genre}>
+              <TagChip label={genreTags[genre]} />
+            </GenreTagWrapper>
+          ))}
+        </Box>
+        <Introduction> {myInfo(info)} </Introduction>
+        <InfoContainer display="flex" flexDirection="row">
+          <InfoWrapper
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             <ListAlt></ListAlt>
-            <Info> 2개 </Info>
-          </ReviewArea>
-          <FollowerArea>
+            <Info> {countUserReview}개 </Info>
+          </InfoWrapper>
+          <InfoWrapper
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             <PersonAdd></PersonAdd>
-            <Info> 3명 </Info>
-          </FollowerArea>
-        </DetailInfo>
-      </PaperContainer>
-    </>
+            <Info> {countFollowers}명 </Info>
+          </InfoWrapper>
+        </InfoContainer>
+      </PersonContainer>
+    </GridItem>
   );
 };
 

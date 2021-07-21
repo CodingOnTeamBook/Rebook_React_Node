@@ -19,6 +19,9 @@ export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column('varchar', { name: 'isbn', length: 13 })
+  isbn: string;
+
   // 내용
   @Column('varchar', { name: 'text' })
   text: string;
@@ -34,10 +37,6 @@ export class Review {
   // 점수
   @Column('float', { name: 'score', default: 0 })
   score: number;
-
-  //book cover
-  @Column('varchar', { name: 'cover_img' })
-  coverImg: string;
 
   // 조회수
   @Column('int', { name: 'view_count', default: 0 })
@@ -58,16 +57,16 @@ export class Review {
   updatedAt: Date;
 
   //writer: userId가 FK로 저장됨
-  @ManyToOne(() => User, (user) => user.reviews)
+  @ManyToOne(() => User, (user) => user.reviews, { onDelete: 'SET NULL' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.review, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.review)
   comments: Comment[];
 
-  @OneToMany(() => Like, (like) => like.review, { cascade: true })
+  @OneToMany(() => Like, (like) => like.review)
   likes: Like[];
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, { cascade: true })
   @JoinTable({
     name: 'review_tags',
     joinColumn: {

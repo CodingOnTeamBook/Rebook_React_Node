@@ -3,12 +3,17 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
+  cursor: pointer;
+
   h2 {
     margin-top: 0.4rem;
     margin-bottom: 0;
     padding: 0;
     text-align: center;
     font-size: 16px;
+    overflow: hidden;
+    width: 100%;
+    height: 24px;
   }
   p {
     margin: 0;
@@ -31,14 +36,21 @@ const ImgArea = styled.div`
   }
 `;
 
-const BookInfo = () => {
+interface IProps {
+  imgUrl: string;
+  title: string;
+  author: string;
+  onClick: () => void;
+}
+
+const BookInfo = ({ imgUrl, title, author, onClick }: IProps) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <ImgArea>
-        <img src="https://cdn.pixabay.com/photo/2021/07/05/11/05/pink-beach-6388864_960_720.jpg" />
+        <img src={imgUrl} />
       </ImgArea>
-      <h2>title</h2>
-      <p>작가</p>
+      <h2 title={title}>{title}</h2>
+      <p>{author}</p>
     </Container>
   );
 };

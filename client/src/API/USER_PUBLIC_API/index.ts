@@ -20,3 +20,8 @@ export async function SearchByNickname(
   const response = await axios.get(`${USER_SERVER}/info/${nickname}`);
   return response.data;
 }
+
+export async function SearchUsersByNickname(nickname: string): Promise<any> {
+  const response = await axios.get(`${USER_SERVER}/search/${nickname}`);
+  return response.data;
+}
