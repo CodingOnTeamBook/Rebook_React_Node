@@ -8,8 +8,6 @@ import ListAlt from '@material-ui/icons/ListAlt';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import GridItem from '../common/GridItem';
 import { myInfo, myProfileImg } from '../../globalFunction/myInfoDefaultValue';
-import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
-import { NoResultMsg } from '../../pages/SearchPage';
 
 const PersonContainer = styled(Box)`
   border-radius: 10px;
@@ -74,61 +72,95 @@ const Info = styled.span`
   margin-left: 10px;
 `;
 
-// 📌 다른 곳에도 Person이 쓰이는 것 같아서 일단 optional로 해둡니다
-interface IProps {
-  reviewer?: Array<IReviewer>;
-  error?: boolean;
-}
-
-const Person: FunctionComponent<IProps> = ({ reviewer, error }: IProps) => {
+const Person = () => {
   const history = useHistory();
-  console.log(error);
 
+  // 테스트 데이터
+  const USER_DATA = [
+    {
+      id: 1,
+      userId: '1234',
+      nickname: '리북이',
+      genres: '',
+      gender: 'Secret',
+      ageRange: '20대',
+      profileImg: 'defaultImg',
+      info: '안녕하세용~~☺',
+      createdAt: '2021-06-28T08:39:00.108Z',
+      updatedAt: '2021-06-28T08:39:00.162Z',
+    },
+    {
+      id: 2,
+      userId: '1234',
+      nickname: '리자몽',
+      genres: '',
+      gender: 'Secret',
+      ageRange: '20대',
+      profileImg: 'defaultImg',
+      info: '안녕하세용~~☺',
+      createdAt: '2021-06-28T08:39:00.108Z',
+      updatedAt: '2021-06-28T08:39:00.162Z',
+    },
+    {
+      id: 3,
+      userId: '1234',
+      nickname: '꼬부기',
+      genres: '',
+      gender: 'Secret',
+      ageRange: '20대',
+      profileImg: 'defaultImg',
+      info: '안녕하세용 나는 꼬부기~',
+      createdAt: '2021-06-28T08:39:00.108Z',
+      updatedAt: '2021-06-28T08:39:00.162Z',
+    },
+    {
+      id: 4,
+      userId: '1234',
+      nickname: '어니부기',
+      genres: '',
+      gender: 'Secret',
+      ageRange: 'Secret',
+      profileImg: 'defaultImg',
+      info: 'defaultInfo',
+      createdAt: '2021-06-28T08:39:00.108Z',
+      updatedAt: '2021-06-28T08:39:00.162Z',
+    },
+  ];
+  const id = 'test';
   return (
     <>
-      {error ? (
-        <NoResultMsg>찾는 유저가 없어요😢</NoResultMsg>
-      ) : (
-        reviewer?.map((user: any, index: number) => (
-          <GridItem key={user.id}>
-            <PersonContainer
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              boxShadow={2}
-              onClick={() => {
-                history.push(`/people/${user.id}`);
-              }}
-            >
-              <UserImg
-                alt={user.nickname}
-                src={myProfileImg(
-                  !user.profileImg ? 'defaultImg' : user.myProfileImg
-                )}
-              />
-              <NickName>{user.nickname}</NickName>
-              <TagArea>
-                {user.genres.split(',').map((tag: any, index: number) => (
-                  <TagChip key={index} label={tag} />
-                ))}
-              </TagArea>
-              <Introduction>
-                {myInfo(!user.info ? 'defaultInfo' : user.info)}
-              </Introduction>
-              <DetailInfo>
-                <ReviewArea>
-                  <ListAlt></ListAlt>
-                  <Info> {user.countUserReviews}개 </Info>
-                </ReviewArea>
-                <FollowerArea>
-                  <PersonAdd></PersonAdd>
-                  <Info> {user.countFollowers}명 </Info>
-                </FollowerArea>
-              </DetailInfo>
-            </PersonContainer>
-          </GridItem>
-        ))
-      )}
+      {USER_DATA.map((user) => (
+        <GridItem key={user.id}>
+          <PersonContainer
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            boxShadow={2}
+            key={user.id}
+            onClick={() => {
+              history.push(`/people/${id}`);
+            }}
+          >
+            <UserImg alt={user.nickname} src={myProfileImg(user.profileImg)} />
+            <NickName>{user.nickname}</NickName>
+            <TagArea>
+              <TagChip label="#태그" /> <TagChip label="#태그" />
+              <TagChip label="#태그" />
+            </TagArea>
+            <Introduction> {myInfo(user.info)} </Introduction>
+            <DetailInfo>
+              <ReviewArea>
+                <ListAlt></ListAlt>
+                <Info> 2개 </Info>
+              </ReviewArea>
+              <FollowerArea>
+                <PersonAdd></PersonAdd>
+                <Info> 3명 </Info>
+              </FollowerArea>
+            </DetailInfo>
+          </PersonContainer>
+        </GridItem>
+      ))}
     </>
   );
 };
