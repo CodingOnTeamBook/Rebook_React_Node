@@ -42,7 +42,6 @@ const Introduction = styled.div`
   padding: 15px;
   border-radius: 20px;
   background-color: #e2e2e2;
-  /* font-size: 15px; */
 `;
 
 const InfoWrapper = styled(Box)`
