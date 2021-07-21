@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridSmallItem from '../../components/common/GridSmallItem';
 import SearchForm from '../../components/common/SearchForm';
-import Person from '../../components/PeopleComponent/Person';
+import Reviewer from '../../components/PeopleComponent/Reviewer';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules/rootReducer';
@@ -179,7 +179,7 @@ const SearchPage: FunctionComponent = () => {
       <Header />
       <GridLayout>
         {sorts[1].selected && !loading ? (
-          <Person reviewer={reviewerResult} error={noReviewerResult} />
+          <Reviewer reviewer={reviewerResult} error={noReviewerResult} />
         ) : (
           <>
             {searchBookResult && !msg ? (
