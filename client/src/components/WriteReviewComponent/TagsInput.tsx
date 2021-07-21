@@ -5,6 +5,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 
 const InputWrapper = styled.div`
   display: flex;
+  position: relative;
+  top: 30px;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
