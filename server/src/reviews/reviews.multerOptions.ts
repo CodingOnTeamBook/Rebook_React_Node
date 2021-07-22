@@ -10,16 +10,16 @@ const s3 = new AWS.S3({
   region: region,
 });
 
-export const reviewmulterOptions = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: 'rebookbucket',
-    acl: 'public-read',
-    key: (req, file, cb) => {
-      cb(null, `review/${req.body.writer}_${Date.now()}_${file.originalname}`);
-    },
-  }),
+const storage = multerS3({
+  s3: s3,
+  bucket: 'rebookbucket',
+  acl: 'public-read',
+  key: (req, file, cb) => {
+    cb(null, `review/${req.body.writer}_${Date.now()}_${file.originalname}`);
+  },
 });
+
+export const reviewmulter = multer({ storage: storage });
 
 export const uploadReviewTxt = async (file): Promise<string> => {
   return `${file.key}`;

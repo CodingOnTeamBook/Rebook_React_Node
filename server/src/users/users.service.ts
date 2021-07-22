@@ -5,7 +5,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { deleteProfileImg, getSignedUrlofProfileImg, uploadProfileImg } from './users.multerOptions';
+import {
+  deleteProfileImg,
+  uploadProfileImg,
+  s3Path,
+} from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
 import { Comment } from '../entities/comment.entity';
@@ -77,11 +81,6 @@ export class UsersService {
       if (user.profileImg.slice(0, 5) === 'users')
         deleteProfileImg(user.profileImg);
       user.profileImg = await uploadProfileImg(imgfile);
-    } else {
-      user.profileImg = updateUserDto.imgUrl;
-    }
-    if (updateUserDto.profileImg) {
-      user.profileImg = updateUserDto.profileImg;
     }
     return this.userRepository.save(user);
   }
@@ -122,7 +121,7 @@ export class UsersService {
       const users = [];
       exUsers[0].forEach((user) => {
         if (user['profileImg'] !== null)
-          user['profileImg'] = getSignedUrlofProfileImg(user['profileImg']);
+          user['profileImg'] = s3Path + user['profileImg'];
         user['countFollowers'] = user['followers'].length;
         user['countUserReviews'] = user['reviews'].length;
         delete user['followers'];

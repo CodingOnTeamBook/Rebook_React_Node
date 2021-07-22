@@ -1,4 +1,4 @@
-import { getSignedUrlofProfileImg } from 'src/users/users.multerOptions';
+import { s3Path } from 'src/users/users.multerOptions';
 
 export const processingReview = async (review: any, includeTag: boolean) => {
   const reviews = [];
@@ -37,7 +37,7 @@ export const processingReviewISBN = async (review: any) => {
       writerProfileImg:
         data['user']['profileImg'] === null
           ? null
-          : getSignedUrlofProfileImg(data['user']['profileImg']),
+          : s3Path + data['user']['profileImg'],
       summary: data['summary'],
       likeCount: data['like_count'],
       createdAt: data['createdAt'],

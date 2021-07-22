@@ -2,6 +2,9 @@ import { IsString } from 'class-validator';
 
 export class CreateReviewDto {
   @IsString()
+  readonly text: string;
+
+  @IsString()
   readonly writer: string;
 
   @IsString()
@@ -17,5 +20,5 @@ export class CreateReviewDto {
   readonly isPublic: string = '1';
 
   @IsString()
-  readonly tag: string;
+  readonly tag: string = '';
 }
