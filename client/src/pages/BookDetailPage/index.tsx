@@ -2,11 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import BookDetail from 'components/common/BookDetail';
 import BookReview from 'components/BookDetail/BookReview';
 import ReviewWriteBtn from 'components/BookDetail/ReviewWriteBtn';
-import { fetchApi } from 'modules/search/action';
 import styled from 'styled-components';
-import { useLocation } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../modules/rootReducer';
 import axios from 'axios';
 
 const Container = styled.div`
@@ -25,11 +21,26 @@ const Container = styled.div`
 //bookreview 페이지에는 초기 리뷰 목록 , isbn값을 props로 넘겨주기
 //둘 중 하나라도 에러 나면 에러 페이지로 redirect 주기
 
+// 이건 일단 여기에...
+export interface review {
+  commentCount: number;
+  likeCount: number;
+  summary: string;
+  writer: string;
+  writerProfileImg: string;
+  createdAt: string;
+  id: number;
+}
+
 const BookDetailPage: FunctionComponent = () => {
-  const [bookInfo, setBookInfo] = useState();
-  const [error, setError] = useState(false);
-  // const location = useLocation();
   const isbn = decodeURI(location.pathname.split('/book/')[1]);
+
+  const [bookInfo, setBookInfo] = useState();
+  const [bookError, setBookError] = useState(false);
+
+  const [reviews, setReviews] = useState<Array<review>>();
+  const [isEmptyReviews, setIsEmptyReviews] = useState<boolean>(false);
+  const [reviewError, setReviewError] = useState(false);
 
   useEffect(() => {
     const fetchBookInfo = async () => {
@@ -37,21 +48,54 @@ const BookDetailPage: FunctionComponent = () => {
         const response = await axios.get(`/api/book/search?title=${isbn}`);
         setBookInfo(response.data.books.item[0]);
       } catch (err) {
-        setError(true);
+        setBookError(true);
       }
     };
     fetchBookInfo();
   }, []);
 
+  useEffect(() => {
+    const fetchReviews = async (orderby: string) => {
+      try {
+        const response = await axios.post(`/api/review/load/${isbn}`, {
+          orderby: `${orderby}`,
+        });
+        if (response.data.reviews.length) {
+          setReviews(response.data.reviews);
+          setIsEmptyReviews(false);
+          setReviewError(false);
+        } else {
+          setIsEmptyReviews(true);
+          setReviewError(false);
+        }
+      } catch (err) {
+        setReviewError(true);
+      }
+    };
+    fetchReviews('created');
+  }, []);
+
+  console.log(reviews);
+
+  if (bookError || reviewError) {
+    return (
+      <div>
+        <h1>
+          에러가 발생했어요😨 <br /> 잠시 후 다시 시도해주세요
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <Container>
-      {error ? (
-        <h2>문제가 발생했어요😨</h2>
-      ) : (
-        <BookDetail bookInfo={bookInfo} />
-      )}
+      <BookDetail bookInfo={bookInfo} />
       <h1>REVIEW</h1>
-      <BookReview />
+      <BookReview
+        reviews={reviews}
+        isEmptyReviews={isEmptyReviews}
+        isbn={isbn}
+      />
       <ReviewWriteBtn />
     </Container>
   );
