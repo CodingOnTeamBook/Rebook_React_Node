@@ -1,9 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import BookDetail from 'components/common/BookDetail';
 import BookReview from 'components/BookDetail/BookReview';
 import ReviewWriteBtn from 'components/BookDetail/ReviewWriteBtn';
-
+import { fetchApi } from 'modules/search/action';
 import styled from 'styled-components';
+import { useLocation } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../modules/rootReducer';
+import axios from 'axios';
 
 const Container = styled.div`
   margin: 0 auto;
@@ -22,9 +26,26 @@ const Container = styled.div`
 //둘 중 하나라도 에러 나면 에러 페이지로 redirect 주기
 
 const BookDetailPage: FunctionComponent = () => {
+  const [bookInfo, setBookInfo] = useState();
+  const [error, setError] = useState(false);
+  // const location = useLocation();
+  const isbn = decodeURI(location.pathname.split('/book/')[1]);
+
+  useEffect(() => {
+    const fetchBookInfo = async () => {
+      try {
+        const response = await axios.get(`/api/book/search?title=${isbn}`);
+        setBookInfo(response.data.books.item[0]);
+      } catch (err) {
+        setError(true);
+      }
+    };
+    fetchBookInfo();
+  }, []);
+
   return (
     <Container>
-      <BookDetail />
+      <BookDetail bookInfo={bookInfo} />
       <h1>REVIEW</h1>
       <BookReview />
       <ReviewWriteBtn />
