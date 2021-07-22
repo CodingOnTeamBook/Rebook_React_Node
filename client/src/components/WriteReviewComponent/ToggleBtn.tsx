@@ -1,8 +1,13 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-const ToggleBtn: FunctionComponent = () => {
+const ToggleBtn = (props: any, ref: any) => {
   const [selected, setSelected] = useState(true);
   const control = {
     checked: selected,
@@ -11,6 +16,10 @@ const ToggleBtn: FunctionComponent = () => {
       setSelected(!selected);
     },
   };
+
+  useImperativeHandle(ref, () => ({
+    getIsPublic: () => selected,
+  }));
 
   return (
     <FormControlLabel
@@ -22,4 +31,4 @@ const ToggleBtn: FunctionComponent = () => {
   );
 };
 
-export default ToggleBtn;
+export default forwardRef(ToggleBtn);

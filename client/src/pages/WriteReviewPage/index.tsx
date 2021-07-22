@@ -7,6 +7,7 @@ import WriteEditor from '../../components/WriteReviewComponent/WriteEditor';
 import StarRate from '../../components/WriteReviewComponent/StarRate';
 import ToggleBtn from '../../components/WriteReviewComponent/ToggleBtn';
 import { useRef } from 'react';
+import axios from 'axios';
 
 const SubmitBtn = styled(LineGreenBtn)`
   margin: 50px 0;
@@ -45,10 +46,19 @@ const EditorContainer = styled.div`
 `;
 
 const WriteReviewPage: FunctionComponent = () => {
-  const toggleRef = useRef<null | boolean>(null);
+  const editorRef = useRef<any>();
+  const tagsRef = useRef<any>();
+  const starRateRef = useRef<any>();
+  const toggleRef = useRef<any>();
 
   const onSubmit = () => {
     console.log(`[onSubmit]`);
+    // 🔥 Todo : axios.post 요청
+    console.log(editorRef.current.getContent());
+    console.log(editorRef.current.getSummary());
+    console.log(tagsRef.current.getTags());
+    console.log(starRateRef.current.getRate());
+    console.log(toggleRef.current.getIsPublic());
   };
 
   return (
@@ -56,11 +66,11 @@ const WriteReviewPage: FunctionComponent = () => {
       <Title>리뷰 작성</Title>
       <BookDetail />
       <EditorContainer>
-        <WriteEditor />
-        <TagsInput />
+        <WriteEditor ref={editorRef} />
+        <TagsInput ref={tagsRef} />
       </EditorContainer>
-      <StarRate />
-      <ToggleBtn />
+      <StarRate ref={starRateRef} />
+      <ToggleBtn ref={toggleRef} />
       <SubmitBtn onClick={() => onSubmit()}>리뷰발행</SubmitBtn>
     </Container>
   );

@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import styled from 'styled-components';
 import InputBase from '@material-ui/core/InputBase';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -47,19 +52,29 @@ const RemoveBtn = styled(CancelIcon)`
   color: ${(props) => props.theme.palette.green};
 `;
 
-const TagsInput: FunctionComponent = () => {
+const TagsInput = (props: any, ref: any) => {
   const [inputTag, setInputTags] = useState<string[]>([]);
 
   const addTag = (
     e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     if (e?.key !== 'Enter') return;
+    // 중복 태그 입력 처리
+    if (inputTag.includes(e.currentTarget.value)) {
+      alert('이미 존재하는 태그입니다');
+      return;
+    }
+
     setInputTags([...inputTag, e.currentTarget.value]);
     e.currentTarget.value = '#';
   };
 
   const removeTag = (index: number) =>
     setInputTags([...inputTag].filter((_, idx) => idx !== index));
+
+  useImperativeHandle(ref, () => ({
+    getTags: () => inputTag.join(),
+  }));
 
   return (
     <InputWrapper>
@@ -80,4 +95,4 @@ const TagsInput: FunctionComponent = () => {
   );
 };
 
-export default TagsInput;
+export default forwardRef(TagsInput);
