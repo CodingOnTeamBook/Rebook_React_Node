@@ -53,8 +53,9 @@ export class ReviewsService {
   }
 
   //최신순or인기순으로 리뷰 12개 불러오기
-  async loadReviews(orderby: string): Promise<any> {
-    //const page = parseInt(p.p);
+  async loadReviews(orderby: string, p: any): Promise<any> {
+    const page = parseInt(p.page);
+    const skip = page === 1 ? 0 : (page - 1) * 12;
     if (orderby === 'popularity') {
       const temp = await this.reviewRepository.findAndCount({
         order: {
@@ -74,7 +75,7 @@ export class ReviewsService {
         where: { isPublic: 1 },
         relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
-        skip: 0,
+        skip: skip,
         take: 12,
       });
       return await processingReview(temp[0], true);
@@ -95,7 +96,7 @@ export class ReviewsService {
         where: { isPublic: 1 },
         relations: ['tags', 'user'],
         //skip: page === 1 ? 0 : page - 1,
-        skip: 0,
+        skip: skip,
         take: 12,
       });
       return await processingReview(temp[0], true);

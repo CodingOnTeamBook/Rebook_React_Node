@@ -10,6 +10,7 @@ import {
   Param,
   Delete,
   UploadedFile,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -121,8 +122,12 @@ export class ReviewsController {
   //api/review/:param이라 가장 뒤쪽에 배치!
   //최신순or인기순으로 리뷰 불러오기
   @Get('/:orderby')
-  loadreviews(@Param('orderby') orderby: string, @Res() res) {
-    return this.reviewService.loadReviews(orderby).then((value) => {
+  loadreviews(
+    @Param('orderby') orderby: string,
+    @Query() page: string,
+    @Res() res
+  ) {
+    return this.reviewService.loadReviews(orderby, page).then((value) => {
       res.status(HttpStatus.OK).json({
         success: true,
         reviews: value,
