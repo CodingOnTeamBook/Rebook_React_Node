@@ -1,24 +1,19 @@
 import React, { FunctionComponent } from 'react';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import ListAlt from '@material-ui/icons/ListAlt';
-import PersonAdd from '@material-ui/icons/PersonAdd';
-import GridItem from '../common/GridItem';
 import { myInfo, myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 
 const PersonContainer = styled(Box)`
   border-radius: 10px;
   width: 100%;
-  cursor: pointer;
   padding: 10%;
 `;
 
 const UserImg = styled(Avatar)`
   /* border: 5px solid #000; */
-  padding: 10px;
   width: 90px;
   height: 90px;
 `;
@@ -36,32 +31,32 @@ const GenreTagWrapper = styled.div`
   }
 `;
 
-const TagChip = styled(Chip)`
+const GenreChip = styled(Chip)`
   background-color: ${(props) => props.theme.palette.green};
 `;
 
 const Introduction = styled.div`
-  margin-top: 20px;
-`;
-
-const InfoContainer = styled(Box)`
+  text-align: center;
   width: 100%;
   margin-top: 20px;
+  padding: 15px;
+  border-radius: 20px;
+  background-color: #e2e2e2;
 `;
 
 const InfoWrapper = styled(Box)`
+  margin-top: 20px;
   width: 100%;
 `;
 
-const Info = styled.span`
-  margin-left: 10px;
+const ReviewCount = styled.span`
+  margin-left: 5px;
 `;
 
 interface IPersonProps {
   nickname: string;
   profileImg: string;
   info: string;
-  countFollowers: number;
   countUserReview: number;
   genres: any;
 }
@@ -80,62 +75,40 @@ const genreTags: IGenreTagsType = {
   6: '종교',
 };
 
+const genreToStr = (genre: any) => {
+  const genreNumArr = genre.split(',').map(Number);
+  return genreNumArr;
+};
+
 const Person: FunctionComponent<IPersonProps> = ({
   nickname,
   profileImg,
   info,
-  countFollowers,
   countUserReview,
   genres,
 }: IPersonProps) => {
-  const history = useHistory();
-
-  const genreToArr = (genre: any) => {
-    const genreNumArr = genre.split(',').map(Number);
-    return genreNumArr;
-  };
-
   return (
-    <GridItem>
-      <PersonContainer
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        boxShadow={2}
-        onClick={() => {
-          history.push(`/people/${nickname}`);
-        }}
-      >
-        <UserImg alt={nickname} src={myProfileImg(profileImg)} />
-        <NickName>{nickname}</NickName>
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
-          {genreToArr(genres).map((genre: any) => (
-            <GenreTagWrapper key={genre}>
-              <TagChip label={genreTags[genre]} />
-            </GenreTagWrapper>
-          ))}
-        </Box>
-        <Introduction> {myInfo(info)} </Introduction>
-        <InfoContainer display="flex" flexDirection="row">
-          <InfoWrapper
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <ListAlt></ListAlt>
-            <Info> {countUserReview}개 </Info>
-          </InfoWrapper>
-          <InfoWrapper
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <PersonAdd></PersonAdd>
-            <Info> {countFollowers}명 </Info>
-          </InfoWrapper>
-        </InfoContainer>
-      </PersonContainer>
-    </GridItem>
+    <PersonContainer
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      boxShadow={2}
+    >
+      <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+      <NickName>{nickname}</NickName>
+      <Box display="flex" flexDirection="row" flexWrap="wrap">
+        {genreToStr(genres).map((genre: any) => (
+          <GenreTagWrapper key={genre}>
+            <GenreChip label={genreTags[genre]} />
+          </GenreTagWrapper>
+        ))}
+      </Box>
+      <Introduction> {myInfo(info)} </Introduction>
+      <InfoWrapper display="flex" justifyContent="center" alignItems="center">
+        <ListAlt></ListAlt>
+        <ReviewCount> {countUserReview}개 </ReviewCount>
+      </InfoWrapper>
+    </PersonContainer>
   );
 };
 
