@@ -45,7 +45,11 @@ const BookDetailPage: FunctionComponent = () => {
 
   return (
     <Container>
-      <BookDetail bookInfo={bookInfo} />
+      {error ? (
+        <h2>문제가 발생했어요😨</h2>
+      ) : (
+        <BookDetail bookInfo={bookInfo} />
+      )}
       <h1>REVIEW</h1>
       <BookReview />
       <ReviewWriteBtn />

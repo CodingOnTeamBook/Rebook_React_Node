@@ -98,6 +98,7 @@ const NoResultMsg = styled.h1`
 const BookReview: FunctionComponent = () => {
   const { bookInfo } = useSelector((state: RootState) => state.book);
   const history = useHistory();
+  console.log(history);
   const [reviews, setReviews] = useState([]);
   const [isEmptyReviews, setIsEmptyReviews] = useState<null | boolean>(null);
   const [isError, setError] = useState<null | boolean>(null);
