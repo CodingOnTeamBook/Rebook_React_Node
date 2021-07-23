@@ -36,7 +36,7 @@ const KakaoLoginBtn: FunctionComponent = () => {
           'Authorization'
         ] = `Bearer ${data.accessToken}`;
       }
-      // window.location.reload();
+      window.location.reload();
     });
   };
 

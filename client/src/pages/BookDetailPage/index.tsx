@@ -4,6 +4,7 @@ import BookReview from 'components/BookDetail/BookReview';
 import ReviewWriteBtn from 'components/BookDetail/ReviewWriteBtn';
 import styled from 'styled-components';
 import axios from 'axios';
+import BookInfo from 'components/common/BookInfo';
 
 const Container = styled.div`
   margin: 0 auto;
@@ -65,17 +66,18 @@ const BookDetailPage: FunctionComponent = () => {
           setIsEmptyReviews(false);
           setReviewError(false);
         } else {
-          setIsEmptyReviews(true);
+          setIsEmptyReviews(true); // 지금 여기가 트루로 변하는 상태
           setReviewError(false);
         }
-      } catch (err) {
+      } catch (error) {
+        console.log(error.response.data);
         setReviewError(true);
       }
     };
     fetchReviews('created');
   }, []);
 
-  console.log(reviews);
+  console.log(isEmptyReviews);
 
   if (bookError || reviewError) {
     return (
@@ -96,7 +98,7 @@ const BookDetailPage: FunctionComponent = () => {
         isEmptyReviews={isEmptyReviews}
         isbn={isbn}
       />
-      <ReviewWriteBtn />
+      <ReviewWriteBtn isbn={isbn} />
     </Container>
   );
 };

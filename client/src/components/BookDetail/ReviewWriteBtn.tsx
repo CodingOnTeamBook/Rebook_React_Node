@@ -22,7 +22,7 @@ const Button = styled(LineGreenBtn)`
   }
 `;
 
-const ReviewWriteBtn: FunctionComponent = () => {
+const ReviewWriteBtn = ({ isbn }: any) => {
   const history = useHistory();
   const onClick = () => {
     getAuth();
@@ -30,7 +30,7 @@ const ReviewWriteBtn: FunctionComponent = () => {
       try {
         const response = await auth();
         response.isAuth
-          ? history.push('/write')
+          ? history.push({ pathname: '/write', state: { isbn } })
           : alert('먼저 로그인 해주세요!');
       } catch (e) {
         console.log(e);
