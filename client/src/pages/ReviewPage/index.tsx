@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridItem from 'layout/GridItem';
 import axios from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroller';
+// import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 const ReviewContainer = styled.div`
   margin-top: 30px;
@@ -21,10 +24,6 @@ export const SortButton = styled(Button)`
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
-  &:hover {
-    background-color: ${(props) => props.theme.palette.green};
-    color: white;
-  }
   &:not(:last-of-type) {
     margin-right: 10px;
   }
@@ -42,6 +41,11 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
+const sorts = [
+  { type: 0, name: 'created', text: '최신순' },
+  { type: 1, name: 'popularity', text: '인기순' },
+];
+
 // endpoint에 따라서 reviews가 달라지기 때문에 같은 배열에서 관리
 // select 한 상태에 따라서 api parmas에 변화
 // 에러는 던지고, loading 중은 if(loading) return 메세지
@@ -51,49 +55,55 @@ const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sorts, setSorts] = useState([
-    { name: 'created', text: '최신순', selected: true },
-    { name: 'popularity', text: '인기순', selected: false },
-  ]);
+  const [page, setPage] = useState(1);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+  const [isSelected, setIsSelected] = useState('created');
 
   useEffect(() => {
-    fetchReviews('created');
-  }, []);
+    fetchReviews();
+  }, [isSelected]);
 
-  const fetchReviews = async (sort: string) => {
+  const fetchReviews = async () => {
     try {
       setError(null);
       setReviews([]);
+      setPage(1);
       setLoading(true);
-      const res = await axios.get(`api/review/${sort}`);
-      setReviews(res.data.reviews);
+      await axios.get(`api/review/${isSelected}?page=${page}`).then((res) => {
+        setReviews([...reviews, ...res.data.reviews]);
+        setPage(page + 1);
+        if (res.data.reviews.length == 0) {
+          setHasMoreItems(false);
+        } else {
+          setHasMoreItems(true);
+        }
+      });
     } catch (err) {
       setError(err);
     }
     setLoading(false);
   };
 
-  const onSortChange = (index: number) => {
-    const tmp = [...sorts];
-    tmp[index].selected = true;
-    index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
-    setSorts(tmp);
-  };
+  console.log(page);
+  console.log(isSelected);
+
+  console.log(reviews);
+
+  const checkFunc = (name: any) => isSelected.includes(name);
 
   return (
     <ReviewContainer>
       <SelectSortContainer>
-        {sorts.map(({ text, name, selected }, index) => (
+        {sorts.map((sort) => (
           <SortButton
             size="large"
-            key={index}
+            key={sort.type}
             onClick={() => {
-              onSortChange(index);
-              fetchReviews(name);
+              setIsSelected(sort.name);
             }}
-            className={selected ? 'selected' : ''}
+            className={checkFunc(sort.name) ? 'selected' : ''}
           >
-            {text}
+            {sort.text}
           </SortButton>
         ))}
       </SelectSortContainer>
@@ -104,41 +114,29 @@ const ReviewPage: FunctionComponent = () => {
           <Message> 로딩 중입니다 📚</Message>
         )
       ) : (
-        <GridLayout>
-          {sorts[0].selected ? (
+        <InfiniteScroll
+          dataLength={reviews.length}
+          next={fetchReviews}
+          hasMore={hasMoreItems}
+          loader={<Message> loading... </Message>}
+        >
+          <GridLayout>
             <>
-              {reviews &&
-                reviews.map((review, index) => (
-                  <GridItem key={index}>
-                    <ReviewItem
-                      id={review.id}
-                      cover={review.bookCover}
-                      title={review.bookTitle}
-                      summary={review.summary}
-                      score={review.score}
-                      writer={review.writer}
-                    />
-                  </GridItem>
-                ))}
+              {reviews.map((review) => (
+                <GridItem key={review.id}>
+                  <ReviewItem
+                    id={review.id}
+                    cover={review.bookCover}
+                    title={review.bookTitle}
+                    summary={review.summary}
+                    score={review.score}
+                    writer={review.writer}
+                  />
+                </GridItem>
+              ))}
             </>
-          ) : (
-            <>
-              {reviews &&
-                reviews.map((review, index) => (
-                  <GridItem key={index}>
-                    <ReviewItem
-                      id={review.id}
-                      cover={review.bookCover}
-                      title={review.bookTitle}
-                      summary={review.summary}
-                      score={review.score}
-                      writer={review.writer}
-                    />
-                  </GridItem>
-                ))}
-            </>
-          )}
-        </GridLayout>
+          </GridLayout>
+        </InfiniteScroll>
       )}
     </ReviewContainer>
   );
