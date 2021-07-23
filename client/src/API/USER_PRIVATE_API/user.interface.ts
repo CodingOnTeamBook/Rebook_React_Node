@@ -1,13 +1,14 @@
 export interface IUser {
   id: number;
   userId: string;
-  username: string;
+  nickname: string;
   gender: string;
   ageRange: string;
   genres: string;
   info: string;
   updatedAt: Date;
   createdAt: Date;
+  profileImg: string;
 }
 
 export interface IsendUser {

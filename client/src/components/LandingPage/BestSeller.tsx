@@ -24,7 +24,6 @@ const BestSeller = () => {
   // 📌 To do
   // 에러시 화면이나 메시지 만들기 => 에러 모음 화면 만드는 것도 고려
 
-  console.log(BestSeller);
   if (err) {
     return <div> 에러가 발생했습니다. 다시 시도해주세요. </div>;
   }
