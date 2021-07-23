@@ -1,10 +1,8 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import AddComment from '../../components/ReviewDetailComponent/AddComment';
 import BookInfo from '../../components/ReviewDetailComponent/BookInfo';
 import UserReview from '../../components/ReviewDetailComponent/UserReview';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
-import CommentList from '../../components/ReviewDetailComponent/CommentList';
 import { useParams } from 'react-router';
 import axios from 'axios';
 
@@ -26,31 +24,13 @@ const ReviewDetailWrapper = styled(Grid)`
   margin-bottom: 50px;
 `;
 
-const MarginTop = styled.div`
-  margin-top: 30px;
-`;
-
-const Title = styled.h1`
-  margin-top: 0;
-  margin-bottom: 0;
-`;
-
 const Message = styled.span`
   margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 300;
-  font-size: 30px;
-`;
-
-const CommentZero = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 200;
   font-size: 20px;
-  margin: 20px 20px;
 `;
 
 interface IdType {
@@ -66,7 +46,6 @@ interface IdType {
 
 const ReviewDetailPage: FunctionComponent = () => {
   const [reviewDetail, setReviewDetail] = useState<any[]>([]);
-  const [reviewComment, setReviewComment] = useState<any[]>([]);
   const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -78,7 +57,6 @@ const ReviewDetailPage: FunctionComponent = () => {
       try {
         setError(null);
         setReviewDetail([]);
-        setReviewComment([]);
         setBookDetail([]);
         setLoading(true);
         const res = await axios.post('/api/review/detail', {
@@ -86,7 +64,6 @@ const ReviewDetailPage: FunctionComponent = () => {
         });
         fetchBookDetail(res.data.review.review[0].isbn);
         setReviewDetail(res.data.review.review);
-        setReviewComment(res.data.review.comment);
       } catch (err) {
         setError(err);
       }
@@ -150,24 +127,6 @@ const ReviewDetailPage: FunctionComponent = () => {
                   tags={review.tags}
                 />
               ))}
-            <MarginTop />
-            <Title>Comment</Title>
-            {reviewComment.length === 0 ? (
-              <CommentZero> 작성된 댓글이 없습니다. </CommentZero>
-            ) : (
-              reviewComment &&
-              reviewComment.map((comment) => (
-                <CommentList
-                  key={comment.id}
-                  text={comment.text}
-                  nickname={comment.user.nickname}
-                  profileImg={comment.user.profileImg}
-                  updateAt={comment.updateAt}
-                />
-              ))
-            )}
-            <MarginTop />
-            <AddComment />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
       )}

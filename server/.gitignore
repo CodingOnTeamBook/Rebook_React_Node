@@ -6,6 +6,8 @@ db.config.ts
 db.config.js
 jwt.config.ts
 jwt.config.js
+s3.config.ts
+s3.config.js
 
 # Logs
 logs

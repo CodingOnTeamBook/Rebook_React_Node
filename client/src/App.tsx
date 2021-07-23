@@ -54,10 +54,10 @@ const App: FunctionComponent = () => {
               />
             </>
           </Switch>
+          <ModalLayout>
+            <LoginModalContents />
+          </ModalLayout>
         </BrowserRouter>
-        <ModalLayout>
-          <LoginModalContents />
-        </ModalLayout>
       </Main>
     </Provider>
   );

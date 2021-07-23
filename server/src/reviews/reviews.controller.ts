@@ -10,6 +10,7 @@ import {
   Param,
   Delete,
   UploadedFile,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -18,7 +19,7 @@ import { ReviewsService } from './reviews.service';
 import { Review } from '../entities/review.entity';
 import { AuthUser } from '../users/users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { reviewmulterOptions } from './reviews.multerOptions';
+import { reviewmulter } from './reviews.multerOptions';
 
 @Controller('/api/review')
 export class ReviewsController {
@@ -57,12 +58,29 @@ export class ReviewsController {
     });
   }
 
+  @Post('/updatefile/:nickname')
+  uploadFile(@Param() nickname: string, @Body() text: string, @Res() res) {
+    return this.reviewService.uploadFile(nickname, text).then((value) => {
+      if (value !== Error) {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          filePath: value,
+        });
+      } else {
+        res.json({
+          success: false,
+          error: value,
+        });
+      }
+    });
+  }
+
   //리뷰 작성
   @Post('/write')
-  @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
+  //@UseInterceptors(FileInterceptor('reviewHtml', reviewmulter))
   write(
     @AuthUser() data: any,
-    @UploadedFile() file: File[],
+    //@UploadedFile() file: File[],
     @Body() createReviewDto: CreateReviewDto,
     @Res() res
   ) {
@@ -73,7 +91,7 @@ export class ReviewsController {
       );
     }
     this.reviewService
-      .writeReview(file, createReviewDto)
+      .writeReview(createReviewDto)
       .then((value: Review) => {
         return res.status(HttpStatus.OK).json({
           success: true,
@@ -89,15 +107,15 @@ export class ReviewsController {
   }
 
   @Patch('/update')
-  @UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
+  //@UseInterceptors(FileInterceptor('reviewHtml', reviewmulterOptions))
   updateReview(
     @AuthUser() data: any,
-    @UploadedFile() file: File[],
+    //@UploadedFile() file: File[],
     @Body() updateReviewDto: UpdateReviewDto,
     @Res() res
   ) {
     this.reviewService
-      .updateReview(data.userId, file, updateReviewDto)
+      .updateReview(data.userId, updateReviewDto)
       .then((value: Review) => {
         return res.status(HttpStatus.OK).json({
           success: true,
@@ -121,8 +139,12 @@ export class ReviewsController {
   //api/review/:param이라 가장 뒤쪽에 배치!
   //최신순or인기순으로 리뷰 불러오기
   @Get('/:orderby')
-  loadreviews(@Param('orderby') orderby: string, @Res() res) {
-    return this.reviewService.loadReviews(orderby).then((value) => {
+  loadreviews(
+    @Param('orderby') orderby: string,
+    @Query() page: string,
+    @Res() res
+  ) {
+    return this.reviewService.loadReviews(orderby, page).then((value) => {
       res.status(HttpStatus.OK).json({
         success: true,
         reviews: value,
