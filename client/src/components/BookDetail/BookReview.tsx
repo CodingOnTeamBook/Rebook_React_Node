@@ -28,7 +28,7 @@ const Tab = styled.button`
   border: 0px;
   padding: 12px;
   cursor: pointer;
-  background-color: ${(props) => props.theme.palette.lightgreen};
+  background-color: ${(props) => props.theme.palette.white};
 
   &.selected {
     background-color: ${(props) => props.theme.palette.green};
@@ -39,9 +39,10 @@ const ReviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 88%;
+  height: 700px;
   overflow: auto;
-  padding: 18px;
+  padding: 20px;
+  padding-top: 60px;
 `;
 
 const Review = styled.div`
@@ -85,6 +86,7 @@ const NoResultMsg = styled.h3`
 //state를 따로 관리해서 인기순 누르면 fetchAPI 호출 후 리로딩
 //다음 페이지로 넘어갈 때는 Link to={`/review/${id}`}로 작성 ( Link가 React에서 최적화 되어있기도 하고 가독성이 좋아서.)
 //빈 값일 때는 따로 return 하기 안에서 {isEmpty && }이런식으로 작성하지 말구
+
 interface Props {
   reviews: Array<review> | undefined;
   isEmptyReviews: boolean;
@@ -92,8 +94,6 @@ interface Props {
 }
 
 const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
-  const history = useHistory();
-  console.log(history);
   const [_reviews, setReviews] = useState(reviews);
   const [error, setError] = useState<null | boolean>(null);
 
@@ -125,6 +125,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
     }
   };
 
+  // 탭을 쓰는 다른 컴포넌트를 위해 나중에 글로벌로 뺄 수도 있음
   function switchTab(index: number) {
     const tmp = [...tabs];
     tmp[index].selected = true;
