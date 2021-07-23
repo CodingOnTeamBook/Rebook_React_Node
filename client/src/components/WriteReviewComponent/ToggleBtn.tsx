@@ -18,7 +18,10 @@ const ToggleBtn = (props: any, ref: any) => {
   };
 
   useImperativeHandle(ref, () => ({
-    getIsPublic: () => selected,
+    getIsPublic: () => {
+      if (selected) return 1;
+      else return 0;
+    },
   }));
 
   return (
