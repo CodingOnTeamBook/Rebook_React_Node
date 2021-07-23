@@ -123,13 +123,13 @@ const WriteReviewPage: FunctionComponent = () => {
       const isPublic = await toggleRef.current.getIsPublic();
       const tag = await tagsRef.current.getTags();
       const data = {
-        text: JSON.stringify(filePath),
-        writer: JSON.stringify(userNickname),
+        text: filePath,
+        writer: userNickname,
         bookInfo: JSON.stringify(bookInfo),
-        summary: JSON.stringify(summary),
-        score: JSON.stringify(score),
-        isPublic: JSON.stringify(isPublic),
-        tag: JSON.stringify(tag),
+        summary: summary,
+        score: score.toString(),
+        isPublic: isPublic.toString(),
+        tag: tag,
       };
 
       const response = await axios.post('/api/review/write', data);
