@@ -125,7 +125,7 @@ const WriteReviewPage: FunctionComponent = () => {
         isPublic: JSON.stringify(isPublic),
         tag: JSON.stringify(tag),
       };
-      if (data.text === '') alert('내용을 입력해주세요');
+      if (data.summary === '"\\n"') alert('내용을 입력해주세요');
       const response = await axios.post('/api/review/write', data);
       console.log(response);
     } catch (err) {
