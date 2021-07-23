@@ -47,9 +47,9 @@ const EditorContainer = styled.div`
 `;
 
 const WriteReviewPage: FunctionComponent = () => {
-  const [userNickname, setUserNickname] = useState<any>();
+  const [userNickname, setUserNickname] = useState<string | undefined>('');
   const [userAuthError, setUserAuthError] = useState<boolean>(false);
-  const [isFileSaved, setIsFileSaved] = useState<boolean | null>(null);
+  const [isFileSaved, setIsFileSaved] = useState<boolean | null>(true);
 
   const editorRef = useRef<any>();
   const tagsRef = useRef<any>();
@@ -62,7 +62,7 @@ const WriteReviewPage: FunctionComponent = () => {
     async function getAuth() {
       try {
         const response = await auth();
-        console.log(response.user.nickname);
+        // console.log(response.user.nickname);
         setUserNickname(response.user.nickname);
         setUserAuthError(false);
       } catch (e) {
@@ -92,17 +92,18 @@ const WriteReviewPage: FunctionComponent = () => {
 
   const onSubmit = async (event: any) => {
     event.preventDefault();
-    console.log(`[onSubmit]`);
+
     try {
       const filePath = await fetchTextFilePath();
-      console.log(filePath);
+      // console.log(filePath);
       const summary = await editorRef.current.getSummary();
+      if (summary.length < 5) {
+        alert('5자 이상의 글자를 입력해주세요');
+        return;
+      }
       const score = await starRateRef.current.getRate();
       const isPublic = await toggleRef.current.getIsPublic();
       const tag = await tagsRef.current.getTags();
-
-      console.log(userNickname);
-
       const bookInfo = {
         title: '어메이징 스파이더맨 1',
         cover:
@@ -125,13 +126,20 @@ const WriteReviewPage: FunctionComponent = () => {
         isPublic: JSON.stringify(isPublic),
         tag: JSON.stringify(tag),
       };
-      if (data.summary === '"\\n"') alert('내용을 입력해주세요');
+
       const response = await axios.post('/api/review/write', data);
-      console.log(response);
+      if (response.data) {
+        alert('성공적으로 저장되었습니다');
+        window.location.href = '/';
+      }
     } catch (err) {
       console.log(err);
+      alert('잠시후 다시 시도해주세요');
     }
   };
+
+  // To do : 에러페이지
+  if (userAuthError || !isFileSaved) return <div>에러발생</div>;
 
   return (
     <Container>
