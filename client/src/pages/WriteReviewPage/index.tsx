@@ -9,6 +9,7 @@ import ToggleBtn from '../../components/WriteReviewComponent/ToggleBtn';
 import { useRef } from 'react';
 import axios from 'axios';
 import { auth } from 'API/USER_PRIVATE_API/index';
+import { useLocation } from 'react-router';
 
 const SubmitBtn = styled(LineGreenBtn)`
   margin: 50px 0;
@@ -47,9 +48,14 @@ const EditorContainer = styled.div`
 `;
 
 const WriteReviewPage: FunctionComponent = () => {
+  const location: any = useLocation();
+  const isbn = location.state.isbn;
   const [userNickname, setUserNickname] = useState<string | undefined>('');
   const [userAuthError, setUserAuthError] = useState<boolean>(false);
   const [isFileSaved, setIsFileSaved] = useState<boolean | null>(true);
+
+  const [bookInfo, setBookInfo] = useState();
+  const [bookError, setBookError] = useState(false);
 
   const editorRef = useRef<any>();
   const tagsRef = useRef<any>();
@@ -70,6 +76,18 @@ const WriteReviewPage: FunctionComponent = () => {
         setUserAuthError(true);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchBookInfo = async () => {
+      try {
+        const response = await axios.get(`/api/book/search?title=${isbn}`);
+        setBookInfo(response.data.books.item[0]);
+      } catch (err) {
+        setBookError(true);
+      }
+    };
+    fetchBookInfo();
   }, []);
 
   // 내용을 updateText에 저장 후 서버에서 받은 filePath값 저장
@@ -104,19 +122,6 @@ const WriteReviewPage: FunctionComponent = () => {
       const score = await starRateRef.current.getRate();
       const isPublic = await toggleRef.current.getIsPublic();
       const tag = await tagsRef.current.getTags();
-      const bookInfo = {
-        title: '어메이징 스파이더맨 1',
-        cover:
-          'https://image.aladin.co.kr/product/3983/40/cover500/8952771095_1.jpg',
-        isbn: 9791164138197,
-        link: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=274568125&amp;partner=openAPI&amp;start=api',
-        author: '흔한남매',
-        publisher: '웅앵출판사',
-        pubDate: '2021-07-14',
-        description:
-          '‘흔한남매’ 유튜브 영상의 스토리를 앙증맞고 유머러스한 만화로 풀어 낸 코믹북이다. 하루도 조용할 날이 없는 으뜸이와 에이미의 일상 스토리는 진짜 웃음이 필요한 어린이들에게 순수한 웃음과 유쾌한 우애를 선사할 것이다.',
-      };
-
       const data = {
         text: JSON.stringify(filePath),
         writer: JSON.stringify(userNickname),
@@ -144,7 +149,7 @@ const WriteReviewPage: FunctionComponent = () => {
   return (
     <Container>
       <Title>리뷰 작성</Title>
-      <BookDetail />
+      <BookDetail bookInfo={bookInfo} />
       <EditorContainer>
         <WriteEditor ref={editorRef} />
         <TagsInput ref={tagsRef} />
