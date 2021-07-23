@@ -6,10 +6,13 @@ import {
   ItemContainer,
 } from '../common/LandingPageCommon';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setBookInfo } from 'modules/book/action';
 
 const BestSeller = () => {
   const [BestSeller, setBestSeller] = useState<any>([]);
   const [err, setErr] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -21,6 +24,7 @@ const BestSeller = () => {
   // 📌 To do
   // 에러시 화면이나 메시지 만들기 => 에러 모음 화면 만드는 것도 고려
 
+  console.log(BestSeller);
   if (err) {
     return <div> 에러가 발생했습니다. 다시 시도해주세요. </div>;
   }
@@ -32,7 +36,11 @@ const BestSeller = () => {
       </Header>
       <Main>
         {BestSeller.map((book: any, index: number) => (
-          <ItemContainer to={`book/${book.isbn}`} key={index}>
+          <ItemContainer
+            to={`book/${book.isbn}`}
+            key={index}
+            onClick={() => dispatch(setBookInfo(book))}
+          >
             <img key={book.title} src={book.cover}></img>
             <h3 className="description">{book.title}</h3>
           </ItemContainer>
