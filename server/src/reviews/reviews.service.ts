@@ -11,8 +11,13 @@ import {
   processingReview,
   processingReviewISBN,
 } from './reviews.exportFunction';
-import { uploadReviewHtml } from './reviews.multerOptions';
+import {
+  uploadReviewTxt,
+  deleteReviewTxt,
+  getReviewTxt,
+} from './reviews.multerOptions';
 import * as fs from 'fs';
+import { s3Path } from 'src/users/users.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -53,8 +58,9 @@ export class ReviewsService {
   }
 
   //최신순or인기순으로 리뷰 12개 불러오기
-  async loadReviews(orderby: string): Promise<any> {
-    //const page = parseInt(p.p);
+  async loadReviews(orderby: string, p: any): Promise<any> {
+    const page = parseInt(p.page);
+    const skip = page === 1 ? 0 : (page - 1) * 12;
     if (orderby === 'popularity') {
       const temp = await this.reviewRepository.findAndCount({
         order: {
@@ -73,8 +79,7 @@ export class ReviewsService {
         ],
         where: { isPublic: 1 },
         relations: ['tags', 'user'],
-        //skip: page === 1 ? 0 : page - 1,
-        skip: 0,
+        skip: skip,
         take: 12,
       });
       return await processingReview(temp[0], true);
@@ -94,8 +99,7 @@ export class ReviewsService {
         ],
         where: { isPublic: 1 },
         relations: ['tags', 'user'],
-        //skip: page === 1 ? 0 : page - 1,
-        skip: 0,
+        skip: skip,
         take: 12,
       });
       return await processingReview(temp[0], true);
@@ -136,12 +140,16 @@ export class ReviewsService {
   //하나의 리뷰 자세히 불러오기
   async detailReview(reviewid: any): Promise<any> {
     const id = parseInt(reviewid.reviewid);
-    const review = await this.reviewRepository.find({
+    const review = await this.reviewRepository.findOne({
       where: { id },
       relations: ['tags', 'user'],
     });
-    if (review.length === 0)
-      throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+    if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
+
+    review.text = await getReviewTxt(review.text);
+    if (review['user']['profileImg'] !== null)
+      review['user']['profileImg'] = s3Path + review['user']['profileImg'];
+
     const comm = await this.commentRepository.find({
       where: { review: id },
       relations: ['user'],
@@ -153,7 +161,10 @@ export class ReviewsService {
         ...comm[i],
         user: {
           nickname: comm[i].user.nickname,
-          profileImg: comm[i].user.profileImg,
+          profileImg:
+            comm[i].user.profileImg === null
+              ? null
+              : s3Path + comm[i].user.profileImg,
         },
       };
     }
@@ -179,28 +190,47 @@ export class ReviewsService {
     return review.tags;
   }
 
+  //리뷰 파일 업로드
+  async uploadFile(nickname: string, text: string): Promise<any> {
+    const nick = nickname['nickname'];
+    const uploads = './uploads/';
+    const filePath = `review/${nick}_${Date.now()}.txt`;
+    fs.writeFile(uploads + filePath, text['text'], (err: Error) => {
+      if (err) {
+        console.log('error with writeFile');
+        return err;
+      }
+    });
+    return filePath;
+  }
+
   //리뷰 작성
   async writeReview(
-    reviewfile,
+    //reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
+    const isbn = JSON.parse(createReviewDto.bookInfo).isbn;
     const review = new Review();
-    review.text = await uploadReviewHtml(reviewfile);
+    //review.text = await uploadReviewTxt(reviewfile);
+    review.text = createReviewDto.text;
     review.book_info = createReviewDto.bookInfo;
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
     review.summary = createReviewDto.summary;
-    review.tags = await this.createTag(createReviewDto.tag);
+    if (createReviewDto.tag !== '')
+      review.tags = await this.createTag(createReviewDto.tag);
+    else review.tags = [];
     review.user = await this.userRepository.findOne({
       nickname: createReviewDto.writer,
     });
+    review.isbn = isbn;
     return this.reviewRepository.save(review);
   }
 
   //리뷰 수정
   async updateReview(
     userId: string,
-    reviewfile,
+    //reviewfile,
     updateReviewDto: UpdateReviewDto
   ): Promise<Review> {
     const review = await this.reviewRepository.findOne({
@@ -210,11 +240,13 @@ export class ReviewsService {
     if (review.user.userId !== userId) {
       throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
     }
-    fs.unlink(`uploads/${review.text}`, (err) => {
-      console.log(err);
-    });
-    review.text = await uploadReviewHtml(reviewfile);
-    review.summary = updateReviewDto.summary;
+    //await deleteReviewTxt(review.text);
+    if (updateReviewDto.text) {
+      review.text = updateReviewDto.text;
+    }
+    if (updateReviewDto.summary) {
+      review.summary = updateReviewDto.summary;
+    }
     if (updateReviewDto.score) {
       review.score = parseFloat(updateReviewDto.score);
     }

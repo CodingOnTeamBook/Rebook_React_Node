@@ -15,9 +15,6 @@ export class Comment {
   @PrimaryGeneratedColumn()
   commentid: number;
 
-  @Column('varchar', { nullable: false })
-  nickname: string;
-
   @Column('text', { nullable: false })
   text: string;
 
