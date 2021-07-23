@@ -7,6 +7,7 @@ import GridItem from 'layout/GridItem';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;

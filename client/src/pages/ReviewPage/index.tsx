@@ -56,7 +56,7 @@ const ReviewPage: FunctionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
+  const [isNext, setIsNext] = useState(true);
   const [isSelected, setIsSelected] = useState('created');
 
   useEffect(() => {
@@ -68,25 +68,25 @@ const ReviewPage: FunctionComponent = () => {
       setError(null);
       setReviews([]);
       setPage(1);
-      setLoading(true);
+      // setLoading(true);
       await axios.get(`api/review/${isSelected}?page=${page}`).then((res) => {
         setReviews([...reviews, ...res.data.reviews]);
-        setPage(page + 1);
-        if (res.data.reviews.length == 0) {
-          setHasMoreItems(false);
-        } else {
-          setHasMoreItems(true);
-        }
       });
     } catch (err) {
       setError(err);
     }
-    setLoading(false);
+    setPage(page + 1);
+    // setLoading(false);
+  };
+
+  const selectSort = (e: any) => {
+    setIsSelected(e);
+    setReviews([]);
+    setPage(1);
   };
 
   console.log(page);
   console.log(isSelected);
-
   console.log(reviews);
 
   const checkFunc = (name: any) => isSelected.includes(name);
@@ -98,9 +98,7 @@ const ReviewPage: FunctionComponent = () => {
           <SortButton
             size="large"
             key={sort.type}
-            onClick={() => {
-              setIsSelected(sort.name);
-            }}
+            onClick={() => selectSort(sort.name)}
             className={checkFunc(sort.name) ? 'selected' : ''}
           >
             {sort.text}
@@ -115,15 +113,15 @@ const ReviewPage: FunctionComponent = () => {
         )
       ) : (
         <InfiniteScroll
-          dataLength={reviews.length}
+          dataLength={reviews.length} //This is important field to render the next data
           next={fetchReviews}
-          hasMore={hasMoreItems}
+          hasMore={isNext}
           loader={<Message> loading... </Message>}
         >
           <GridLayout>
             <>
-              {reviews.map((review) => (
-                <GridItem key={review.id}>
+              {reviews.map((review, key) => (
+                <GridItem key={key}>
                   <ReviewItem
                     id={review.id}
                     cover={review.bookCover}
