@@ -88,7 +88,8 @@ const WriteReviewPage: FunctionComponent = () => {
 
   const onSubmit = async () => {
     console.log(`[onSubmit]`);
-    // const filePath = await fetchTextFilePath();
+    const filePath = await fetchTextFilePath();
+    console.log(filePath);
     // 🔥 Todo
     // Editor null값 검사
     // axios.post 요청
