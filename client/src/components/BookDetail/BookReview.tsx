@@ -6,7 +6,6 @@ import SmsIcon from '@material-ui/icons/Sms';
 import axios from 'axios';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
-import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { review } from 'pages/BookDetailPage';
 
@@ -55,7 +54,7 @@ const Review = styled.div`
   border: 4px solid ${(props) => props.theme.palette.white};
   border-radius: 18px;
   box-shadow: 0 12px 16px ${(props) => props.theme.palette.darkgreen};
-  background-color: ${(props) => props.theme.palette.white};
+  background-color: white;
 
   .review_contents {
     width: 70%;
@@ -189,7 +188,9 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                     </h3>
                     <h4>
                       {summary}
-                      <Link to={`/review/${id}`}>...더보기</Link>
+                      <Link to={`/review/${id}`}>
+                        <span>...더보기</span>
+                      </Link>
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
@@ -230,7 +231,9 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                     </h3>
                     <h4>
                       {summary}
-                      <Link to={`/review/${id}`}>...더보기</Link>
+                      <Link to={`/review/${id}`}>
+                        <span>...더보기</span>
+                      </Link>
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
