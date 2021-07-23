@@ -217,7 +217,9 @@ export class ReviewsService {
     review.score = parseFloat(createReviewDto.score);
     review.isPublic = Boolean(parseInt(createReviewDto.isPublic));
     review.summary = createReviewDto.summary;
-    review.tags = await this.createTag(createReviewDto.tag);
+    if (createReviewDto.tag !== '')
+      review.tags = await this.createTag(createReviewDto.tag);
+    else review.tags = [];
     review.user = await this.userRepository.findOne({
       nickname: createReviewDto.writer,
     });
