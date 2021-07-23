@@ -21,9 +21,6 @@ const Container = styled.div`
 //bookreview 페이지에는 초기 리뷰 목록 , isbn값을 props로 넘겨주기
 //둘 중 하나라도 에러 나면 에러 페이지로 redirect 주기
 
-<<<<<<< HEAD
-// 여기 자체에서 하는 것
-=======
 // 이건 일단 여기에...
 export interface review {
   commentCount: number;
@@ -35,7 +32,6 @@ export interface review {
   id: number;
 }
 
->>>>>>> main
 const BookDetailPage: FunctionComponent = () => {
   const isbn = decodeURI(location.pathname.split('/book/')[1]);
 
