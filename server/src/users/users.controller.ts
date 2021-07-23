@@ -87,10 +87,11 @@ export class UsersController {
     });
   }
 
-  @Patch('/myinfo/update')
+  @Patch('/myinfo/update/:nickname')
   @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
   update(
     @AuthUser() data: any,
+    @Param('nickname') nickname: string,
     @UploadedFile() file: File[],
     @Body() updateUserDto: UpdateUserDto,
     @Res() res

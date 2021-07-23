@@ -24,7 +24,6 @@ export class CommentsService {
   async writeComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const comment = new Comment();
     comment.text = createCommentDto.text;
-    comment.nickname = createCommentDto.nickname;
     return this.commentRepository.save(comment);
   }
 

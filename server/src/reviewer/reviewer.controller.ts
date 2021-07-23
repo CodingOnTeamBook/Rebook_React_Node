@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { ReviewerService } from './reviewer.service';
 
 @Controller('api/reviewer')
@@ -24,8 +24,12 @@ export class ReviewerController {
   }
 
   @Get('/:genres')
-  getReviewers(@Param('genres') genres: string, @Res() res) {
-    return this.reviewerService.getReviewer(genres).then((value) => {
+  getReviewers(
+    @Param('genres') genres: string,
+    @Query() page: string,
+    @Res() res
+  ) {
+    return this.reviewerService.getReviewer(genres, page).then((value) => {
       res.status(HttpStatus.OK).json({
         success: true,
         reviewers: value,
