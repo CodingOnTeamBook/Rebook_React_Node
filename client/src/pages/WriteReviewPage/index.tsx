@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
 import BookDetail from '../../components/common/BookDetail';
@@ -8,6 +8,7 @@ import StarRate from '../../components/WriteReviewComponent/StarRate';
 import ToggleBtn from '../../components/WriteReviewComponent/ToggleBtn';
 import { useRef } from 'react';
 import axios from 'axios';
+import { auth } from 'API/USER_PRIVATE_API/index';
 
 const SubmitBtn = styled(LineGreenBtn)`
   margin: 50px 0;
@@ -46,14 +47,51 @@ const EditorContainer = styled.div`
 `;
 
 const WriteReviewPage: FunctionComponent = () => {
+  const [userNickname, setUserNickname] = useState<any>();
+  const [userAuthError, setUserAuthError] = useState<boolean>(false);
   const editorRef = useRef<any>();
   const tagsRef = useRef<any>();
   const starRateRef = useRef<any>();
   const toggleRef = useRef<any>();
 
-  const onSubmit = () => {
+  // 파라미터로 넘길 nickname
+  useEffect(() => {
+    getAuth();
+    async function getAuth() {
+      try {
+        const response = await auth();
+        console.log(response.user.nickname);
+        setUserNickname(response.user.nickname);
+        setUserAuthError(false);
+      } catch (e) {
+        console.log(e);
+        setUserAuthError(true);
+      }
+    }
+  }, []);
+
+  // 내용을 updateText에 저장 후 서버에서 받은 filePath값 저장
+  const fetchTextFilePath = async () => {
+    const textData = {
+      text: editorRef.current.getContent(),
+    };
+    const { data } = await axios.post(
+      `api/review/updatefile/${userNickname}`,
+      textData
+    );
+    if (data.success) {
+      return data.filePath;
+    } else {
+      throw data.err;
+    }
+  };
+
+  const onSubmit = async () => {
     console.log(`[onSubmit]`);
-    // 🔥 Todo : axios.post 요청
+    // const filePath = await fetchTextFilePath();
+    // 🔥 Todo
+    // Editor null값 검사
+    // axios.post 요청
     console.log(editorRef.current.getContent());
     console.log(editorRef.current.getSummary());
     console.log(tagsRef.current.getTags());
