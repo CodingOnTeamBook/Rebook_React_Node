@@ -49,6 +49,8 @@ const EditorContainer = styled.div`
 const WriteReviewPage: FunctionComponent = () => {
   const [userNickname, setUserNickname] = useState<any>();
   const [userAuthError, setUserAuthError] = useState<boolean>(false);
+  const [isFileSaved, setIsFileSaved] = useState<boolean | null>(null);
+
   const editorRef = useRef<any>();
   const tagsRef = useRef<any>();
   const starRateRef = useRef<any>();
@@ -76,28 +78,59 @@ const WriteReviewPage: FunctionComponent = () => {
       text: editorRef.current.getContent(),
     };
     const { data } = await axios.post(
-      `api/review/updatefile/${userNickname}`,
+      `/api/review/updatefile/${userNickname}`,
       textData
     );
     if (data.success) {
+      setIsFileSaved(true);
       return data.filePath;
     } else {
+      setIsFileSaved(false);
       throw data.err;
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (event: any) => {
+    event.preventDefault();
     console.log(`[onSubmit]`);
-    const filePath = await fetchTextFilePath();
-    console.log(filePath);
-    // 🔥 Todo
-    // Editor null값 검사
-    // axios.post 요청
-    console.log(editorRef.current.getContent());
-    console.log(editorRef.current.getSummary());
-    console.log(tagsRef.current.getTags());
-    console.log(starRateRef.current.getRate());
-    console.log(toggleRef.current.getIsPublic());
+    try {
+      const filePath = await fetchTextFilePath();
+      console.log(filePath);
+      const summary = await editorRef.current.getSummary();
+      const score = await starRateRef.current.getRate();
+      const isPublic = await toggleRef.current.getIsPublic();
+      const tag = await tagsRef.current.getTags();
+
+      console.log(userNickname);
+
+      const bookInfo = {
+        title: '어메이징 스파이더맨 1',
+        cover:
+          'https://image.aladin.co.kr/product/3983/40/cover500/8952771095_1.jpg',
+        isbn: 9791164138197,
+        link: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=274568125&amp;partner=openAPI&amp;start=api',
+        author: '흔한남매',
+        publisher: '웅앵출판사',
+        pubDate: '2021-07-14',
+        description:
+          '‘흔한남매’ 유튜브 영상의 스토리를 앙증맞고 유머러스한 만화로 풀어 낸 코믹북이다. 하루도 조용할 날이 없는 으뜸이와 에이미의 일상 스토리는 진짜 웃음이 필요한 어린이들에게 순수한 웃음과 유쾌한 우애를 선사할 것이다.',
+      };
+
+      const data = {
+        text: JSON.stringify(filePath),
+        writer: JSON.stringify(userNickname),
+        bookInfo: JSON.stringify(bookInfo),
+        summary: JSON.stringify(summary),
+        score: JSON.stringify(score),
+        isPublic: JSON.stringify(isPublic),
+        tag: JSON.stringify(tag),
+      };
+      if (data.text === '') alert('내용을 입력해주세요');
+      const response = await axios.post('/api/review/write', data);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -110,7 +143,7 @@ const WriteReviewPage: FunctionComponent = () => {
       </EditorContainer>
       <StarRate ref={starRateRef} />
       <ToggleBtn ref={toggleRef} />
-      <SubmitBtn onClick={() => onSubmit()}>리뷰발행</SubmitBtn>
+      <SubmitBtn onClick={onSubmit}>리뷰발행</SubmitBtn>
     </Container>
   );
 };
