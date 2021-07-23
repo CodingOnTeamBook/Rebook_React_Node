@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_API_KEY } from '../../config';
 import { login } from '../../API/USER_PRIVATE_API';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 interface IData {
   kakaoId: string;
@@ -54,4 +54,4 @@ const KakaoLoginBtn: FunctionComponent = () => {
   );
 };
 
-export default KakaoLoginBtn;
+export default withRouter(KakaoLoginBtn);
