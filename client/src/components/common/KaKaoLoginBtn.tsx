@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import KakaoLogin from 'react-kakao-login';
 import { KAKAO_API_KEY } from '../../config';
 import { login } from '../../API/USER_PRIVATE_API';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 interface IData {
   kakaoId: string;
@@ -20,6 +20,7 @@ const KakaoLoginBtn: FunctionComponent = () => {
       ageRange: profile.kakao_account.age_range,
     };
     login(profile.id).then((data) => {
+      console.log(data);
       if (!data.success) {
         alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
         localStorage.clear();
@@ -35,7 +36,7 @@ const KakaoLoginBtn: FunctionComponent = () => {
           'Authorization'
         ] = `Bearer ${data.accessToken}`;
       }
-      window.location.reload();
+      // window.location.reload();
     });
   };
 
@@ -54,4 +55,4 @@ const KakaoLoginBtn: FunctionComponent = () => {
   );
 };
 
-export default KakaoLoginBtn;
+export default withRouter(KakaoLoginBtn);

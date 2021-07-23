@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import Person from '../../components/PeopleComponent/Person';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
+import GridItem from 'layout/GridItem';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
@@ -31,6 +33,10 @@ const GenreButton = styled(Button)`
     background-color: ${(props) => props.theme.palette.green};
     color: white;
   }
+`;
+
+const PersonContainer = styled.div`
+  cursor: pointer;
 `;
 
 const Message = styled.span`
@@ -88,6 +94,17 @@ const PeoplePage: FunctionComponent = ({}) => {
 
   const checkFunc = (index: any) => isSelected.includes(index);
 
+<<<<<<< HEAD
+=======
+  const history = useHistory();
+
+  // selectbox 값에 따라서 endpoint 다르게 해서 api 호출
+  // loading, error 부분은 return을 다르게 하기
+  // select 되는 부분은 ref로 값 가져오기
+  // 페이지네이션 해야하니까 여기서 값을 넘기는게 좋을 것 같음.
+  // person 부분도 사용자 수정 부분은 없으니까 props로 넘기기
+
+>>>>>>> main
   return (
     <PeopleContainer>
       <SelectButtonArea>
@@ -115,15 +132,21 @@ const PeoplePage: FunctionComponent = ({}) => {
             <>
               {people &&
                 people.map((person) => (
-                  <Person
-                    key={person.id}
-                    nickname={person.nickname}
-                    profileImg={person.profileImg}
-                    genres={person.genres}
-                    info={person.info}
-                    countFollowers={person.countFollowers}
-                    countUserReview={person.countUserReview}
-                  />
+                  <GridItem key={person.id}>
+                    <PersonContainer
+                      onClick={() => {
+                        history.push(`/people/${person.nickname}`);
+                      }}
+                    >
+                      <Person
+                        nickname={person.nickname}
+                        profileImg={person.profileImg}
+                        genres={person.genres}
+                        info={person.info}
+                        countUserReview={person.countUserReview}
+                      />
+                    </PersonContainer>
+                  </GridItem>
                 ))}
             </>
           </GridLayout>
