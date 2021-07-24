@@ -83,7 +83,6 @@ const ReviewPage: FunctionComponent = () => {
             setIsHasMore(true);
           }
         });
-
     } catch (err) {
       setError(err);
     }
