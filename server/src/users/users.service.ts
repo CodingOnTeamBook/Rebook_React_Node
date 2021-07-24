@@ -13,6 +13,13 @@ import {
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
 import { Comment } from '../entities/comment.entity';
+import { string0To255 } from 'aws-sdk/clients/customerprofiles';
+
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UsersService {
@@ -189,4 +196,48 @@ export class UsersService {
     if (result1 && result2) return true;
     else return false;
   }
+
+  //마이페이지 내 댓글 찾기
+  async findAllMyComment(nickname: string) {
+    const comment = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.nickname = :nickname', { nickname })
+      .innerJoinAndSelect('user.comments', 'comments')
+      .getMany();
+
+    console.log(comment);
+    return comment;
+  }
+
+  async getMyPublicReviews(userId: number) {
+    const publicReview = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.userId = :userId', { userId })
+      .innerJoinAndSelect(
+        'user.reviews',
+        'reviews',
+        'reviews.IsPublic = :IsPublic',
+        { IsPublic: true }
+      )
+      .getMany();
+    return publicReview;
+  }
+
+  async getMyPrivateReviews(userId: number) {
+    const privateReview = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.userId = :userId', { userId })
+      .innerJoinAndSelect(
+        'user.reviews',
+        'reviews',
+        'reviews.IsPublic = :IsPublic',
+        { IsPublic: false }
+      )
+      .getMany();
+    return privateReview;
+  }
+
+  // async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
+  //   return await paginate<User>(this.userRepository, options);
+  //}
 }
