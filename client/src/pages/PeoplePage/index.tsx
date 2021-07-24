@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router';
 import Person from '../../components/PeopleComponent/Person';
 import styled from 'styled-components';
@@ -49,43 +49,74 @@ const Message = styled.span`
   margin: 20px 20px;
 `;
 
+const ScrollMessage = styled.span`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 20px;
+`;
+
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
   const [isSelected, setIsSelected] = useState<any[]>([0]);
-  const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const page = useRef(1);
+  const [isNext, setIsNext] = useState(true);
 
   useEffect(() => {
-    const fetchPerson = async () => {
-      try {
-        setError(null);
-        setPeople([]);
-        setLoading(true);
-        if (isSelected.length == 0) {
-          alert('장르를 하나 이상 선택해주세요 😅');
-          setIsSelected([0]);
-        } else if (0 <= isSelected.length && isSelected.length <= 3) {
-          isSelected.sort();
-          const res = await axios.get(`/api/reviewer/${isSelected}`);
-          setPeople(res.data.reviewers);
-        } else if (isSelected.length >= 4) {
-          isSelected.pop();
-          alert('장르를 3개 이하만 선택해주세요 😅');
-          fetchPerson();
-        }
-      } catch (err) {
-        setError(err);
-      }
-      setLoading(false);
-    };
     fetchPerson();
   }, [isSelected]);
 
-  const genreSelect = (tag: any, index: any) => {
+  const fetchPerson = async () => {
+    try {
+      setError(null);
+      if (isSelected.length == 0) {
+        alert('장르를 하나 이상 선택해주세요 😅');
+        setIsSelected([0]);
+        page.current = 0;
+      } else if (0 <= isSelected.length && isSelected.length <= 3) {
+        isSelected.sort();
+        await axios
+          .get(`api/reviewer/${isSelected}?page=${page.current}`)
+          .then((res) => {
+            setPeople([...people, ...res.data.reviewers]);
+            if (res.data.reviewers.length === 0) {
+              setIsNext(false);
+            } else {
+              setIsNext(true);
+            }
+          });
+      } else if (isSelected.length >= 4) {
+        isSelected.pop();
+        alert('장르를 3개 이하만 선택해주세요 😅');
+        page.current = 0;
+        setIsSelected([...isSelected]);
+        setPeople([...people]);
+      }
+    } catch (err) {
+      setError(err);
+      console.log(err);
+    }
+    page.current += 1;
+  };
+
+  const genreSelect = (index: any) => {
     if (isSelected.includes(index)) {
       setIsSelected((prevItems) => prevItems.filter((el) => el !== index));
-    } else setIsSelected((prevItems) => [...prevItems, index]);
+      setPeople([]);
+      page.current = 1;
+    } else {
+      setIsSelected((prevItems) => [...prevItems, index]);
+      setPeople([]);
+      page.current = 1;
+    }
   };
+
+  console.log(isSelected);
+  console.log(people);
+  console.log(page);
 
   const checkFunc = (index: any) => isSelected.includes(index);
 
@@ -103,45 +134,54 @@ const PeoplePage: FunctionComponent = ({}) => {
         {genreTags.map((tag, index) => (
           <GenreButton
             key={tag.type}
-            onClick={() => genreSelect(tag, index)}
-            className={checkFunc(index) ? 'selected' : ''}
+            onClick={() => {
+              genreSelect(index);
+            }}
+            className={checkFunc(tag.type) ? 'selected' : ''}
           >
             {tag.value}
           </GenreButton>
         ))}
       </SelectButtonArea>
       <>
-        {error || isLoading ? (
-          error ? (
-            <Message>에러가 발생했습니다 😭</Message>
-          ) : (
-            <Message> 로딩 중입니다 📚</Message>
-          )
+        {error ? (
+          <Message>에러가 발생했습니다 😭</Message>
         ) : people.length == 0 ? (
           <Message> 등록된 리뷰어가 없습니다 😢 </Message>
         ) : (
-          <GridLayout>
-            <>
-              {people &&
-                people.map((person) => (
-                  <GridItem key={person.id}>
-                    <PersonContainer
-                      onClick={() => {
-                        history.push(`/people/${person.nickname}`);
-                      }}
-                    >
-                      <Person
-                        nickname={person.nickname}
-                        profileImg={person.profileImg}
-                        genres={person.genres}
-                        info={person.info}
-                        countUserReview={person.countUserReview}
-                      />
-                    </PersonContainer>
-                  </GridItem>
-                ))}
-            </>
-          </GridLayout>
+          <InfiniteScroll
+            style={{ overflow: 'hidden' }}
+            dataLength={people.length}
+            next={fetchPerson}
+            hasMore={isNext}
+            loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
+            endMessage={
+              <ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>
+            }
+          >
+            <GridLayout>
+              <>
+                {people &&
+                  people.map((person) => (
+                    <GridItem key={person.id}>
+                      <PersonContainer
+                        onClick={() => {
+                          history.push(`/people/${person.nickname}`);
+                        }}
+                      >
+                        <Person
+                          nickname={person.nickname}
+                          profileImg={person.profileImg}
+                          genres={person.genres}
+                          info={person.info}
+                          countUserReview={person.countUserReview}
+                        />
+                      </PersonContainer>
+                    </GridItem>
+                  ))}
+              </>
+            </GridLayout>
+          </InfiniteScroll>
         )}
       </>
     </PeopleContainer>
