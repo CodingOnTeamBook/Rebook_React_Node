@@ -71,6 +71,21 @@ export class UsersService {
     if (CheckUser) return true;
     return false;
   }
+  async updateImg(userId: number, imgfile): Promise<any> {
+    const user = await this.userRepository.findOne({ where: { userId } });
+    const oldProfileImg = user.profileImg;
+    if (user.profileImg === 'users/defaultProfileImg.png')
+      user.profileImg = await uploadProfileImg(imgfile);
+    else if (user.profileImg.match('users/')) {
+      deleteProfileImg(user.profileImg);
+      user.profileImg = await uploadProfileImg(imgfile);
+    } else {
+      user.profileImg = await uploadProfileImg(imgfile);
+    }
+    await this.userRepository.save(user);
+    if (user.profileImg === oldProfileImg) return false;
+    else return user.profileImg;
+  }
 
   async update(
     id: string,
@@ -85,12 +100,14 @@ export class UsersService {
       user.genres = updateUserDto.genre;
     }
     if (imgfile) {
-      console.log(user.profileImg.slice(0, 5) === 'users');
-      if (user.profileImg === null)
+      if (user.profileImg === 'users/defaultProfileImg.png')
         user.profileImg = await uploadProfileImg(imgfile);
-      else if (user.profileImg.slice(0, 5) === 'users')
+      else if (user.profileImg.match('users/')) {
         deleteProfileImg(user.profileImg);
-      user.profileImg = await uploadProfileImg(imgfile);
+        user.profileImg = await uploadProfileImg(imgfile);
+      } else {
+        user.profileImg = await uploadProfileImg(imgfile);
+      }
     }
     return this.userRepository.save(user);
   }
