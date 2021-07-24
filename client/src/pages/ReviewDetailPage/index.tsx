@@ -45,10 +45,21 @@ interface IdType {
 //구조 자체는 layout으로 빼는 것이 best지만 딱히 지장은 없으므로 패스
 
 const ReviewDetailPage: FunctionComponent = () => {
-  const [reviewDetail, setReviewDetail] = useState<any[]>([]);
   const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userInfo, setUserInfo] = useState({
+    nickname: '',
+    profileImg: '',
+  });
+  const [reviewDetail, setReviewDetail] = useState({
+    id: 0,
+    summary: '',
+    score: 0,
+    like_count: 0,
+    tags: [],
+    createdAt: '',
+  });
 
   const { id } = useParams<IdType>();
 
@@ -56,16 +67,16 @@ const ReviewDetailPage: FunctionComponent = () => {
     const fetchReviews = async () => {
       try {
         setError(null);
-        setReviewDetail([]);
-        setBookDetail([]);
         setLoading(true);
         const res = await axios.post('/api/review/detail', {
           reviewid: id,
         });
-        fetchBookDetail(res.data.review.review[0].isbn);
+        setUserInfo(res.data.review.review.user);
+        fetchBookDetail(res.data.review.review.isbn);
         setReviewDetail(res.data.review.review);
       } catch (err) {
         setError(err);
+        console.log(err);
       }
       return () => setLoading(false);
     };
@@ -85,9 +96,6 @@ const ReviewDetailPage: FunctionComponent = () => {
     }
     setLoading(false);
   };
-
-  console.log(reviewDetail);
-  console.log(id);
 
   return (
     <>
@@ -118,19 +126,16 @@ const ReviewDetailPage: FunctionComponent = () => {
             direction="column"
             alignContent="center"
           >
-            {reviewDetail &&
-              reviewDetail.map((review) => (
-                <UserReview
-                  key={review.id}
-                  score={review.score}
-                  summary={review.summary}
-                  nickname={review.user.nickname}
-                  profileImg={review.user.profileImg}
-                  updatedAt={review.updatedAt}
-                  like_count={review.like_count}
-                  tags={review.tags}
-                />
-              ))}
+            <UserReview
+              key={reviewDetail.id}
+              score={reviewDetail.score}
+              summary={reviewDetail.summary}
+              nickname={userInfo.nickname}
+              profileImg={userInfo.profileImg}
+              createdAt={reviewDetail.createdAt}
+              like_count={reviewDetail.like_count}
+              tags={reviewDetail.tags}
+            />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
       )}

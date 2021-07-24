@@ -68,7 +68,7 @@ interface IUserReviewProps {
   summary: string;
   nickname: string;
   profileImg: string;
-  updatedAt: string;
+  createdAt: string;
   like_count: number;
   tags: any;
 }
@@ -78,7 +78,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   summary,
   nickname,
   profileImg,
-  updatedAt,
+  createdAt,
   like_count,
   tags,
 }: IUserReviewProps) => {
@@ -115,7 +115,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
               ))}
             </Box>
             <UserWrite> {summary} </UserWrite>
-            <ReviewDay> {TransferDate(updatedAt)} </ReviewDay>
+            <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
           </Box>
           <Box>
             <IconButton
