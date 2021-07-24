@@ -38,7 +38,16 @@ const ReviewWrapper = styled.div`
   width: 100%;
 `;
 
-const Message = styled.span`
+const ErrorMessage = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 20px;
+`;
+
+const ScrollMessage = styled.span`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,6 +83,11 @@ const ReviewPage: FunctionComponent = () => {
         .get(`api/review/${isSelected}?page=${page.current}`)
         .then((res) => {
           setReviews([...reviews, ...res.data.reviews]);
+          if (res.data.reviews.length === 0) {
+            setIsNext(false);
+          } else {
+            setIsNext(true);
+          }
         });
     } catch (err) {
       setError(err);
@@ -112,7 +126,7 @@ const ReviewPage: FunctionComponent = () => {
         ))}
       </SelectSortContainer>
       {error ? (
-        <Message>에러가 발생했습니다 😭</Message>
+        <ErrorMessage>에러가 발생했습니다 😭</ErrorMessage>
       ) : (
         <ReviewWrapper>
           <InfiniteScroll
@@ -120,11 +134,9 @@ const ReviewPage: FunctionComponent = () => {
             dataLength={reviews.length}
             next={fetchReviews}
             hasMore={isNext}
-            loader={<h4> loading... </h4>}
+            loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
             endMessage={
-              <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
-              </p>
+              <ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>
             }
           >
             <GridLayout>
