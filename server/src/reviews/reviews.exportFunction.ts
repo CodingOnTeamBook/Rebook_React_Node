@@ -1,4 +1,4 @@
-import { s3Path } from 'src/users/users.multerOptions';
+import { resizeProfileImg } from 'src/users/users.multerOptions';
 
 export const processingReview = async (review: any, includeTag: boolean) => {
   const reviews = [];
@@ -31,13 +31,13 @@ export const processingReview = async (review: any, includeTag: boolean) => {
 export const processingReviewISBN = async (review: any) => {
   const reviews = [];
   for (const data of review) {
+    data['user']['profileImg'].match('users/')
+      ? resizeProfileImg(data['user']['profileImg'])
+      : data['user']['profileImg'];
     const temp = {
       id: data['id'],
       writer: data['user']['nickname'],
-      writerProfileImg:
-        data['user']['profileImg'] === null
-          ? null
-          : s3Path + data['user']['profileImg'],
+      writerProfileImg: data['user']['profileImg'],
       summary: data['summary'],
       likeCount: data['like_count'],
       createdAt: data['createdAt'],

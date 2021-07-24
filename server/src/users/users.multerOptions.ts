@@ -11,8 +11,7 @@ const s3 = new AWS.S3({
   secretAccessKey: secretAccessKey,
   region: region,
 });
-
-export const s3Path = 'https://rebookbucket.s3.ap-northeast-2.amazonaws.com/';
+const s3Path = 'https://rebookbucket.s3.ap-northeast-2.amazonaws.com/';
 
 export const usersmulterOptions = multer({
   fileFilter: (req, file, cb) => {
@@ -45,14 +44,29 @@ export const usersmulterOptions = multer({
   }),
 });
 
+export const resizeProfileImg = (key) => {
+  const resizeImgKey = 'resize/w_200_' + key.split('/')[1];
+  return s3Path + resizeImgKey;
+};
+
 export const uploadProfileImg = async (file): Promise<string> => {
   return `${file.key}`;
 };
 
 export const deleteProfileImg = async (key): Promise<any> => {
+  const resizeImgKey = 'resize/w_200_' + key.split('/')[1];
   const params = { Bucket: 'rebookbucket', Key: key };
   s3.deleteObject(params, (err, data) => {
     if (err) console.log(err, err.stack);
     else console.log('delete', key);
+  });
+
+  const params_resize = {
+    Bucket: 'rebookbucket',
+    Key: resizeImgKey,
+  };
+  s3.deleteObject(params_resize, (err, data) => {
+    if (err) console.log(err, err.stack);
+    else console.log('delete', resizeImgKey);
   });
 };

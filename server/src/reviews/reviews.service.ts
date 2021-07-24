@@ -17,7 +17,7 @@ import {
   getReviewTxt,
 } from './reviews.multerOptions';
 import * as fs from 'fs';
-import { s3Path } from 'src/users/users.multerOptions';
+import { resizeProfileImg } from 'src/users/users.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -112,7 +112,7 @@ export class ReviewsService {
     const ORDERBY = orderby['orderby'];
     if (ORDERBY === 'created') {
       const review = await this.reviewRepository.findAndCount({
-        where: { isbn: ISBN },
+        where: { isbn: ISBN, isPublic: 1 },
         select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
         relations: ['user', 'comments'],
         order: {
@@ -124,7 +124,7 @@ export class ReviewsService {
       return await processingReviewISBN(review[0]);
     } else if (ORDERBY === 'popularity') {
       const review = await this.reviewRepository.findAndCount({
-        where: { isbn: ISBN },
+        where: { isbn: ISBN, isPublic: 1 },
         select: ['id', 'summary', 'user', 'createdAt', 'like_count'],
         relations: ['user', 'comments'],
         order: {
@@ -146,10 +146,10 @@ export class ReviewsService {
     });
     if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
 
-    review.text = await getReviewTxt(review.text);
-    if (review['user']['profileImg'] !== null)
-      review['user']['profileImg'] = s3Path + review['user']['profileImg'];
-
+    if (review['user']['profileImg'].match('users/'))
+      review['user']['profileImg'] = resizeProfileImg(
+        review['user']['profileImg']
+      );
     const comm = await this.commentRepository.find({
       where: { review: id },
       relations: ['user'],
@@ -157,14 +157,14 @@ export class ReviewsService {
     //comment가공
     const comment = [];
     for (let i = 0; i < comm.length; i++) {
+      comm[i].user.profileImg.match('users/')
+        ? resizeProfileImg(comm[i].user.profileImg)
+        : comm[i].user.profileImg;
       comment[i] = {
         ...comm[i],
         user: {
           nickname: comm[i].user.nickname,
-          profileImg:
-            comm[i].user.profileImg === null
-              ? null
-              : s3Path + comm[i].user.profileImg,
+          profileImg: comm[i].user.profileImg,
         },
       };
     }

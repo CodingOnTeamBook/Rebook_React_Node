@@ -17,5 +17,5 @@ export class CreateUserDto {
   readonly ageRange: string = 'Secret';
 
   @IsString()
-  readonly profileImg: string = 'users/test.jpg';
+  readonly profileImg: string = 'users/defaultProfileImg.png';
 }

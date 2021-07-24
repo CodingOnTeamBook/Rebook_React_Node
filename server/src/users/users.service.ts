@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
   deleteProfileImg,
   uploadProfileImg,
-  s3Path,
+  resizeProfileImg,
 } from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
@@ -78,7 +78,10 @@ export class UsersService {
       user.genres = updateUserDto.genre;
     }
     if (imgfile) {
-      if (user.profileImg.slice(0, 5) === 'users')
+      console.log(user.profileImg.slice(0, 5) === 'users');
+      if (user.profileImg === null)
+        user.profileImg = await uploadProfileImg(imgfile);
+      else if (user.profileImg.slice(0, 5) === 'users')
         deleteProfileImg(user.profileImg);
       user.profileImg = await uploadProfileImg(imgfile);
     }
@@ -120,8 +123,8 @@ export class UsersService {
     if (exUsers) {
       const users = [];
       exUsers[0].forEach((user) => {
-        if (user['profileImg'] !== null)
-          user['profileImg'] = s3Path + user['profileImg'];
+        if (user['profileImg'].match('users/'))
+          user['profileImg'] = resizeProfileImg(user['profileImg']);
         user['countFollowers'] = user['followers'].length;
         user['countUserReviews'] = user['reviews'].length;
         delete user['followers'];
