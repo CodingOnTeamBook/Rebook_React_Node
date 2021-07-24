@@ -81,9 +81,13 @@ const ReviewDetailPage: FunctionComponent = () => {
       setBookDetail(res.data.books.item);
     } catch (err) {
       setError(err);
+      console.log(err);
     }
     setLoading(false);
   };
+
+  console.log(reviewDetail);
+  console.log(id);
 
   return (
     <>

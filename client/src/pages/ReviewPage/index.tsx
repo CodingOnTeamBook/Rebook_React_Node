@@ -53,7 +53,6 @@ const sorts = [
 
 const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(true);
@@ -66,9 +65,7 @@ const ReviewPage: FunctionComponent = () => {
   const fetchReviews = async () => {
     try {
       setError(null);
-      setReviews([]);
-      setPage(1);
-      // setLoading(true);
+
       await axios.get(`api/review/${isSelected}?page=${page}`).then((res) => {
         setReviews([...reviews, ...res.data.reviews]);
       });
@@ -76,13 +73,16 @@ const ReviewPage: FunctionComponent = () => {
       setError(err);
     }
     setPage(page + 1);
-    // setLoading(false);
   };
 
-  const selectSort = (e: any) => {
+  const onChangeSort = (e: any) => {
     setIsSelected(e);
-    setReviews([]);
-    setPage(1);
+    if (isSelected == e) {
+      setReviews([...reviews]);
+    } else {
+      setReviews([]);
+      setPage(1);
+    }
   };
 
   console.log(page);
@@ -98,30 +98,26 @@ const ReviewPage: FunctionComponent = () => {
           <SortButton
             size="large"
             key={sort.type}
-            onClick={() => selectSort(sort.name)}
+            onClick={() => onChangeSort(sort.name)}
             className={checkFunc(sort.name) ? 'selected' : ''}
           >
             {sort.text}
           </SortButton>
         ))}
       </SelectSortContainer>
-      {error || loading ? (
-        error ? (
-          <Message>에러가 발생했습니다 😭</Message>
-        ) : (
-          <Message> 로딩 중입니다 📚</Message>
-        )
+      {error ? (
+        <Message>에러가 발생했습니다 😭</Message>
       ) : (
         <InfiniteScroll
-          dataLength={reviews.length} //This is important field to render the next data
+          dataLength={reviews.length}
           next={fetchReviews}
           hasMore={isNext}
-          loader={<Message> loading... </Message>}
+          loader={<h4 key={0}> loading... </h4>}
         >
           <GridLayout>
             <>
-              {reviews.map((review, key) => (
-                <GridItem key={key}>
+              {reviews.map((review) => (
+                <GridItem key={review.id}>
                   <ReviewItem
                     id={review.id}
                     cover={review.bookCover}
