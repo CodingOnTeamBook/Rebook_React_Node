@@ -47,11 +47,15 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
-    return this.userRepository.findOne({ where: { userId: id } });
+    const user = await this.userRepository.findOne({ where: { userId: id } });
+    user.profileImg = resizeProfileImg(user.profileImg);
+    return user;
   }
 
   async findByNickname(nickname: string): Promise<User> {
-    return this.userRepository.findOne({ where: { nickname } });
+    const user = await this.userRepository.findOne({ where: { nickname } });
+    user.profileImg = resizeProfileImg(user.profileImg);
+    return user;
   }
 
   async getAllComment(nickname: string): Promise<Comment[]> {
