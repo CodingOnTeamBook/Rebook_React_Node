@@ -118,6 +118,7 @@ const SmallReview = ({ like, review }: IProps) => {
   });
 
   const MAX_TITLE_LENGTH = 14;
+  const MAX_SUMMARY_LENGTH = 30;
 
   return (
     <Container>
@@ -146,7 +147,7 @@ const SmallReview = ({ like, review }: IProps) => {
           {like ? (
             <span>{review?.writer}님이 쓰신 리뷰입니다</span>
           ) : (
-            review?.summary
+            review?.summary.slice(0, MAX_SUMMARY_LENGTH)
           )}
         </TextInfo>
         <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
