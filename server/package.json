@@ -36,6 +36,7 @@
     "multer-s3": "^2.9.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "nestjs-typeorm-paginate": "^2.6.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",

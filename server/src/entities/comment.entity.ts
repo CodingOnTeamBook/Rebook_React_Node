@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
   ManyToOne,
 } from 'typeorm';
 import { User } from './user.entity';
@@ -23,9 +22,6 @@ export class Comment {
 
   @UpdateDateColumn()
   updateAt: Date;
-
-  @DeleteDateColumn()
-  deleteAt: Date;
 
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'SET NULL' })
   user: User;
