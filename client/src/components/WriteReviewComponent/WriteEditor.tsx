@@ -82,7 +82,7 @@ const WriteEditor = (props: any, ref: any) => {
   };
 
   const setText = (text: string) => {
-    setSummary(text.slice(0, 30));
+    setSummary(text.replace(/(\r\n\t|\n|\r\t)/gm, '').slice(0, 50));
   };
 
   useImperativeHandle(ref, () => ({

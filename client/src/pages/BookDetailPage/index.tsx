@@ -66,7 +66,7 @@ const BookDetailPage: FunctionComponent = () => {
           setIsEmptyReviews(false);
           setReviewError(false);
         } else {
-          setIsEmptyReviews(true); // 지금 여기가 트루로 변하는 상태
+          setIsEmptyReviews(true);
           setReviewError(false);
         }
       } catch (error) {
@@ -76,8 +76,6 @@ const BookDetailPage: FunctionComponent = () => {
     };
     fetchReviews('created');
   }, []);
-
-  console.log(isEmptyReviews);
 
   if (bookError || reviewError) {
     return (
