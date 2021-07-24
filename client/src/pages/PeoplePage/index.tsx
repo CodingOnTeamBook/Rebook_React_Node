@@ -60,12 +60,15 @@ const ScrollMessage = styled.span`
 
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
+  const [isEmptyPeople, setIsEmptyPeople] = useState(true);
   const [isSelected, setIsSelected] = useState<any[]>([0]);
+  const [isHasMore, setIsHasMore] = useState(true);
   const [error, setError] = useState(null);
   const page = useRef(1);
-  const [isNext, setIsNext] = useState(true);
 
   useEffect(() => {
+    setIsEmptyPeople(false);
+    setIsHasMore(true);
     fetchPerson();
   }, [isSelected]);
 
@@ -76,6 +79,7 @@ const PeoplePage: FunctionComponent = ({}) => {
         alert('장르를 하나 이상 선택해주세요 😅');
         setIsSelected([0]);
         page.current = 0;
+        setIsEmptyPeople(false);
       } else if (0 <= isSelected.length && isSelected.length <= 3) {
         isSelected.sort();
         await axios
@@ -83,9 +87,13 @@ const PeoplePage: FunctionComponent = ({}) => {
           .then((res) => {
             setPeople([...people, ...res.data.reviewers]);
             if (res.data.reviewers.length === 0) {
-              setIsNext(false);
+              setIsHasMore(false);
             } else {
-              setIsNext(true);
+              setIsHasMore(true);
+            }
+            setIsEmptyPeople(false);
+            if (res.data.reviewers.length === 0 && people.length === 0) {
+              setIsEmptyPeople(true);
             }
           });
       } else if (isSelected.length >= 4) {
@@ -94,10 +102,10 @@ const PeoplePage: FunctionComponent = ({}) => {
         page.current = 0;
         setIsSelected([...isSelected]);
         setPeople([...people]);
+        setIsEmptyPeople(false);
       }
     } catch (err) {
       setError(err);
-      console.log(err);
     }
     page.current += 1;
   };
@@ -113,10 +121,6 @@ const PeoplePage: FunctionComponent = ({}) => {
       page.current = 1;
     }
   };
-
-  console.log(isSelected);
-  console.log(people);
-  console.log(page);
 
   const checkFunc = (index: any) => isSelected.includes(index);
 
@@ -146,17 +150,17 @@ const PeoplePage: FunctionComponent = ({}) => {
       <>
         {error ? (
           <Message>에러가 발생했습니다 😭</Message>
-        ) : people.length == 0 ? (
+        ) : isEmptyPeople ? (
           <Message> 등록된 리뷰어가 없습니다 😢 </Message>
         ) : (
           <InfiniteScroll
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'hidden', padding: '10px' }}
             dataLength={people.length}
             next={fetchPerson}
-            hasMore={isNext}
+            hasMore={isHasMore}
             loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
             endMessage={
-              <ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>
+              <ScrollMessage> 더 이상 리뷰어가 없습니다. </ScrollMessage>
             }
           >
             <GridLayout>

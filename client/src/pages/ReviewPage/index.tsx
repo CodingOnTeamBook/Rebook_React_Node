@@ -20,7 +20,7 @@ const SelectSortContainer = styled.div`
 `;
 
 export const SortButton = styled(Button)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
@@ -33,12 +33,7 @@ export const SortButton = styled(Button)`
   }
 `;
 
-const ReviewWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-const ErrorMessage = styled.span`
+const Message = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,11 +63,12 @@ const sorts = [
 const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [error, setError] = useState(null);
-  const [isNext, setIsNext] = useState(true);
+  const [isHasMore, setIsHasMore] = useState(true);
   const [isSelected, setIsSelected] = useState('created');
   const page = useRef(1);
 
   useEffect(() => {
+    setIsHasMore(true);
     fetchReviews();
   }, [isSelected]);
 
@@ -84,9 +80,9 @@ const ReviewPage: FunctionComponent = () => {
         .then((res) => {
           setReviews([...reviews, ...res.data.reviews]);
           if (res.data.reviews.length === 0) {
-            setIsNext(false);
+            setIsHasMore(false);
           } else {
-            setIsNext(true);
+            setIsHasMore(true);
           }
         });
     } catch (err) {
@@ -105,10 +101,6 @@ const ReviewPage: FunctionComponent = () => {
     }
   };
 
-  console.log(page.current);
-  console.log(isSelected);
-  console.log(reviews);
-
   const checkFunc = (name: any) => isSelected.includes(name);
 
   return (
@@ -126,37 +118,33 @@ const ReviewPage: FunctionComponent = () => {
         ))}
       </SelectSortContainer>
       {error ? (
-        <ErrorMessage>에러가 발생했습니다 😭</ErrorMessage>
+        <Message>에러가 발생했습니다 😭</Message>
       ) : (
-        <ReviewWrapper>
-          <InfiniteScroll
-            style={{ overflow: 'hidden' }}
-            dataLength={reviews.length}
-            next={fetchReviews}
-            hasMore={isNext}
-            loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
-            endMessage={
-              <ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>
-            }
-          >
-            <GridLayout>
-              <>
-                {reviews.map((review) => (
-                  <GridItem key={review.id}>
-                    <ReviewItem
-                      id={review.id}
-                      cover={review.bookCover}
-                      title={review.bookTitle}
-                      summary={review.summary}
-                      score={review.score}
-                      writer={review.writer}
-                    />
-                  </GridItem>
-                ))}
-              </>
-            </GridLayout>
-          </InfiniteScroll>
-        </ReviewWrapper>
+        <InfiniteScroll
+          style={{ overflow: 'hidden', padding: '10px' }}
+          dataLength={reviews.length}
+          next={fetchReviews}
+          hasMore={isHasMore}
+          loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
+          endMessage={<ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>}
+        >
+          <GridLayout>
+            <>
+              {reviews.map((review) => (
+                <GridItem key={review.id}>
+                  <ReviewItem
+                    id={review.id}
+                    cover={review.bookCover}
+                    title={review.bookTitle}
+                    summary={review.summary}
+                    score={review.score}
+                    writer={review.writer}
+                  />
+                </GridItem>
+              ))}
+            </>
+          </GridLayout>
+        </InfiniteScroll>
       )}
     </ReviewContainer>
   );
