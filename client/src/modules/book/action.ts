@@ -1,7 +1,7 @@
 import { SET_BOOK_INFO } from './book-type';
 
 export interface bookInfo {
-  isbn: string;
+  isbn13: string;
   link: string;
   cover: string;
   title: string;

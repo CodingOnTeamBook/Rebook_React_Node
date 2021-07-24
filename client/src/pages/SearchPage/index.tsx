@@ -99,34 +99,25 @@ const SearchPage: FunctionComponent = () => {
 
   const onClick = (index: number) => {
     const booksInfo = [...(searchBookResult as Array<any>)];
-
     // bookInfo에서 필요한 속성만 추출
-    const {
-      link,
-      cover,
-      title,
-      author,
-      publisher,
-      pubDate,
-      description,
-      isbn,
-    } = booksInfo[index];
+    const { isbn13 } = booksInfo[index];
 
-    const bookData = {
-      link,
-      cover,
-      title,
-      author,
-      publisher,
-      pubDate,
-      description,
-      isbn,
-    };
+    // const bookData = {
+    //   link,
+    //   cover,
+    //   title,
+    //   author,
+    //   publisher,
+    //   pubDate,
+    //   description,
+    //   isbn13,
+    // };
 
-    // 해당 책 정보를 store에 dispatch
-    dispatch(setBookInfo(bookData));
+    // // 해당 책 정보를 store에 dispatch
+    // dispatch(setBookInfo(bookData));
 
-    history.push(`book/${isbn}`);
+    // bookDetail Page로 이동
+    history.push(`book/${isbn13}`);
   };
 
   const Header = () => {
