@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, useRef } from 'react';
 import ReviewItem from '../../components/ReviewComponent/ReviewItem';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -33,6 +33,11 @@ export const SortButton = styled(Button)`
   }
 `;
 
+const ReviewWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+`;
+
 const Message = styled.span`
   display: flex;
   justify-content: center;
@@ -54,9 +59,9 @@ const sorts = [
 const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
   const [isNext, setIsNext] = useState(true);
   const [isSelected, setIsSelected] = useState('created');
+  const page = useRef(1);
 
   useEffect(() => {
     fetchReviews();
@@ -65,14 +70,15 @@ const ReviewPage: FunctionComponent = () => {
   const fetchReviews = async () => {
     try {
       setError(null);
-
-      await axios.get(`api/review/${isSelected}?page=${page}`).then((res) => {
-        setReviews([...reviews, ...res.data.reviews]);
-      });
+      await axios
+        .get(`api/review/${isSelected}?page=${page.current}`)
+        .then((res) => {
+          setReviews([...reviews, ...res.data.reviews]);
+        });
     } catch (err) {
       setError(err);
     }
-    setPage(page + 1);
+    page.current += 1;
   };
 
   const onChangeSort = (e: any) => {
@@ -81,11 +87,11 @@ const ReviewPage: FunctionComponent = () => {
       setReviews([...reviews]);
     } else {
       setReviews([]);
-      setPage(1);
+      page.current = 1;
     }
   };
 
-  console.log(page);
+  console.log(page.current);
   console.log(isSelected);
   console.log(reviews);
 
@@ -108,29 +114,37 @@ const ReviewPage: FunctionComponent = () => {
       {error ? (
         <Message>에러가 발생했습니다 😭</Message>
       ) : (
-        <InfiniteScroll
-          dataLength={reviews.length}
-          next={fetchReviews}
-          hasMore={isNext}
-          loader={<h4 key={0}> loading... </h4>}
-        >
-          <GridLayout>
-            <>
-              {reviews.map((review) => (
-                <GridItem key={review.id}>
-                  <ReviewItem
-                    id={review.id}
-                    cover={review.bookCover}
-                    title={review.bookTitle}
-                    summary={review.summary}
-                    score={review.score}
-                    writer={review.writer}
-                  />
-                </GridItem>
-              ))}
-            </>
-          </GridLayout>
-        </InfiniteScroll>
+        <ReviewWrapper>
+          <InfiniteScroll
+            style={{ overflow: 'hidden' }}
+            dataLength={reviews.length}
+            next={fetchReviews}
+            hasMore={isNext}
+            loader={<h4> loading... </h4>}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            <GridLayout>
+              <>
+                {reviews.map((review) => (
+                  <GridItem key={review.id}>
+                    <ReviewItem
+                      id={review.id}
+                      cover={review.bookCover}
+                      title={review.bookTitle}
+                      summary={review.summary}
+                      score={review.score}
+                      writer={review.writer}
+                    />
+                  </GridItem>
+                ))}
+              </>
+            </GridLayout>
+          </InfiniteScroll>
+        </ReviewWrapper>
       )}
     </ReviewContainer>
   );
