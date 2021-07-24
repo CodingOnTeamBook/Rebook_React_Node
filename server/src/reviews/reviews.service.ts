@@ -209,7 +209,8 @@ export class ReviewsService {
     //reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
-    const isbn = JSON.parse(createReviewDto.bookInfo).isbn;
+    // 알라딘 bookInfo 기준 isbn13를 isbn으로 사용 (유진 수정, 확인하셨으면 주석 지우셔도 됩니다)
+    const isbn = JSON.parse(createReviewDto.bookInfo).isbn13;
     const review = new Review();
     //review.text = await uploadReviewTxt(reviewfile);
     review.text = createReviewDto.text;
