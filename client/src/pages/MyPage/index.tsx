@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import MyInfo from '../../components/myPage/MyInfo';
-import MyComment from '../../components/myPage/MyComment';
 import MyReview from '../../components/myPage/MyReview';
 import LikeReview from '../../components/myPage/LikeReview';
 import FollowReviewer from '../../components/myPage/FollowReviewer';
@@ -39,22 +38,18 @@ const MyPage: FunctionComponent = () => {
   const tab = {
     0: <MyInfo />,
     1: <MyReview />,
-    2: <MyComment />,
-    3: <LikeReview />,
-    4: <FollowReviewer />,
+    2: <LikeReview />,
+    3: <FollowReviewer />,
   };
   let ActiveTab: activeTab = 0;
   if (query[1] === 'review') {
     ActiveTab = 1;
   }
-  if (query[1] === 'comment') {
+  if (query[1] === 'like') {
     ActiveTab = 2;
   }
-  if (query[1] === 'like') {
-    ActiveTab = 3;
-  }
   if (query[1] === 'follow') {
-    ActiveTab = 4;
+    ActiveTab = 3;
   }
   return (
     <Container>
