@@ -123,7 +123,6 @@ const PeoplePage: FunctionComponent = ({}) => {
   };
 
   const checkFunc = (index: any) => isSelected.includes(index);
-
   const history = useHistory();
 
   // selectbox 값에 따라서 endpoint 다르게 해서 api 호출

@@ -7,7 +7,7 @@ const Button = styled(LineGreenBtn)`
   background-color: white;
 `;
 
-const SubmitBtn: FunctionComponent = () => {
+const SubmitBtn = () => {
   return <Button>리뷰 발행</Button>;
 };
 
