@@ -4,6 +4,7 @@ import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
 import { Tag } from 'src/entities/tag.entity';
 import { User } from 'src/entities/user.entity';
+import { Like } from 'src/entities/like.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -17,6 +18,7 @@ import {
   getReviewTxt,
 } from './reviews.multerOptions';
 import * as fs from 'fs';
+import { AuthUser } from 'src/users/users.decorator';
 import { resizeProfileImg } from 'src/users/users.multerOptions';
 
 @Injectable()
@@ -29,7 +31,9 @@ export class ReviewsService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Comment)
-    private commentRepository: Repository<Comment>
+    private commentRepository: Repository<Comment>,
+    @InjectRepository(Like)
+    private likeRepository: Repository<Like>
   ) {}
   //인기리뷰 6개 불러오기
   async orderbyLike(): Promise<any> {
@@ -270,5 +274,41 @@ export class ReviewsService {
     if (review.user.userId !== userId)
       throw new HttpException('Bad Request!', HttpStatus.BAD_REQUEST);
     return this.reviewRepository.delete({ id });
+  }
+
+  // 좋아요 기능
+  async likeReview(userid: string, reviewid: any): Promise<Like> {
+    const like = new Like();
+    const liked_reviewid = parseInt(reviewid.reviewid);
+    const review = await this.reviewRepository.findOne({
+      where: { id: liked_reviewid },
+    });
+    like.review = review;
+    like.user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
+    review.like_count++;
+    this.reviewRepository.save(review);
+    return this.likeRepository.save(like);
+  }
+
+  // 좋아요 취소 기능
+  async unlikeReview(userid: string, reviewid: any) {
+    const unliked_reviewid = parseInt(reviewid.reviewid);
+    const user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
+    const review = await this.reviewRepository.findOne({
+      where: { id: unliked_reviewid },
+    });
+    const like = await this.likeRepository.findOne({
+      where: {
+        user: user.id,
+        review: reviewid.reviewid,
+      },
+    });
+    review.like_count--;
+    this.reviewRepository.save(review);
+    return this.likeRepository.delete(like);
   }
 }
