@@ -209,35 +209,35 @@ export class UsersService {
     return comment;
   }
 
-  async getMyPublicReviews(userId: number) {
-    const publicReview = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.userId = :userId', { userId })
-      .innerJoinAndSelect(
-        'user.reviews',
-        'reviews',
-        'reviews.IsPublic = :IsPublic',
-        { IsPublic: true }
-      )
-      .getMany();
+  async getMyPublicReviews(p: any) {
+    const page = parseInt(p.page);
+    const skip = page === 1 ? 0 : (page - 1) * 12;
+
+    const publicReview = await this.reviewRepository.findAndCount({
+      order: {
+        createdAt: 'DESC',
+      },
+      where: { isPublic: 1 },
+      relations: ['user'],
+      skip: skip,
+      take: 12,
+    });
     return publicReview;
   }
 
-  async getMyPrivateReviews(userId: number) {
-    const privateReview = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.userId = :userId', { userId })
-      .innerJoinAndSelect(
-        'user.reviews',
-        'reviews',
-        'reviews.IsPublic = :IsPublic',
-        { IsPublic: false }
-      )
-      .getMany();
+  async getMyPrivateReviews(p: any) {
+    const page = parseInt(p.page);
+    const skip = page === 1 ? 0 : (page - 1) * 12;
+
+    const privateReview = await this.reviewRepository.findAndCount({
+      order: {
+        createdAt: 'DESC',
+      },
+      where: { isPublic: 0 },
+      relations: ['user'],
+      skip: skip,
+      take: 12,
+    });
     return privateReview;
   }
-
-  // async paginate(options: IPaginationOptions): Promise<Pagination<User>> {
-  //   return await paginate<User>(this.userRepository, options);
-  //}
 }

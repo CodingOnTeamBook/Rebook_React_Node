@@ -173,10 +173,10 @@ export class UsersController {
     return reviews;
   }
 
-  //전체 공개 댓글
+  //전체 공개 리뷰
   @Get('/myPublicReview')
-  async getMyPublicReviews(@AuthUser() data: any, @Res() res) {
-    return this.usersService.getMyPublicReviews(data.userId).then((value) => {
+  async getMyPublicReviews(@Query() page: string, @Res() res) {
+    return this.usersService.getMyPublicReviews(page).then((value) => {
       if (!value) {
         res.status(HttpStatus.OK).json({
           success: true,
@@ -192,10 +192,10 @@ export class UsersController {
     });
   }
 
-  //비공개 댓글
+  //비공개 리뷰
   @Get('/myPrivateReview')
-  async getMyPrivateReviews(@AuthUser() data: any, @Res() res) {
-    return this.usersService.getMyPrivateReviews(data.userId).then((value) => {
+  async getMyPrivateReviews(@Query() page: string, @Res() res) {
+    return this.usersService.getMyPrivateReviews(page).then((value) => {
       if (!value) {
         res.status(HttpStatus.OK).json({
           success: true,
@@ -292,19 +292,4 @@ export class UsersController {
         });
       });
   }
-  // @Get('/page')
-  // index(
-  //   @AuthUser() data: any,
-  //   @Query('page') page = 1,
-  //   @Query('limit') limit = 12
-  // ): Promise<Pagination<User>> {
-  //   limit = limit > 100 ? 100 : limit;
-  //   const pg = this.usersService.paginate({
-  //     page: Number(page),
-  //     limit: Number(limit),
-  //     route: 'http://localhost:5000/api/users/page',
-  //   });
-
-  //   return pg;
-  // }
 }
