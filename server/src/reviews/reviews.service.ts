@@ -14,6 +14,7 @@ import {
 } from './reviews.exportFunction';
 import { uploadReviewHtml } from './reviews.multerOptions';
 import * as fs from 'fs';
+import { AuthUser } from 'src/users/users.decorator';
 
 @Injectable()
 export class ReviewsService {
@@ -243,14 +244,38 @@ export class ReviewsService {
   }
 
   // 좋아요 기능
-  async likeReview(reviewid: any): Promise<Like> {
+  async likeReview(userid: string, reviewid: any): Promise<Like> {
     const like = new Like();
-    const r_id = parseInt(reviewid.reviewid);
-    const u_id = parseInt(reviewid.userid);
-    like.review = await this.reviewRepository.findOne({ where: { id: r_id } });
-    like.user = await this.userRepository.findOne({ where: { id: u_id } });
-    console.log(like.review);
-    console.log(like.user); // 왜 안 되지....
+    const liked_reviewid = parseInt(reviewid.reviewid);
+    const review = await this.reviewRepository.findOne({
+      where: { id: liked_reviewid },
+    });
+    like.review = review;
+    like.user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
+    review.like_count++;
+    this.reviewRepository.save(review);
     return this.likeRepository.save(like);
+  }
+
+  // 좋아요 취소 기능
+  async unlikeReview(userid: string, reviewid: any) {
+    const unliked_reviewid = parseInt(reviewid.reviewid);
+    const user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
+    const review = await this.reviewRepository.findOne({
+      where: { id: unliked_reviewid },
+    });
+    const like = await this.likeRepository.findOne({
+      where: {
+        user: user.id,
+        review: reviewid.reviewid,
+      },
+    });
+    review.like_count--;
+    this.reviewRepository.save(review);
+    return this.likeRepository.delete(like);
   }
 }

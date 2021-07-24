@@ -35,6 +35,29 @@ export class ReviewsController {
     });
   }
 
+  // 좋아요 기능
+  @Post('/like')
+  likeReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+    return this.reviewService
+      .likeReview(data.userId, reviewid)
+      .then((value) => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+          reviews: value,
+        });
+      });
+  }
+
+  // 좋아요 취소 기능
+  @Post('/unlike')
+  unlikeReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+    return this.reviewService.unlikeReview(data.userId, reviewid).then(() => {
+      res.status(HttpStatus.OK).json({
+        success: true,
+      });
+    });
+  }
+
   //인기리뷰6개 불러오기
   @Get('/home')
   load6PopularReviews(@Res() res) {
@@ -128,13 +151,5 @@ export class ReviewsController {
         reviews: value,
       });
     });
-  }
-  //@Delete('/')
-  //deleteReview(@Body())
-
-  // 좋아요 기능
-  @Post('/like')
-  likeReview(@Body() reviewid: string) {
-    return this.reviewService.likeReview(reviewid);
   }
 }
