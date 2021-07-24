@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState, useRef } from 'react';
 import ReviewItem from '../../components/ReviewComponent/ReviewItem';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridItem from 'layout/GridItem';
 import axios from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ReviewContainer = styled.div`
   margin-top: 30px;
@@ -17,14 +18,10 @@ const SelectSortContainer = styled.div`
 `;
 
 export const SortButton = styled(Button)`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border-radius: 50px;
   border: 3px solid ${(props) => props.theme.palette.green};
   color: ${(props) => props.theme.palette.green};
-  &:hover {
-    background-color: ${(props) => props.theme.palette.green};
-    color: white;
-  }
   &:not(:last-of-type) {
     margin-right: 10px;
   }
@@ -42,6 +39,20 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
+const ScrollMessage = styled.span`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 20px;
+`;
+
+const sorts = [
+  { type: 0, name: 'created', text: '최신순' },
+  { type: 1, name: 'popularity', text: '인기순' },
+];
+
 // endpoint에 따라서 reviews가 달라지기 때문에 같은 배열에서 관리
 // select 한 상태에 따라서 api parmas에 변화
 // 에러는 던지고, loading 중은 if(loading) return 메세지
@@ -49,96 +60,89 @@ const Message = styled.span`
 
 const ReviewPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sorts, setSorts] = useState([
-    { name: 'created', text: '최신순', selected: true },
-    { name: 'popularity', text: '인기순', selected: false },
-  ]);
+  const [isHasMore, setIsHasMore] = useState(true);
+  const [isSelected, setIsSelected] = useState('created');
+  const page = useRef(1);
 
   useEffect(() => {
-    fetchReviews('created');
-  }, []);
+    setIsHasMore(true);
+    fetchReviews();
+  }, [isSelected]);
 
-  const fetchReviews = async (sort: string) => {
+  const fetchReviews = async () => {
     try {
       setError(null);
-      setReviews([]);
-      setLoading(true);
-      const res = await axios.get(`api/review/${sort}?page=${1}`);
-      setReviews(res.data.reviews);
+      await axios
+        .get(`api/review/${isSelected}?page=${page.current}`)
+        .then((res) => {
+          setReviews([...reviews, ...res.data.reviews]);
+          if (res.data.reviews.length === 0) {
+            setIsHasMore(false);
+          } else {
+            setIsHasMore(true);
+          }
+        });
     } catch (err) {
       setError(err);
     }
-    setLoading(false);
+    page.current += 1;
   };
 
-  const onSortChange = (index: number) => {
-    const tmp = [...sorts];
-    tmp[index].selected = true;
-    index === 0 ? (tmp[1].selected = false) : (tmp[0].selected = false);
-    setSorts(tmp);
+  const onChangeSort = (e: any) => {
+    setIsSelected(e);
+    if (isSelected == e) {
+      setReviews([...reviews]);
+    } else {
+      setReviews([]);
+      page.current = 1;
+    }
   };
+
+  const checkFunc = (name: any) => isSelected.includes(name);
 
   return (
     <ReviewContainer>
       <SelectSortContainer>
-        {sorts.map(({ text, name, selected }, index) => (
+        {sorts.map((sort) => (
           <SortButton
             size="large"
-            key={index}
-            onClick={() => {
-              onSortChange(index);
-              fetchReviews(name);
-            }}
-            className={selected ? 'selected' : ''}
+            key={sort.type}
+            onClick={() => onChangeSort(sort.name)}
+            className={checkFunc(sort.name) ? 'selected' : ''}
           >
-            {text}
+            {sort.text}
           </SortButton>
         ))}
       </SelectSortContainer>
-      {error || loading ? (
-        error ? (
-          <Message>에러가 발생했습니다 😭</Message>
-        ) : (
-          <Message> 로딩 중입니다 📚</Message>
-        )
+      {error ? (
+        <Message>에러가 발생했습니다 😭</Message>
       ) : (
-        <GridLayout>
-          {sorts[0].selected ? (
+        <InfiniteScroll
+          style={{ overflow: 'hidden', padding: '10px' }}
+          dataLength={reviews.length}
+          next={fetchReviews}
+          hasMore={isHasMore}
+          loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
+          endMessage={<ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>}
+        >
+          <GridLayout>
             <>
-              {reviews &&
-                reviews.map((review, index) => (
-                  <GridItem key={index}>
-                    <ReviewItem
-                      id={review.id}
-                      cover={review.bookCover}
-                      title={review.bookTitle}
-                      summary={review.summary}
-                      score={review.score}
-                      writer={review.writer}
-                    />
-                  </GridItem>
-                ))}
+              {reviews.map((review) => (
+                <GridItem key={review.id}>
+                  <ReviewItem
+                    id={review.id}
+                    cover={review.bookCover}
+                    title={review.bookTitle}
+                    summary={review.summary}
+                    score={review.score}
+                    writer={review.writer}
+                  />
+                </GridItem>
+              ))}
             </>
-          ) : (
-            <>
-              {reviews &&
-                reviews.map((review, index) => (
-                  <GridItem key={index}>
-                    <ReviewItem
-                      id={review.id}
-                      cover={review.bookCover}
-                      title={review.bookTitle}
-                      summary={review.summary}
-                      score={review.score}
-                      writer={review.writer}
-                    />
-                  </GridItem>
-                ))}
-            </>
-          )}
-        </GridLayout>
+          </GridLayout>
+        </InfiniteScroll>
       )}
     </ReviewContainer>
   );
