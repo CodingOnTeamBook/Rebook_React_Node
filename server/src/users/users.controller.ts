@@ -91,6 +91,32 @@ export class UsersController {
     });
   }
 
+  //
+  @Post('/updateImg')
+  @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
+  updateImg(@AuthUser() data: any, @UploadedFile() file: File[], @Res() res) {
+    this.usersService
+      .updateImg(data.userId, file)
+      .then((value) => {
+        if (value) {
+          return res.status(HttpStatus.OK).json({
+            success: true,
+          });
+        } else {
+          return res.status(HttpStatus.OK).json({
+            success: false,
+            error: 'profileImgPath is Not inserted in DB',
+          });
+        }
+      })
+      .catch((err) => {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          error: err,
+        });
+      });
+  }
+
   @Patch('/myinfo/update/:nickname')
   @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
   update(

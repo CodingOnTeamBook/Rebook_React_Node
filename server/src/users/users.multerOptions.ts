@@ -36,10 +36,7 @@ export const usersmulterOptions = multer({
     bucket: 'rebookbucket',
     acl: 'public-read',
     key: (req, file, cb) => {
-      cb(
-        null,
-        `users/${req.params.nickname}_${Date.now()}_${file.originalname}`
-      );
+      cb(null, `users/${req.user.nickname}_${Date.now()}_${file.originalname}`);
     },
   }),
 });
