@@ -84,7 +84,7 @@ export class UsersService {
     }
     await this.userRepository.save(user);
     if (user.profileImg === oldProfileImg) return false;
-    else return true;
+    else return user.profileImg;
   }
 
   async update(

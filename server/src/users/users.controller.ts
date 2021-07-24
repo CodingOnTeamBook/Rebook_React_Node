@@ -101,6 +101,7 @@ export class UsersController {
         if (value) {
           return res.status(HttpStatus.OK).json({
             success: true,
+            filePath: value,
           });
         } else {
           return res.status(HttpStatus.OK).json({
