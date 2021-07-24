@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import { ProfileImg } from '../../style/componentStyled';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import SmsIcon from '@material-ui/icons/Sms';
 import axios from 'axios';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
@@ -60,6 +59,10 @@ const Review = styled.div`
     width: 70%;
   }
 
+  .review_contents h3 {
+    color: ${(props) => props.theme.palette.darkgreen};
+  }
+
   .review_comments {
     text-align: right;
   }
@@ -67,11 +70,6 @@ const Review = styled.div`
 
 const LikedIcon = styled(FavoriteIcon)`
   color: red;
-  margin: 0 4px;
-  font-size: 18px;
-`;
-
-const CommentsIcon = styled(SmsIcon)`
   margin: 0 4px;
   font-size: 18px;
 `;
@@ -156,22 +154,14 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
       <ReviewContainer>
         {isEmptyReviews && (
           <NoResultMsg>
-            아직 작성된 리뷰가 없어요😢 <br /> 첫 리뷰를 작성해주세요!
+            아직 작성된 리뷰가 없어요😢 <br />이 책의 첫 리뷰어가 되어보세요!
           </NoResultMsg>
         )}
         {tabs[0].selected ? (
           <>
             {reviews?.map(
               (
-                {
-                  commentCount,
-                  likeCount,
-                  summary,
-                  writer,
-                  writerProfileImg,
-                  createdAt,
-                  id,
-                },
+                { likeCount, summary, writer, writerProfileImg, createdAt, id },
                 index: number
               ) => (
                 <Review key={index}>
@@ -184,7 +174,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                   />
                   <div className="review_contents">
                     <h3>
-                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
+                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다
                     </h3>
                     <h4>
                       {summary}
@@ -194,8 +184,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
-                      {likeCount} <CommentsIcon />
-                      {commentCount}
+                      {likeCount}
                     </div>
                   </div>
                 </Review>
@@ -206,15 +195,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
           <>
             {_reviews?.map(
               (
-                {
-                  commentCount,
-                  likeCount,
-                  summary,
-                  writer,
-                  writerProfileImg,
-                  createdAt,
-                  id,
-                },
+                { likeCount, summary, writer, writerProfileImg, createdAt, id },
                 index: number
               ) => (
                 <Review key={index}>
@@ -237,8 +218,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                     </h4>
                     <div className="review_comments">
                       <LikedIcon />
-                      {likeCount} <CommentsIcon />
-                      {commentCount}
+                      {likeCount}
                     </div>
                   </div>
                 </Review>
