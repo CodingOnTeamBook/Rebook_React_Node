@@ -35,10 +35,11 @@ const LandingPage: FunctionComponent = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get('/api/review/popularity');
+        const response = await axios.get('/api/review/home');
         const {
           data: { reviews },
         } = response;
+        console.log(reviews);
         if (reviews.length) {
           setError(false);
           setReviews(reviews);
