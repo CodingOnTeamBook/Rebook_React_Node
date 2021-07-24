@@ -8,6 +8,7 @@ export interface IUser {
   info: string;
   updatedAt: Date;
   createdAt: Date;
+  profileImg: string;
 }
 
 export interface IsendUser {

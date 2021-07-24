@@ -30,14 +30,15 @@ interface IProps {
 interface ITag {
   value: string;
   type: number;
+  defaultValue: boolean;
 }
 
 const CheckboxesGroup = forwardRef(({ tags }: IProps, ref) => {
   const tempList: Array<string | number> = [];
-  const renderFormControlLabel = tags.map((tag: ITag) => {
+  const renderFormControlLabel = tags.map((tag: ITag, index) => {
     const { value, onChange, CheckedValue } = useCheck({
       name: tag.type,
-      initialValue: false,
+      initialValue: tag.defaultValue,
     });
     if (CheckedValue) {
       if (tempList.length > 2) {
@@ -49,7 +50,7 @@ const CheckboxesGroup = forwardRef(({ tags }: IProps, ref) => {
     }
     return (
       <FormControlLabel
-        key={tag.type}
+        key={index}
         control={
           <Checkbox
             icon={<FavoriteBorder />}
