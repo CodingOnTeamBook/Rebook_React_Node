@@ -7,6 +7,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import useCheck from '../../hooks/useCheck';
+import review from '../LandingPage/PopulateReviews';
+import { useHistory } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100%;
@@ -91,24 +93,38 @@ const LikeCheckBtn = styled(Checkbox)`
   right: 0;
 `;
 
-interface IProps {
-  like: boolean;
+interface review {
+  bookCover: string;
+  bookTitle: string;
+  id: number;
+  like_count: number;
+  score: number;
+  summary: string;
+  tags: Array<string> | null;
+  writer: string;
 }
 
-const SmallReview = ({ like }: IProps) => {
-  const [rating, setRating] = useState<number>(4);
+interface IProps {
+  like: boolean;
+  review?: review;
+}
+
+const SmallReview = ({ like, review }: IProps) => {
+  const history = useHistory();
+  const [rating, setRating] = useState<number | undefined>(review?.score);
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
   });
+
+  const MAX_TITLE_LENGTH = 14;
+  const MAX_SUMMARY_LENGTH = 30;
+
   return (
     <Container>
       <ImgArea>
         <ImgContainer>
-          <img
-            alt="bookimg"
-            src="http://image.yes24.com/momo/TopCate103/MidCate08/10270126.jpg"
-          />
+          <img alt="bookimg" src={review?.bookCover} />
         </ImgContainer>
       </ImgArea>
       <TextArea>
@@ -124,16 +140,19 @@ const SmallReview = ({ like }: IProps) => {
           <MenuIconBtn />
         )}
         <BookInfo>
-          <a href="">책 제목</a>
-          <span>000 지음</span>
+          <a href="">{review?.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
         </BookInfo>
         <Rating name="read-only" value={rating} readOnly />
         <TextInfo>
-          {like
-            ? '00님이 쓰신 리뷰입니다.'
-            : '리뷰 리뷰 리뷰 리뷰리뷰리뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰뷰리뷰리뷰리뷰리뷰'}
+          {like ? (
+            <span>{review?.writer}님이 쓰신 리뷰입니다</span>
+          ) : (
+            review?.summary.slice(0, MAX_SUMMARY_LENGTH)
+          )}
         </TextInfo>
-        <MoreInfoBtn>더 보기</MoreInfoBtn>
+        <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
+          더 보기
+        </MoreInfoBtn>
       </TextArea>
     </Container>
   );
