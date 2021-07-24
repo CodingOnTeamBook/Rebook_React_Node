@@ -6,8 +6,6 @@ import GridLayout from '../../components/common/GridLayout';
 import GridItem from 'layout/GridItem';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
-// import InfiniteScroll from 'react-infinite-scroller';
-// import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 const ReviewContainer = styled.div`
   margin-top: 30px;

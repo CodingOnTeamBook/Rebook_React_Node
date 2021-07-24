@@ -147,47 +147,45 @@ const PeoplePage: FunctionComponent = ({}) => {
           </GenreButton>
         ))}
       </SelectButtonArea>
-      <>
-        {error ? (
-          <Message>에러가 발생했습니다 😭</Message>
-        ) : isEmptyPeople ? (
-          <Message> 등록된 리뷰어가 없습니다 😢 </Message>
-        ) : (
-          <InfiniteScroll
-            style={{ overflow: 'hidden', padding: '10px' }}
-            dataLength={people.length}
-            next={fetchPerson}
-            hasMore={isHasMore}
-            loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
-            endMessage={
-              <ScrollMessage> 더 이상 리뷰어가 없습니다. </ScrollMessage>
-            }
-          >
-            <GridLayout>
-              <>
-                {people &&
-                  people.map((person) => (
-                    <GridItem key={person.id}>
-                      <PersonContainer
-                        onClick={() => {
-                          history.push(`/people/${person.nickname}`);
-                        }}
-                      >
-                        <Person
-                          nickname={person.nickname}
-                          profileImg={person.profileImg}
-                          genres={person.genres}
-                          info={person.info}
-                          countUserReview={person.countUserReview}
-                        />
-                      </PersonContainer>
-                    </GridItem>
-                  ))}
-              </>
-            </GridLayout>
-          </InfiniteScroll>
-        )}
-      </>
+      {error ? (
+        <Message>에러가 발생했습니다 😭</Message>
+      ) : isEmptyPeople ? (
+        <Message> 등록된 리뷰어가 없습니다 😢 </Message>
+      ) : (
+        <InfiniteScroll
+          style={{ overflow: 'hidden', padding: '10px' }}
+          dataLength={people.length}
+          next={fetchPerson}
+          hasMore={isHasMore}
+          loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
+          endMessage={
+            <ScrollMessage> 더 이상 리뷰어가 없습니다. </ScrollMessage>
+          }
+        >
+          <GridLayout>
+            <>
+              {people &&
+                people.map((person) => (
+                  <GridItem key={person.id}>
+                    <PersonContainer
+                      onClick={() => {
+                        history.push(`/people/${person.nickname}`);
+                      }}
+                    >
+                      <Person
+                        nickname={person.nickname}
+                        profileImg={person.profileImg}
+                        genres={person.genres}
+                        info={person.info}
+                        countUserReview={person.countUserReview}
+                      />
+                    </PersonContainer>
+                  </GridItem>
+                ))}
+            </>
+          </GridLayout>
+        </InfiniteScroll>
+      )}
     </PeopleContainer>
   );
 };
