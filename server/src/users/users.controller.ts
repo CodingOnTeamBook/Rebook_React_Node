@@ -118,23 +118,18 @@ export class UsersController {
       });
   }
 
-  @Patch('/myinfo/update/:nickname')
-  @UseInterceptors(FileInterceptor('profileImg', usersmulterOptions))
+  @Patch('/myinfo/update')
   update(
     @AuthUser() data: any,
-    @Param('nickname') nickname: string,
-    @UploadedFile() file: File[],
     @Body() updateUserDto: UpdateUserDto,
     @Res() res
   ) {
-    this.usersService
-      .update(data.userId, file, updateUserDto)
-      .then((value: User) => {
-        return res.status(HttpStatus.OK).json({
-          success: true,
-          user: value,
-        });
+    this.usersService.update(data.userId, updateUserDto).then((value: User) => {
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        user: value,
       });
+    });
   }
 
   @Get('myinfo/comments')

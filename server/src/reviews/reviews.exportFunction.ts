@@ -31,9 +31,8 @@ export const processingReview = async (review: any, includeTag: boolean) => {
 export const processingReviewISBN = async (review: any) => {
   const reviews = [];
   for (const data of review) {
-    data['user']['profileImg'].match('users/')
-      ? resizeProfileImg(data['user']['profileImg'])
-      : data['user']['profileImg'];
+    if (data['user']['profileImg'].slice(0, 6) === 'users/')
+      data['user']['profileImg'] = resizeProfileImg(data['user']['profileImg']);
     const temp = {
       id: data['id'],
       writer: data['user']['nickname'],

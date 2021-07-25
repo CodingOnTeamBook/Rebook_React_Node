@@ -113,7 +113,6 @@ const WriteReviewPage: FunctionComponent = () => {
 
     try {
       const filePath = await fetchTextFilePath();
-      // console.log(filePath);
       const summary = await editorRef.current.getSummary();
       if (summary.length < 5) {
         alert('5자 이상의 글자를 입력해주세요');

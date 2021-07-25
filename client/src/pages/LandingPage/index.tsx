@@ -39,7 +39,6 @@ const LandingPage: FunctionComponent = () => {
         const {
           data: { reviews },
         } = response;
-        console.log(reviews);
         if (reviews.length) {
           setError(false);
           setReviews(reviews);

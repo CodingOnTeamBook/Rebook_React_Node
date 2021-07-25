@@ -10,7 +10,9 @@ const useInput = ({
   validator = (value: string) => true,
 }: IProps) => {
   const [value, setValue] = useState<string>(initialValue);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     e.preventDefault();
     const { value } = e.target;
     if (validator(value)) {

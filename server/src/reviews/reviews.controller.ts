@@ -148,7 +148,7 @@ export class ReviewsController {
   }
 
   @Delete('/delete')
-  deleteReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+  deleteReview(@AuthUser() data: any, @Body() reviewid: number, @Res() res) {
     return this.reviewService
       .deleteReview(data.userId, reviewid)
       .then((value) => {
