@@ -32,6 +32,8 @@ const TextArea = styled.div`
   flex: 1;
   padding: 1rem;
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ImgContainer = styled.div`
@@ -84,6 +86,7 @@ const TextInfo = styled.div`
 
 const MoreInfoBtn = styled(LineGreenBtn)`
   height: 30px;
+  width: 80%;
   margin-top: 0.6rem;
 `;
 
@@ -112,7 +115,7 @@ interface IProps {
 const SmallReview = ({ like, review }: IProps) => {
   const history = useHistory();
   const [rating, setRating] = useState<number | undefined>(review?.score);
-  const { value, onChange, CheckedValue } = useCheck({
+  const { value, onChange } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
   });
@@ -123,49 +126,55 @@ const SmallReview = ({ like, review }: IProps) => {
   useEffect(() => {
     if (review && like && !value) {
       UnLike(review.id)
-        .then((response) => console.log(response))
+        .then((response) => {
+          if (response.success) {
+            alert('좋아요를 취소했습니다.');
+            window.location.reload();
+          }
+        })
         .catch((error) => console.log(error));
     }
   }, [value]);
-
-  if (review)
-    return (
-      <Container>
-        <ImgArea>
-          <ImgContainer>
-            <img alt="bookimg" src={review.bookCover} />
-          </ImgContainer>
-        </ImgArea>
-        <TextArea>
-          {like ? (
-            <LikeCheckBtn
-              icon={<FavoriteBorder />}
-              checkedIcon={<Favorite />}
-              checked={value}
-              onChange={onChange}
-              name="MyLikeReview"
-            />
-          ) : (
-            <MenuIconBtn reviewid={review.id} />
-          )}
-          <BookInfo>
-            <a href="">{review.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
-          </BookInfo>
-          <Rating name="read-only" value={rating} readOnly />
-          <TextInfo>
+  return (
+    <Container>
+      {review && (
+        <>
+          <ImgArea>
+            <ImgContainer>
+              <img alt="bookimg" src={review.bookCover} />
+            </ImgContainer>
+          </ImgArea>
+          <TextArea>
             {like ? (
-              <span>{review.writer}님이 쓰신 리뷰입니다</span>
+              <LikeCheckBtn
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                checked={value}
+                onChange={onChange}
+                name="MyLikeReview"
+              />
             ) : (
-              review.summary.slice(0, MAX_SUMMARY_LENGTH)
+              <MenuIconBtn reviewid={review.id} />
             )}
-          </TextInfo>
-          <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
-            더 보기
-          </MoreInfoBtn>
-        </TextArea>
-      </Container>
-    );
-  return null;
+            <BookInfo>
+              <a href="">{review.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
+            </BookInfo>
+            <Rating name="read-only" value={rating} readOnly />
+            <TextInfo>
+              {like ? (
+                <span>{review.writer}님이 쓰신 리뷰입니다</span>
+              ) : (
+                review.summary.slice(0, MAX_SUMMARY_LENGTH)
+              )}
+            </TextInfo>
+            <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
+              더 보기
+            </MoreInfoBtn>
+          </TextArea>
+        </>
+      )}
+    </Container>
+  );
 };
 
 export default SmallReview;

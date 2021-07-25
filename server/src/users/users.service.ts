@@ -235,7 +235,7 @@ export class UsersService {
     return comment;
   }
 
-  async getMyPublicReviews(p: any) {
+  async getMyPublicReviews(userid: number, p: any) {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 4;
 
@@ -243,7 +243,7 @@ export class UsersService {
       order: {
         createdAt: 'DESC',
       },
-      where: { isPublic: 1 },
+      where: { userId: userid, isPublic: 1 },
       relations: ['user'],
       select: [
         'id',
@@ -261,7 +261,7 @@ export class UsersService {
     return await processingReview(publicReview[0], false);
   }
 
-  async getMyPrivateReviews(p: any) {
+  async getMyPrivateReviews(userid: number, p: any) {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 4;
 
@@ -269,7 +269,7 @@ export class UsersService {
       order: {
         createdAt: 'DESC',
       },
-      where: { isPublic: 0 },
+      where: { userId: userid, isPublic: 0 },
       relations: ['user'],
       select: [
         'id',
