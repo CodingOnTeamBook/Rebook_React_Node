@@ -121,11 +121,13 @@ const SmallReview = ({ like, review }: IProps) => {
   const MAX_SUMMARY_LENGTH = 30;
 
   useEffect(() => {
-    console.log('request');
-    if (review) {
-      UnLike(review.id).then((response) => console.log(response));
+    if (review && like && !value) {
+      UnLike(review.id)
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
     }
   }, [value]);
+
   if (review)
     return (
       <Container>

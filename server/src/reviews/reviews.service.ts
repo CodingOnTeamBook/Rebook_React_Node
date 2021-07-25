@@ -305,17 +305,16 @@ export class ReviewsService {
 
   // 좋아요 취소 기능
   async unlikeReview(userid: string, reviewid: any) {
-    const unliked_reviewid = parseInt(reviewid.reviewid);
     const user = await this.userRepository.findOne({
       where: { userId: userid },
     });
     const review = await this.reviewRepository.findOne({
-      where: { id: unliked_reviewid },
+      where: { id: reviewid },
     });
     const like = await this.likeRepository.findOne({
       where: {
         user: user.id,
-        review: reviewid.reviewid,
+        review: reviewid,
       },
     });
     review.like_count--;

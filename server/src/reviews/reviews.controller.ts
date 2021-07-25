@@ -51,12 +51,14 @@ export class ReviewsController {
 
   // 좋아요 취소 기능
   @Post('/unlike')
-  unlikeReview(@AuthUser() data: any, @Body() reviewid: any, @Res() res) {
-    return this.reviewService.unlikeReview(data.userId, reviewid).then(() => {
-      res.status(HttpStatus.OK).json({
-        success: true,
+  unlikeReview(@AuthUser() data: any, @Body() Info: any, @Res() res) {
+    return this.reviewService
+      .unlikeReview(data.userId, Info.reviewid)
+      .then(() => {
+        res.status(HttpStatus.OK).json({
+          success: true,
+        });
       });
-    });
   }
 
   //인기리뷰6개 불러오기

@@ -10,7 +10,6 @@ import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { SERVER_URL } from 'config';
-import { auth } from 'API/USER_PRIVATE_API/index';
 import axios from 'axios';
 
 const UserReviewContainer = styled(Box)`
@@ -89,8 +88,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   id,
 }: IUserReviewProps) => {
   const [userNickname, setUserNickname] = useState<string | undefined>('');
-  const [userAuthError, setUserAuthError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState(0);
@@ -101,18 +98,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   useEffect(() => {
     setLikes(like_count);
     setIsLike(isLike);
-
-    const getAuth = async () => {
-      try {
-        const res = await auth();
-        setUserNickname(res.user.nickname);
-        setUserAuthError(false);
-      } catch (e) {
-        console.log(e);
-        setUserAuthError(true);
-      }
-    };
-    getAuth();
   }, []);
 
   useEffect(() => {
@@ -139,6 +124,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             reviewid: id,
           })
           .then((res) => {
+            console.log(res.data.reviews);
             setLikes((prev) => (prev += 1));
             setLikes(res.data.reviews.review.like_count);
             setLikeId(res.data.reviews.id);
