@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import GridLayout from '../../components/common/GridLayout';
 import GridSmallItem from '../../components/common/GridSmallItem';
 import SearchForm from '../../components/common/SearchForm';
-import Reviewer from '../../components/PeopleComponent/Reviewer';
 import BookInfo from '../../components/common/BookInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules/rootReducer';
@@ -170,7 +169,7 @@ const SearchPage: FunctionComponent = () => {
                   <PersonContainer to={`/people/${reviewer.nickname}`}>
                     <Person
                       nickname={reviewer.nickname}
-                      profileImg={reviewer.profieImg}
+                      profileImg={reviewer.profileImg}
                       genres={reviewer.genres}
                       info={reviewer.info}
                       countUserReview={reviewer.countUserReviews}

@@ -61,6 +61,7 @@ const BookDetailPage: FunctionComponent = () => {
         const response = await axios.post(`/api/review/load/${isbn}`, {
           orderby: `${orderby}`,
         });
+        console.log(response.data.reviews);
         if (response.data.reviews.length) {
           setReviews(response.data.reviews);
           setIsEmptyReviews(false);
