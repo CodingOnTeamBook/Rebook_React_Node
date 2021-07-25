@@ -54,7 +54,7 @@ const ReviewDetailPage: FunctionComponent = () => {
   });
   const [reviewDetail, setReviewDetail] = useState({
     id: 0,
-    summary: '',
+    text: '',
     score: 0,
     like_count: 0,
     tags: [],
@@ -97,6 +97,14 @@ const ReviewDetailPage: FunctionComponent = () => {
     setLoading(false);
   };
 
+  // function processFile(file: any) {
+  //   const reader = new FileReader();
+  //   reader.onload = function () {
+  //     console.log(reader.result);
+  //   };
+  //   reader.readAsText(file);
+  // }
+
   return (
     <>
       {error || loading ? (
@@ -129,7 +137,7 @@ const ReviewDetailPage: FunctionComponent = () => {
             <UserReview
               key={reviewDetail.id}
               score={reviewDetail.score}
-              summary={reviewDetail.summary}
+              text={reviewDetail.text}
               nickname={userInfo.nickname}
               profileImg={userInfo.profileImg}
               createdAt={reviewDetail.createdAt}

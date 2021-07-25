@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import useCheck from '../../hooks/useCheck';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
@@ -65,7 +65,7 @@ const BookTag = styled(Box)`
 
 interface IUserReviewProps {
   score: number;
-  summary: string;
+  text: any;
   nickname: string;
   profileImg: string;
   createdAt: string;
@@ -75,18 +75,20 @@ interface IUserReviewProps {
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
   score,
-  summary,
+  text,
   nickname,
   profileImg,
   createdAt,
   like_count,
   tags,
 }: IUserReviewProps) => {
+  // useEffect(() => {
+  // }, []);
+
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
   });
-
   const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -98,6 +100,24 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   const menuClose = () => {
     setAnchorEl(null);
   };
+
+  // const textArea = document.getElementById('text') as HTMLElement;
+
+  const file = new Blob([`http://localhost:5000/${text}`], {
+    type: 'text/plain',
+  });
+
+  // const reader = new FileReader();
+
+  // reader.onload = function (e: any) {
+  //   textArea.innerHTML = e.target.result;
+  //  위 아래 둘 다 해봤는데 안됐습니다.
+  //   textArea.innerHTML = reader.result;
+  // };
+
+  // reader.readAsText(file);
+
+  const __html = file;
 
   return (
     <UserReviewContainer boxShadow={2}>
@@ -114,7 +134,13 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                 </BookTag>
               ))}
             </Box>
-            <UserWrite> {summary} </UserWrite>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: __html,
+              }}
+            >
+              {/* {text} */}
+            </div>
             <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
           </Box>
           <Box>
