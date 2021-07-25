@@ -90,13 +90,11 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   const [userNickname, setUserNickname] = useState<string | undefined>('');
   const [error, setError] = useState(null);
   const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState(0);
-  const [checkUserLike, setCheckUserLike] = useState([]);
-  const [action, setAction] = useState('like');
+  const [likeCount, setLikeCount] = useState(0);
   const [likeId, setLikeId] = useState(0);
 
   useEffect(() => {
-    setLikes(like_count);
+    setLikeCount(like_count);
     setIsLike(isLike);
   }, []);
 
@@ -125,20 +123,19 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
           })
           .then((res) => {
             console.log(res.data.reviews);
-            setLikes((prev) => (prev += 1));
-            setLikes(res.data.reviews.review.like_count);
+            setLikeCount((prev) => (prev += 1));
+            setLikeCount(res.data.reviews.review.like_count);
             setLikeId(res.data.reviews.id);
             console.log(res.data);
             setIsLike(true);
           });
       } else if (isLike == true) {
-        // 이미 좋아요를 눌렀는 데 다시 눌렀을 때이므로 취소 로직
         await axios
           .post('/api/review/unlike/', {
             reviewid: id,
           })
           .then((res) => {
-            setLikes((prev) => (prev -= 1));
+            setLikeCount((prev) => (prev -= 1));
             setIsLike(false);
             console.log(res.data);
           });
@@ -185,7 +182,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             onChange={onChangeLike}
             name="MyLikeReview"
           />
-          <h3> {likes}명이 리뷰를 좋아합니다. </h3>
+          <h3> {likeCount}명이 리뷰를 좋아합니다. </h3>
         </Box>
       </Box>
     </UserReviewContainer>

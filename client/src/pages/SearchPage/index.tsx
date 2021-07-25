@@ -14,7 +14,7 @@ import { SortButton } from '../ReviewPage';
 import { SearchUsersByNickname } from '../../API/USER_PUBLIC_API/index';
 import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 import Person from 'components/PeopleComponent/Person';
-import GridItem from 'layout/GridSmallItem';
+import GridItem from 'layout/GridItem';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
