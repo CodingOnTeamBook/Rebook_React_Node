@@ -16,6 +16,8 @@ import { Comment } from '../entities/comment.entity';
 import { string0To255 } from 'aws-sdk/clients/customerprofiles';
 import { processingReview } from '../reviews/reviews.exportFunction';
 
+import { processingReview } from '../reviews/reviews.exportFunction';
+
 import {
   paginate,
   Pagination,
@@ -81,7 +83,7 @@ export class UsersService {
     const oldProfileImg = user.profileImg;
     if (user.profileImg === 'users/defaultProfileImg.png')
       user.profileImg = await uploadProfileImg(imgfile);
-    else if (user.profileImg.match('users/')) {
+    else if (user.profileImg.slice(0, 6) === 'users/') {
       deleteProfileImg(user.profileImg);
       user.profileImg = await uploadProfileImg(imgfile);
     } else {
@@ -126,7 +128,28 @@ export class UsersService {
 
   async getMyLikes(nickname: string) {
     const user = await this.userRepository.findOne({ where: { nickname } });
-    return this.likeRepository.find({ where: { user: user } });
+    const likes = await this.likeRepository.find({
+      where: { user: user },
+      relations: ['review'],
+    });
+    const likeList = [];
+    for (let i = 0; i < likes.length; i++) {
+      const review = await this.reviewRepository.findOne({
+        where: { id: likes[i].review.id },
+        relations: ['user'],
+      });
+      console.log(review);
+      const bookInfo = JSON.parse(review['book_info']);
+      const temp = {
+        id: review['id'],
+        writer: review['user']['nickname'],
+        score: review['score'],
+        bookTitle: bookInfo['title'],
+        bookCover: bookInfo['cover'],
+      };
+      likeList.push(temp);
+    }
+    return likeList;
   }
 
   //nickname으로 유저 서치
@@ -141,7 +164,7 @@ export class UsersService {
     if (exUsers) {
       const users = [];
       exUsers[0].forEach((user) => {
-        if (user['profileImg'].match('users/'))
+        if (user['profileImg'].slice(0, 6) === 'users/')
           user['profileImg'] = resizeProfileImg(user['profileImg']);
         user['countFollowers'] = user['followers'].length;
         user['countUserReviews'] = user['reviews'].length;

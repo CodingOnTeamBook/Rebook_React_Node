@@ -12,13 +12,13 @@ import {
   processingReview,
   processingReviewISBN,
 } from './reviews.exportFunction';
-import {
-  uploadReviewTxt,
-  deleteReviewTxt,
-  getReviewTxt,
-} from './reviews.multerOptions';
+//import {
+//  uploadReviewTxt,
+//  deleteReviewTxt,
+//  getReviewTxt,
+//  uploadTxt,
+//} from './reviews.multerOptions';
 import * as fs from 'fs';
-import { AuthUser } from 'src/users/users.decorator';
 import { resizeProfileImg } from 'src/users/users.multerOptions';
 
 @Injectable()
@@ -150,7 +150,7 @@ export class ReviewsService {
     });
     if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
 
-    if (review['user']['profileImg'].match('users/'))
+    if (review['user']['profileImg'].slice(0, 6) === 'users/')
       review['user']['profileImg'] = resizeProfileImg(
         review['user']['profileImg']
       );
@@ -161,9 +161,8 @@ export class ReviewsService {
     //comment가공
     const comment = [];
     for (let i = 0; i < comm.length; i++) {
-      comm[i].user.profileImg.match('users/')
-        ? resizeProfileImg(comm[i].user.profileImg)
-        : comm[i].user.profileImg;
+      if (comm[i].user.profileImg.slice(0, 6) === 'users/')
+        comm[i].user.profileImg = resizeProfileImg(comm[i].user.profileImg)
       comment[i] = {
         ...comm[i],
         user: {
@@ -195,16 +194,26 @@ export class ReviewsService {
   }
 
   //리뷰 파일 업로드
-  async uploadFile(nickname: string, text: string): Promise<any> {
-    const nick = nickname['nickname'];
+  async uploadFile(
+    nickname: string,
+    text: string,
+    updatefile?: string
+  ): Promise<any> {
+    const nick = typeof nickname === 'object' ? nickname['nickname'] : nickname;
+    const txt = typeof text === 'object' ? text['text'] : text;
     const uploads = './uploads/';
-    const filePath = `review/${nick}_${Date.now()}.txt`;
-    fs.writeFile(uploads + filePath, text['text'], (err: Error) => {
+    const filePath = `review/${nick}_${Date.now()}.html`;
+    if (updatefile) {
+      fs.unlinkSync(uploads + updatefile);
+    }
+    fs.writeFile(uploads + filePath, txt, (err: Error) => {
       if (err) {
         console.log('error with writeFile');
         return err;
       }
     });
+    //s3 업로드
+    //await uploadTxt(filePath);
     return filePath;
   }
 
@@ -213,7 +222,6 @@ export class ReviewsService {
     //reviewfile,
     createReviewDto: CreateReviewDto
   ): Promise<Review> {
-    // 알라딘 bookInfo 기준 isbn13를 isbn으로 사용 (유진 수정, 확인하셨으면 주석 지우셔도 됩니다)
     const isbn = JSON.parse(createReviewDto.bookInfo).isbn13;
     const review = new Review();
     //review.text = await uploadReviewTxt(reviewfile);
@@ -247,7 +255,11 @@ export class ReviewsService {
     }
     //await deleteReviewTxt(review.text);
     if (updateReviewDto.text) {
-      review.text = updateReviewDto.text;
+      review.text = await this.uploadFile(
+        review['user']['nickname'],
+        updateReviewDto.text,
+        review.text
+      );
     }
     if (updateReviewDto.summary) {
       review.summary = updateReviewDto.summary;

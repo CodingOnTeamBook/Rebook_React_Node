@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import useCheck from '../../hooks/useCheck';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
+import { SERVER_URL } from 'config';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -21,6 +22,11 @@ const UserReviewContainer = styled(Box)`
   background-color: white;
   padding: 3%;
   width: 100%;
+`;
+
+const UserWrapperContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
 `;
 
 const UserImg = styled(Avatar)`
@@ -40,9 +46,10 @@ const UserNickName = styled.div`
   margin-bottom: 5px;
 `;
 
-const UserWrite = styled.p`
+const UserWrite = styled.div`
   width: 100%;
-  font-size: 1.2rem;
+  height: 100%;
+  overflow: auto;
 `;
 
 const ReviewDay = styled.p`
@@ -65,7 +72,7 @@ const BookTag = styled(Box)`
 
 interface IUserReviewProps {
   score: number;
-  summary: string;
+  text: any;
   nickname: string;
   profileImg: string;
   createdAt: string;
@@ -75,7 +82,7 @@ interface IUserReviewProps {
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
   score,
-  summary,
+  text,
   nickname,
   profileImg,
   createdAt,
@@ -86,7 +93,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     name: 'MyLikeReview',
     initialValue: false,
   });
-
   const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -104,7 +110,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
       <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="row" flexWrap="nowrap">
           <UserImg alt={nickname} src={myProfileImg(profileImg)} />
-          <Box width={1}>
+          <UserWrapperContainer width={1}>
             <UserNickName>{nickname}</UserNickName>
             <Rating size="large" name="read-only" value={score} readOnly />
             <Box display="flex" flexDirection="row" flexWrap="wrap">
@@ -114,9 +120,13 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                 </BookTag>
               ))}
             </Box>
-            <UserWrite> {summary} </UserWrite>
+            <UserWrite
+              dangerouslySetInnerHTML={{
+                __html: `<iframe src="${SERVER_URL}/${text}" frameborder="0" width="100%" height="100%"></iframe>`,
+              }}
+            ></UserWrite>
             <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
-          </Box>
+          </UserWrapperContainer>
           <Box>
             <IconButton
               aria-label="more"
