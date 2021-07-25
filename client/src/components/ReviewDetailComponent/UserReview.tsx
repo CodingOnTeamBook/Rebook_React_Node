@@ -24,6 +24,11 @@ const UserReviewContainer = styled(Box)`
   width: 100%;
 `;
 
+const UserWrapperContainer = styled(Box)`
+  width: 100%;
+  height: 100%;
+`;
+
 const UserImg = styled(Avatar)`
   width: 60px;
   height: 60px;
@@ -41,9 +46,10 @@ const UserNickName = styled.div`
   margin-bottom: 5px;
 `;
 
-const UserWrite = styled.p`
+const UserWrite = styled.div`
   width: 100%;
-  font-size: 1.2rem;
+  height: 100%;
+  overflow: auto;
 `;
 
 const ReviewDay = styled.p`
@@ -104,7 +110,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
       <Box display="flex" flexDirection="column">
         <Box display="flex" flexDirection="row" flexWrap="nowrap">
           <UserImg alt={nickname} src={myProfileImg(profileImg)} />
-          <Box width={1}>
+          <UserWrapperContainer width={1}>
             <UserNickName>{nickname}</UserNickName>
             <Rating size="large" name="read-only" value={score} readOnly />
             <Box display="flex" flexDirection="row" flexWrap="wrap">
@@ -114,15 +120,13 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                 </BookTag>
               ))}
             </Box>
-            <div
+            <UserWrite
               dangerouslySetInnerHTML={{
-                __html: `<iframe src="${SERVER_URL}/${text}" height="100%"></iframe>`,
+                __html: `<iframe src="${SERVER_URL}/${text}" frameborder="0" width="100%" height="100%"></iframe>`,
               }}
-            >
-              {/* {text} */}
-            </div>
+            ></UserWrite>
             <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
-          </Box>
+          </UserWrapperContainer>
           <Box>
             <IconButton
               aria-label="more"
