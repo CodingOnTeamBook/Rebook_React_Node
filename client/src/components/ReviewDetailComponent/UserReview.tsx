@@ -119,6 +119,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   useEffect(() => {
     const checkMyLikeReview = async () => {
       axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
+        console.log(res.data);
         res.data.map((like: any) => {
           if (like.id == likeId) {
             setIsLike(true);
