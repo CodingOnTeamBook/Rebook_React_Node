@@ -104,18 +104,19 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
       Like(id)
         .then((response) => {
           console.log(response);
-          setLikes((prev) => prev + 1);
+          setLikes((prev) => (prev += 1));
         })
         .catch((err) => console.log(err));
     } else if (likeCheck && !value) {
       UnLike(id)
         .then((response) => {
           console.log(response);
-          setLikes((prev) => prev - 1);
+          setLikes((prev) => (prev -= 1));
         })
         .catch((err) => console.log(err));
     }
   }, [value]);
+
   return (
     <UserReviewContainer boxShadow={2}>
       <Box display="flex" flexDirection="column">
@@ -152,7 +153,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             onChange={onChange}
             name="MyLikeReview"
           />
-          <h3> {like_count}명이 리뷰를 좋아합니다. </h3>
+          <h3> {likes}명이 리뷰를 좋아합니다. </h3>
         </Box>
       </Box>
     </UserReviewContainer>
