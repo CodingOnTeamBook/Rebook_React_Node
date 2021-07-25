@@ -34,6 +34,8 @@ export interface review {
 }
 
 const BookDetailPage: FunctionComponent = () => {
+  // 여기서 isbn이 isbn13이랑 혼용되는게 문제
+  // 이제 isbn13으로 받음
   const isbn = decodeURI(location.pathname.split('/book/')[1]);
 
   const [bookInfo, setBookInfo] = useState();
