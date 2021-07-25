@@ -277,8 +277,7 @@ export class ReviewsService {
     return this.reviewRepository.save(review);
   }
 
-  async deleteReview(userId: string, reviewid: string) {
-    const id = parseInt(reviewid['reviewid']);
+  async deleteReview(userId: string, id: number) {
     const review = await this.reviewRepository.findOne({
       where: { id },
       relations: ['user'],

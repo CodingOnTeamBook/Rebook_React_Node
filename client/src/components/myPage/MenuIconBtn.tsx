@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { DeleteMyReview } from 'API/USER_PRIVATE_API';
 
 const MenuContainer = styled(IconButton)`
   position: absolute;
@@ -12,13 +13,30 @@ const MenuContainer = styled(IconButton)`
   margin: 0;
 `;
 
-const MenuIconBtn = () => {
+interface IProps {
+  reviewid: number;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const MenuIconBtn = ({ reviewid, setShow }: IProps) => {
   const [open, setOpen] = useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setOpen(event.currentTarget);
   };
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const updateReview = () => {
+    console.log('updateReview');
+  };
+
+  const deleteReview = () => {
+    DeleteMyReview(reviewid).then((response) => {
+      if (response.success) {
+        setShow((prev) => false);
+        alert('성공적으로 삭제되었습니다.');
+      }
+    });
   };
   return (
     <>
@@ -36,8 +54,12 @@ const MenuIconBtn = () => {
         open={Boolean(open)}
         onClose={handleClose}
       >
-        <MenuItem style={{ fontSize: '12px' }}>수정하기</MenuItem>
-        <MenuItem style={{ fontSize: '12px' }}>삭제하기</MenuItem>
+        <MenuItem style={{ fontSize: '12px' }} onClick={() => updateReview()}>
+          수정하기
+        </MenuItem>
+        <MenuItem style={{ fontSize: '12px' }} onClick={() => deleteReview()}>
+          삭제하기
+        </MenuItem>
       </Menu>
     </>
   );

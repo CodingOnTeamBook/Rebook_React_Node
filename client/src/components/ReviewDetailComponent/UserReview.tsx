@@ -91,7 +91,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
 }: IUserReviewProps) => {
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
-    initialValue: true,
+    initialValue: false,
   });
   const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

@@ -115,8 +115,8 @@ const Header: FunctionComponent = () => {
       </MenuContainer>
       <ProfileModal
         state={isProfileModalOpen}
-        imgUrl="https://cdn.pixabay.com/photo/2021/05/17/01/39/iris-6259565_960_720.jpg"
-        nickname="리북이"
+        imgUrl={data ? data.user.profileImg : ''}
+        nickname={data ? data.user.nickname : ''}
       />
     </Container>
   );

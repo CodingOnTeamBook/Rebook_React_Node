@@ -12,6 +12,8 @@ import {
 import { TransferCheckGenres } from 'globalFunction/TransferGenres';
 import { useSelector } from 'react-redux';
 import { RootState } from 'modules/rootReducer';
+import useInput from 'hooks/useInput';
+import { ImgUpdate, update } from 'API/USER_PRIVATE_API';
 
 const Container = styled.div`
   display: flex;
@@ -102,6 +104,10 @@ const MyInfo = () => {
   const { data } = useSelector((state: RootState) => state.auth);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const ChildBoxRef = useRef<HTMLDivElement | any>(null);
+  const { value, onChange, setInitialValue } = useInput({
+    initialValue: data ? data.user.info : '',
+  });
 
   const handleChangeFile = (event: React.FormEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
@@ -109,6 +115,40 @@ const MyInfo = () => {
       const imageUrl = URL.createObjectURL(imageFile);
       setImgFile(imageFile);
       setFileUrl(imageUrl);
+    }
+  };
+
+  const onSubmit = () => {
+    if (imgFile) {
+      ImgUpdate(imgFile).then((response) => {
+        if (!response.success) {
+          alert('프로필 사진 저장에 실패했습니다. 다시 시도해주세요.');
+        }
+        const formData = {
+          image: response.filePath,
+          genre: ChildBoxRef.current.getCheckData(),
+          info: value,
+        };
+        update(formData).then((response) => {
+          if (response.success) {
+            alert('성공적으로 수정되었습니다.');
+          } else {
+            alert('에러가 발생했습니다. 다시 시도해주세요.');
+          }
+        });
+      });
+    } else {
+      const formData = {
+        genre: ChildBoxRef.current.getCheckData(),
+        info: value,
+      };
+      update(formData).then((response) => {
+        if (response.success) {
+          alert('성공적으로 수정되었습니다.');
+        } else {
+          alert('에러가 발생했습니다. 다시 시도해주세요.');
+        }
+      });
     }
   };
   if (data?.user)
@@ -149,15 +189,22 @@ const MyInfo = () => {
           </MainInfo>
           <SubTitle>선호하는 장르를 알려주세요</SubTitle>
           <GenreContainer>
-            <CheckboxesGroup tags={TransferCheckGenres(data.user.genres)} />
+            <CheckboxesGroup
+              tags={TransferCheckGenres(data.user.genres)}
+              ref={ChildBoxRef}
+            />
           </GenreContainer>
           <SubTitle>자기 소개</SubTitle>
-          <TextArea defaultValue={myInfo(data.user.info)} />
-          <LineGreenBtn>수정하기</LineGreenBtn>
+          <TextArea
+            placeholder={myInfo(data.user.info)}
+            value={value}
+            onChange={onChange}
+          />
+          <LineGreenBtn onClick={() => onSubmit()}>수정하기</LineGreenBtn>
         </Container>
       </>
     );
-  return <div>다시 시도해주세요.</div>;
+  return null;
 };
 
 export default MyInfo;
