@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_SERVER } from '../../config';
+import { REVIEW_SERVER, USER_SERVER } from '../../config';
 import {
   ICheckNickNameResponse,
   ISearchUserByNicknameResponse,
@@ -25,5 +25,10 @@ export async function SearchByNickname(
 // 유사한 닉네임을 가진 유저들까지 모두 출력
 export async function SearchUsersByNickname(nickname: string): Promise<any> {
   const response = await axios.get(`${USER_SERVER}/search/${nickname}`);
+  return response.data;
+}
+
+export async function UnLike(reviewid: number) {
+  const response = await axios.post(`${REVIEW_SERVER}/unlike`, { reviewid });
   return response.data;
 }

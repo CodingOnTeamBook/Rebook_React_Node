@@ -16,8 +16,6 @@ import { Comment } from '../entities/comment.entity';
 import { string0To255 } from 'aws-sdk/clients/customerprofiles';
 import { processingReview } from '../reviews/reviews.exportFunction';
 
-import { processingReview } from '../reviews/reviews.exportFunction';
-
 import {
   paginate,
   Pagination,
@@ -138,7 +136,6 @@ export class UsersService {
         where: { id: likes[i].review.id },
         relations: ['user'],
       });
-      console.log(review);
       const bookInfo = JSON.parse(review['book_info']);
       const temp = {
         id: review['id'],

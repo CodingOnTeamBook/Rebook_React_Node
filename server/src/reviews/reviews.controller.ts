@@ -51,7 +51,7 @@ export class ReviewsController {
 
   // 좋아요 취소 기능
   @Post('/unlike')
-  unlikeReview(@AuthUser() data: any, @Body() reviewid: string, @Res() res) {
+  unlikeReview(@AuthUser() data: any, @Body() reviewid: any, @Res() res) {
     return this.reviewService.unlikeReview(data.userId, reviewid).then(() => {
       res.status(HttpStatus.OK).json({
         success: true,
@@ -148,9 +148,9 @@ export class ReviewsController {
   }
 
   @Delete('/delete')
-  deleteReview(@AuthUser() data: any, @Body() reviewid: number, @Res() res) {
+  deleteReview(@AuthUser() data: any, @Body() reviewKey: any, @Res() res) {
     return this.reviewService
-      .deleteReview(data.userId, reviewid)
+      .deleteReview(data.userId, reviewKey.reviewid)
       .then((value) => {
         res.status(HttpStatus.OK).json({
           success: true,

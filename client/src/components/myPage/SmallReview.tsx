@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Rating from '@material-ui/lab/Rating';
 import { LineGreenBtn } from '../../style/componentStyled';
@@ -9,8 +9,9 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import useCheck from '../../hooks/useCheck';
 import review from '../LandingPage/PopulateReviews';
 import { useHistory } from 'react-router-dom';
+import { UnLike } from 'API/USER_PUBLIC_API';
 
-const Container = styled.div<{ show: boolean }>`
+const Container = styled.div`
   width: 100%;
   border-radius: 4px;
   margin-top: 2.5rem;
@@ -18,7 +19,7 @@ const Container = styled.div<{ show: boolean }>`
   display: flex;
   height: 200px;
   padding: 0.4rem;
-  display: ${(props) => (props.show ? 'flex' : 'none')};
+  display: flex;
   box-shadow: 6px 6px 8px rgba(114, 114, 114, 0.15);
   transition: all 0.2s linear;
 `;
@@ -111,7 +112,6 @@ interface IProps {
 const SmallReview = ({ like, review }: IProps) => {
   const history = useHistory();
   const [rating, setRating] = useState<number | undefined>(review?.score);
-  const [show, setShow] = useState<boolean>(true);
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
@@ -120,42 +120,50 @@ const SmallReview = ({ like, review }: IProps) => {
   const MAX_TITLE_LENGTH = 14;
   const MAX_SUMMARY_LENGTH = 30;
 
-  return (
-    <Container show={show}>
-      <ImgArea>
-        <ImgContainer>
-          <img alt="bookimg" src={review?.bookCover} />
-        </ImgContainer>
-      </ImgArea>
-      <TextArea>
-        {like ? (
-          <LikeCheckBtn
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={value}
-            onChange={onChange}
-            name="MyLikeReview"
-          />
-        ) : (
-          <MenuIconBtn reviewid={review ? review.id : -1} setShow={setShow} />
-        )}
-        <BookInfo>
-          <a href="">{review?.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
-        </BookInfo>
-        <Rating name="read-only" value={rating} readOnly />
-        <TextInfo>
+  useEffect(() => {
+    console.log('request');
+    if (review) {
+      UnLike(review.id).then((response) => console.log(response));
+    }
+  }, [value]);
+  if (review)
+    return (
+      <Container>
+        <ImgArea>
+          <ImgContainer>
+            <img alt="bookimg" src={review.bookCover} />
+          </ImgContainer>
+        </ImgArea>
+        <TextArea>
           {like ? (
-            <span>{review?.writer}님이 쓰신 리뷰입니다</span>
+            <LikeCheckBtn
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              checked={value}
+              onChange={onChange}
+              name="MyLikeReview"
+            />
           ) : (
-            review?.summary.slice(0, MAX_SUMMARY_LENGTH)
+            <MenuIconBtn reviewid={review.id} />
           )}
-        </TextInfo>
-        <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
-          더 보기
-        </MoreInfoBtn>
-      </TextArea>
-    </Container>
-  );
+          <BookInfo>
+            <a href="">{review.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
+          </BookInfo>
+          <Rating name="read-only" value={rating} readOnly />
+          <TextInfo>
+            {like ? (
+              <span>{review.writer}님이 쓰신 리뷰입니다</span>
+            ) : (
+              review.summary.slice(0, MAX_SUMMARY_LENGTH)
+            )}
+          </TextInfo>
+          <MoreInfoBtn onClick={() => history.push(`/review/${review?.id}`)}>
+            더 보기
+          </MoreInfoBtn>
+        </TextArea>
+      </Container>
+    );
+  return null;
 };
 
 export default SmallReview;

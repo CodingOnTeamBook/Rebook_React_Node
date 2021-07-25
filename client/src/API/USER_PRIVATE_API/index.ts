@@ -69,7 +69,7 @@ export async function getMyLike(nickname: string) {
 
 export async function DeleteMyReview(reviewid: number) {
   const response = await axios.delete(`${REVIEW_SERVER}/delete`, {
-    data: { reviewid },
+    data: { reviewid: reviewid },
   });
   return response.data;
 }

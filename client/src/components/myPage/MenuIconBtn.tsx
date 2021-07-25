@@ -15,9 +15,8 @@ const MenuContainer = styled(IconButton)`
 
 interface IProps {
   reviewid: number;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const MenuIconBtn = ({ reviewid, setShow }: IProps) => {
+const MenuIconBtn = ({ reviewid }: IProps) => {
   const [open, setOpen] = useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setOpen(event.currentTarget);
@@ -33,8 +32,8 @@ const MenuIconBtn = ({ reviewid, setShow }: IProps) => {
   const deleteReview = () => {
     DeleteMyReview(reviewid).then((response) => {
       if (response.success) {
-        setShow((prev) => false);
         alert('성공적으로 삭제되었습니다.');
+        window.location.reload();
       }
     });
   };

@@ -162,7 +162,7 @@ export class ReviewsService {
     const comment = [];
     for (let i = 0; i < comm.length; i++) {
       if (comm[i].user.profileImg.slice(0, 6) === 'users/')
-        comm[i].user.profileImg = resizeProfileImg(comm[i].user.profileImg)
+        comm[i].user.profileImg = resizeProfileImg(comm[i].user.profileImg);
       comment[i] = {
         ...comm[i],
         user: {
