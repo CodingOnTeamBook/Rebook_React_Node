@@ -112,8 +112,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
         setUserAuthError(true);
       }
     };
-
-
     getAuth();
   }, []);
 

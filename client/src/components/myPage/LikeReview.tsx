@@ -36,13 +36,12 @@ const LikeReview = () => {
   }, []);
   return (
     <GridLayout>
-      {reviews.length > 0 ? (
-        reviews.map((review: review, index: number) => (
-          <GridMediumItem key={index}>
-            <SmallReview like={true} review={review} />
-          </GridMediumItem>
-        ))
-      ) : (
+      {reviews?.map((review: review, index: number) => (
+        <GridMediumItem key={index}>
+          <SmallReview like={true} review={review} />
+        </GridMediumItem>
+      ))}
+      {reviews && reviews.length == 0 && (
         <NoReview>아직 좋아요 한 리뷰가 없습니다.</NoReview>
       )}
     </GridLayout>
