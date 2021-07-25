@@ -100,20 +100,20 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     setIsLike(isLike);
   }, []);
 
-  useEffect(() => {
-    const checkMyLikeReview = async () => {
-      axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
-        console.log(res.data);
-        res.data.map((like: any) => {
-          if (like.id == likeId) {
-            setIsLike(true);
-            console.log(like.id);
-          }
-        });
-      });
-    };
-    checkMyLikeReview();
-  }, []);
+  // useEffect(() => {
+  //   const checkMyLikeReview = async () => {
+  //     axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
+  //       console.log(res.data);
+  //       res.data.map((like: any) => {
+  //         if (like.id == likeId) {
+  //           setIsLike(true);
+  //           console.log(like.id);
+  //         }
+  //       });
+  //     });
+  //   };
+  //   checkMyLikeReview();
+  // }, []);
 
   const onChangeLike = async () => {
     try {

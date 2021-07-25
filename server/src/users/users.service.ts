@@ -5,11 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import {
-  deleteProfileImg,
-  uploadProfileImg,
-  resizeProfileImg,
-} from './users.multerOptions';
+import { deleteProfileImg, uploadProfileImg } from './users.multerOptions';
 import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
 import { Comment } from '../entities/comment.entity';
@@ -49,13 +45,11 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId: id } });
-    user.profileImg = resizeProfileImg(user.profileImg);
     return user;
   }
 
   async findByNickname(nickname: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { nickname } });
-    user.profileImg = resizeProfileImg(user.profileImg);
     return user;
   }
 
@@ -162,7 +156,7 @@ export class UsersService {
       const users = [];
       exUsers[0].forEach((user) => {
         if (user['profileImg'].slice(0, 6) === 'users/')
-          user['profileImg'] = resizeProfileImg(user['profileImg']);
+          user['profileImg'] = user['profileImg'];
         user['countFollowers'] = user['followers'].length;
         user['countUserReviews'] = user['reviews'].length;
         delete user['followers'];

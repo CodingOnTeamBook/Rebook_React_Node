@@ -1,5 +1,3 @@
-import { resizeProfileImg } from 'src/users/users.multerOptions';
-
 export const processingReview = async (review: any, includeTag: boolean) => {
   const reviews = [];
   for (const data of review) {
@@ -32,7 +30,7 @@ export const processingReviewISBN = async (review: any) => {
   const reviews = [];
   for (const data of review) {
     if (data['user']['profileImg'].slice(0, 6) === 'users/')
-      data['user']['profileImg'] = resizeProfileImg(data['user']['profileImg']);
+      data['user']['profileImg'] = data['user']['profileImg'];
     const temp = {
       id: data['id'],
       writer: data['user']['nickname'],

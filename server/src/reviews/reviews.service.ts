@@ -19,7 +19,6 @@ import {
 //  uploadTxt,
 //} from './reviews.multerOptions';
 import * as fs from 'fs';
-import { resizeProfileImg } from 'src/users/users.multerOptions';
 
 @Injectable()
 export class ReviewsService {
@@ -151,9 +150,7 @@ export class ReviewsService {
     if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
 
     if (review['user']['profileImg'].slice(0, 6) === 'users/')
-      review['user']['profileImg'] = resizeProfileImg(
-        review['user']['profileImg']
-      );
+      review['user']['profileImg'] = review['user']['profileImg'];
     const comm = await this.commentRepository.find({
       where: { review: id },
       relations: ['user'],
@@ -162,7 +159,7 @@ export class ReviewsService {
     const comment = [];
     for (let i = 0; i < comm.length; i++) {
       if (comm[i].user.profileImg.slice(0, 6) === 'users/')
-        comm[i].user.profileImg = resizeProfileImg(comm[i].user.profileImg);
+        comm[i].user.profileImg = comm[i].user.profileImg;
       comment[i] = {
         ...comm[i],
         user: {
