@@ -15,15 +15,7 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselComponent: FunctionComponent = () => {
-  const BANNERS = [
-    banner_001,
-    banner_002,
-    banner_003,
-    banner_004,
-    banner_005,
-    banner_006,
-    banner_007,
-  ];
+  const BANNERS = [banner_001, banner_003, banner_004, banner_005, banner_006];
 
   return (
     <CarouselContainer>
