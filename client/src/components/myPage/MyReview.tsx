@@ -7,6 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import useCheck from '../../hooks/useCheck';
 import SmallReview from './SmallReview';
 import { getPrivateReview, getPublicReview } from 'API/USER_PRIVATE_API';
+import { useInView } from 'react-intersection-observer';
 
 const Container = styled.div`
   width: 95%;
@@ -51,17 +52,20 @@ interface review {
 }
 
 const MyReview = () => {
-  const [reviews, setReviews] = useState<any>(null);
-  const page = useRef<number>(1);
+  const [reviews, setReviews] = useState<Array<review> | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isMore, setIsMore] = useState<boolean>(true);
+  const [ref, inView] = useInView();
   const { value, onChange } = useCheck({
     name: '비공개',
     initialValue: false,
   });
 
   const Reset = () => {
-    setReviews(null);
-    page.current = 1;
-    fetchReviews();
+    setIsMore((prevState) => true);
+    setReviews((prevState) => null);
+    setPage((prevState) => 1);
   };
 
   useEffect(() => {
@@ -69,35 +73,60 @@ const MyReview = () => {
   }, [value]);
 
   const fetchPrivateReview = () => {
-    getPrivateReview(page.current).then((response) => {
+    getPrivateReview(page).then((response) => {
       if (!response.success) {
         alert('내 정보를 가져오지 못했습니다.');
       }
-      setReviews([...response.result]);
+      setReviews((prev) => {
+        if (prev != null) {
+          return [...prev, ...response.result];
+        } else {
+          return [...response.result];
+        }
+      });
+      setLoading(false);
     });
   };
 
   const fetchPubliceReview = () => {
-    getPublicReview(page.current).then((response) => {
+    getPublicReview(page).then((response) => {
       if (!response.success) {
         alert('내 정보를 가져오지 못했습니다.');
       }
-      setReviews([...response.result]);
+      if (response.result.length == 0) {
+        setIsMore(false);
+      }
+      setReviews((prev) => {
+        if (prev != null) {
+          return [...prev, ...response.result];
+        } else {
+          return [...response.result];
+        }
+      });
+      setLoading(false);
     });
   };
 
   const fetchReviews = () => {
-    if (value) {
-      fetchPrivateReview();
-    } else {
-      fetchPubliceReview();
+    if (isMore) {
+      setLoading(true);
+      if (value) {
+        fetchPrivateReview();
+      } else {
+        fetchPubliceReview();
+      }
     }
   };
 
-  const MoreReviews = () => {
-    page.current += 1;
+  useEffect(() => {
     fetchReviews();
-  };
+  }, [page]);
+
+  useEffect(() => {
+    if (inView && !loading) {
+      setPage((prevState) => prevState + 1);
+    }
+  }, [inView, loading]);
 
   return (
     <Container>
@@ -120,6 +149,7 @@ const MyReview = () => {
             <SmallReview like={false} review={review} />
           </GridItem>
         ))}
+        <div ref={ref}></div>
       </GridLayout>
     </Container>
   );

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_SERVER } from '../../config';
+import { USER_SERVER, REVIEW_SERVER } from '../../config';
 import {
   IsendUser,
   IAuthResponse,
@@ -64,5 +64,12 @@ export async function getPrivateReview(page: number): Promise<IPrivateReview> {
 
 export async function getMyLike(nickname: string) {
   const response = await axios.get(`${USER_SERVER}/myinfo/likes/${nickname}`);
+  return response.data;
+}
+
+export async function DeleteMyReview(reviewid: number) {
+  const response = await axios.delete(`${REVIEW_SERVER}/delete`, {
+    data: { reviewid },
+  });
   return response.data;
 }

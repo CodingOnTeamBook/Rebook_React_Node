@@ -10,7 +10,7 @@ import useCheck from '../../hooks/useCheck';
 import review from '../LandingPage/PopulateReviews';
 import { useHistory } from 'react-router-dom';
 
-const Container = styled.div`
+const Container = styled.div<{ show: boolean }>`
   width: 100%;
   border-radius: 4px;
   margin-top: 2.5rem;
@@ -18,7 +18,7 @@ const Container = styled.div`
   display: flex;
   height: 200px;
   padding: 0.4rem;
-  display: flex;
+  display: ${(props) => (props.show ? 'flex' : 'none')};
   box-shadow: 6px 6px 8px rgba(114, 114, 114, 0.15);
   transition: all 0.2s linear;
 `;
@@ -111,6 +111,7 @@ interface IProps {
 const SmallReview = ({ like, review }: IProps) => {
   const history = useHistory();
   const [rating, setRating] = useState<number | undefined>(review?.score);
+  const [show, setShow] = useState<boolean>(true);
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
@@ -120,7 +121,7 @@ const SmallReview = ({ like, review }: IProps) => {
   const MAX_SUMMARY_LENGTH = 30;
 
   return (
-    <Container>
+    <Container show={show}>
       <ImgArea>
         <ImgContainer>
           <img alt="bookimg" src={review?.bookCover} />
@@ -136,7 +137,7 @@ const SmallReview = ({ like, review }: IProps) => {
             name="MyLikeReview"
           />
         ) : (
-          <MenuIconBtn />
+          <MenuIconBtn reviewid={review ? review.id : -1} setShow={setShow} />
         )}
         <BookInfo>
           <a href="">{review?.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
