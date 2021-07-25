@@ -198,7 +198,7 @@ export class ReviewsService {
   async uploadFile(nickname: string, text: string): Promise<any> {
     const nick = nickname['nickname'];
     const uploads = './uploads/';
-    const filePath = `review/${nick}_${Date.now()}.txt`;
+    const filePath = `review/${nick}_${Date.now()}.html`;
     fs.writeFile(uploads + filePath, text['text'], (err: Error) => {
       if (err) {
         console.log('error with writeFile');
