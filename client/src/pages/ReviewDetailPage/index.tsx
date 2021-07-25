@@ -137,6 +137,7 @@ const ReviewDetailPage: FunctionComponent = () => {
               createdAt={reviewDetail.createdAt}
               like_count={reviewDetail.like_count}
               tags={reviewDetail.tags}
+              likeCheck={false}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>

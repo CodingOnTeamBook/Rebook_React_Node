@@ -10,7 +10,8 @@ import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { SERVER_URL } from 'config';
-import axios from 'axios';
+import useCheck from 'hooks/useCheck';
+import { Like, UnLike } from 'API/USER_PUBLIC_API';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -75,6 +76,7 @@ interface IUserReviewProps {
   like_count: number;
   tags: any;
   id: number;
+  likeCheck: boolean;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -86,69 +88,34 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   like_count,
   tags,
   id,
+  likeCheck,
 }: IUserReviewProps) => {
-  const [userNickname, setUserNickname] = useState<string | undefined>('');
-  const [error, setError] = useState(null);
-  const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState(0);
-  const [checkUserLike, setCheckUserLike] = useState([]);
-  const [action, setAction] = useState('like');
-  const [likeId, setLikeId] = useState(0);
+  const [likes, setLikes] = useState(like_count);
+  const { value, onChange } = useCheck({
+    name: 'like',
+    initialValue: likeCheck,
+  });
+  // 초기값은 likeCheck ( 유저가 좋아요한 적이 있는가 )
+  // value가 true => false ( unlike, 서버에서 성공 되면 setLikes(prev => prev - 1) )
+  // value가 false => true ( like 서버에서 성공 되면 setLikes(prev => prev + 1) )
 
   useEffect(() => {
-    setLikes(like_count);
-    setIsLike(isLike);
-  }, []);
-
-  // useEffect(() => {
-  //   const checkMyLikeReview = async () => {
-  //     axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
-  //       console.log(res.data);
-  //       res.data.map((like: any) => {
-  //         if (like.id == likeId) {
-  //           setIsLike(true);
-  //           console.log(like.id);
-  //         }
-  //       });
-  //     });
-  //   };
-  //   checkMyLikeReview();
-  // }, []);
-
-  const onChangeLike = async () => {
-    try {
-      setError(null);
-      if (isLike == false) {
-        await axios
-          .post('/api/review/like/', {
-            reviewid: id,
-          })
-          .then((res) => {
-            console.log(res.data.reviews);
-            setLikes((prev) => (prev += 1));
-            setLikes(res.data.reviews.review.like_count);
-            setLikeId(res.data.reviews.id);
-            console.log(res.data);
-            setIsLike(true);
-          });
-      } else if (isLike == true) {
-        // 이미 좋아요를 눌렀는 데 다시 눌렀을 때이므로 취소 로직
-        await axios
-          .post('/api/review/unlike/', {
-            reviewid: id,
-          })
-          .then((res) => {
-            setLikes((prev) => (prev -= 1));
-            setIsLike(false);
-            console.log(res.data);
-          });
-      }
-    } catch (err) {
-      setError(err);
-      console.log(err);
+    if (value) {
+      Like(id)
+        .then((response) => {
+          console.log(response);
+          setLikes((prev) => prev + 1);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      UnLike(id)
+        .then((response) => {
+          console.log(response);
+          setLikes((prev) => prev - 1);
+        })
+        .catch((err) => console.log(err));
     }
-  };
-
+  }, [value]);
   return (
     <UserReviewContainer boxShadow={2}>
       <Box display="flex" flexDirection="column">
@@ -181,8 +148,8 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={isLike}
-            onChange={onChangeLike}
+            checked={value}
+            onChange={onChange}
             name="MyLikeReview"
           />
           <h3> {likes}명이 리뷰를 좋아합니다. </h3>

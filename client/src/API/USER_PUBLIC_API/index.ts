@@ -32,3 +32,8 @@ export async function UnLike(reviewid: number) {
   const response = await axios.post(`${REVIEW_SERVER}/unlike`, { reviewid });
   return response.data;
 }
+
+export async function Like(reviewid: number) {
+  const response = await axios.post(`${REVIEW_SERVER}/like`, { reviewid });
+  return response.data;
+}
