@@ -30,10 +30,12 @@ const LikeReview = () => {
   const { data } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if (data) {
-      getMyLike(data.user.nickname).then((response) => SetReviews(response));
+    if (reviews == null) {
+      if (data) {
+        getMyLike(data.user.nickname).then((response) => SetReviews(response));
+      }
     }
-  }, []);
+  }, [data]);
   return (
     <GridLayout>
       {reviews?.map((review: review, index: number) => (
