@@ -5,6 +5,7 @@ export interface IReviewer {
   id: number;
   info: null | any;
   nickname: string;
+  profieImg: string;
 }
 
 export interface IReviewerResponse {
