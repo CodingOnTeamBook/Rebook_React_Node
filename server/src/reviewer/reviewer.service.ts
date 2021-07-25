@@ -34,7 +34,7 @@ export class ReviewerService {
       const tempArray = value['reviews'].filter(
         (review) => review.isPublic === true
       );
-      if (value['profileImg'].match('users/'))
+      if (value['profileImg'].slice(0, 6) === 'users/')
         value['profileImg'] = resizeProfileImg(value['profileImg']);
       //리뷰수, 팔로우 수 카운트 후 본래 배열 제거
       value['countUserReview'] = tempArray.length;
@@ -64,7 +64,7 @@ export class ReviewerService {
     reviewer['reviews'] = reviewer['reviews'].filter(
       (review) => review.isPublic === true
     );
-    if (reviewer['profileImg'].match('users/'))
+    if (reviewer['profileImg'].slice(0, 6) === 'users/')
       reviewer['profileImg'] = resizeProfileImg(reviewer['profileImg']);
     //리뷰수, 팔로, 팔로잉수 카운트 후 followers, followings 제거
     reviewer['countUserReviews'] = reviewer['reviews'].length;

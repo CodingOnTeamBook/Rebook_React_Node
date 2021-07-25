@@ -80,7 +80,7 @@ export class UsersService {
     const oldProfileImg = user.profileImg;
     if (user.profileImg === 'users/defaultProfileImg.png')
       user.profileImg = await uploadProfileImg(imgfile);
-    else if (user.profileImg.match('users/')) {
+    else if (user.profileImg.slice(0, 6) === 'users/') {
       deleteProfileImg(user.profileImg);
       user.profileImg = await uploadProfileImg(imgfile);
     } else {
@@ -106,7 +106,7 @@ export class UsersService {
     if (imgfile) {
       if (user.profileImg === 'users/defaultProfileImg.png')
         user.profileImg = await uploadProfileImg(imgfile);
-      else if (user.profileImg.match('users/')) {
+      else if (user.profileImg.slice(0, 6) === 'users/') {
         deleteProfileImg(user.profileImg);
         user.profileImg = await uploadProfileImg(imgfile);
       } else {
@@ -151,7 +151,7 @@ export class UsersService {
     if (exUsers) {
       const users = [];
       exUsers[0].forEach((user) => {
-        if (user['profileImg'].match('users/'))
+        if (user['profileImg'].slice(0, 6) === 'users/')
           user['profileImg'] = resizeProfileImg(user['profileImg']);
         user['countFollowers'] = user['followers'].length;
         user['countUserReviews'] = user['reviews'].length;
