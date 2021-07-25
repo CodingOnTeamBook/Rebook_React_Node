@@ -38,7 +38,6 @@ const CancleBtn = styled(CancelIcon)`
 
 interface Props {
   query?: string;
-  isReviewerTabSelected?: boolean;
 }
 
 const SearchForm = ({ query }: Props) => {

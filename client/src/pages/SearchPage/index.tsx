@@ -11,13 +11,19 @@ import { useHistory, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Alert from '@material-ui/lab/Alert';
 import { fetchApi } from '../../modules/search/action';
-import { setBookInfo } from '../../modules/book/action';
 import { SortButton } from '../ReviewPage';
 import { SearchUsersByNickname } from '../../API/USER_PUBLIC_API/index';
 import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
+import Person from 'components/PeopleComponent/Person';
+import GridItem from 'layout/GridSmallItem';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   margin: 2rem;
+`;
+
+const PersonContainer = styled(Link)`
+  cursor: pointer;
 `;
 
 const BtnArea = styled.div`
@@ -64,7 +70,7 @@ const SearchPage: FunctionComponent = () => {
   ]);
 
   const [searchBookResult, setSearchBookResult] = useState<any[]>();
-  const [reviewerResult, setReviewerResult] = useState<Array<IReviewer>>();
+  const [reviewerResult, setReviewerResult] = useState<Array<IReviewer>>([]);
   const [noReviewerResult, setNoReviewerResult] = useState(false);
 
   // sorts state의 selected 속성을 바꾸는 함수
@@ -76,10 +82,12 @@ const SearchPage: FunctionComponent = () => {
   };
 
   useEffect(() => {
+    console.log(sorts);
     if (sorts[0].selected) dispatch(fetchApi(query, 1));
     if (sorts[1].selected) {
       const getReviewer = async () => {
         const response = await SearchUsersByNickname(query);
+        console.log(response.users);
         if (!response.users.length) setNoReviewerResult(true);
         else {
           setNoReviewerResult(false);
@@ -88,7 +96,7 @@ const SearchPage: FunctionComponent = () => {
       };
       getReviewer();
     }
-  }, [sorts]);
+  }, [sorts, query]);
 
   useEffect(() => {
     item && setSearchBookResult([...item]);
@@ -99,24 +107,7 @@ const SearchPage: FunctionComponent = () => {
 
   const onClick = (index: number) => {
     const booksInfo = [...(searchBookResult as Array<any>)];
-    // bookInfo에서 필요한 속성만 추출
     const { isbn13 } = booksInfo[index];
-
-    // const bookData = {
-    //   link,
-    //   cover,
-    //   title,
-    //   author,
-    //   publisher,
-    //   pubDate,
-    //   description,
-    //   isbn13,
-    // };
-
-    // // 해당 책 정보를 store에 dispatch
-    // dispatch(setBookInfo(bookData));
-
-    // bookDetail Page로 이동
     history.push(`book/${isbn13}`);
   };
 
@@ -148,7 +139,7 @@ const SearchPage: FunctionComponent = () => {
         <Header />
         <TempContainer>
           <CircularProgress />
-          <p>검색 중입니다.</p>
+          <p>검색 중입니다</p>
         </TempContainer>
       </Container>
     );
@@ -169,30 +160,48 @@ const SearchPage: FunctionComponent = () => {
     <Container>
       <Header />
       <GridLayout>
-        {sorts[1].selected && !loading ? (
-          <Reviewer reviewer={reviewerResult} error={noReviewerResult} />
-        ) : (
-          <>
-            {searchBookResult && !msg ? (
-              searchBookResult?.map(
-                ({ cover, title, author }, index: number) => {
-                  return (
-                    <GridSmallItem key={index}>
-                      <BookInfo
-                        onClick={() => onClick(index)}
-                        imgUrl={cover}
-                        title={title}
-                        author={author}
-                      />
-                    </GridSmallItem>
-                  );
-                }
-              )
+        <>
+          {sorts[1].selected && !loading ? (
+            noReviewerResult ? (
+              <NoResultMsg>찾는 유저가 없어요😢</NoResultMsg>
             ) : (
-              <NoResultMsg>{msg}</NoResultMsg>
-            )}
-          </>
-        )}
+              reviewerResult?.map((reviewer) => (
+                <GridItem key={reviewer.id}>
+                  <PersonContainer to={`/people/${reviewer.nickname}`}>
+                    <Person
+                      nickname={reviewer.nickname}
+                      profileImg={reviewer.profieImg}
+                      genres={reviewer.genres}
+                      info={reviewer.info}
+                      countUserReview={reviewer.countUserReviews}
+                    />
+                  </PersonContainer>
+                </GridItem>
+              ))
+            )
+          ) : (
+            <>
+              {searchBookResult && !msg ? (
+                searchBookResult?.map(
+                  ({ cover, title, author }, index: number) => {
+                    return (
+                      <GridSmallItem key={index}>
+                        <BookInfo
+                          onClick={() => onClick(index)}
+                          imgUrl={cover}
+                          title={title}
+                          author={author}
+                        />
+                      </GridSmallItem>
+                    );
+                  }
+                )
+              ) : (
+                <NoResultMsg>{msg}</NoResultMsg>
+              )}
+            </>
+          )}
+        </>
       </GridLayout>
     </Container>
   );
