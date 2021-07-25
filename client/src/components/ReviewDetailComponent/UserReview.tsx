@@ -82,9 +82,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   like_count,
   tags,
 }: IUserReviewProps) => {
-  // useEffect(() => {
-  // }, []);
-
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
@@ -107,17 +104,17 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     type: 'text/plain',
   });
 
-  // const reader = new FileReader();
+  const reader = new FileReader();
 
-  // reader.onload = function (e: any) {
-  //   textArea.innerHTML = e.target.result;
-  //  위 아래 둘 다 해봤는데 안됐습니다.
-  //   textArea.innerHTML = reader.result;
-  // };
+  reader.onload = function (e: any) {
+    console.log(reader.result);
+  };
 
-  // reader.readAsText(file);
+  reader.readAsText(file);
 
-  const __html = file;
+  console.log(file);
+
+  console.log(UserReview);
 
   return (
     <UserReviewContainer boxShadow={2}>
@@ -135,12 +132,10 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
               ))}
             </Box>
             <div
-              dangerouslySetInnerHTML={{
-                __html: __html,
-              }}
-            >
-              {/* {text} */}
-            </div>
+            // dangerouslySetInnerHTML={{
+            //   __html: __html,
+            // }}
+            ></div>
             <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
           </Box>
           <Box>

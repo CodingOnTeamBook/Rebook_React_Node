@@ -74,6 +74,7 @@ const ReviewDetailPage: FunctionComponent = () => {
         setUserInfo(res.data.review.review.user);
         fetchBookDetail(res.data.review.review.isbn);
         setReviewDetail(res.data.review.review);
+        console.log(res.data.review.review);
       } catch (err) {
         setError(err);
         console.log(err);
