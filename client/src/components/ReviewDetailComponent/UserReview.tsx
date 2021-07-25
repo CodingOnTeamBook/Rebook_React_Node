@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
+import { SERVER_URL } from 'config';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -101,24 +102,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     setAnchorEl(null);
   };
 
-  // const textArea = document.getElementById('text') as HTMLElement;
-
-  const file = new Blob([`http://localhost:5000/${text}`], {
-    type: 'text/plain',
-  });
-
-  // const reader = new FileReader();
-
-  // reader.onload = function (e: any) {
-  //   textArea.innerHTML = e.target.result;
-  //  위 아래 둘 다 해봤는데 안됐습니다.
-  //   textArea.innerHTML = reader.result;
-  // };
-
-  // reader.readAsText(file);
-
-  const __html = file;
-
   return (
     <UserReviewContainer boxShadow={2}>
       <Box display="flex" flexDirection="column">
@@ -136,7 +119,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             </Box>
             <div
               dangerouslySetInnerHTML={{
-                __html: __html,
+                __html: `<iframe src="${SERVER_URL}/${text}" height="100%"></iframe>`,
               }}
             >
               {/* {text} */}
