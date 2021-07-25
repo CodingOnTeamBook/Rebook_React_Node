@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
-import { resizeProfileImg } from 'src/users/users.multerOptions';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -35,7 +34,7 @@ export class ReviewerService {
         (review) => review.isPublic === true
       );
       if (value['profileImg'].slice(0, 6) === 'users/')
-        value['profileImg'] = resizeProfileImg(value['profileImg']);
+        value['profileImg'] = value['profileImg'];
       //리뷰수, 팔로우 수 카운트 후 본래 배열 제거
       value['countUserReview'] = tempArray.length;
       value['countFollowers'] = value['followers'].length;
@@ -65,7 +64,7 @@ export class ReviewerService {
       (review) => review.isPublic === true
     );
     if (reviewer['profileImg'].slice(0, 6) === 'users/')
-      reviewer['profileImg'] = resizeProfileImg(reviewer['profileImg']);
+      reviewer['profileImg'] = reviewer['profileImg'];
     //리뷰수, 팔로, 팔로잉수 카운트 후 followers, followings 제거
     reviewer['countUserReviews'] = reviewer['reviews'].length;
     reviewer['countFollowers'] = reviewer['followers'].length;

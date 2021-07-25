@@ -41,13 +41,9 @@ export const usersmulterOptions = multer({
   }),
 });
 
-export const resizeProfileImg = (key) => {
-  const resizeImgKey = 'resize/w_200_' + key.split('/')[1];
-  return s3Path + resizeImgKey;
-};
-
 export const uploadProfileImg = async (file): Promise<string> => {
-  return `${file.key}`;
+  const resizeImgKey = 'resize/w_200_' + file.key.split('/')[1];
+  return s3Path + resizeImgKey;
 };
 
 export const deleteProfileImg = async (key): Promise<any> => {
