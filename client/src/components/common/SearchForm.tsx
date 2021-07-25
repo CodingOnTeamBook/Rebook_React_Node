@@ -38,7 +38,6 @@ const CancleBtn = styled(CancelIcon)`
 
 interface Props {
   query?: string;
-  selected?: Array<boolean>;
 }
 
 const SearchForm = ({ query }: Props) => {
