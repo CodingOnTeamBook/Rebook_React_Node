@@ -1,13 +1,8 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import useCheck from '../../hooks/useCheck';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import styled from 'styled-components';
 import Favorite from '@material-ui/icons/Favorite';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Rating from '@material-ui/lab/Rating';
 import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -15,6 +10,8 @@ import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { SERVER_URL } from 'config';
+import { auth } from 'API/USER_PRIVATE_API/index';
+import axios from 'axios';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -78,6 +75,7 @@ interface IUserReviewProps {
   createdAt: string;
   like_count: number;
   tags: any;
+  id: number;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -88,21 +86,83 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   createdAt,
   like_count,
   tags,
+  id,
 }: IUserReviewProps) => {
-  const { value, onChange, CheckedValue } = useCheck({
-    name: 'MyLikeReview',
-    initialValue: false,
-  });
-  const ITEM_HEIGHT = 48;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [userNickname, setUserNickname] = useState<string | undefined>('');
+  const [userAuthError, setUserAuthError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLike, setIsLike] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const [checkUserLike, setCheckUserLike] = useState([]);
+  const [action, setAction] = useState('like');
+  const [likeId, setLikeId] = useState(0);
 
-  const menuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  useEffect(() => {
+    setLikes(like_count);
+    setIsLike(isLike);
 
-  const menuClose = () => {
-    setAnchorEl(null);
+    const getAuth = async () => {
+      try {
+        const res = await auth();
+        setUserNickname(res.user.nickname);
+        setUserAuthError(false);
+      } catch (e) {
+        console.log(e);
+        setUserAuthError(true);
+      }
+    };
+
+
+    getAuth();
+  }, []);
+
+  useEffect(() => {
+    const checkMyLikeReview = async () => {
+      axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
+        console.log(res.data);
+        res.data.map((like: any) => {
+          if (like.id == likeId) {
+            setIsLike(true);
+            console.log(like.id);
+          }
+        });
+      });
+    };
+    checkMyLikeReview();
+  }, []);
+
+  const onChangeLike = async () => {
+    try {
+      setError(null);
+      if (isLike == false) {
+        await axios
+          .post('/api/review/like/', {
+            reviewid: id,
+          })
+          .then((res) => {
+            setLikes((prev) => (prev += 1));
+            setLikes(res.data.reviews.review.like_count);
+            setLikeId(res.data.reviews.id);
+            console.log(res.data);
+            setIsLike(true);
+          });
+      } else if (isLike == true) {
+        // 이미 좋아요를 눌렀는 데 다시 눌렀을 때이므로 취소 로직
+        await axios
+          .post('/api/review/unlike/', {
+            reviewid: id,
+          })
+          .then((res) => {
+            setLikes((prev) => (prev -= 1));
+            setIsLike(false);
+            console.log(res.data);
+          });
+      }
+    } catch (err) {
+      setError(err);
+      console.log(err);
+    }
   };
 
   return (
@@ -127,32 +187,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
             ></UserWrite>
             <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
           </UserWrapperContainer>
-          <Box>
-            <IconButton
-              aria-label="more"
-              aria-controls="long-menu"
-              aria-haspopup="true"
-              onClick={menuOpen}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="long-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={open}
-              onClose={menuClose}
-              PaperProps={{
-                style: {
-                  maxHeight: ITEM_HEIGHT * 4.5,
-                  width: '16ch',
-                },
-              }}
-            >
-              <MenuItem onClick={menuClose}>삭제</MenuItem>
-              <MenuItem onClick={menuClose}>수정</MenuItem>
-            </Menu>
-          </Box>
         </Box>
         <Box
           display="flex"
@@ -163,11 +197,11 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={value}
-            onChange={onChange}
+            checked={isLike}
+            onChange={onChangeLike}
             name="MyLikeReview"
           />
-          <h3> {like_count}명이 리뷰를 좋아합니다. </h3>
+          <h3> {likes}명이 리뷰를 좋아합니다. </h3>
         </Box>
       </Box>
     </UserReviewContainer>

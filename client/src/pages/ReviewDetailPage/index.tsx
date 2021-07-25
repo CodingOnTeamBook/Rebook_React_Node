@@ -54,11 +54,12 @@ const ReviewDetailPage: FunctionComponent = () => {
   });
   const [reviewDetail, setReviewDetail] = useState({
     id: 0,
-    text: '',
+    summary: '',
     score: 0,
     like_count: 0,
     tags: [],
     createdAt: '',
+    text: '',
   });
 
   const { id } = useParams<IdType>();
@@ -74,7 +75,6 @@ const ReviewDetailPage: FunctionComponent = () => {
         setUserInfo(res.data.review.review.user);
         fetchBookDetail(res.data.review.review.isbn);
         setReviewDetail(res.data.review.review);
-        console.log(res.data.review.review);
       } catch (err) {
         setError(err);
         console.log(err);
@@ -97,14 +97,6 @@ const ReviewDetailPage: FunctionComponent = () => {
     }
     setLoading(false);
   };
-
-  // function processFile(file: any) {
-  //   const reader = new FileReader();
-  //   reader.onload = function () {
-  //     console.log(reader.result);
-  //   };
-  //   reader.readAsText(file);
-  // }
 
   return (
     <>
@@ -137,6 +129,7 @@ const ReviewDetailPage: FunctionComponent = () => {
           >
             <UserReview
               key={reviewDetail.id}
+              id={reviewDetail.id}
               score={reviewDetail.score}
               text={reviewDetail.text}
               nickname={userInfo.nickname}
