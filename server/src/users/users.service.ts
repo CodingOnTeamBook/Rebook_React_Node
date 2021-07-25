@@ -238,12 +238,14 @@ export class UsersService {
   async getMyPublicReviews(userid: number, p: any) {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 4;
-
+    const user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
     const publicReview = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      where: { userId: userid, isPublic: 1 },
+      where: { user: user, isPublic: 1 },
       relations: ['user'],
       select: [
         'id',
@@ -264,12 +266,14 @@ export class UsersService {
   async getMyPrivateReviews(userid: number, p: any) {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 4;
-
+    const user = await this.userRepository.findOne({
+      where: { userId: userid },
+    });
     const publicReview = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
-      where: { userId: userid, isPublic: 0 },
+      where: { user: user, isPublic: 0 },
       relations: ['user'],
       select: [
         'id',

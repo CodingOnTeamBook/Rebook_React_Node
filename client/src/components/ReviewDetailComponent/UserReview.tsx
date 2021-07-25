@@ -100,14 +100,14 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   // value가 false => true ( like 서버에서 성공 되면 setLikes(prev => prev + 1) )
 
   useEffect(() => {
-    if (value) {
+    if (!likeCheck && value) {
       Like(id)
         .then((response) => {
           console.log(response);
           setLikes((prev) => prev + 1);
         })
         .catch((err) => console.log(err));
-    } else {
+    } else if (likeCheck && !value) {
       UnLike(id)
         .then((response) => {
           console.log(response);
