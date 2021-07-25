@@ -83,9 +83,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   like_count,
   tags,
 }: IUserReviewProps) => {
-  // useEffect(() => {
-  // }, []);
-
   const { value, onChange, CheckedValue } = useCheck({
     name: 'MyLikeReview',
     initialValue: true,
