@@ -175,40 +175,52 @@ export class UsersController {
 
   //전체 공개 리뷰
   @Get('/myPublicReview')
-  async getMyPublicReviews(@Query() page: string, @Res() res) {
-    return this.usersService.getMyPublicReviews(page).then((value) => {
-      if (!value) {
-        res.status(HttpStatus.OK).json({
-          success: true,
-          error: 1,
-          message: 'User not found',
-        });
-      } else {
-        res.status(HttpStatus.OK).json({
-          success: true,
-          result: value,
-        });
-      }
-    });
+  async getMyPublicReviews(
+    @AuthUser() data: any,
+    @Query() page: string,
+    @Res() res
+  ) {
+    return this.usersService
+      .getMyPublicReviews(data.userId, page)
+      .then((value) => {
+        if (!value) {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            error: 1,
+            message: 'User not found',
+          });
+        } else {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            result: value,
+          });
+        }
+      });
   }
 
   //비공개 리뷰
   @Get('/myPrivateReview')
-  async getMyPrivateReviews(@Query() page: string, @Res() res) {
-    return this.usersService.getMyPrivateReviews(page).then((value) => {
-      if (!value) {
-        res.status(HttpStatus.OK).json({
-          success: true,
-          error: 1,
-          message: 'User not found',
-        });
-      } else {
-        res.status(HttpStatus.OK).json({
-          success: true,
-          result: value,
-        });
-      }
-    });
+  async getMyPrivateReviews(
+    @AuthUser() data: any,
+    @Query() page: string,
+    @Res() res
+  ) {
+    return this.usersService
+      .getMyPrivateReviews(data.userId, page)
+      .then((value) => {
+        if (!value) {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            error: 1,
+            message: 'User not found',
+          });
+        } else {
+          res.status(HttpStatus.OK).json({
+            success: true,
+            result: value,
+          });
+        }
+      });
   }
 
   @Get('/myinfo/likes/:nickname')
