@@ -5,7 +5,7 @@
   "scripts": {
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run start --prefix client\"",
-    "server": "npm run start:dev --prefix server"
+    "server": "npm run start:dev --prefix server --unhandled-rejections=strict"
   },
   "devDependencies": {
     "concurrently": "^6.2.0"

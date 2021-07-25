@@ -113,11 +113,13 @@ const Header: FunctionComponent = () => {
           <Link to="/people">리뷰어</Link>
         </li>
       </MenuContainer>
-      <ProfileModal
-        state={isProfileModalOpen}
-        imgUrl={data ? data.user.profileImg : ''}
-        nickname={data ? data.user.nickname : ''}
-      />
+      {data?.user && (
+        <ProfileModal
+          state={isProfileModalOpen}
+          imgUrl={data.user.profileImg}
+          nickname={data.user.nickname}
+        />
+      )}
     </Container>
   );
 };
