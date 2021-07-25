@@ -36,9 +36,6 @@ const SideMenu = () => {
         <Link to="/my?tab=like">
           <MenuItemContainer>좋아요</MenuItemContainer>
         </Link>
-        <Link to="/my?tab=follow">
-          <MenuItemContainer>팔로잉</MenuItemContainer>
-        </Link>
       </MenuContainer>
     </>
   );

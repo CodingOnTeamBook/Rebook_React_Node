@@ -42,3 +42,24 @@ export interface IAuthResponse {
 export interface ILogoutResponse {
   success: boolean;
 }
+
+export interface IImgUpdate {
+  success: boolean;
+  filePath: string;
+  error?: string;
+}
+
+export interface IUpdate {
+  success: boolean;
+  user: IUser;
+}
+
+export interface IPopulateReview {
+  success: boolean;
+  result: any;
+}
+
+export interface IPrivateReview {
+  success: boolean;
+  result: any;
+}

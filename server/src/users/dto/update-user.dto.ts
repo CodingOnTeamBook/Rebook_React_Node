@@ -10,4 +10,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
   @IsOptional()
   readonly genre: string;
+
+  @IsString()
+  @IsOptional()
+  readonly image: string;
 }

@@ -14,6 +14,7 @@ import { Review } from '../entities/review.entity';
 import { Like } from '../entities/like.entity';
 import { Comment } from '../entities/comment.entity';
 import { string0To255 } from 'aws-sdk/clients/customerprofiles';
+import { processingReview } from '../reviews/reviews.exportFunction';
 
 import {
   paginate,
@@ -91,11 +92,7 @@ export class UsersService {
     else return user.profileImg;
   }
 
-  async update(
-    id: string,
-    imgfile,
-    updateUserDto: UpdateUserDto
-  ): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { userId: id } });
     if (updateUserDto.info) {
       user.info = updateUserDto.info;
@@ -103,15 +100,8 @@ export class UsersService {
     if (updateUserDto.genre) {
       user.genres = updateUserDto.genre;
     }
-    if (imgfile) {
-      if (user.profileImg === 'users/defaultProfileImg.png')
-        user.profileImg = await uploadProfileImg(imgfile);
-      else if (user.profileImg.match('users/')) {
-        deleteProfileImg(user.profileImg);
-        user.profileImg = await uploadProfileImg(imgfile);
-      } else {
-        user.profileImg = await uploadProfileImg(imgfile);
-      }
+    if (updateUserDto.image) {
+      user.profileImg = updateUserDto.image;
     }
     return this.userRepository.save(user);
   }
@@ -243,25 +233,45 @@ export class UsersService {
       },
       where: { isPublic: 1 },
       relations: ['user'],
+      select: [
+        'id',
+        'book_info',
+        'score',
+        'isPublic',
+        'summary',
+        'user',
+        'like_count',
+        'createdAt',
+      ],
       skip: skip,
       take: 12,
     });
-    return publicReview;
+    return await processingReview(publicReview[0], false);
   }
 
   async getMyPrivateReviews(p: any) {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 12;
 
-    const privateReview = await this.reviewRepository.findAndCount({
+    const publicReview = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
       where: { isPublic: 0 },
       relations: ['user'],
+      select: [
+        'id',
+        'book_info',
+        'score',
+        'isPublic',
+        'summary',
+        'user',
+        'like_count',
+        'createdAt',
+      ],
       skip: skip,
       take: 12,
     });
-    return privateReview;
+    return await processingReview(publicReview[0], false);
   }
 }

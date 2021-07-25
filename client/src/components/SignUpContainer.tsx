@@ -30,7 +30,6 @@ const SignUpBtn = styled(LineGreenBtn)`
 const SignUpContainer: FunctionComponent = () => {
   const location: any = useLocation();
   const Info = location.state;
-  console.log(Info);
   const ChildRef = useRef<HTMLDivElement | any>(null);
   const ChildBoxRef = useRef<HTMLDivElement | any>(null);
   // userNameForm 관련

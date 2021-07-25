@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import MyInfo from '../../components/myPage/MyInfo';
 import MyReview from '../../components/myPage/MyReview';
 import LikeReview from '../../components/myPage/LikeReview';
-import FollowReviewer from '../../components/myPage/FollowReviewer';
 import SideMenu from '../../components/myPage/sideMenu';
 
 const Container = styled.div`
@@ -27,7 +26,7 @@ const ContentsContainer = styled.div`
   min-width: 70%;
 `;
 
-type activeTab = 0 | 1 | 2 | 3 | 4;
+type activeTab = 0 | 1 | 2;
 
 // layout 따로 빼고 나머지만 관리하는 방향으로 가면 좋을 것 같고,
 // tab에 따라서 api 호출 다르게 해서 각 탭에 넣어주는게 베스트
@@ -39,7 +38,6 @@ const MyPage: FunctionComponent = () => {
     0: <MyInfo />,
     1: <MyReview />,
     2: <LikeReview />,
-    3: <FollowReviewer />,
   };
   let ActiveTab: activeTab = 0;
   if (query[1] === 'review') {
@@ -47,9 +45,6 @@ const MyPage: FunctionComponent = () => {
   }
   if (query[1] === 'like') {
     ActiveTab = 2;
-  }
-  if (query[1] === 'follow') {
-    ActiveTab = 3;
   }
   return (
     <Container>
