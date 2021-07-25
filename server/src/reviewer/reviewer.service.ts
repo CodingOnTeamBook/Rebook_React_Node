@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from 'src/entities/review.entity';
 import { User } from 'src/entities/user.entity';
-import { Repository, Like as likes } from 'typeorm';
+import { Repository, Raw } from 'typeorm';
 
 @Injectable()
 export class ReviewerService {
@@ -18,7 +18,11 @@ export class ReviewerService {
     const page = parseInt(p.page);
     const skip = page === 1 ? 0 : (page - 1) * 9;
     const reviewer = await this.userRepository.findAndCount({
-      where: { genres: likes(`%${genre}%`) },
+      where: {
+        genres: Raw(
+          (alias) => `${alias} REGEXP "^[${genre.split(',').join('')}].*"`
+        ),
+      },
       select: ['id', 'nickname', 'genres', 'info', 'profileImg', 'createdAt'],
       relations: ['reviews', 'followers'],
       order: {
