@@ -157,9 +157,9 @@ const SmallReview = ({ like, review }: IProps) => {
               <MenuIconBtn reviewid={review.id} />
             )}
             <BookInfo>
-              <a href="">{review.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
+              <a>{review.bookTitle.slice(0, MAX_TITLE_LENGTH)}</a>
             </BookInfo>
-            <Rating name="read-only" value={rating} readOnly />
+            <Rating size="small" name="read-only" value={rating} readOnly />
             <TextInfo>
               {like ? (
                 <span>{review.writer}님이 쓰신 리뷰입니다</span>

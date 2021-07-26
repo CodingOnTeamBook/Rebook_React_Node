@@ -26,6 +26,7 @@ const Main = styled.div`
   height: 100%;
   width: 100%;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 const ItemContainer = styled(Link)`
@@ -34,12 +35,13 @@ const ItemContainer = styled(Link)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 2100px;
   height: 280px;
   margin: 0 16px;
   cursor: pointer;
 
   img {
+    width: 200px;
+    height: 280px;
     object-fit: cover;
     box-shadow: 0 8px 12px ${(props) => props.theme.palette.gray};
   }
@@ -55,7 +57,8 @@ const ItemContainer = styled(Link)`
     padding: 20px;
     color: rgba(200, 200, 200);
     text-align: center;
-    font-size: 14px;
+    font-size: 15px;
+    color: ${(props) => props.theme.palette.yellow};
   }
 
   &:hover .description {
