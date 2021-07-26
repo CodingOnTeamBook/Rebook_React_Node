@@ -127,21 +127,26 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     setLoading(false);
   }
 
-  const OnLikeChange = () => {
-    if (isCheck == false) {
-      Like(id)
-        .then(() => {
-          setLikes((prev) => prev + 1);
-          setIsCheck(true);
-        })
-        .catch((err) => console.log(err));
-    } else if (isCheck == true) {
-      UnLike(id)
-        .then(() => {
-          setLikes((prev) => prev - 1);
-          setIsCheck(false);
-        })
-        .catch((err) => console.log(err));
+  const OnLikeChange = async () => {
+    const response = await auth();
+    if (response.isAuth == false) {
+      alert('먼저 로그인 해주세요 😀');
+    } else {
+      if (isCheck == false) {
+        Like(id)
+          .then(() => {
+            setLikes((prev) => prev + 1);
+            setIsCheck(true);
+          })
+          .catch((err) => console.log(err));
+      } else if (isCheck == true) {
+        UnLike(id)
+          .then(() => {
+            setLikes((prev) => prev - 1);
+            setIsCheck(false);
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
 
