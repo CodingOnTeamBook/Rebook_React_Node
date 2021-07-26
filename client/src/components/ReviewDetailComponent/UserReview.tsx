@@ -135,7 +135,9 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   // }, [likeCheck]);
 
   useEffect(() => {
-    const getAuth = async () => {
+    getAuth();
+
+    async function getAuth() {
       try {
         setLoading(true);
         const response = await auth();
@@ -155,8 +157,11 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
         console.log(e);
       }
       setLoading(false);
+    }
+
+    return () => {
+      getAuth();
     };
-    getAuth();
   }, []);
 
   const OnLikeChange = () => {

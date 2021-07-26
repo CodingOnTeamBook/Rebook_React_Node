@@ -50,7 +50,7 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userNickname, setUserNickname] = useState<string | undefined>('');
-  const [likeShape, setLikeShape] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
   const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
 
   const [userInfo, setUserInfo] = useState({
@@ -80,6 +80,36 @@ const ReviewDetailPage: FunctionComponent = () => {
   // useEffect(() => {
 
   // }, []);
+
+  useEffect(() => {
+    getAuth();
+
+    async function getAuth() {
+      try {
+        setLoading(true);
+        const response = await auth();
+        console.log(response.user.nickname);
+        setUserNickname(response.user.nickname);
+        const res = await axios.get(
+          `/api/users/myinfo/likes/${response.user.nickname}`
+        );
+        setCheckLikeReivew(res.data);
+        console.log(res.data);
+        const isLikeReviews = res.data.some((like: any) => like.id === id);
+        console.log(isLikeReviews);
+        if (isLikeReviews == true) {
+          setIsCheck(true);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    }
+
+    return () => {
+      getAuth();
+    };
+  }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -156,7 +186,7 @@ const ReviewDetailPage: FunctionComponent = () => {
               tags={reviewDetail.tags}
               likeCheck={false}
               userNickname={userNickname}
-              checkLike={likeShape}
+              checkLike={isCheck}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
