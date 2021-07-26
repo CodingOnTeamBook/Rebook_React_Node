@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Container,
   Header,
@@ -18,7 +18,7 @@ interface book {
 }
 
 interface IProps {
-  bestSeller: Array<book>;
+  bestSeller: Array<book> | null;
 }
 
 const BestSeller = ({ bestSeller }: IProps) => {
@@ -28,7 +28,7 @@ const BestSeller = ({ bestSeller }: IProps) => {
         <h2>이 책은 어때요?</h2>
       </Header>
       <Main>
-        {bestSeller.map((book: book, index: number) => (
+        {bestSeller?.map((book: book, index: number) => (
           <ItemContainer to={`book/${book.isbn}`} key={index}>
             <img key={book.title} src={book.cover}></img>
             <h3 className="description">{book.title}</h3>

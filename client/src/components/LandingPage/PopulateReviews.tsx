@@ -46,7 +46,7 @@ interface Iprops {
 }
 
 const PopulateReview = ({ reviews }: Iprops) => {
-  if (!reviews) {
+  if (!reviews?.length) {
     return (
       <Container>
         <Header>
