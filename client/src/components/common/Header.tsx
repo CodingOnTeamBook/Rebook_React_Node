@@ -9,6 +9,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link, useLocation } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import { modalOpen } from 'modules';
+import ForumIcon from '@material-ui/icons/Forum';
 
 const LogoContainer = styled.img`
   width: 200px;
@@ -48,12 +49,13 @@ const ProfileIcon = styled(AccountCircleIcon)`
 `;
 
 const MenuContainer = styled.ul`
-  width: 100%;
+  width: 80%;
   display: flex;
   height: 2.5rem;
-  box-shadow: 2px 2px rgba(40, 40, 40, 0.08);
   margin: 0;
   padding: 0;
+  border-bottom: 1px solid #ddd;
+
   li {
     list-style: none;
     width: 100%;
@@ -66,7 +68,7 @@ const MenuContainer = styled.ul`
     justify-content: center;
     align-items: center;
     &:hover {
-      background-color: rgba(40, 40, 40, 0.08);
+      color: ${(props) => props.theme.palette.yellow};
       cursor: pointer;
     }
   }
