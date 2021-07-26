@@ -69,6 +69,15 @@ const BookTag = styled(Box)`
   }
 `;
 
+const Message = styled.span`
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 20px;
+`;
+
 interface IUserReviewProps {
   score: number;
   text: any;
@@ -78,9 +87,6 @@ interface IUserReviewProps {
   like_count: number;
   tags: any;
   id: number;
-  likeCheck: boolean;
-  userNickname: any;
-  checkLike: boolean;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -92,61 +98,20 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   like_count,
   tags,
   id,
-  likeCheck,
-  userNickname,
-  checkLike,
 }: IUserReviewProps) => {
   const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
-  const [isCheck, setIsCheck] = useState(checkLike);
-  const [userNickname2, setUserNickname] = useState<string | undefined>('');
-  const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
-  const [action, setAction] = useState<null | string>(null);
-  // const [likeShape, setLikeShape] = useState(false);
-  // const { value, onChange } = useCheck({
-  //   name: 'like',
-  //   initialValue: likeCheck,
-  // });
-
-  // 초기값은 likeCheck ( 유저가 좋아요한 적이 있는가 )
-  // value가 true => false ( unlike, 서버에서 성공 되면 setLikes(prev => prev - 1) )
-  // value가 false => true ( like 서버에서 성공 되면 setLikes(prev => prev + 1) )
-
-  // useEffect(() => {
-  //   // if (!likeCheck && value) {
-  //   //   Like(id)
-  //   //     .then((response) => {
-  //   //       console.log(response);
-  //   //       setLikes((prev) => prev + 1);
-  //   //     })
-  //   //     .catch((err) => console.log(err));
-  //   // } else if (likeCheck && !value) {
-  //   //   UnLike(id)
-  //   //     .then((response) => {
-  //   //       console.log(response);
-  //   //       setLikes((prev) => prev - 1);
-  //   //     })
-  //   //     .catch((err) => console.log(err));
-  //   // }
-  // }, [likeShape]);
-
-  // useEffect(() => {
-
-  // }, [likeCheck]);
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
     getAuth();
-
     async function getAuth() {
       try {
         setLoading(true);
         const response = await auth();
-        console.log(response.user.nickname);
-        setUserNickname(response.user.nickname);
         const res = await axios.get(
           `/api/users/myinfo/likes/${response.user.nickname}`
         );
-        setCheckLikeReivew(res.data);
         console.log(res.data);
         const isLikeReviews = res.data.some((like: any) => like.id === id);
         console.log(isLikeReviews);
@@ -185,45 +150,51 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   };
 
   return (
-    <UserReviewContainer boxShadow={2}>
-      <Box display="flex" flexDirection="column">
-        <Box display="flex" flexDirection="row" flexWrap="nowrap">
-          <UserImg alt={nickname} src={myProfileImg(profileImg)} />
-          <UserWrapperContainer width={1}>
-            <UserNickName>{nickname}</UserNickName>
-            <Rating size="large" name="read-only" value={score} readOnly />
-            <Box display="flex" flexDirection="row" flexWrap="wrap">
-              {tags.map((tag: any) => (
-                <BookTag key={tag.id}>
-                  <ChipColor label={tag.tag} />
-                </BookTag>
-              ))}
+    <>
+      {loading ? (
+        <Message> 로딩 중입니다 📚</Message>
+      ) : (
+        <UserReviewContainer boxShadow={2}>
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="row" flexWrap="nowrap">
+              <UserImg alt={nickname} src={myProfileImg(profileImg)} />
+              <UserWrapperContainer width={1}>
+                <UserNickName>{nickname}</UserNickName>
+                <Rating size="large" name="read-only" value={score} readOnly />
+                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                  {tags.map((tag: any) => (
+                    <BookTag key={tag.id}>
+                      <ChipColor label={tag.tag} />
+                    </BookTag>
+                  ))}
+                </Box>
+                <UserWrite
+                  dangerouslySetInnerHTML={{
+                    __html: `<iframe src="${SERVER_URL}/${text}" frameborder="0" width="100%" height="100%"></iframe>`,
+                  }}
+                ></UserWrite>
+                <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
+              </UserWrapperContainer>
             </Box>
-            <UserWrite
-              dangerouslySetInnerHTML={{
-                __html: `<iframe src="${SERVER_URL}/${text}" frameborder="0" width="100%" height="100%"></iframe>`,
-              }}
-            ></UserWrite>
-            <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
-          </UserWrapperContainer>
-        </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={isCheck}
-            onChange={OnLikeChange}
-            name="MyLikeReview"
-          />
-          <h3> {likes}명이 리뷰를 좋아합니다. </h3>
-        </Box>
-      </Box>
-    </UserReviewContainer>
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Checkbox
+                icon={<FavoriteBorder />}
+                checkedIcon={<Favorite />}
+                checked={isCheck}
+                onChange={OnLikeChange}
+                name="MyLikeReview"
+              />
+              <h3> {likes}명이 리뷰를 좋아합니다. </h3>
+            </Box>
+          </Box>
+        </UserReviewContainer>
+      )}
+    </>
   );
 };
 

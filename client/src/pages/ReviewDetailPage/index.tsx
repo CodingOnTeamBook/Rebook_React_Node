@@ -49,9 +49,6 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userNickname, setUserNickname] = useState<string | undefined>('');
-  const [isCheck, setIsCheck] = useState(false);
-  const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
 
   const [userInfo, setUserInfo] = useState({
     nickname: '',
@@ -68,48 +65,6 @@ const ReviewDetailPage: FunctionComponent = () => {
   });
 
   const { id } = useParams<IdType>();
-
-  // const Check = async () => {
-  //   try {
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // useEffect(() => {
-
-  // }, []);
-
-  useEffect(() => {
-    getAuth();
-
-    async function getAuth() {
-      try {
-        setLoading(true);
-        const response = await auth();
-        console.log(response.user.nickname);
-        setUserNickname(response.user.nickname);
-        const res = await axios.get(
-          `/api/users/myinfo/likes/${response.user.nickname}`
-        );
-        setCheckLikeReivew(res.data);
-        console.log(res.data);
-        const isLikeReviews = res.data.some((like: any) => like.id === id);
-        console.log(isLikeReviews);
-        if (isLikeReviews == true) {
-          setIsCheck(true);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    }
-
-    return () => {
-      getAuth();
-    };
-  }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -184,9 +139,6 @@ const ReviewDetailPage: FunctionComponent = () => {
               createdAt={reviewDetail.createdAt}
               like_count={reviewDetail.like_count}
               tags={reviewDetail.tags}
-              likeCheck={false}
-              userNickname={userNickname}
-              checkLike={isCheck}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
