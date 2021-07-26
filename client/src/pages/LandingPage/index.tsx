@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Alert from '@material-ui/lab/Alert';
 import CarouselComponent from '../../components/LandingPage/CarouselComponent';
@@ -31,33 +31,35 @@ interface IProps {
   isError: boolean | null;
 }
 
+const initialState: IProps = {
+  data: null,
+  isLoading: true,
+  isError: null,
+};
+
 const LandingPage: FunctionComponent = () => {
   const [bestSellerState, setBestSellerState] = useState<IProps>({
-    data: null,
-    isLoading: true,
-    isError: null,
+    ...initialState,
   });
   const [reviewsState, setReviewsState] = useState<IProps>({
-    data: null,
-    isLoading: true,
-    isError: null,
+    ...initialState,
   });
 
   useEffect(() => {
-    fetchData('/api/book/bestseller').then((res) => {
+    fetchData('/api/book/bestseller').then(({ data, isError, isLoading }) => {
       setBestSellerState({
         ...bestSellerState,
-        data: res.data.bestSeller,
-        isError: res.isError,
-        isLoading: res.isLoading,
+        data: data.bestSeller,
+        isError,
+        isLoading,
       });
     });
-    fetchData('/api/review/home').then((res) => {
+    fetchData('/api/review/home').then(({ data, isError, isLoading }) => {
       setReviewsState({
         ...reviewsState,
-        data: res.data.reviews,
-        isError: res.isError,
-        isLoading: res.isLoading,
+        data: data.reviews,
+        isError,
+        isLoading,
       });
     });
   }, []);
