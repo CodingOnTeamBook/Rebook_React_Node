@@ -13,6 +13,7 @@ import { SERVER_URL } from 'config';
 import useCheck from 'hooks/useCheck';
 import { Like, UnLike } from 'API/USER_PUBLIC_API';
 import axios from 'axios';
+import { auth } from 'API/USER_PRIVATE_API/index';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -79,6 +80,7 @@ interface IUserReviewProps {
   id: number;
   likeCheck: boolean;
   userNickname: any;
+  checkLike: boolean;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -92,50 +94,90 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   id,
   likeCheck,
   userNickname,
+  checkLike,
 }: IUserReviewProps) => {
+  const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
+  const [isCheck, setIsCheck] = useState(checkLike);
+  const [userNickname2, setUserNickname] = useState<string | undefined>('');
   const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
-  const { value, onChange } = useCheck({
-    name: 'like',
-    initialValue: likeCheck,
-  });
+  const [action, setAction] = useState<null | string>(null);
+  // const [likeShape, setLikeShape] = useState(false);
+  // const { value, onChange } = useCheck({
+  //   name: 'like',
+  //   initialValue: likeCheck,
+  // });
 
   // 초기값은 likeCheck ( 유저가 좋아요한 적이 있는가 )
   // value가 true => false ( unlike, 서버에서 성공 되면 setLikes(prev => prev - 1) )
   // value가 false => true ( like 서버에서 성공 되면 setLikes(prev => prev + 1) )
 
-  useEffect(() => {
-    let isComponentMounted = true;
-    axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
-      setCheckLikeReivew(res.data);
-      console.log(checkLikeReivew);
-      const isLikeReviews = checkLikeReivew.some((like: any) => like.id === id);
-      if (isLikeReviews == true) {
-        likeCheck == true;
-      }
-      console.log(isLikeReviews);
-    });
+  // useEffect(() => {
+  //   // if (!likeCheck && value) {
+  //   //   Like(id)
+  //   //     .then((response) => {
+  //   //       console.log(response);
+  //   //       setLikes((prev) => prev + 1);
+  //   //     })
+  //   //     .catch((err) => console.log(err));
+  //   // } else if (likeCheck && !value) {
+  //   //   UnLike(id)
+  //   //     .then((response) => {
+  //   //       console.log(response);
+  //   //       setLikes((prev) => prev - 1);
+  //   //     })
+  //   //     .catch((err) => console.log(err));
+  //   // }
+  // }, [likeShape]);
 
-    if (!likeCheck && value) {
+  // useEffect(() => {
+
+  // }, [likeCheck]);
+
+  useEffect(() => {
+    const getAuth = async () => {
+      try {
+        setLoading(true);
+        const response = await auth();
+        console.log(response.user.nickname);
+        setUserNickname(response.user.nickname);
+        const res = await axios.get(
+          `/api/users/myinfo/likes/${response.user.nickname}`
+        );
+        setCheckLikeReivew(res.data);
+        console.log(res.data);
+        const isLikeReviews = res.data.some((like: any) => like.id === id);
+        console.log(isLikeReviews);
+        if (isLikeReviews == true) {
+          setIsCheck(true);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+    getAuth();
+  }, []);
+
+  const OnLikeChange = () => {
+    if (isCheck == false) {
       Like(id)
         .then((response) => {
           console.log(response);
-          setLikes((prev) => (prev += 1));
+          setLikes((prev) => prev + 1);
+          setIsCheck(true);
         })
         .catch((err) => console.log(err));
-    } else if (likeCheck && !value) {
+    } else if (isCheck == true) {
       UnLike(id)
         .then((response) => {
           console.log(response);
-          setLikes((prev) => (prev -= 1));
+          setLikes((prev) => prev - 1);
+          setIsCheck(false);
         })
         .catch((err) => console.log(err));
     }
-
-    return () => {
-      isComponentMounted = false;
-    };
-  }, [value]);
+  };
 
   return (
     <UserReviewContainer boxShadow={2}>
@@ -169,8 +211,8 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
           <Checkbox
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
-            checked={value}
-            onChange={onChange}
+            checked={isCheck}
+            onChange={OnLikeChange}
             name="MyLikeReview"
           />
           <h3> {likes}명이 리뷰를 좋아합니다. </h3>

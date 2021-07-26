@@ -50,6 +50,9 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userNickname, setUserNickname] = useState<string | undefined>('');
+  const [likeShape, setLikeShape] = useState(false);
+  const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
+
   const [userInfo, setUserInfo] = useState({
     nickname: '',
     profileImg: '',
@@ -66,18 +69,17 @@ const ReviewDetailPage: FunctionComponent = () => {
 
   const { id } = useParams<IdType>();
 
-  useEffect(() => {
-    getAuth();
-    async function getAuth() {
-      try {
-        const response = await auth();
-        console.log(response.user.nickname);
-        setUserNickname(response.user.nickname);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, []);
+  // const Check = async () => {
+  //   try {
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  // useEffect(() => {
+
+  // }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -154,6 +156,7 @@ const ReviewDetailPage: FunctionComponent = () => {
               tags={reviewDetail.tags}
               likeCheck={false}
               userNickname={userNickname}
+              checkLike={likeShape}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
