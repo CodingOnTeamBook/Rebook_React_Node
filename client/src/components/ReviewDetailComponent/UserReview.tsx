@@ -6,12 +6,13 @@ import Favorite from '@material-ui/icons/Favorite';
 import Rating from '@material-ui/lab/Rating';
 import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
-import { FavoriteBorder } from '@material-ui/icons';
+import { FavoriteBorder, LeakRemoveTwoTone } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { SERVER_URL } from 'config';
 import useCheck from 'hooks/useCheck';
 import { Like, UnLike } from 'API/USER_PUBLIC_API';
+import axios from 'axios';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -77,6 +78,7 @@ interface IUserReviewProps {
   tags: any;
   id: number;
   likeCheck: boolean;
+  userNickname: any;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
@@ -89,17 +91,31 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   tags,
   id,
   likeCheck,
+  userNickname,
 }: IUserReviewProps) => {
   const [likes, setLikes] = useState(like_count);
+  const [checkLikeReivew, setCheckLikeReivew] = useState<any[]>([]);
   const { value, onChange } = useCheck({
     name: 'like',
     initialValue: likeCheck,
   });
+
   // 초기값은 likeCheck ( 유저가 좋아요한 적이 있는가 )
   // value가 true => false ( unlike, 서버에서 성공 되면 setLikes(prev => prev - 1) )
   // value가 false => true ( like 서버에서 성공 되면 setLikes(prev => prev + 1) )
 
   useEffect(() => {
+    let isComponentMounted = true;
+    axios.get(`/api/users/myinfo/likes/${userNickname}`).then((res) => {
+      setCheckLikeReivew(res.data);
+      console.log(checkLikeReivew);
+      const isLikeReviews = checkLikeReivew.some((like: any) => like.id === id);
+      if (isLikeReviews == true) {
+        likeCheck == true;
+      }
+      console.log(isLikeReviews);
+    });
+
     if (!likeCheck && value) {
       Like(id)
         .then((response) => {
@@ -115,6 +131,10 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
         })
         .catch((err) => console.log(err));
     }
+
+    return () => {
+      isComponentMounted = false;
+    };
   }, [value]);
 
   return (

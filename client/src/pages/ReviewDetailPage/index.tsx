@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router';
 import axios from 'axios';
+import { auth } from 'API/USER_PRIVATE_API/index';
 
 const ReviewDetailContainer = styled(Grid)`
   border-radius: 20px;
@@ -48,6 +49,7 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userNickname, setUserNickname] = useState<string | undefined>('');
   const [userInfo, setUserInfo] = useState({
     nickname: '',
     profileImg: '',
@@ -63,6 +65,19 @@ const ReviewDetailPage: FunctionComponent = () => {
   });
 
   const { id } = useParams<IdType>();
+
+  useEffect(() => {
+    getAuth();
+    async function getAuth() {
+      try {
+        const response = await auth();
+        console.log(response.user.nickname);
+        setUserNickname(response.user.nickname);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -138,6 +153,7 @@ const ReviewDetailPage: FunctionComponent = () => {
               like_count={reviewDetail.like_count}
               tags={reviewDetail.tags}
               likeCheck={false}
+              userNickname={userNickname}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
