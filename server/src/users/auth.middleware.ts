@@ -20,14 +20,26 @@ export class AuthMiddleware implements NestMiddleware {
       try {
         const token = authHeaders.split('=')[1];
         const decoded: any = jwt.verify(token, jwtKEY.secretKey);
-        const user = await this.usersRepository.findOne({
-          where: { userId: decoded.id },
-        });
-        if (!user) {
-          throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
+        try {
+          const user = await this.usersRepository.findOne({
+            where: { userId: decoded.id },
+          });
+          if (!user) {
+            throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
+          }
+          req.user = user;
+          next();
+        } catch (err) {
+          if (err.name === 'TokenExpiredError') {
+            res.status(HttpStatus.OK).json({
+              success: true,
+              isAuth: false,
+              type: 1,
+            });
+            next();
+          }
+          next();
         }
-        req.user = user;
-        next();
       } catch (err) {
         if (err.name === 'TokenExpiredError') {
           res.status(HttpStatus.OK).json({
@@ -35,9 +47,7 @@ export class AuthMiddleware implements NestMiddleware {
             isAuth: false,
             type: 1,
           });
-          next();
         }
-        next();
       }
     } else {
       next();
