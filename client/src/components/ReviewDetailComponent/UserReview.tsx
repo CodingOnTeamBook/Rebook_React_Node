@@ -70,7 +70,7 @@ const BookTag = styled(Box)`
 `;
 
 const Message = styled.span`
-  margin-top: 50px;
+  margin-bottom: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,43 +105,39 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
 
   useEffect(() => {
     getAuth();
-    async function getAuth() {
-      try {
-        setLoading(true);
-        const response = await auth();
-        const res = await axios.get(
-          `/api/users/myinfo/likes/${response.user.nickname}`
-        );
-        console.log(res.data);
-        const isLikeReviews = res.data.some((like: any) => like.id === id);
-        console.log(isLikeReviews);
-        if (isLikeReviews == true) {
-          setIsCheck(true);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    }
-
     return () => {
       getAuth();
     };
   }, []);
 
+  async function getAuth() {
+    try {
+      setLoading(true);
+      const response = await auth();
+      const res = await axios.get(
+        `/api/users/myinfo/likes/${response.user.nickname}`
+      );
+      const isLikeReviews = res.data.some((like: any) => like.id === id);
+      if (isLikeReviews == true) {
+        setIsCheck(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  }
+
   const OnLikeChange = () => {
     if (isCheck == false) {
       Like(id)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           setLikes((prev) => prev + 1);
           setIsCheck(true);
         })
         .catch((err) => console.log(err));
     } else if (isCheck == true) {
       UnLike(id)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           setLikes((prev) => prev - 1);
           setIsCheck(false);
         })

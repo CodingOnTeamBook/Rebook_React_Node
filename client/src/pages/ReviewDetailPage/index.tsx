@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router';
 import axios from 'axios';
-import { auth } from 'API/USER_PRIVATE_API/index';
 
 const ReviewDetailContainer = styled(Grid)`
   border-radius: 20px;
@@ -81,7 +80,7 @@ const ReviewDetailPage: FunctionComponent = () => {
         setError(err);
         console.log(err);
       }
-      return () => setLoading(false);
+      setLoading(false);
     };
     fetchReviews();
   }, []);
@@ -106,7 +105,8 @@ const ReviewDetailPage: FunctionComponent = () => {
         error ? (
           <Message>에러가 발생했습니다 😭</Message>
         ) : (
-          <Message> 로딩 중입니다 📚</Message>
+          // 로딩 중입니다 📚
+          <Message></Message>
         )
       ) : (
         <ReviewDetailContainer>
