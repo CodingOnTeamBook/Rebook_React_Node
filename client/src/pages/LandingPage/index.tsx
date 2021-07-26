@@ -1,11 +1,12 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import Alert from '@material-ui/lab/Alert';
 import CarouselComponent from '../../components/LandingPage/CarouselComponent';
 import SearchForm from '../../components/common/SearchForm';
 import PopulateReview from '../../components/LandingPage/PopulateReviews';
 import BestSeller from '../../components/LandingPage/BestSeller';
+import { isNullishCoalesce } from 'typescript';
 
 const LandingContainer = styled.main`
   display: flex;
@@ -13,9 +14,6 @@ const LandingContainer = styled.main`
   justify-content: center;
   align-items: center;
 `;
-
-//bestseller랑 populateReview도 여기서 fetch해서 props로 넘겨주는게 낫지만
-//지금은 딱히 문제 될 것 없어 보여서 다른 급한 것 부터 하기
 
 interface review {
   bookCover: string;
@@ -28,9 +26,39 @@ interface review {
   writer: string;
 }
 
+export interface book {
+  author: string;
+  cover: string;
+  description: string;
+  isbn: string;
+  link: string;
+  pubDate: string;
+  publisher: string;
+  title: string;
+}
+
 const LandingPage: FunctionComponent = () => {
   const [reviews, setReviews] = useState<Array<review> | null>(null);
+  const [bestSeller, setBestSeller] = useState<Array<book>>([]);
   const [isError, setError] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const fetchBestSeller = async () => {
+      try {
+        const response = await axios.get('/api/book/bestseller');
+        const {
+          data: { bestSeller },
+        } = response;
+        console.log(bestSeller);
+        setBestSeller(bestSeller);
+        setError(false);
+      } catch (error) {
+        console.log(error);
+        setError(true);
+      }
+    };
+    fetchBestSeller();
+  }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -43,8 +71,8 @@ const LandingPage: FunctionComponent = () => {
           setError(false);
           setReviews(reviews);
         }
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        console.log(error);
         setError(true);
       }
     };
@@ -55,11 +83,15 @@ const LandingPage: FunctionComponent = () => {
     <LandingContainer>
       <CarouselComponent />
       <SearchForm />
-      <BestSeller />
       {isError ? (
-        <h2>에러가 발생했어요😢 잠시후 다시 시도해주세요</h2>
+        <Alert severity="error">
+          에러가 발생했습니다. 잠시 후 다시 시도해주세요.
+        </Alert>
       ) : (
-        <PopulateReview reviews={reviews} />
+        <>
+          <BestSeller bestSeller={bestSeller} />
+          <PopulateReview reviews={reviews} />
+        </>
       )}
     </LandingContainer>
   );
