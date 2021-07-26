@@ -48,6 +48,7 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [bookDetail, setBookDetail] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [userInfo, setUserInfo] = useState({
     nickname: '',
     profileImg: '',
@@ -79,7 +80,7 @@ const ReviewDetailPage: FunctionComponent = () => {
         setError(err);
         console.log(err);
       }
-      return () => setLoading(false);
+      setLoading(false);
     };
     fetchReviews();
   }, []);
@@ -104,7 +105,8 @@ const ReviewDetailPage: FunctionComponent = () => {
         error ? (
           <Message>에러가 발생했습니다 😭</Message>
         ) : (
-          <Message> 로딩 중입니다 📚</Message>
+          // 로딩 중입니다 📚
+          <Message></Message>
         )
       ) : (
         <ReviewDetailContainer>
@@ -137,7 +139,6 @@ const ReviewDetailPage: FunctionComponent = () => {
               createdAt={reviewDetail.createdAt}
               like_count={reviewDetail.like_count}
               tags={reviewDetail.tags}
-              likeCheck={false}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>
