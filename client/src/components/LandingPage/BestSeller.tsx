@@ -6,13 +6,10 @@ import {
   ItemContainer,
 } from '../common/LandingPageCommon';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { setBookInfo } from 'modules/book/action';
 
 const BestSeller = () => {
   const [BestSeller, setBestSeller] = useState<any>([]);
   const [err, setErr] = useState<boolean>(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -35,11 +32,7 @@ const BestSeller = () => {
       </Header>
       <Main>
         {BestSeller.map((book: any, index: number) => (
-          <ItemContainer
-            to={`book/${book.isbn}`}
-            key={index}
-            onClick={() => dispatch(setBookInfo(book))}
-          >
+          <ItemContainer to={`book/${book.isbn}`} key={index}>
             <img key={book.title} src={book.cover}></img>
             <h3 className="description">{book.title}</h3>
           </ItemContainer>
