@@ -48,6 +48,7 @@ const ReviewDetailPage: FunctionComponent = () => {
   const [bookDetail, setBookDetail] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [userInfo, setUserInfo] = useState({
     nickname: '',
     profileImg: '',

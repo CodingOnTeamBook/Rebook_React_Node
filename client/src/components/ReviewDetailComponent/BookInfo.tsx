@@ -46,7 +46,6 @@ const BookPlot = styled(Box)`
 `;
 
 const Message = styled.span`
-  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +59,7 @@ const BookInfo = ({ bookInfo, isbn }: any) => {
   return (
     <>
       {!bookInfo ? (
-        <Message>로딩 중입니다 📚</Message>
+        <Message></Message>
       ) : (
         <Box display="flex" flexDirection="row">
           <Grid container>
