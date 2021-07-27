@@ -106,7 +106,7 @@ const SearchPage: FunctionComponent = () => {
   const Header = () => {
     return (
       <>
-        <Sticky topOffset={-50}>
+        <Sticky>
           <SearchForm query={query} />
         </Sticky>
         <BtnArea>
