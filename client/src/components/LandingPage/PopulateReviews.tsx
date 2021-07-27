@@ -51,7 +51,7 @@ interface review {
 }
 
 interface Iprops {
-  reviews: Array<review> | null;
+  reviews: Array<review>;
 }
 
 const PopulateReview = ({ reviews }: Iprops) => {
@@ -95,4 +95,4 @@ const PopulateReview = ({ reviews }: Iprops) => {
   );
 };
 
-export default PopulateReview;
+export default React.memo(PopulateReview);

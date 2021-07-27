@@ -39,4 +39,4 @@ const BestSeller = ({ bestSeller }: IProps) => {
   );
 };
 
-export default BestSeller;
+export default React.memo(BestSeller);
