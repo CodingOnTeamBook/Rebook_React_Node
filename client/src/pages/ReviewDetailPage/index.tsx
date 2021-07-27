@@ -60,6 +60,7 @@ const ReviewDetailPage: FunctionComponent = () => {
     tags: [],
     createdAt: '',
     text: '',
+    isbn: '',
   });
 
   const { id } = useParams<IdType>();
@@ -109,7 +110,7 @@ const ReviewDetailPage: FunctionComponent = () => {
       ) : (
         <ReviewDetailContainer>
           <BookInfoWrapper>
-            <BookInfo bookInfo={bookDetail} />
+            <BookInfo bookInfo={bookDetail} isbn={reviewDetail.isbn} />
           </BookInfoWrapper>
           <ReviewDetailWrapper
             container

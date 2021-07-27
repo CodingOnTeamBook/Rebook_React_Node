@@ -1,7 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router';
 
 const BookCover = styled(Box)`
   width: 250px;
@@ -11,6 +12,7 @@ const BookCover = styled(Box)`
 const BookImg = styled.img`
   width: 100%;
   height: 100%;
+  cursor: pointer;
   margin-right: 10%;
   object-fit: cover;
   transition: all 0.2s linear;
@@ -52,7 +54,9 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const BookInfo = ({ bookInfo }: any) => {
+const BookInfo = ({ bookInfo, isbn }: any) => {
+  const history = useHistory();
+
   return (
     <>
       {!bookInfo ? (
@@ -62,7 +66,11 @@ const BookInfo = ({ bookInfo }: any) => {
           <Grid container>
             <Grid item lg={3} xl={3}>
               <BookCover>
-                <BookImg alt={bookInfo?.title} src={bookInfo?.cover} />
+                <BookImg
+                  alt={bookInfo?.title}
+                  src={bookInfo?.cover}
+                  onClick={() => history.push(`/book/${isbn}`)}
+                />
               </BookCover>
             </Grid>
             <Grid item xs={12} sm={12} lg={9} xl={9}>

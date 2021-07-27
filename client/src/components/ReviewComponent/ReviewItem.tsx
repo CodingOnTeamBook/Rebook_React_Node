@@ -3,7 +3,6 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
-import GridItem from '../common/GridItem';
 
 const ReviewMainContainer = styled(Box)`
   border-radius: 10px;
