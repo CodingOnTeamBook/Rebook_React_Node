@@ -7,7 +7,6 @@ import PopulateReview from '../../components/LandingPage/PopulateReviews';
 import BestSeller from '../../components/LandingPage/BestSeller';
 import fetchData from 'globalFunction/fetchData';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import useAxios from 'hooks/useAxios';
 
 const LandingContainer = styled.main`
   display: flex;
