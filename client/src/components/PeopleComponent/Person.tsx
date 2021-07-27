@@ -103,7 +103,7 @@ const Person: FunctionComponent<IPersonProps> = ({
           </GenreTagWrapper>
         ))}
       </Box>
-      <Introduction> {info} </Introduction>
+      <Introduction> {myInfo(info)} </Introduction>
       <InfoWrapper display="flex" justifyContent="center" alignItems="center">
         <ListAlt></ListAlt>
         <ReviewCount> {countUserReview}개 </ReviewCount>

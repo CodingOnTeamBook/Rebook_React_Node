@@ -39,15 +39,6 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const ScrollMessage = styled.span`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 300;
-  font-size: 20px;
-`;
-
 const sorts = [
   { type: 0, name: 'created', text: '최신순' },
   { type: 1, name: 'popularity', text: '인기순' },
@@ -123,8 +114,7 @@ const ReviewPage: FunctionComponent = () => {
           dataLength={reviews.length}
           next={fetchReviews}
           hasMore={isHasMore}
-          loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
-          endMessage={<ScrollMessage> 더 이상 리뷰가 없습니다. </ScrollMessage>}
+          loader={<Message></Message>}
         >
           <GridLayout>
             <>
