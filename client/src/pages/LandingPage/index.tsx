@@ -7,6 +7,7 @@ import PopulateReview from '../../components/LandingPage/PopulateReviews';
 import BestSeller from '../../components/LandingPage/BestSeller';
 import fetchData from 'globalFunction/fetchData';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useAxios from 'hooks/useAxios';
 
 const LandingContainer = styled.main`
   display: flex;
@@ -46,22 +47,26 @@ const LandingPage: FunctionComponent = () => {
   });
 
   useEffect(() => {
-    fetchData('/api/book/bestseller').then(({ data, isError, isLoading }) => {
-      setBestSellerState({
-        ...bestSellerState,
-        data: data.bestSeller,
-        isError,
-        isLoading,
-      });
-    });
-    fetchData('/api/review/home').then(({ data, isError, isLoading }) => {
-      setReviewsState({
-        ...reviewsState,
-        data: data.reviews,
-        isError,
-        isLoading,
-      });
-    });
+    fetchData({ method: 'GET', url: '/api/book/bestseller' }).then(
+      ({ data, isError, isLoading }) => {
+        setBestSellerState({
+          ...bestSellerState,
+          data: data.bestSeller,
+          isError,
+          isLoading,
+        });
+      }
+    );
+    fetchData({ method: 'GET', url: '/api/review/home' }).then(
+      ({ data, isError, isLoading }) => {
+        setReviewsState({
+          ...reviewsState,
+          data: data.reviews,
+          isError,
+          isLoading,
+        });
+      }
+    );
   }, []);
 
   if (bestSellerState.isLoading) {
