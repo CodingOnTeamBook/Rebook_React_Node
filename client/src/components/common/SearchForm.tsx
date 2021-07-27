@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, forwardRef } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
@@ -11,6 +11,7 @@ import useInput from 'hooks/useInput';
 const Wrapper = styled.div`
   position: relative;
   width: 50vw;
+  background-color: white;
   box-shadow: 0 4px 8px ${(props) => props.theme.palette.gray};
   margin: 50px auto;
   font-size: 12px;
@@ -47,9 +48,7 @@ const SearchForm = ({ query }: Props) => {
   const { value, onChange, setInitialValue } = useInput({
     initialValue: query ? decodeURI(query) : '',
   });
-
   const inputRef: React.MutableRefObject<any> = useRef();
-
   const onSubmit = () => {
     if (value.trim().length === 0) return;
     dispatch(fetchApi(value.trim(), 1));

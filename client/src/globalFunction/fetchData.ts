@@ -6,14 +6,14 @@ interface Props {
   isError: boolean | null;
 }
 
-const fetchData = async (url: string) => {
+const fetchData = async (axiosParams: any) => {
   const state: Props = {
     data: null,
     isLoading: true,
     isError: null,
   };
   try {
-    const response = await axios.get(`${url}`);
+    const response = await axios.request(axiosParams);
     if (response.data) {
       state.data = response.data;
       state.isLoading = false;
