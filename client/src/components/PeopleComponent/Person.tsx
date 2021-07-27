@@ -45,11 +45,11 @@ const Introduction = styled.div`
 `;
 
 const IntroductionWrapper = styled.p`
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; */
 `;
 
 const InfoWrapper = styled(Box)`

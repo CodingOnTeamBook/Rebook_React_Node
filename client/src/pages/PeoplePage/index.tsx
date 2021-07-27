@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import shortInfo from 'globalFunction/shortInfo';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
@@ -175,7 +176,7 @@ const PeoplePage: FunctionComponent = ({}) => {
                         nickname={person.nickname}
                         profileImg={person.profileImg}
                         genres={person.genres}
-                        info={person.info}
+                        info={shortInfo(person.info)}
                         countUserReview={person.countUserReview}
                       />
                     </PersonContainer>
