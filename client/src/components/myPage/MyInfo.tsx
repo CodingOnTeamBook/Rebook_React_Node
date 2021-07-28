@@ -132,7 +132,6 @@ const MyInfo = () => {
         update(formData).then((response) => {
           if (response.success) {
             alert('성공적으로 수정되었습니다.');
-            window.location.reload();
           } else {
             alert('에러가 발생했습니다. 다시 시도해주세요.');
           }
@@ -151,6 +150,7 @@ const MyInfo = () => {
         }
       });
     }
+    window.location.reload();
   };
   if (data?.user)
     return (
