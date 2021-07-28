@@ -26,6 +26,6 @@ export const myInfo = (info: string): string => {
   if (info) {
     return info;
   } else {
-    return '자기 소개를 입력해주세요.';
+    return '안녕하세요! 반갑습니다.';
   }
 };

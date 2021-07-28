@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import styled from 'styled-components';
@@ -13,6 +18,7 @@ import { SERVER_URL } from 'config';
 import { Like, UnLike } from 'API/USER_PUBLIC_API';
 import axios from 'axios';
 import { auth } from 'API/USER_PRIVATE_API/index';
+import IframeResizer from 'iframe-resizer-react';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -44,8 +50,9 @@ const UserNickName = styled.div`
 `;
 
 const UserWrite = styled.div`
-  max-height: 100vh;
   width: 100%;
+  height: 100%;
+  overflow: auto;
 `;
 
 const ReviewDay = styled.p`
@@ -99,6 +106,16 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
   const [isCheck, setIsCheck] = useState(false);
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
+  const div = useCallback((node) => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+      setWidth(node.getBoundingClientRect().width);
+    }
+
+    console.log(height);
+  }, []);
 
   useEffect(() => {
     getAuth();
@@ -149,8 +166,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
 
   const iframePart = () => {
     return {
-      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" scrolling="auto"
-      style="display: block; width: 100%;"></iframe>`,
+      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" width="100%" style={height: 100%;}></iframe>`,
     };
   };
 
@@ -173,7 +189,10 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                     </BookTag>
                   ))}
                 </Box>
-                <UserWrite dangerouslySetInnerHTML={iframePart()} />
+                <UserWrite
+                  ref={div}
+                  dangerouslySetInnerHTML={iframePart()}
+                ></UserWrite>
                 <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
               </UserWrapperContainer>
             </Box>

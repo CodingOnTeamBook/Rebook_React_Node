@@ -9,6 +9,7 @@ import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import shortInfo from 'globalFunction/shortInfo';
+import { myInfo } from 'globalFunction/myInfoDefaultValue';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
