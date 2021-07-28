@@ -16,6 +16,7 @@ import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 import Person from 'components/PeopleComponent/Person';
 import GridItem from 'layout/GridItem';
 import { Link } from 'react-router-dom';
+import Sticky from 'react-sticky-el';
 
 const Container = styled.div`
   margin: 2rem;
@@ -45,14 +46,6 @@ const TempContainer = styled.div`
   align-items: center;
 `;
 
-//다음 페이지로 넘어갈 때는 Link 사용
-//Search도 페이지네이션이 이루어지기 때문에
-//select 했을 때 api endpoint만 바꿈.
-//page는 ref값으로 관리
-//select값 바꿨을 때 endpoint, page 리셋(리셋하는 함수 따로 빼기)
-//한 페이지씩 로드했을 때 추가하기(현재 endpoint, 현재 page로 api 호출해서 배열에 추가)
-//해당 북 정보는 북 디테일 페이지에서 해결
-
 const SearchPage: FunctionComponent = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -81,12 +74,12 @@ const SearchPage: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    console.log(sorts);
+    // 도서검색탭
     if (sorts[0].selected) dispatch(fetchApi(query, 1));
+    // 리뷰어검색탭
     if (sorts[1].selected) {
       const getReviewer = async () => {
         const response = await SearchUsersByNickname(query);
-        console.log(response.users);
         if (!response.users.length) setNoReviewerResult(true);
         else {
           setNoReviewerResult(false);
@@ -113,7 +106,9 @@ const SearchPage: FunctionComponent = () => {
   const Header = () => {
     return (
       <>
-        <SearchForm query={query} />
+        <Sticky>
+          <SearchForm query={query} />
+        </Sticky>
         <BtnArea>
           {sorts.map(({ text, selected }, index) => (
             <SortButton

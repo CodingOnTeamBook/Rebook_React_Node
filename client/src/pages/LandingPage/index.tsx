@@ -1,11 +1,12 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-
+import Alert from '@material-ui/lab/Alert';
 import CarouselComponent from '../../components/LandingPage/CarouselComponent';
 import SearchForm from '../../components/common/SearchForm';
 import PopulateReview from '../../components/LandingPage/PopulateReviews';
 import BestSeller from '../../components/LandingPage/BestSeller';
+import fetchData from 'globalFunction/fetchData';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const LandingContainer = styled.main`
   display: flex;
@@ -14,52 +15,98 @@ const LandingContainer = styled.main`
   align-items: center;
 `;
 
-//bestseller랑 populateReview도 여기서 fetch해서 props로 넘겨주는게 낫지만
-//지금은 딱히 문제 될 것 없어 보여서 다른 급한 것 부터 하기
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 40vh;
+`;
 
-interface review {
-  bookCover: string;
-  bookTitle: string;
-  id: number;
-  like_count: number;
-  score: number;
-  summary: string;
-  tags: Array<string>;
-  writer: string;
+interface IProps {
+  data: any | null;
+  isLoading: boolean;
+  isError: boolean | null;
 }
 
+const initialState: IProps = {
+  data: null,
+  isLoading: true,
+  isError: null,
+};
+
 const LandingPage: FunctionComponent = () => {
-  const [reviews, setReviews] = useState<Array<review> | null>(null);
-  const [isError, setError] = useState<boolean | null>(null);
+  const [bestSellerState, setBestSellerState] = useState<IProps>({
+    ...initialState,
+  });
+  const [reviewsState, setReviewsState] = useState<IProps>({
+    ...initialState,
+  });
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get('/api/review/home');
-        const {
-          data: { reviews },
-        } = response;
-        if (reviews.length) {
-          setError(false);
-          setReviews(reviews);
-        }
-      } catch (err) {
-        console.log(err);
-        setError(true);
+    fetchData({ method: 'GET', url: '/api/book/bestseller' }).then(
+      ({ data, isError, isLoading }) => {
+        setBestSellerState({
+          ...bestSellerState,
+          data: data.bestSeller,
+          isError,
+          isLoading,
+        });
       }
-    };
-    fetchReviews();
+    );
+    fetchData({ method: 'GET', url: '/api/review/home' }).then(
+      ({ data, isError, isLoading }) => {
+        setReviewsState({
+          ...reviewsState,
+          data: data.reviews,
+          isError,
+          isLoading,
+        });
+      }
+    );
   }, []);
+
+  if (bestSellerState.isLoading) {
+    return (
+      <LandingContainer>
+        <CarouselComponent />
+        <SearchForm />
+        <Loading>
+          <CircularProgress />
+        </Loading>
+        <PopulateReview reviews={reviewsState.data} />
+      </LandingContainer>
+    );
+  }
+
+  if (reviewsState.isLoading) {
+    return (
+      <LandingContainer>
+        <CarouselComponent />
+        <SearchForm />
+        <BestSeller bestSeller={bestSellerState.data} />
+        <Loading>
+          <CircularProgress />
+        </Loading>
+      </LandingContainer>
+    );
+  }
 
   return (
     <LandingContainer>
       <CarouselComponent />
       <SearchForm />
-      <BestSeller />
-      {isError ? (
-        <h2>에러가 발생했어요😢 잠시후 다시 시도해주세요</h2>
+      {bestSellerState.isError || reviewsState.isError ? (
+        <Alert severity="error">
+          에러가 발생했습니다. 잠시 후 다시 시도해주세요.
+        </Alert>
       ) : (
-        <PopulateReview reviews={reviews} />
+        <>
+          <BestSeller bestSeller={bestSellerState.data} />
+          <PopulateReview reviews={reviewsState.data} />
+        </>
       )}
     </LandingContainer>
   );

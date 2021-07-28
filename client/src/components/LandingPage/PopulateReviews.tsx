@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Header, Main } from '../common/LandingPageCommon';
 import SmallReview from '../myPage/SmallReview';
-import GridLayouot from '../common/GridLayout';
+import GridLayout from '../common/GridLayout';
 import GridItem from '../common/GridItem';
 
 const ReviewContainer = styled(Main)``;
+const MoreInfo = styled(Link)`
+  h3 {
+    margin-top: 32px;
+  }
+  h3:hover {
+    color: ${(props) => props.theme.palette.green};
+  }
+`;
+
 const NoReview = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +51,7 @@ interface review {
 }
 
 interface Iprops {
-  reviews: Array<review> | null;
+  reviews: Array<review>;
 }
 
 const PopulateReview = ({ reviews }: Iprops) => {
@@ -50,10 +59,10 @@ const PopulateReview = ({ reviews }: Iprops) => {
     return (
       <Container>
         <Header>
-          <h2>인기 리뷰</h2>
-          <h3>
-            <Link to="/review">더보기</Link>
-          </h3>
+          <h2>지금 핫한🔥 리뷰</h2>
+          <MoreInfo to="/review">
+            <h3>더보기</h3>
+          </MoreInfo>
         </Header>
         <NoReview>
           <h1>아직 리뷰가 없어요😅</h1>
@@ -66,13 +75,13 @@ const PopulateReview = ({ reviews }: Iprops) => {
   return (
     <Container>
       <Header>
-        <h2>인기 리뷰</h2>
-        <h3>
-          <Link to="/review">더보기</Link>
-        </h3>
+        <h2>지금 핫한🔥 리뷰</h2>
+        <MoreInfo to="/review">
+          <h3>더보기</h3>
+        </MoreInfo>
       </Header>
       <ReviewContainer>
-        <GridLayouot>
+        <GridLayout>
           <>
             {reviews?.map((review: review, index: number) => (
               <GridItem key={index}>
@@ -80,10 +89,10 @@ const PopulateReview = ({ reviews }: Iprops) => {
               </GridItem>
             ))}
           </>
-        </GridLayouot>
+        </GridLayout>
       </ReviewContainer>
     </Container>
   );
 };
 
-export default PopulateReview;
+export default React.memo(PopulateReview);

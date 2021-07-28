@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ScrollToTop } from './components/common/ScrollToTop';
 import Auth from 'hocAuth';
 import { Provider } from 'react-redux';
 import Main from 'layout/Main';
@@ -23,6 +24,7 @@ const App: FunctionComponent = () => {
     <Provider store={store}>
       <Main>
         <BrowserRouter>
+          <ScrollToTop />
           <Header />
           <Switch>
             <>
