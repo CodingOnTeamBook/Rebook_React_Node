@@ -17,6 +17,7 @@ import Person from 'components/PeopleComponent/Person';
 import GridItem from 'layout/GridItem';
 import { Link } from 'react-router-dom';
 import Sticky from 'react-sticky-el';
+import shortInfo from 'globalFunction/shortInfo';
 
 const Container = styled.div`
   margin: 2rem;
@@ -166,7 +167,7 @@ const SearchPage: FunctionComponent = () => {
                       nickname={reviewer.nickname}
                       profileImg={reviewer.profileImg}
                       genres={reviewer.genres}
-                      info={reviewer.info}
+                      info={shortInfo(reviewer.info)}
                       countUserReview={reviewer.countUserReviews}
                     />
                   </PersonContainer>
