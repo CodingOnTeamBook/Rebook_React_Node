@@ -10,14 +10,12 @@ const BookDetailContainer = styled.main`
   margin-bottom: 2rem;
   padding: 2rem;
   border-radius: 4px;
+
   .bookCover {
-    width: 187px;
-    height: 250px;
     border-radius: 16px;
-    img {
-      box-shadow: 0 12px 16px rgba(40, 40, 40, 0.4);
-      object-fit: cover;
-    }
+    -webkit-box-shadow: 5px 5px 15px 1px #000000;
+    box-shadow: 5px 5px 15px 1px #000000;
+    object-fit: cover;
   }
 
   .detailContainer {
@@ -34,7 +32,6 @@ const LoadingBox = styled.div`
 `;
 
 const BookDetail = ({ bookInfo }: any) => {
-  console.log(bookInfo);
   return (
     <>
       {!bookInfo ? (

@@ -88,7 +88,7 @@ const TagsInput = (props: any, ref: any) => {
       </TagWrapper>
       <Input
         type="text"
-        placeholder="#태그를 입력하세요"
+        placeholder="#태그 입력 후 엔터"
         onKeyUp={(e) => addTag(e)}
       />
     </InputWrapper>

@@ -7,6 +7,7 @@ import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 import { Link } from 'react-router-dom';
 import { review } from 'pages/BookDetailPage';
+import fetchData from 'globalFunction/fetchData';
 
 const Container = styled.main`
   margin: 50px 0;
@@ -79,50 +80,63 @@ const NoResultMsg = styled.h3`
   color: ${(props) => props.theme.palette.white};
 `;
 
-//bookreview 넘겨받은 초기 배열로 review 뿌려주서(캐싱 개념으로 가지고 있기)
-//state를 따로 관리해서 인기순 누르면 fetchAPI 호출 후 리로딩
-//다음 페이지로 넘어갈 때는 Link to={`/review/${id}`}로 작성 ( Link가 React에서 최적화 되어있기도 하고 가독성이 좋아서.)
-//빈 값일 때는 따로 return 하기 안에서 {isEmpty && }이런식으로 작성하지 말구
-
 interface Props {
-  reviews: Array<review> | undefined;
-  isEmptyReviews: boolean;
+  reviews: Array<review> | null;
   isbn: string;
 }
 
-const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
-  const [_reviews, setReviews] = useState(reviews);
-  const [error, setError] = useState<null | boolean>(null);
+interface initialState {
+  data: Array<review> | null;
+  isError: boolean | null;
+}
+
+const BookReview = ({ reviews, isbn }: Props) => {
+  const [_reviews, setReviews] = useState<initialState>({
+    data: null,
+    isError: null,
+  });
 
   const [tabs, setTabs] = useState([
     { name: '최신순', selected: true },
     { name: '인기순', selected: false },
   ]);
 
-  const fetchReviews = async (orderby: string) => {
-    try {
-      const response = await axios.post(`/api/review/load/${isbn}`, {
-        orderby: `${orderby}`,
-      });
-      setReviews(response.data.reviews);
-    } catch (err) {
-      setError(true);
-    }
-  };
-
   const onClick = (index: number) => {
     switchTab(index);
     switch (index) {
       case 0:
-        return fetchReviews('created');
+        return fetchData({
+          method: 'POST',
+          url: `/api/review/load/${isbn}`,
+          data: {
+            orderby: 'created',
+          },
+        }).then(({ data, isError }) => {
+          setReviews({
+            ..._reviews,
+            data: data.reviews,
+            isError,
+          });
+        });
       case 1:
-        return fetchReviews('popularity');
+        return fetchData({
+          method: 'POST',
+          url: `/api/review/load/${isbn}`,
+          data: {
+            orderby: 'popularity',
+          },
+        }).then(({ data, isError }) => {
+          setReviews({
+            ..._reviews,
+            data: data.reviews,
+            isError,
+          });
+        });
       default:
         return;
     }
   };
 
-  // 탭을 쓰는 다른 컴포넌트를 위해 나중에 글로벌로 뺄 수도 있음
   function switchTab(index: number) {
     const tmp = [...tabs];
     tmp[index].selected = true;
@@ -130,7 +144,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
     setTabs(tmp);
   }
 
-  if (error) {
+  if (_reviews.isError) {
     return (
       <div>
         에러가 발생했어요😨 <br /> 잠시 후 다시 시도해주세요
@@ -152,7 +166,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
         ))}
       </TabContainer>
       <ReviewContainer>
-        {isEmptyReviews && (
+        {!reviews?.length && (
           <NoResultMsg>
             아직 작성된 리뷰가 없어요😢 <br />이 책의 첫 리뷰어가 되어보세요!
           </NoResultMsg>
@@ -174,7 +188,8 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                   />
                   <div className="review_contents">
                     <h3>
-                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다
+                      {TransferDate(createdAt)} {'|'} {writer} 님이 올리신
+                      리뷰입니다
                     </h3>
                     <h4>
                       {summary}
@@ -193,7 +208,7 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
           </>
         ) : (
           <>
-            {_reviews?.map(
+            {_reviews.data?.map(
               (
                 { likeCount, summary, writer, writerProfileImg, createdAt, id },
                 index: number
@@ -208,7 +223,8 @@ const BookReview = ({ reviews, isEmptyReviews, isbn }: Props) => {
                   />
                   <div className="review_contents">
                     <h3>
-                      {TransferDate(createdAt)} {writer} 님이 올리신 리뷰입니다.
+                      {TransferDate(createdAt)} {'|'} {writer} 님이 올리신
+                      리뷰입니다
                     </h3>
                     <h4>
                       {summary}
