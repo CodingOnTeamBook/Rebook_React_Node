@@ -8,6 +8,10 @@ const ReviewMainContainer = styled(Box)`
   border-radius: 10px;
   width: 100%;
   cursor: pointer;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const ImgCover = styled(Box)`
@@ -20,10 +24,6 @@ const CardImg = styled.img`
   max-width: 95%;
   height: auto;
   object-fit: cover;
-  transition: all 0.2s linear;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 const BookTitle = styled(Box)`

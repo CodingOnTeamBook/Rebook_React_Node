@@ -110,7 +110,7 @@ const ReviewPage: FunctionComponent = () => {
         <Message>에러가 발생했습니다 😭</Message>
       ) : (
         <InfiniteScroll
-          style={{ overflow: 'hidden', padding: '10px' }}
+          style={{ overflow: 'hidden', padding: '20px' }}
           dataLength={reviews.length}
           next={fetchReviews}
           hasMore={isHasMore}

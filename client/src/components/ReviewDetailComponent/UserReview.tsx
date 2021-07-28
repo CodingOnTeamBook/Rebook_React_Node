@@ -1,9 +1,4 @@
-import React, {
-  FunctionComponent,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import styled from 'styled-components';
@@ -18,7 +13,6 @@ import { SERVER_URL } from 'config';
 import { Like, UnLike } from 'API/USER_PUBLIC_API';
 import axios from 'axios';
 import { auth } from 'API/USER_PRIVATE_API/index';
-import IframeResizer from 'iframe-resizer-react';
 
 const UserReviewContainer = styled(Box)`
   border-radius: 20px;
@@ -50,9 +44,16 @@ const UserNickName = styled.div`
 `;
 
 const UserWrite = styled.div`
-  width: 100%;
   height: 100%;
-  overflow: auto;
+  position: relative;
+  padding-bottom: 10%;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const ReviewDay = styled.p`
@@ -106,16 +107,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
   const [isCheck, setIsCheck] = useState(false);
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const div = useCallback((node) => {
-    if (node !== null) {
-      setHeight(node.getBoundingClientRect().height);
-      setWidth(node.getBoundingClientRect().width);
-    }
-
-    console.log(height);
-  }, []);
 
   useEffect(() => {
     getAuth();
@@ -164,11 +155,10 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     }
   };
 
-  const iframePart = () => {
-    return {
-      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" width="100%" style={height: 100%;}></iframe>`,
-    };
-  };
+  function resizeIframe(obj: any) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    obj.style.width = obj.contentWindow.document.body.scrollWidth + 'px';
+  }
 
   return (
     <>
@@ -189,10 +179,14 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                     </BookTag>
                   ))}
                 </Box>
-                <UserWrite
-                  ref={div}
-                  dangerouslySetInnerHTML={iframePart()}
-                ></UserWrite>
+                <UserWrite>
+                  <iframe
+                    id="iFrame1"
+                    width="100%"
+                    frameBorder="0"
+                    src={`${SERVER_URL}/${text}`}
+                  />
+                </UserWrite>
                 <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
               </UserWrapperContainer>
             </Box>
