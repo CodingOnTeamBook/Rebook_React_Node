@@ -149,6 +149,14 @@ export class ReviewsService {
     });
     if (!review) throw new HttpException('Not found', HttpStatus.BAD_REQUEST);
 
+    fs.readFile(`./uploads/${review.text}`, (err, data) => {
+      if (err) {
+        console.log('error with readFile');
+        return err;
+      }
+      review['content'] = data.toString('utf-8');
+    });
+
     if (review['user']['profileImg'].slice(0, 6) === 'users/')
       review['user']['profileImg'] = review['user']['profileImg'];
     const comm = await this.commentRepository.find({

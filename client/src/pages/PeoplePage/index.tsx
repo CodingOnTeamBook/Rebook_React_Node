@@ -82,8 +82,6 @@ const PeoplePage: FunctionComponent = ({}) => {
           .get(`api/reviewer/${isSelected}?page=${page.current}`)
           .then((res) => {
             setPeople([...people, ...res.data.reviewers]);
-            // console.log(people);
-            // console.log(res.data.reviewers);
             if (res.data.reviewers.length === 0) {
               setIsHasMore(false);
             } else {

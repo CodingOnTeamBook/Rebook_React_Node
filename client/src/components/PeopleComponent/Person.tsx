@@ -92,7 +92,7 @@ const Person: FunctionComponent<IPersonProps> = ({
       display="flex"
       flexDirection="column"
       alignItems="center"
-      boxShadow={2}
+      boxShadow={3}
     >
       <UserImg alt={nickname} src={myProfileImg(profileImg)} />
       <NickName>{nickname}</NickName>
