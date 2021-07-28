@@ -16,7 +16,6 @@ import { IReviewer } from '../../API/REVIEWER_PUBLIC_API/reviewer.interface';
 import Person from 'components/PeopleComponent/Person';
 import GridItem from 'layout/GridItem';
 import { Link } from 'react-router-dom';
-import shortInfo from 'globalFunction/shortInfo';
 
 const Container = styled.div`
   margin: 2rem;
@@ -172,7 +171,7 @@ const SearchPage: FunctionComponent = () => {
                       nickname={reviewer.nickname}
                       profileImg={reviewer.profileImg}
                       genres={reviewer.genres}
-                      info={shortInfo(reviewer.info)}
+                      info={reviewer.info}
                       countUserReview={reviewer.countUserReviews}
                     />
                   </PersonContainer>
