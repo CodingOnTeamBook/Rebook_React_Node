@@ -62,6 +62,7 @@ const ReviewDetailPage: FunctionComponent = () => {
     createdAt: '',
     text: '',
     isbn: '',
+    content: '',
   });
 
   const { id } = useParams<IdType>();
@@ -122,12 +123,12 @@ const ReviewDetailPage: FunctionComponent = () => {
               key={reviewDetail.id}
               id={reviewDetail.id}
               score={reviewDetail.score}
-              text={reviewDetail.text}
               nickname={userInfo.nickname}
               profileImg={userInfo.profileImg}
               createdAt={reviewDetail.createdAt}
               like_count={reviewDetail.like_count}
               tags={reviewDetail.tags}
+              content={reviewDetail.content}
             />
           </ReviewDetailWrapper>
         </ReviewDetailContainer>

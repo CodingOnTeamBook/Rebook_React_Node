@@ -8,6 +8,10 @@ const ReviewMainContainer = styled(Box)`
   border-radius: 10px;
   width: 100%;
   cursor: pointer;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const ImgCover = styled(Box)`
@@ -20,10 +24,6 @@ const CardImg = styled.img`
   max-width: 95%;
   height: auto;
   object-fit: cover;
-  transition: all 0.2s linear;
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 const BookTitle = styled(Box)`
@@ -37,16 +37,11 @@ const BookTitle = styled(Box)`
   -webkit-box-orient: vertical;
 `;
 
-// webkit 지원하지 않는 IE에서는 말줄임 작동X => 처음부터 길이 제한으로 summary를 저장하는 방법으로 해야할 듯?
 const BookReview = styled.div`
   margin-top: 5px;
   overflow: hidden;
   font-size: 13px;
-  text-overflow: ellipsis;
-  line-height: 1.2em;
-  max-height: 3.6em;
-  margin: 0.4rem 0;
-  height: 50px;
+  height: 60px;
 `;
 
 const Nickname = styled.span`
@@ -77,7 +72,7 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
   const history = useHistory();
 
   return (
-    <ReviewMainContainer display="flex" flexDirection="column" boxShadow={1}>
+    <ReviewMainContainer display="flex" flexDirection="column" boxShadow={3}>
       <Box
         display="flex"
         flexDirection="row"

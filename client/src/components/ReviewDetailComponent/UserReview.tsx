@@ -9,7 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FavoriteBorder } from '@material-ui/icons';
 import TransferDate from '../../globalFunction/TransferDate';
 import { myProfileImg } from '../../globalFunction/myInfoDefaultValue';
-import { SERVER_URL } from 'config';
 import { Like, UnLike } from 'API/USER_PUBLIC_API';
 import axios from 'axios';
 import { auth } from 'API/USER_PRIVATE_API/index';
@@ -44,8 +43,8 @@ const UserNickName = styled.div`
 `;
 
 const UserWrite = styled.div`
-  max-height: 100vh;
   width: 100%;
+  height: 100%;
 `;
 
 const ReviewDay = styled.p`
@@ -77,24 +76,24 @@ const Message = styled.span`
 
 interface IUserReviewProps {
   score: number;
-  text: any;
   nickname: string;
   profileImg: string;
   createdAt: string;
   like_count: number;
   tags: any;
   id: number;
+  content: string;
 }
 
 const UserReview: FunctionComponent<IUserReviewProps> = ({
   score,
-  text,
   nickname,
   profileImg,
   createdAt,
   like_count,
   tags,
   id,
+  content,
 }: IUserReviewProps) => {
   const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
@@ -147,13 +146,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
     }
   };
 
-  const iframePart = () => {
-    return {
-      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" scrolling="auto"
-      style="display: block; width: 100%;"></iframe>`,
-    };
-  };
-
   return (
     <>
       {loading ? (
@@ -173,7 +165,7 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
                     </BookTag>
                   ))}
                 </Box>
-                <UserWrite dangerouslySetInnerHTML={iframePart()} />
+                <UserWrite dangerouslySetInnerHTML={{ __html: content }} />
                 <ReviewDay> {TransferDate(createdAt)} </ReviewDay>
               </UserWrapperContainer>
             </Box>

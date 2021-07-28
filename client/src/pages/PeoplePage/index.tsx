@@ -39,6 +39,10 @@ const GenreButton = styled(Button)`
 
 const PersonContainer = styled.div`
   cursor: pointer;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const Message = styled.span`
@@ -78,8 +82,6 @@ const PeoplePage: FunctionComponent = ({}) => {
           .get(`api/reviewer/${isSelected}?page=${page.current}`)
           .then((res) => {
             setPeople([...people, ...res.data.reviewers]);
-            // console.log(people);
-            // console.log(res.data.reviewers);
             if (res.data.reviewers.length === 0) {
               setIsHasMore(false);
             } else {
@@ -146,7 +148,7 @@ const PeoplePage: FunctionComponent = ({}) => {
         <Message> 등록된 리뷰어가 없습니다 😢 </Message>
       ) : (
         <InfiniteScroll
-          style={{ overflow: 'hidden', padding: '10px' }}
+          style={{ overflow: 'hidden', padding: '20px' }}
           dataLength={people.length}
           next={fetchPerson}
           hasMore={isHasMore}

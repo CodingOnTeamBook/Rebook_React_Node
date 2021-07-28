@@ -92,14 +92,14 @@ const Person: FunctionComponent<IPersonProps> = ({
       display="flex"
       flexDirection="column"
       alignItems="center"
-      boxShadow={2}
+      boxShadow={3}
     >
       <UserImg alt={nickname} src={myProfileImg(profileImg)} />
       <NickName>{nickname}</NickName>
       <Box display="flex" flexDirection="row" flexWrap="wrap">
         {genreToStr(genres).map((genre: any) => (
           <GenreTagWrapper key={genre}>
-            <GenreChip label={genreTags[genre]} />
+            <GenreChip label={`#${genreTags[genre]}`} />
           </GenreTagWrapper>
         ))}
       </Box>
