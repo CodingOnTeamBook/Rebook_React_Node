@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LineGreenBtn } from '../../style/componentStyled';
-import BookDetail from '../../components/common/BookDetail';
+import BookDetail from '../../components/BookDetail/BookDetail';
 import TagsInput from '../../components/WriteReviewComponent/TagsInput';
 import WriteEditor from '../../components/WriteReviewComponent/WriteEditor';
 import StarRate from '../../components/WriteReviewComponent/StarRate';
@@ -10,8 +10,10 @@ import { useRef } from 'react';
 import axios from 'axios';
 import { auth } from 'API/USER_PRIVATE_API/index';
 import { useLocation } from 'react-router';
+import fetchData from 'globalFunction/fetchData';
 
 const SubmitBtn = styled(LineGreenBtn)`
+  width: 200px;
   margin: 50px 0;
   background-color: white;
 `;
@@ -30,16 +32,6 @@ const Title = styled.h1`
   background-color: white;
 `;
 
-//submit 했을 때 일어나는 일: writeEditor 값 txt로 저장, 앞부분 30글자 summary로 저장(ref)
-// tagsInput => '오늘, 투두'이런식으로 저장 (ref)
-// starRate => 입력한 숫자 저장 (ref)
-// toggleBtn => true or false로 (ref)
-//submit을 이 파일에서 보내는데 나머지 부분은 ref로 값을 받아옴.
-//writeEditor 부분은 파일 저장이라서 저 부분만 writeeditor에서 진행
-//writeEditor에서 저장이 되면 서버에서 파일 경로를 return
-//submit 할 때 filepath나 url로 해당 내용 저장
-// fileSave boolean값으로 관리 => writeEditor에서 쓴 내용 저장하고 filepath 가벼오는거 기다리기
-
 const EditorContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,28 +39,48 @@ const EditorContainer = styled.div`
   background-color: white;
 `;
 
+interface initialState {
+  data: any | null;
+  isError: boolean | null;
+}
+
 const WriteReviewPage: FunctionComponent = () => {
+  const MIN_LENGTH = 5;
+
   const location: any = useLocation();
-  const isbn = location.state.isbn;
+  const ISBN = location.state.isbn;
+
   const [userNickname, setUserNickname] = useState<string | undefined>('');
   const [userAuthError, setUserAuthError] = useState<boolean>(false);
+
   const [isFileSaved, setIsFileSaved] = useState<boolean | null>(true);
 
-  const [bookInfo, setBookInfo] = useState();
-  const [bookError, setBookError] = useState(false);
+  const [bookInfoState, setBookInfoState] = useState<initialState>({
+    data: null,
+    isError: null,
+  });
 
   const editorRef = useRef<any>();
   const tagsRef = useRef<any>();
   const starRateRef = useRef<any>();
   const toggleRef = useRef<any>();
 
-  // 파라미터로 넘길 nickname
   useEffect(() => {
+    fetchData({
+      method: 'GET',
+      url: `/api/book/search?title=${ISBN}`,
+    }).then(({ data, isError }) => {
+      setBookInfoState({
+        ...bookInfoState,
+        data: data.books.item[0],
+        isError,
+      });
+    });
+    // 파라미터로 넘길 nickname
     getAuth();
     async function getAuth() {
       try {
         const response = await auth();
-        // console.log(response.user.nickname);
         setUserNickname(response.user.nickname);
         setUserAuthError(false);
       } catch (e) {
@@ -76,18 +88,6 @@ const WriteReviewPage: FunctionComponent = () => {
         setUserAuthError(true);
       }
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchBookInfo = async () => {
-      try {
-        const response = await axios.get(`/api/book/search?title=${isbn}`);
-        setBookInfo(response.data.books.item[0]);
-      } catch (err) {
-        setBookError(true);
-      }
-    };
-    fetchBookInfo();
   }, []);
 
   // 내용을 updateText에 저장 후 서버에서 받은 filePath값 저장
@@ -114,8 +114,8 @@ const WriteReviewPage: FunctionComponent = () => {
     try {
       const filePath = await fetchTextFilePath();
       const summary = await editorRef.current.getSummary();
-      if (summary.length < 5) {
-        alert('5자 이상의 글자를 입력해주세요');
+      if (summary.length < MIN_LENGTH) {
+        alert(`${MIN_LENGTH}자 이상의 글자를 입력해주세요`);
         return;
       }
       const score = await starRateRef.current.getRate();
@@ -124,7 +124,7 @@ const WriteReviewPage: FunctionComponent = () => {
       const data = {
         text: filePath,
         writer: userNickname,
-        bookInfo: JSON.stringify(bookInfo),
+        bookInfo: JSON.stringify(bookInfoState.data),
         summary: summary,
         score: score.toString(),
         isPublic: isPublic.toString(),
@@ -139,16 +139,17 @@ const WriteReviewPage: FunctionComponent = () => {
     } catch (err) {
       console.log(err);
       alert('잠시후 다시 시도해주세요');
+      window.location.reload();
     }
   };
 
-  // To do : 에러페이지
-  if (userAuthError || !isFileSaved) return <div>에러발생</div>;
+  if (userAuthError || !isFileSaved)
+    return <Container>에러가 발생했어요😨 잠시후 다시 시도해주세요</Container>;
 
   return (
     <Container>
       <Title>리뷰 작성</Title>
-      <BookDetail bookInfo={bookInfo} />
+      <BookDetail bookInfo={bookInfoState.data} />
       <EditorContainer>
         <WriteEditor ref={editorRef} />
         <TagsInput ref={tagsRef} />
