@@ -17,5 +17,6 @@ export class CreateUserDto {
   readonly ageRange: string = 'Secret';
 
   @IsString()
-  readonly profileImg: string = 'users/defaultProfileImg.png';
+  readonly profileImg: string =
+    'https://rebookbucket.s3.ap-northeast-2.amazonaws.com/resize/w_200_defaultProfileImg.png';
 }
