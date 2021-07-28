@@ -99,7 +99,7 @@ const Person: FunctionComponent<IPersonProps> = ({
       <Box display="flex" flexDirection="row" flexWrap="wrap">
         {genreToStr(genres).map((genre: any) => (
           <GenreTagWrapper key={genre}>
-            <GenreChip label={genreTags[genre]} />
+            <GenreChip label={`#${genreTags[genre]}`} />
           </GenreTagWrapper>
         ))}
       </Box>

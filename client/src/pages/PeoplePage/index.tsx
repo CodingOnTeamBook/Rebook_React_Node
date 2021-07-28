@@ -9,7 +9,6 @@ import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import shortInfo from 'globalFunction/shortInfo';
-import { myInfo } from 'globalFunction/myInfoDefaultValue';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
@@ -40,6 +39,10 @@ const GenreButton = styled(Button)`
 
 const PersonContainer = styled.div`
   cursor: pointer;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const Message = styled.span`
@@ -147,7 +150,7 @@ const PeoplePage: FunctionComponent = ({}) => {
         <Message> 등록된 리뷰어가 없습니다 😢 </Message>
       ) : (
         <InfiniteScroll
-          style={{ overflow: 'hidden', padding: '10px' }}
+          style={{ overflow: 'hidden', padding: '20px' }}
           dataLength={people.length}
           next={fetchPerson}
           hasMore={isHasMore}
