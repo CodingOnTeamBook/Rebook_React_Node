@@ -44,8 +44,8 @@ const UserNickName = styled.div`
 `;
 
 const UserWrite = styled.div`
+  max-height: 100vh;
   width: 100%;
-  height: 100%;
 `;
 
 const ReviewDay = styled.p`
@@ -99,8 +99,6 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
   const [loading, setLoading] = useState(false);
   const [likes, setLikes] = useState(like_count);
   const [isCheck, setIsCheck] = useState(false);
-  const [newheight, setNewHeight] = useState(0);
-  const [newwidth, setNewWidth] = useState(0);
 
   useEffect(() => {
     getAuth();
@@ -151,8 +149,8 @@ const UserReview: FunctionComponent<IUserReviewProps> = ({
 
   const iframePart = () => {
     return {
-      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" 
-      style="position: absolute; left: 0; right: 0; height: 100%; width: 100%;"></iframe>`,
+      __html: `<iframe src=${SERVER_URL}/${text} frameborder="0" scrolling="auto"
+      style="display: block; width: 100%;"></iframe>`,
     };
   };
 
