@@ -45,7 +45,7 @@ interface IdType {
 //구조 자체는 layout으로 빼는 것이 best지만 딱히 지장은 없으므로 패스
 
 const ReviewDetailPage: FunctionComponent = () => {
-  const [bookDetail, setBookDetail] = useState<any[]>([]);
+  const [bookDetail, setBookDetail] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -61,6 +61,7 @@ const ReviewDetailPage: FunctionComponent = () => {
     tags: [],
     createdAt: '',
     text: '',
+    isbn: '',
   });
 
   const { id } = useParams<IdType>();
@@ -88,10 +89,9 @@ const ReviewDetailPage: FunctionComponent = () => {
   const fetchBookDetail = async (isbn: any) => {
     try {
       setError(null);
-      setBookDetail([]);
       setLoading(true);
       const res = await axios.get(`/api/book/search?title=${isbn}`);
-      setBookDetail(res.data.books.item);
+      setBookDetail(res.data.books.item[0]);
     } catch (err) {
       setError(err);
       console.log(err);
@@ -111,18 +111,7 @@ const ReviewDetailPage: FunctionComponent = () => {
       ) : (
         <ReviewDetailContainer>
           <BookInfoWrapper>
-            {bookDetail &&
-              bookDetail.map((review) => (
-                <BookInfo
-                  key={review.isbn}
-                  author={review.author}
-                  pubDate={review.pubDate}
-                  publisher={review.publisher}
-                  title={review.title}
-                  description={review.description}
-                  bookCover={review.cover}
-                />
-              ))}
+            <BookInfo bookInfo={bookDetail} isbn={reviewDetail.isbn} />
           </BookInfoWrapper>
           <ReviewDetailWrapper
             container

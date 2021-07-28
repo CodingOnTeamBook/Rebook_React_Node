@@ -39,17 +39,9 @@ const Introduction = styled.div`
   text-align: center;
   width: 100%;
   margin-top: 20px;
-  padding: 0 15px 0 15px;
+  padding: 15px;
   border-radius: 20px;
   background-color: #e2e2e2;
-`;
-
-const IntroductionWrapper = styled.p`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
 `;
 
 const InfoWrapper = styled(Box)`
@@ -111,9 +103,7 @@ const Person: FunctionComponent<IPersonProps> = ({
           </GenreTagWrapper>
         ))}
       </Box>
-      <Introduction>
-        <IntroductionWrapper> {myInfo(info)} </IntroductionWrapper>
-      </Introduction>
+      <Introduction> {myInfo(info)} </Introduction>
       <InfoWrapper display="flex" justifyContent="center" alignItems="center">
         <ListAlt></ListAlt>
         <ReviewCount> {countUserReview}개 </ReviewCount>

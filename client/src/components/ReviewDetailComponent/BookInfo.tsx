@@ -1,7 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router';
 
 const BookCover = styled(Box)`
   width: 250px;
@@ -11,6 +12,7 @@ const BookCover = styled(Box)`
 const BookImg = styled.img`
   width: 100%;
   height: 100%;
+  cursor: pointer;
   margin-right: 10%;
   object-fit: cover;
   transition: all 0.2s linear;
@@ -43,47 +45,49 @@ const BookPlot = styled(Box)`
   font-size: 1.2rem;
 `;
 
-interface IBookInfoProps {
-  author: string;
-  pubDate: string;
-  publisher: string;
-  title: string;
-  description: string;
-  bookCover: string;
-}
+const Message = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  font-size: 20px;
+`;
 
-const BookInfo: FunctionComponent<IBookInfoProps> = ({
-  author,
-  pubDate,
-  publisher,
-  title,
-  description,
-  bookCover,
-}: IBookInfoProps) => {
+const BookInfo = ({ bookInfo, isbn }: any) => {
+  const history = useHistory();
+
   return (
     <>
-      <Box display="flex" flexDirection="row">
-        <Grid container>
-          <Grid item lg={3} xl={3}>
-            <BookCover>
-              <BookImg alt={title} src={bookCover} />
-            </BookCover>
-          </Grid>
-          <Grid item xs={12} sm={12} lg={9} xl={9}>
-            <Box display="flex" flexDirection="column">
-              <BookTitle> {title} </BookTitle>
-              <Box display="flex" flexDirection="row" flexWrap="wrap">
-                <BookInfoDetail> {author} </BookInfoDetail>
-                <BookInfoDetail> {pubDate} </BookInfoDetail>
-                <BookInfoDetail> {publisher} </BookInfoDetail>
+      {!bookInfo ? (
+        <Message></Message>
+      ) : (
+        <Box display="flex" flexDirection="row">
+          <Grid container>
+            <Grid item lg={3} xl={3}>
+              <BookCover>
+                <BookImg
+                  alt={bookInfo?.title}
+                  src={bookInfo?.cover}
+                  onClick={() => history.push(`/book/${isbn}`)}
+                />
+              </BookCover>
+            </Grid>
+            <Grid item xs={12} sm={12} lg={9} xl={9}>
+              <Box display="flex" flexDirection="column">
+                <BookTitle> {bookInfo?.title} </BookTitle>
+                <Box display="flex" flexDirection="row" flexWrap="wrap">
+                  <BookInfoDetail> {bookInfo?.author} </BookInfoDetail>
+                  <BookInfoDetail> {bookInfo?.pubDate} </BookInfoDetail>
+                  <BookInfoDetail> {bookInfo?.publisher} </BookInfoDetail>
+                </Box>
+                <BookPlot>
+                  <p> {bookInfo?.description} </p>
+                </BookPlot>
               </Box>
-              <BookPlot>
-                <p> {description} </p>
-              </BookPlot>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      )}
     </>
   );
 };

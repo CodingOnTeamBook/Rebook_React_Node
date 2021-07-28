@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { genreTags } from '../../components/defaultData/genre';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import shortInfo from 'globalFunction/shortInfo';
 
 const PeopleContainer = styled.div`
   margin-top: 30px;
@@ -49,15 +50,6 @@ const Message = styled.span`
   margin: 20px 20px;
 `;
 
-const ScrollMessage = styled.span`
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 300;
-  font-size: 20px;
-`;
-
 const PeoplePage: FunctionComponent = ({}) => {
   const [people, setPeople] = useState<any[]>([]);
   const [isEmptyPeople, setIsEmptyPeople] = useState(true);
@@ -86,6 +78,8 @@ const PeoplePage: FunctionComponent = ({}) => {
           .get(`api/reviewer/${isSelected}?page=${page.current}`)
           .then((res) => {
             setPeople([...people, ...res.data.reviewers]);
+            // console.log(people);
+            // console.log(res.data.reviewers);
             if (res.data.reviewers.length === 0) {
               setIsHasMore(false);
             } else {
@@ -156,10 +150,7 @@ const PeoplePage: FunctionComponent = ({}) => {
           dataLength={people.length}
           next={fetchPerson}
           hasMore={isHasMore}
-          loader={<ScrollMessage> 로딩 중 입니다 📚 </ScrollMessage>}
-          endMessage={
-            <ScrollMessage> 더 이상 리뷰어가 없습니다. </ScrollMessage>
-          }
+          loader={<Message></Message>}
         >
           <GridLayout>
             <>
@@ -175,7 +166,7 @@ const PeoplePage: FunctionComponent = ({}) => {
                         nickname={person.nickname}
                         profileImg={person.profileImg}
                         genres={person.genres}
-                        info={person.info}
+                        info={shortInfo(person.info)}
                         countUserReview={person.countUserReview}
                       />
                     </PersonContainer>
