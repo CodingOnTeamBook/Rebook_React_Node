@@ -13,7 +13,6 @@ import {
   UploadedFile,
   Query,
   DefaultValuePipe,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,7 +21,6 @@ import { User } from '../entities/user.entity';
 import { AuthUser } from './users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { usersmulterOptions } from './users.multerOptions';
-import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable } from 'rxjs';
 import { logger } from 'src/logger';
 
@@ -221,6 +219,12 @@ export class UsersController {
             result: value,
           });
         }
+      })
+      .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          result: err,
+        });
       });
   }
 
@@ -246,6 +250,12 @@ export class UsersController {
             result: value,
           });
         }
+      })
+      .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          result: err,
+        });
       });
   }
 
