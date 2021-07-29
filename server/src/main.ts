@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception.filter';
 import * as express from 'express';
 import { join } from 'path';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,12 @@ async function bootstrap() {
       transform: true,
     })
   );
-  await app.listen(process.env.PORT);
+  if (process.env.NODE_ENV !== 'dev') {
+    app.use(helmet());
+  }
+
+  await app.listen(process.env.PORT, () => {
+    console.log(process.env.PORT);
+  });
 }
 bootstrap();
