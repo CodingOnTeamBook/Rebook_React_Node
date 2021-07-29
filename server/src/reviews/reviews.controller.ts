@@ -20,6 +20,7 @@ import { Review } from '../entities/review.entity';
 import { AuthUser } from '../users/users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { reviewmulter } from './reviews.multerOptions';
+import { logger } from 'src/logger';
 
 @Controller('/api/review')
 export class ReviewsController {
@@ -84,14 +85,21 @@ export class ReviewsController {
   }
 
   @Post('/updatefile/:nickname')
-  uploadFile(@Param() nickname: string, @Body() text: string, @Res() res) {
+  uploadFile(
+    @AuthUser() data,
+    @Param() nickname: string,
+    @Body() text: string,
+    @Res() res
+  ) {
     return this.reviewService.uploadFile(nickname, text).then((value) => {
       if (value !== Error) {
+        logger.info(`review/updatefile ${data.userId} upload text${value}`);
         res.status(HttpStatus.OK).json({
           success: true,
           filePath: value,
         });
       } else {
+        logger.error(`review/updatefile error: ${value}`);
         res.json({
           success: false,
           error: value,
@@ -118,12 +126,16 @@ export class ReviewsController {
     this.reviewService
       .writeReview(createReviewDto)
       .then((value: Review) => {
+        logger.info(
+          `review/write ${data.userId} write review ${createReviewDto.text}`
+        );
         return res.status(HttpStatus.OK).json({
           success: true,
           review: value,
         });
       })
       .catch((err) => {
+        logger.error(`review/write error: ${err}`);
         return res.status(HttpStatus.BAD_REQUEST).json({
           success: false,
           error: err,
@@ -142,6 +154,7 @@ export class ReviewsController {
     this.reviewService
       .updateReview(data.userId, updateReviewDto)
       .then((value: Review) => {
+        logger.info(`review/update ${data.userId} update review ${value.text}`);
         return res.status(HttpStatus.OK).json({
           success: true,
           review: value,
@@ -154,6 +167,9 @@ export class ReviewsController {
     return this.reviewService
       .deleteReview(data.userId, reviewKey.reviewid)
       .then((value) => {
+        logger.info(
+          `review/delete ${data.userId} delete review ${reviewKey.reviewid}`
+        );
         res.status(HttpStatus.OK).json({
           success: true,
           result: value,

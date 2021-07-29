@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import * as express from 'express';
 import { join } from 'path';
 import * as helmet from 'helmet';
+import { logger } from './logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,7 +24,7 @@ async function bootstrap() {
   }
 
   await app.listen(process.env.PORT, () => {
-    console.log(process.env.PORT);
+    logger.info(`Server listening on port ${process.env.PORT}`);
   });
 }
 bootstrap();
