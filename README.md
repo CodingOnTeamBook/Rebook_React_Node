@@ -3,11 +3,13 @@
 // ReadMe To do
 
 최상단 :
+
 - 로고 및 웹사이트 대표 이미지
-- 시연 영상(코딩온 영상팀에서 만든거), 
+- 시연 영상(코딩온 영상팀에서 만든거),
 - 배포한 웹사이트 주소
 
 내용 :
+
 - 개요
 - 프로젝트 주요 기능
 - 페이지별 기능 소개
@@ -15,14 +17,18 @@
 - 슬랙 줌 디코로 협업 어필
 - 팀원 소개
 
-
 # 이 밑으로는 샘플
+
 # 풀받아서 확인해보세요
-___
+
+---
+
 # 1. Landing Page
+
 <img src="/client/public/readme_src/LandingPage.gif">
 
 ### `Header`
+
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
@@ -34,11 +40,12 @@ ___
 - 리뷰를 볼 수 있는 '리뷰탭'과 리뷰어를 볼 수 있는 '리뷰어탭'
 - 로그인 버튼 및 로그인 여부에 따라 바뀌는 헤더, 모달창 구현
 
-
 ### `Carousel`
+
 - react-material의 carousel ui를 이용하여 배너 이미지 출력
 
 ### `SearchForm`
+
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
@@ -51,8 +58,8 @@ ___
 - onReset btn으로 검색어를 바로 삭제하는 기능을 구현해 유저 편의 도모
 - useInput 커스텀훅 사용을 통해 검색어 state 관리
 
-
 ### `BestSeller`
+
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
@@ -63,23 +70,51 @@ ___
 - 인터파크 베스트셀러 api를 통해 국내도서 중 베스트셀러 top 5 출력
 - 도서 클릭시 해당 도서의 bookDetail page로 이동
 
-
 ### `PopularReview`
+
 - '좋아요' 를 많이 받은 순으로 리뷰 6개 출력
 - 해당 리뷰의 '더보기' 클릭시 ReviewDetail Page로 이동
 - '더보기' 클릭시 Review Page로 이동
 
-
-# 2. BookDetailPage
+# 2. BookDetail Page
 
 ### `BookDetail`
+
 - 알라딘 도서 검색 api를 이용하여 도서 검색 결과를 받아와 출력
 
 ### `BookReview`
+
 - 해당 책의 isbn을 params으로 전달하여 해당 책에대한 리뷰를 최신순 및 인기순으로 5개씩 출력
 - '더보기' 클릭시 해당 리뷰의 review detail page로 이동
 
 ### `ReviewWriteBtn`
+
 - 유저의 로그인 상태 유무를 확인한 뒤, 로그인 상태일시 wirteReview Page로 이동
 
+# 3. Search Page
 
+도서 검색과 유저 검색이 가능한 페이지
+검색 결과를 redux로 관리
+
+### `SearchForm`
+
+- 랜딩페이지의 컴포넌트 재사용
+- react sticky library를 통해 fix 효과
+
+### `bookInfo`
+
+- 알라딘 api로부터 받은 검색 결과를 Grid item으로 출력
+- 해당 책을 클릭하면 bookDetail page로 이동
+
+### `Person`
+
+- 가입한 유저의 닉네임으로 검색
+- 해당 유저를 클릭하면 peopleDetail page로 이동
+
+# 4. SignUp Page
+
+OAuth (카카오 로그인)를 이용하여 상호 연동 지원
+카카오 로그인 후에 SignUp Page로 이동
+
+- 닉네임 중복검사
+- 선호도 장르 체크
