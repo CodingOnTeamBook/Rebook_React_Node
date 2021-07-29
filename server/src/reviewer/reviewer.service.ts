@@ -20,7 +20,7 @@ export class ReviewerService {
     const reviewer = await this.userRepository.findAndCount({
       where: {
         genres: Raw(
-          (alias) => `${alias} REGEXP "^[${genre.split(',').join('')}].*"`
+          (alias) => `${alias} REGEXP "[${genre.split(',').join('')}]+"`
         ),
       },
       select: ['id', 'nickname', 'genres', 'info', 'profileImg', 'createdAt'],

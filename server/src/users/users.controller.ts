@@ -24,6 +24,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { usersmulterOptions } from './users.multerOptions';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Observable } from 'rxjs';
+import { logger } from 'src/logger';
 
 //에러 처리 middleware 생성하기
 
@@ -34,6 +35,7 @@ export class UsersController {
   @Post('/signup')
   create(@Body() createUserDto: CreateUserDto, @Res() res) {
     this.usersService.signup(createUserDto).then((value: User) => {
+      logger.info(`users/signup ${createUserDto.kakaoId}`);
       return res.status(HttpStatus.OK).json({
         success: true,
         user: value,
@@ -44,6 +46,7 @@ export class UsersController {
   @Post('/login')
   login(@Body('kakaoId') kakaoId: string, @Res() res) {
     this.usersService.Login(kakaoId).then((value: boolean) => {
+      logger.info(`users/login ${kakaoId}`);
       if (value) {
         this.usersService.generateToken(kakaoId).then((value: string) => {
           res.cookie('user_Access', value, { httpOnly: true });
@@ -182,6 +185,7 @@ export class UsersController {
       throw new HttpException('id is missing', HttpStatus.BAD_REQUEST);
     }
     this.usersService.remove(data.userId).then(() => {
+      logger.info(`users/logout ${data.userId}`);
       res.clearCookie('user_Access');
       return res.status(HttpStatus.OK).json({
         success: true,
