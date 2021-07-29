@@ -26,7 +26,9 @@ export class ReviewsModule implements NestModule {
       .forRoutes(
         { path: '/api/review/write', method: RequestMethod.POST },
         { path: '/api/review/update', method: RequestMethod.PATCH },
-        { path: '/api/review/delete', method: RequestMethod.DELETE }
+        { path: '/api/review/delete', method: RequestMethod.DELETE },
+        { path: '/api/review/like', method: RequestMethod.POST },
+        { path: '/api/review/unlike', method: RequestMethod.POST }
       );
   }
 }
