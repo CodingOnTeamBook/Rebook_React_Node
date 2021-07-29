@@ -16,6 +16,55 @@
 - 팀원 소개
 
 
+- signup& mypage // 시연 이미지 profileImg 깨져서 아직 첨부 안함.. 내 정보 수정 후 profileImg 깨짐.
+# 1. MyPage
+
+### `MyInfo`
+
+- 내 정보 보여주기
+- 프로필 사진 업로드, 미리보기
+- 프로필 사진 저장 후 filepath, 선호 장르, 자기소개와 함께 내 정보 업로드
+
+### `MyReview`
+
+- 공개된 리뷰 / 비공개 리뷰
+- 1페이지에 리뷰 4개씩 새로 받아오도록 구현
+- 무한 스크롤 페이지네이션 : 'react-intersection-observer'의 라이브러리를 사용해서 마지막 item에 ref를 참조하여 page를 1씩 증가하여 새로 페이지를 가져오고, 더 이상 가져오는 값이 없을 때 fetchReview를 중지시킨다.
+
+### `LikeReview`
+
+- 사용자가 좋아요 표시한 리뷰 목록 가져오기
+- useCheck 커스텀 훅으로 체크 표시의 value값이 변화가 생겼을 때를 useEffect로 탐지하여 UnLike API를 호출한다.
+
+# 2. SignUp
+### `KakaoLogin`
+
+- 카카오 oauth 로그인
+- react-kakao-login 라이브러리 사용
+- 카카오 로그인 후 jwt 로그인 구현
+- 가입된 유저가 아닌 경우 /signup페이지로 이동
+
+### `GenreSelect`
+
+- 최소 1개에서 3개 genre 선택 가능
+- useCheck로 선택한 value 값 배열로 리턴
+
+### `NicknameCheck`
+
+- DB에 닉네임 중복 체크
+- 사용할 수 있는 닉네임일 경우 Input disabled 처리
+- useInput 커스텀 훅으로 value 값 관리
+
+### `SignupForm`
+
+- 카카오 로그인에서 useHistory로 state 값을 전송
+- 카카오 로그인에서 넘어온 값은 useLocation을 통해 저장
+- GenreSelect와 NicknameCheck는 useRef, forwardRef를 통해 값을 전달 후 validation
+- signup API로 전송
+
+
+
+
 # 이 밑으로는 샘플
 # 풀받아서 확인해보세요
 ___
