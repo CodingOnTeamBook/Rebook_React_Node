@@ -85,15 +85,9 @@ export class ReviewsController {
   }
 
   @Post('/updatefile/:nickname')
-  uploadFile(
-    @AuthUser() data,
-    @Param() nickname: string,
-    @Body() text: string,
-    @Res() res
-  ) {
+  uploadFile(@Param() nickname: string, @Body() text: string,@Res() res) {
     return this.reviewService.uploadFile(nickname, text).then((value) => {
       if (value !== Error) {
-        logger.info(`review/updatefile ${data.userId} upload text${value}`);
         res.status(HttpStatus.OK).json({
           success: true,
           filePath: value,
