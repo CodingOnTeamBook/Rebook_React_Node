@@ -132,3 +132,51 @@ ___
 - 유저의 로그인 상태 유무를 확인한 뒤, 로그인 상태일시 wirteReview Page로 이동
 
 
+#Server
+
+
+###Rebook
+http://3.36.99.8/
+
+
+### API Documentation
+(Notion) https://www.notion.so/choiinji/Rebook-API-56245dbde20d44f986ea5b2c28e7364d
+
+
+### Execute Command
+npm run dev
+
+
+### Technologies
+- Javascript(Nodejs)
+- Nestjs
+- JWT
+- MySQL, AWS(EC2, PM2, multer-S3)
+- CORS
+
+
+###Library
+- dotenv
+- jsonwebtoken
+- helmet
+- winston
+
+
+###Model
+<img width="818" alt="데이터 모델링" src="https://user-images.githubusercontent.com/82443178/127530411-4215c65c-532f-4f56-a576-ebaab234b1fc.png">
+
+
+###System Structure
+<img width="1017" alt="시스템 구조" src="https://user-images.githubusercontent.com/82443178/127530372-285b1138-630a-458d-bd5c-ae26481a8ea9.png">
+
+
+###Collaboration Tool
+- Git, Github
+- Slack
+- Discode 
+
+
+
+
+
+
