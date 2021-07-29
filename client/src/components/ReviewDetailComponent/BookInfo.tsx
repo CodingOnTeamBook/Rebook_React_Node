@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router';
+import Divider from '@material-ui/core/Divider';
 
 const BookCover = styled(Box)`
   width: 250px;
@@ -80,6 +81,7 @@ const BookInfo = ({ bookInfo, isbn }: any) => {
                   <BookInfoDetail> {bookInfo?.pubDate} </BookInfoDetail>
                   <BookInfoDetail> {bookInfo?.publisher} </BookInfoDetail>
                 </Box>
+                <Divider />
                 <BookPlot>
                   <p> {bookInfo?.description} </p>
                 </BookPlot>
