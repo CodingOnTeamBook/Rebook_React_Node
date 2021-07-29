@@ -139,7 +139,7 @@ const WriteReviewPage: FunctionComponent = () => {
     } catch (err) {
       console.log(err);
       alert('잠시후 다시 시도해주세요');
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
