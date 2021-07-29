@@ -150,7 +150,7 @@ const MyInfo = () => {
         }
       });
     }
-    window.location.reload();
+    // window.location.reload();
   };
   if (data?.user)
     return (
