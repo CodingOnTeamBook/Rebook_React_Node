@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import { useHistory } from 'react-router';
+import Divider from '@material-ui/core/Divider';
 
 const BookCover = styled(Box)`
   width: 250px;
@@ -24,6 +25,7 @@ const BookImg = styled.img`
 const BookTitle = styled.span`
   font-size: 2rem;
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const BookInfoDetail = styled.span`
@@ -74,12 +76,15 @@ const BookInfo = ({ bookInfo, isbn }: any) => {
             </Grid>
             <Grid item xs={12} sm={12} lg={9} xl={9}>
               <Box display="flex" flexDirection="column">
-                <BookTitle> {bookInfo?.title} </BookTitle>
+                <BookTitle onClick={() => history.push(`/book/${isbn}`)}>
+                  {bookInfo?.title}
+                </BookTitle>
                 <Box display="flex" flexDirection="row" flexWrap="wrap">
                   <BookInfoDetail> {bookInfo?.author} </BookInfoDetail>
                   <BookInfoDetail> {bookInfo?.pubDate} </BookInfoDetail>
                   <BookInfoDetail> {bookInfo?.publisher} </BookInfoDetail>
                 </Box>
+                <Divider />
                 <BookPlot>
                   <p> {bookInfo?.description} </p>
                 </BookPlot>

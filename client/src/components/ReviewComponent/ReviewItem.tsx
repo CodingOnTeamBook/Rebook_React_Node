@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Rating from '@material-ui/lab/Rating';
+import shortReviewSummary from 'globalFunction/shortReviewSummary';
 
 const ReviewMainContainer = styled(Box)`
   border-radius: 10px;
@@ -76,7 +77,7 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
       <Box
         display="flex"
         flexDirection="row"
-        p={2}
+        p={1}
         onClick={() => {
           history.push(`/review/${id}`);
         }}
@@ -89,7 +90,7 @@ const ReviewItem: FunctionComponent<IReviewProps> = ({
         <Box>
           <BookTitle> {title} </BookTitle>
           <Rating size="large" name="read-only" value={score} readOnly />
-          <BookReview> {summary} </BookReview>
+          <BookReview> {shortReviewSummary(summary)} </BookReview>
           <Nickname> {writer} </Nickname>
         </Box>
       </Box>

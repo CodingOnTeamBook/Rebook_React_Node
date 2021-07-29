@@ -9,17 +9,28 @@ import { myInfo, myProfileImg } from '../../globalFunction/myInfoDefaultValue';
 const PersonContainer = styled(Box)`
   border-radius: 10px;
   width: 100%;
-  padding: 10%;
+`;
+
+const PersonWrapper = styled.div`
+  border-radius: 10px 10px 0 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100000px 100000px;
+  height: 150px;
+  width: 100%;
 `;
 
 const UserImg = styled(Avatar)`
-  /* border: 5px solid #000; */
-  width: 90px;
-  height: 90px;
+  margin-top: -80px;
+  border-radius: 50%;
+  border: 0.3rem solid white;
+  width: 120px;
+  height: 120px;
+  background-color: white;
 `;
 
 const NickName = styled.div`
-  margin-top: 10px;
+  margin-top: 5px;
   font-size: 20px;
   font-weight: bold;
 `;
@@ -35,18 +46,23 @@ const GenreChip = styled(Chip)`
   background-color: ${(props) => props.theme.palette.green};
 `;
 
+const IntroductionContainer = styled(Box)`
+  padding: 0 10% 0 10%;
+  width: 100%;
+  margin-top: 10px;
+`;
+
 const Introduction = styled.div`
   text-align: center;
-  width: 100%;
-  margin-top: 20px;
   padding: 15px;
   border-radius: 20px;
-  background-color: #e2e2e2;
+  background-color: #f5f5f5;
 `;
 
 const InfoWrapper = styled(Box)`
-  margin-top: 20px;
+  margin-top: 10px;
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const ReviewCount = styled.span`
@@ -94,6 +110,7 @@ const Person: FunctionComponent<IPersonProps> = ({
       alignItems="center"
       boxShadow={3}
     >
+      <PersonWrapper style={{ backgroundImage: `url(${profileImg})` }} />
       <UserImg alt={nickname} src={myProfileImg(profileImg)} />
       <NickName>{nickname}</NickName>
       <Box display="flex" flexDirection="row" flexWrap="wrap">
@@ -103,7 +120,9 @@ const Person: FunctionComponent<IPersonProps> = ({
           </GenreTagWrapper>
         ))}
       </Box>
-      <Introduction> {myInfo(info)} </Introduction>
+      <IntroductionContainer>
+        <Introduction> {myInfo(info)} </Introduction>
+      </IntroductionContainer>
       <InfoWrapper display="flex" justifyContent="center" alignItems="center">
         <ListAlt></ListAlt>
         <ReviewCount> {countUserReview}개 </ReviewCount>
