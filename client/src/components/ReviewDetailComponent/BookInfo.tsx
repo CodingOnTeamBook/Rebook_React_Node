@@ -25,6 +25,7 @@ const BookImg = styled.img`
 const BookTitle = styled.span`
   font-size: 2rem;
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const BookInfoDetail = styled.span`
@@ -75,7 +76,9 @@ const BookInfo = ({ bookInfo, isbn }: any) => {
             </Grid>
             <Grid item xs={12} sm={12} lg={9} xl={9}>
               <Box display="flex" flexDirection="column">
-                <BookTitle> {bookInfo?.title} </BookTitle>
+                <BookTitle onClick={() => history.push(`/book/${isbn}`)}>
+                  {bookInfo?.title}
+                </BookTitle>
                 <Box display="flex" flexDirection="row" flexWrap="wrap">
                   <BookInfoDetail> {bookInfo?.author} </BookInfoDetail>
                   <BookInfoDetail> {bookInfo?.pubDate} </BookInfoDetail>
