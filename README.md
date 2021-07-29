@@ -21,6 +21,7 @@
 ___
 # 1. Landing Page
 <img src="/client/public/readme_src/LandingPage.gif">
+
 ### `Header`
 <details>
 <summary>👀 이미지 보기</summary>
