@@ -62,6 +62,12 @@ export class CommentsController {
           success: true,
           comment: value,
         });
+      })
+      .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          result: err,
+        });
       });
   }
 
@@ -70,13 +76,21 @@ export class CommentsController {
     @Param('commentid', ParseIntPipe) commentid: number,
     @Res() res
   ) {
-    this.commentsService.deleteComment(commentid).then((value) => {
-      return res.status(HttpStatus.OK).json({
-        data: { commentid },
-        tatusCode: 201,
-        result: value,
+    this.commentsService
+      .deleteComment(commentid)
+      .then((value) => {
+        return res.status(HttpStatus.OK).json({
+          data: { commentid },
+          tatusCode: 201,
+          result: value,
+        });
+      })
+      .catch((err) => {
+        res.status(HttpStatus.BAD_REQUEST).json({
+          success: false,
+          result: err,
+        });
       });
-    });
 
     // @Patch('/update/:commentid')
     // updateComment(

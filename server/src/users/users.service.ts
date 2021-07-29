@@ -12,12 +12,6 @@ import { Comment } from '../entities/comment.entity';
 import { string0To255 } from 'aws-sdk/clients/customerprofiles';
 import { processingReview } from '../reviews/reviews.exportFunction';
 
-import {
-  paginate,
-  Pagination,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
-
 @Injectable()
 export class UsersService {
   constructor(
@@ -269,7 +263,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: { userId: userid },
     });
-    const publicReview = await this.reviewRepository.findAndCount({
+    const privateReview = await this.reviewRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
@@ -288,6 +282,6 @@ export class UsersService {
       skip: skip,
       take: 4,
     });
-    return await processingReview(publicReview[0], false);
+    return await processingReview(privateReview[0], false);
   }
 }
