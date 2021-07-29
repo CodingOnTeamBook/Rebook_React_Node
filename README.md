@@ -132,10 +132,10 @@ ___
 - 유저의 로그인 상태 유무를 확인한 뒤, 로그인 상태일시 wirteReview Page로 이동
 
 
-#Server
+# Server
 
 
-###Rebook
+### Rebook
 http://3.36.99.8/
 
 
@@ -155,22 +155,24 @@ npm run dev
 - CORS
 
 
-###Library
+### Library
 - dotenv
 - jsonwebtoken
 - helmet
 - winston
 
 
-###Model
+### Model
+
 <img width="818" alt="데이터 모델링" src="https://user-images.githubusercontent.com/82443178/127530411-4215c65c-532f-4f56-a576-ebaab234b1fc.png">
 
 
-###System Structure
+### System Structure
+
 <img width="1017" alt="시스템 구조" src="https://user-images.githubusercontent.com/82443178/127530372-285b1138-630a-458d-bd5c-ae26481a8ea9.png">
 
 
-###Collaboration Tool
+### Collaboration Tool
 - Git, Github
 - Slack
 - Discode 
