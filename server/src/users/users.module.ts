@@ -27,6 +27,14 @@ import { RequestMethod } from '@nestjs/common';
 //미들웨어 적용
 export class UsersModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('/api/users');
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: '/api/users/signup', method: RequestMethod.POST },
+        { path: '/api/users/login', method: RequestMethod.POST },
+        { path: '/api/users/search/:nickname', method: RequestMethod.GET },
+        { path: '/api/check/:nickname', method: RequestMethod.GET }
+      )
+      .forRoutes('/api/users');
   }
 }

@@ -10,6 +10,11 @@ s3.config.ts
 s3.config.js
 ./config
 
+#.env
+.env
+.env.dev
+.env.prod
+
 # Logs
 logs
 *.log

@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from 'src/entities/comment.entity';
 import { Review } from 'src/entities/review.entity';
@@ -16,6 +21,12 @@ import { ReviewsService } from './reviews.service';
 })
 export class ReviewsModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('/api/review');
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(
+        { path: '/api/review/write', method: RequestMethod.POST },
+        { path: '/api/review/update', method: RequestMethod.PATCH },
+        { path: '/api/review/delete', method: RequestMethod.DELETE }
+      );
   }
 }

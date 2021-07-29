@@ -35,9 +35,7 @@ export class AuthMiddleware implements NestMiddleware {
             isAuth: false,
             type: 1,
           });
-          next();
         }
-        next();
       }
     } else {
       next();
