@@ -1,75 +1,20 @@
 # Re:book
 
-// ReadMe To do
+<img src="/client/src/style/img/logo.png">
 
-최상단 :
+도서를 검색하고, 작성한 리뷰를 다른 유저와 공유할 수 있는 웹사이트
 
-- 로고 및 웹사이트 대표 이미지
-- 시연 영상(코딩온 영상팀에서 만든거),
-- 배포한 웹사이트 주소
+#### 📙 **Deploy** : http://www.rebook-project.site/
 
-내용 :
+#### 🎞 **Video** : https://youtu.be/iQLW2u6962M
 
-- 개요
-- 프로젝트 주요 기능
-- 페이지별 기능 소개
-- 프엔 및 백엔 사용 스택
-- 슬랙 줌 디코로 협업 어필
-- 팀원 소개
+#### 👀 **Wiki** : https://github.com/CodingOnTeamBook/Rebook_React_Node/wiki
 
-- signup& mypage // 시연 이미지 profileImg 깨져서 아직 첨부 안함.. 내 정보 수정 후 profileImg 깨짐.
+# 0. Tools & Stack
 
-# 1. MyPage
-
-### `MyInfo`
-
-- 내 정보 보여주기
-- 프로필 사진 업로드, 미리보기
-- 프로필 사진 저장 후 filepath, 선호 장르, 자기소개와 함께 내 정보 업로드
-
-### `MyReview`
-
-- 공개된 리뷰 / 비공개 리뷰
-- 1페이지에 리뷰 4개씩 새로 받아오도록 구현
-- 무한 스크롤 페이지네이션 : 'react-intersection-observer'의 라이브러리를 사용해서 마지막 item에 ref를 참조하여 page를 1씩 증가하여 새로 페이지를 가져오고, 더 이상 가져오는 값이 없을 때 fetchReview를 중지시킨다.
-
-### `LikeReview`
-
-- 사용자가 좋아요 표시한 리뷰 목록 가져오기
-- useCheck 커스텀 훅으로 체크 표시의 value값이 변화가 생겼을 때를 useEffect로 탐지하여 UnLike API를 호출한다.
-
-# 2. SignUp
-
-### `KakaoLogin`
-
-- 카카오 oauth 로그인
-- react-kakao-login 라이브러리 사용
-- 카카오 로그인 후 jwt 로그인 구현
-- 가입된 유저가 아닌 경우 /signup페이지로 이동
-
-### `GenreSelect`
-
-- 최소 1개에서 3개 genre 선택 가능
-- useCheck로 선택한 value 값 배열로 리턴
-
-### `NicknameCheck`
-
-- DB에 닉네임 중복 체크
-- 사용할 수 있는 닉네임일 경우 Input disabled 처리
-- useInput 커스텀 훅으로 value 값 관리
-
-### `SignupForm`
-
-- 카카오 로그인에서 useHistory로 state 값을 전송
-- 카카오 로그인에서 넘어온 값은 useLocation을 통해 저장
-- GenreSelect와 NicknameCheck는 useRef, forwardRef를 통해 값을 전달 후 validation
-- signup API로 전송
-
-# 이 밑으로는 샘플
-
-# 풀받아서 확인해보세요
-
----
+<img src="/client/public/readme_src/tools.png">
+<img src="/client/public/readme_src/fe.png">
+<img src="/client/public/readme_src/be.png">
 
 # 1. Landing Page
 
@@ -124,7 +69,36 @@
 - 해당 리뷰의 '더보기' 클릭시 ReviewDetail Page로 이동
 - '더보기' 클릭시 Review Page로 이동
 
-# 2. BookDetail Page
+# 2. SignUp Page
+
+### `KakaoLogin`
+
+- 카카오 oauth 로그인
+- react-kakao-login 라이브러리 사용
+- 카카오 로그인 후 jwt 로그인 구현
+- 가입된 유저가 아닌 경우 /signup페이지로 이동
+
+### `GenreSelect`
+
+- 최소 1개에서 3개 genre 선택 가능
+- useCheck로 선택한 value 값 배열로 리턴
+
+### `NicknameCheck`
+
+- DB에 닉네임 중복 체크
+- 사용할 수 있는 닉네임일 경우 Input disabled 처리
+- useInput 커스텀 훅으로 value 값 관리
+
+### `SignupForm`
+
+- 카카오 로그인에서 useHistory로 state 값을 전송
+- 카카오 로그인에서 넘어온 값은 useLocation을 통해 저장
+- GenreSelect와 NicknameCheck는 useRef, forwardRef를 통해 값을 전달 후 validation
+- signup API로 전송
+
+# 3. BookDetail Page
+
+<img src="/client/public/readme_src/BookDetail.gif">
 
 ### `BookDetail`
 
@@ -137,17 +111,54 @@
 
 ### `ReviewWriteBtn`
 
+<details>
+<summary>👀 이미지 보기</summary>
+<div markdown="1">       
+<img src="/client/public/readme_src/BookDetail-2.gif">
+</div>
+</details>
+
 - 유저의 로그인 상태 유무를 확인한 뒤, 로그인 상태일시 wirteReview Page로 이동
 
-# 3. Search Page
+# 4. WriteReview Page
 
-도서 검색과 유저 검색이 가능한 페이지
-검색 결과를 redux로 관리
+<img src="/client/public/readme_src/WriteReview.gif">
+
+### `WriteEditor`
+
+- react-quill editor 사용으로 유저 편의 도모
+
+### `TagsInput`
+
+<details>
+<summary>👀 이미지 보기</summary>
+<div markdown="1">       
+<img src="/client/public/readme_src/WriteReview-2.gif">
+</div>
+</details>
+
+- 도서에 대한 임의의 태그를 입력 할 수 있음
+- 엔터 후 태그 스타일링을 통해 UI 향상
+
+### `StarRate`
+
+- 도서에 대한 임의의 별점을 매길 수 있음
+
+### `ToggleBtn`
+
+- 해당 리뷰를 공개글 또는 비공개글로 작성할 수 있음
+
+# 5. Search Page
+
+<img src="/client/public/readme_src/Search.gif">
+
+✔ 도서 검색과 유저 검색이 가능한 페이지
+✔ 검색 결과를 redux로 관리
 
 ### `SearchForm`
 
 - 랜딩페이지의 컴포넌트 재사용
-- react sticky library를 통해 fix 효과
+- react sticky library를 통해 sticky 효과
 
 ### `bookInfo`
 
@@ -156,16 +167,38 @@
 
 ### `Person`
 
+<details>
+<summary>👀 이미지 보기</summary>
+<div markdown="1">       
+<img src="/client/public/readme_src/Search-2.gif">
+</div>
+</details>
+
 - 가입한 유저의 닉네임으로 검색
 - 해당 유저를 클릭하면 peopleDetail page로 이동
 
-# 4. SignUp Page
+# 6. MyPage
 
-OAuth (카카오 로그인)를 이용하여 상호 연동 지원
-카카오 로그인 후에 SignUp Page로 이동
+<img src="/client/public/readme_src/MyPage.gif">
 
-- 닉네임 중복검사
-- 선호도 장르 체크
+### `MyInfo`
+
+- 내 정보 보여주기
+- 프로필 사진 업로드, 미리보기
+- 프로필 사진 저장 후 filepath, 선호 장르, 자기소개와 함께 내 정보 업로드
+
+### `MyReview`
+
+- 공개된 리뷰 / 비공개 리뷰
+- 1페이지에 리뷰 4개씩 새로 받아오도록 구현
+- 무한 스크롤 페이지네이션 : 'react-intersection-observer'의 라이브러리를 사용해서 마지막 item에 ref를 참조하여 page를 1씩 증가하여 새로 페이지를 가져오고, 더 이상 가져오는 값이 없을 때 fetchReview를 중지시킴
+
+### `LikeReview`
+
+- 사용자가 좋아요 표시한 리뷰 목록 가져오기
+- useCheck 커스텀 훅으로 체크 표시의 value값이 변화가 생겼을 때를 useEffect로 탐지하여 UnLike API를 호출
+
+---
 
 # Server
 
@@ -175,7 +208,7 @@ http://3.36.99.8/
 
 ### API Documentation
 
-(Notion) https://www.notion.so/choiinji/Rebook-API-56245dbde20d44f986ea5b2c28e7364d
+[📌 Notion](https://www.notion.so/choiinji/Rebook-API-56245dbde20d44f986ea5b2c28e7364d)
 
 ### Execute Command
 
@@ -204,8 +237,14 @@ npm run dev
 
 <img width="1017" alt="시스템 구조" src="https://user-images.githubusercontent.com/82443178/127530372-285b1138-630a-458d-bd5c-ae26481a8ea9.png">
 
-### Collaboration Tool
+---
 
-- Git, Github
-- Slack
-- Discode
+# Team
+
+<img src="/client/public/readme_src/Team.png">
+
+| Frond-End | Back-End |
+| :-------: | :------: |
+|  차유진   |  주혜미  |
+|  이승민   |  최인지  |
+|  마주은   |  이예안  |
