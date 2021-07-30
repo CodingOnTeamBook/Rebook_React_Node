@@ -280,6 +280,7 @@
 <img src="/client/public/readme_src/Reviewer_Person.gif">
 </div>
 </details>
+
 - 리뷰어 프로필 image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
 - 리뷰어 프로필 image 색상에 따라 프로필 background 색상 변경
 - 리뷰어 클리 시 <code>People Detail page</code>로 이동
