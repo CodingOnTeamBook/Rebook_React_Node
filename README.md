@@ -246,7 +246,7 @@
 
 # 9. People Page
 
-<img src="/client/public/readme_src/Review_Detail_Main.gif">
+<img src="/client/public/readme_src/Reviewer_Main.gif">
 
 <details>
 <summary>👀 상세 이미지 보기</summary>
