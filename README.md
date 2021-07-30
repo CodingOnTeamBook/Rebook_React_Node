@@ -306,7 +306,7 @@
 
 ### Rebook
 
-http://3.36.99.8/
+http://www.rebook-project.site/
 
 ### API Documentation
 
