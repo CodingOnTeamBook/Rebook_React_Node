@@ -198,6 +198,104 @@
 - 사용자가 좋아요 표시한 리뷰 목록 가져오기
 - useCheck 커스텀 훅으로 체크 표시의 value값이 변화가 생겼을 때를 useEffect로 탐지하여 UnLike API를 호출
 
+# 7. Review Page
+
+<img src="/client/public/readme_src/Review_Main.gif">
+
+- 무한 스크롤 페이지네이션 `react-infinite-scroll-component` 라이브러리를 이용하여 스크롤 시 page를 1씩 증가하여 리뷰 출력.
+인기순 최신순 되는 이미지 따로
+- 최신순 / 인기순으로 `isSelected` state 변경 시 `fetchReviews` 호출 하여 리뷰 출력
+
+
+### `ReviewItem`
+<details>
+<summary>👀 이미지 보기</summary>
+<div markdown="1">       
+<img src="/client/public/readme_src/Review_Item.gif">
+</div>
+</details>
+- 도서 image, 도서명, 리뷰 별점, 리뷰 내용(summary), 리뷰어 닉네임 출력
+클릭 시 이동하는거 보여주기
+- 리뷰 클리 시 해당 도서의 `Review Detail Page`로 이동
+
+
+# 8. Review Detail Page
+
+<img src="/client/public/readme_src/Review_Detail_Main.gif">
+
+### `BookInfo`
+- 도서 image, 도서 정보 출력
+- 도서 image, 도서 제목 클릭 시 해당 도서의 `Book Detail Page `로 이동
+
+### `UserReview`
+<details>
+<summary>👀 이미지 보기</summary>
+<div markdown="1"> 
+- 비로그인 사용자
+<img src="/client/public/readme_src/Review_Detail_Like_Logout.gif">      
+- 로그인 사용자 
+<img src="/client/public/readme_src/Review_Detail_Like.gif">
+</div>
+</details>
+- 리뷰 작성자 프로필 image, 닉네임, 리뷰 별점, 리뷰 태그, 리뷰 내용(html 출력), 리뷰 작성 시간 출력
+좋아요시 사진
+- 리뷰 좋아요 기능
+  - 비로그인 사용자
+  - 로그인 사용자
+
+
+# 9. People Page
+
+<img src="/client/public/readme_src/Reviewer_Main.gif">
+
+<details>
+<summary>👀 상세 이미지 보기</summary>
+<div markdown="1"> 
+- 1개 미만 선택
+<img src="/client/public/readme_src/Reviewer_Select_One.gif">      
+- 1개 이상 3개 이하 선택 
+<img src="/client/public/readme_src/Reviewer_Select_Three.gif">
+- 3개 초과 선택
+<img src="/client/public/readme_src/Reviewer_Three_Alert.gif">
+</div>
+</details>
+
+- 무한 스크롤 페이지네이션 `react-infinite-scroll-component` 라이브러리를 이용하여 스크롤 시 page를 1씩 증가하여 리뷰 출력.
+- 사용자가 선택한 장르 번호로 새로운 배열로 만들어 isSelected에 저장 후 장르 번호 순서 오름차순 정렬하여 state 변경 시 fetchPerson 호출하여 해당 리뷰어 출력
+  - 1개 미만 선택
+    - 1개 미만으로 변경 시 0번째 순서인 소설 데이터 호출
+    `setIsSelected([0]);`
+  - 1개 이상 3개 이하 선택
+    - `isSelected.sort();`로 장르 번호 순서 오름차순 정렬 후 데이터 출력
+  - 3개 초과 선택
+    - 4개째 선택하는 장르 번호 `pop` 후, 기존에 출력된 리뷰어 데이터 유지
+    `isSelected.pop();` 
+
+### `Person`
+<details>
+<summary>👀 상세 이미지 보기</summary>
+<div markdown="1"> 
+<img src="/client/public/readme_src/Reviewer_Person.gif">
+</div>
+</details>
+- 리뷰어 프로필 image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
+- 리뷰어 프로필 image 색상에 따라 프로필 background 색상 변경
+- 리뷰어 클리 시 `People Detail page`로 이동
+
+
+# 10. People Detail Page
+
+<img src="/client/public/readme_src/Reviewer_Main.gif">
+
+### `Person(컴포넌트 재사용)`
+- 리뷰어 profile image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
+- 리뷰어 프로필 image 색상에 따라 프로필 background 색상 변경
+
+### `ReviewItem(컴포넌트 재사용)`
+- 해당 리뷰어가 작성한 리뷰 출력
+- 도서 image, 도서명, 리뷰 별점, 리뷰 내용(summary), 리뷰어 닉네임 출력
+- 리뷰 클릭 시 `Review Detail Page`로 이동
+
 ---
 
 # Server
