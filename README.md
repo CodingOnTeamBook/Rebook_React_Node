@@ -211,7 +211,7 @@
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
-<img src="/client/public/readme_src/Review_Item.gif">
+<img src="/client/public/readme_src/Review_Item .gif">
 </div>
 </details>
 
