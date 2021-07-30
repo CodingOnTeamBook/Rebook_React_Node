@@ -233,9 +233,9 @@
 <summary>👀 이미지 보기</summary>
 <div markdown="1"> 
 - 비로그인 사용자
-<img src="/client/public/readme_src/Review_Detail_Like_Logout.gif">
+<img src="/client/public/readme_src/Review_Detail_Like _Logout.gif">
 - 로그인 사용자 
-<img src="/client/public/readme_src/Review_Detail_Like.gif">
+<img src="/client/public/readme_src/Review_Detail_Like .gif">
 </div>
 </details>
 
