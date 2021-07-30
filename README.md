@@ -203,7 +203,6 @@
 <img src="/client/public/readme_src/Review_Main.gif">
 
 - 무한 스크롤 페이지네이션 `react-infinite-scroll-component` 라이브러리를 이용하여 스크롤 시 page를 1씩 증가하여 리뷰 출력.
-인기순 최신순 되는 이미지 따로
 - 최신순 / 인기순으로 `isSelected` state 변경 시 `fetchReviews` 호출 하여 리뷰 출력
 
 
@@ -216,7 +215,6 @@
 </details>
 
 - 도서 image, 도서명, 리뷰 별점, 리뷰 내용(summary), 리뷰어 닉네임 출력
-클릭 시 이동하는거 보여주기
 - 리뷰 클리 시 해당 도서의 `Review Detail Page`로 이동
 
 
@@ -240,7 +238,6 @@
 </details>
 
 - 리뷰 작성자 프로필 image, 닉네임, 리뷰 별점, 리뷰 태그, 리뷰 내용(html 출력), 리뷰 작성 시간 출력
-좋아요시 사진
 - 리뷰 좋아요 기능
   - 비로그인 사용자
     - '로그인을 해주세요'라는 경고창을 보여줍니다 
