@@ -344,6 +344,6 @@ npm run dev
 
 | Frond-End | Back-End |
 | :-------: | :------: |
-|  차유진   |  주혜미  |
+|  [차유진](https://github.com/youjinDev)   |  주혜미  |
 |  이승민   |  최인지  |
 |  마주은   |  이예안  |
