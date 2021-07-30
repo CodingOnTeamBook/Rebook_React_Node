@@ -200,7 +200,7 @@
 
 # 7. Review Page
 
-<img src="/client/public/readme_src/Review_Main.gif">
+<img src="/client/public/readme_src/Review_Main.gif" />
 
 - 무한 스크롤 페이지네이션 `react-infinite-scroll-component` 라이브러리를 이용하여 스크롤 시 page를 1씩 증가하여 리뷰 출력.
 인기순 최신순 되는 이미지 따로
@@ -211,7 +211,7 @@
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
-<img src="/client/public/readme_src/Review_Item.gif">
+<img src="/client/public/readme_src/Review_Item.gif" />
 </div>
 </details>
 - 도서 image, 도서명, 리뷰 별점, 리뷰 내용(summary), 리뷰어 닉네임 출력
@@ -221,7 +221,7 @@
 
 # 8. Review Detail Page
 
-<img src="/client/public/readme_src/Review_Detail_Main.gif">
+<img src="/client/public/readme_src/Review_Detail_Main.gif" />
 
 ### `BookInfo`
 - 도서 image, 도서 정보 출력
@@ -246,7 +246,7 @@
 
 # 9. People Page
 
-<img src="/client/public/readme_src/Reviewer_Main.gif">
+<img src="/client/public/readme_src/Reviewer_Main.gif" />
 
 <details>
 <summary>👀 상세 이미지 보기</summary>
@@ -285,7 +285,7 @@
 
 # 10. People Detail Page
 
-<img src="/client/public/readme_src/Reviewer_Main.gif">
+<img src="/client/public/readme_src/Reviewer_Main.gif" />
 
 ### `Person(컴포넌트 재사용)`
 - 리뷰어 profile image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
