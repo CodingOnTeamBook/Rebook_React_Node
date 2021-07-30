@@ -153,6 +153,7 @@
 <img src="/client/public/readme_src/Search.gif">
 
 ✔ 도서 검색과 유저 검색이 가능한 페이지
+
 ✔ 검색 결과를 redux로 관리
 
 ### `SearchForm`
