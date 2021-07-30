@@ -285,7 +285,7 @@
 
 # 10. People Detail Page
 
-<img src="/client/public/readme_src/Reviewer_Main.gif">
+<img src="/client/public/readme_src/Reviewer_Detail.gif">
 
 ### `Person(컴포넌트 재사용)`
 - 리뷰어 profile image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
