@@ -232,11 +232,12 @@
 <summary>👀 이미지 보기</summary>
 <div markdown="1"> 
 - 비로그인 사용자
-<img src="/client/public/readme_src/Review_Detail_Like_Logout.gif">      
+<img src="/client/public/readme_src/Review_Detail_Like_Logout.gif">
 - 로그인 사용자 
 <img src="/client/public/readme_src/Review_Detail_Like.gif">
 </div>
 </details>
+
 - 리뷰 작성자 프로필 image, 닉네임, 리뷰 별점, 리뷰 태그, 리뷰 내용(html 출력), 리뷰 작성 시간 출력
 좋아요시 사진
 - 리뷰 좋아요 기능
