@@ -225,7 +225,7 @@
 
 ### `BookInfo`
 - 도서 image, 도서 정보 출력
-- 도서 image, 도서 제목 클릭 시 해당 도서의 `Book Detail Page `로 이동
+- 도서 image, 도서 제목 클릭 시 해당 도서의 `Book Detail Page`로 이동
 
 ### `UserReview`
 <details>
@@ -280,7 +280,7 @@
 </details>
 - 리뷰어 프로필 image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
 - 리뷰어 프로필 image 색상에 따라 프로필 background 색상 변경
-- 리뷰어 클리 시 `People Detail page`로 이동
+- 리뷰어 클리 시 <code>People Detail page</code>로 이동
 
 
 # 10. People Detail Page
@@ -289,7 +289,7 @@
 
 ### `Person(컴포넌트 재사용)`
 - 리뷰어 profile image, 닉네임, 장르, 자기소개(summary) , 작성 리뷰 수 출력
-- 리뷰어 프로필 image 색상에 따라 프로필 background 색상 변경
+- 리뷰어 profile image 색상에 따라 프로필 background 색상 변경
 
 ### `ReviewItem(컴포넌트 재사용)`
 - 해당 리뷰어가 작성한 리뷰 출력
