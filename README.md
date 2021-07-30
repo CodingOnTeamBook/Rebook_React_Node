@@ -211,9 +211,10 @@
 <details>
 <summary>👀 이미지 보기</summary>
 <div markdown="1">       
-<img src="/client/public/readme_src/Review_Item.gif" />
+<img src="/client/public/readme_src/Review_Item.gif">
 </div>
 </details>
+
 - 도서 image, 도서명, 리뷰 별점, 리뷰 내용(summary), 리뷰어 닉네임 출력
 클릭 시 이동하는거 보여주기
 - 리뷰 클리 시 해당 도서의 `Review Detail Page`로 이동
