@@ -97,16 +97,6 @@ const LandingPage: FunctionComponent = () => {
 
   return (
     <LandingContainer>
-      <Helmet>
-        <meta
-          charSet="utf-8"
-          name="Landing Page"
-          content="도서를 검색하고 도서에 대한 리뷰를 공유하는 사이트 ReBook 메인페이지입니다"
-        />
-        <meta name="robots" content="index,follow" />
-        <meta name="keywords" content="ReBook, Landing page, Main Page" />
-        <title>Re:Book</title>
-      </Helmet>
       <CarouselComponent />
       <SearchForm />
       {bestSellerState.isError || reviewsState.isError ? (
