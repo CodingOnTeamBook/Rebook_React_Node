@@ -8,9 +8,15 @@ export default function TransferDate(writeDate: string): string {
   // 현재 날짜
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const date = today.getDate();
-  const standardDate = `${year}-0${month}-${date}`;
+  const month =
+    (today.getMonth() + 1) % 10 === today.getMonth() + 1
+      ? '0' + (today.getMonth() + 1)
+      : today.getMonth() + 1;
+  const date =
+    today.getDate() % 10 === today.getDate()
+      ? '0' + today.getDate()
+      : today.getDate();
+  const standardDate = `${year}-${month}-${date}`;
   const calcStandardDate = parseInt(standardDate.split('-').join(''));
 
   if (calcStandardDate - calcWriteDate == 0) {
