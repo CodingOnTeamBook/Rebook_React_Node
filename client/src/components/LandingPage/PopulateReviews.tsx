@@ -95,4 +95,4 @@ const PopulateReview = ({ reviews }: Iprops) => {
   );
 };
 
-export default React.memo(PopulateReview);
+export default PopulateReview;

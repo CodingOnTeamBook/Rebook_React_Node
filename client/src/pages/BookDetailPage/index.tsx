@@ -4,6 +4,7 @@ import BookReview from 'components/BookDetail/BookReview';
 import ReviewWriteBtn from 'components/BookDetail/ReviewWriteBtn';
 import styled from 'styled-components';
 import fetchData from 'globalFunction/fetchData';
+import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
   margin: 0 auto;
@@ -34,6 +35,8 @@ const BookDetailPage: FunctionComponent = () => {
     isError: null,
   });
 
+  const [bookTitle, setBookTitle] = useState('');
+
   const [reviewsState, setReviewsState] = useState<initialState>({
     data: null,
     isError: null,
@@ -44,11 +47,13 @@ const BookDetailPage: FunctionComponent = () => {
       method: 'GET',
       url: `/api/book/search?title=${ISBN}`,
     }).then(({ data, isLoading, isError }) => {
+      console.log(data.books.item[0]);
       setBookInfoState({
         ...bookInfoState,
         data: data.books.item[0],
         isError,
       });
+      setBookTitle(data.books.item[0].title);
     });
     fetchData({
       method: 'POST',
@@ -77,6 +82,14 @@ const BookDetailPage: FunctionComponent = () => {
 
   return (
     <Container>
+      <Helmet>
+        <meta
+          charSet="utf-8"
+          name="Book Detail Page"
+          content="Book Information, 책 정보"
+        />
+        <title>{bookTitle}</title>
+      </Helmet>
       <BookDetail bookInfo={bookInfoState.data} />
       <h1>REVIEW</h1>
       <BookReview reviews={reviewsState.data} isbn={ISBN} />
