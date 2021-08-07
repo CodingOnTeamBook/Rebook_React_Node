@@ -9,10 +9,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link, useLocation } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 import { modalOpen } from 'modules';
-import ForumIcon from '@material-ui/icons/Forum';
 
-const LogoContainer = styled.img`
-  width: 200px;
+const LogoContainer = styled.img<{ isMobile: boolean | null }>`
+  width: ${(props) => (props.isMobile ? 130 : 200)}px;
   cursor: pointer;
 `;
 
@@ -24,10 +23,12 @@ const Container = styled.nav`
   position: relative;
 `;
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ isMobile: boolean | null }>`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: ${(props) => (props.isMobile ? 'space-between' : 'center')};
+  padding: 1rem;
+  padding-left: ${(props) => (props.isMobile ? 3 : 0)}rem;
   align-items: center;
   margin-top: 0.5rem;
   margin-bottom: 0.3rem;
@@ -76,7 +77,11 @@ const MenuContainer = styled.ul`
 
 const Header: FunctionComponent = () => {
   const [isProfileModalOpen, setIsProfileModal] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isMobile, setIsMobile] = useState<null | boolean>(null);
   const Location = useLocation();
+  const MOBILE_SIZE = 500;
+
   const ProfileModalToggle = () => {
     setIsProfileModal((prev) => !prev);
   };
@@ -87,19 +92,32 @@ const Header: FunctionComponent = () => {
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!loading && !data && !error) {
       dispatch(getAuthThunk());
     }
   }, [data, error]);
+
   useEffect(() => {
     CloseProfileModal();
   }, [Location]);
+
+  // Header Mobile 대응 추가
+  useEffect(() => {
+    const onResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    windowWidth < MOBILE_SIZE ? setIsMobile(true) : setIsMobile(false);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [windowWidth]);
+
   return (
     <Container>
-      <HeaderContainer>
+      <HeaderContainer isMobile={isMobile}>
         <Link to="/">
-          <LogoContainer src={Logo} />
+          <LogoContainer isMobile={isMobile} src={Logo} />
         </Link>
         {data?.isAuth ? (
           <ProfileIcon onClick={() => ProfileModalToggle()} />
