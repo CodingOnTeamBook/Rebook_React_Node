@@ -4,7 +4,7 @@
 
 도서를 검색하고, 작성한 리뷰를 다른 유저와 공유할 수 있는 웹사이트
 
-#### 📙 **Deploy** : http://www.rebook-project.site/
+#### 📙 **Deploy** : https://www.rebook-project.site/
 
 #### 🎞 **Video** : https://youtu.be/iQLW2u6962M
 
@@ -304,7 +304,7 @@
 
 ### Rebook
 
-http://www.rebook-project.site/
+https://www.rebook-project.site/
 
 ### API Documentation
 
